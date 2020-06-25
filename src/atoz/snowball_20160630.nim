@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, httpcore,
-  sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
+  httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Import/Export Snowball
@@ -27,18 +27,18 @@ type
     base*: string
     host*: string
     schemes*: set[Scheme]
-    url*: proc (protocol: Scheme; host: string; base: string; route: string;
-              path: JsonNode; query: JsonNode): Uri
+    makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
+                  path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_616866 = ref object of OpenApiRestCall
+  OpenApiRestCall_21625435 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_616866](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_21625435](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_616866): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -55,8 +55,9 @@ proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
   ## ensure an input is of the correct json type and yield
   ## a suitable default value when appropriate
   if js == nil:
-    if default != nil:
-      return validateParameter(default, kind, required = required)
+    if required:
+      if default != nil:
+        return validateParameter(default, kind, required = required)
   result = js
   if result == nil:
     assert not required, $kind & " expected; received nil"
@@ -108,9 +109,9 @@ const
                            "us-west-2": "snowball.us-west-2.amazonaws.com",
                            "eu-west-2": "snowball.eu-west-2.amazonaws.com", "ap-northeast-3": "snowball.ap-northeast-3.amazonaws.com", "eu-central-1": "snowball.eu-central-1.amazonaws.com",
                            "us-east-2": "snowball.us-east-2.amazonaws.com",
-                           "us-east-1": "snowball.us-east-1.amazonaws.com", "cn-northwest-1": "snowball.cn-northwest-1.amazonaws.com.cn", "ap-northeast-2": "snowball.ap-northeast-2.amazonaws.com",
+                           "us-east-1": "snowball.us-east-1.amazonaws.com", "cn-northwest-1": "snowball.cn-northwest-1.amazonaws.com.cn",
                            "ap-south-1": "snowball.ap-south-1.amazonaws.com",
-                           "eu-north-1": "snowball.eu-north-1.amazonaws.com",
+                           "eu-north-1": "snowball.eu-north-1.amazonaws.com", "ap-northeast-2": "snowball.ap-northeast-2.amazonaws.com",
                            "us-west-1": "snowball.us-west-1.amazonaws.com", "us-gov-east-1": "snowball.us-gov-east-1.amazonaws.com",
                            "eu-west-3": "snowball.eu-west-3.amazonaws.com", "cn-north-1": "snowball.cn-north-1.amazonaws.com.cn",
                            "sa-east-1": "snowball.sa-east-1.amazonaws.com",
@@ -124,9 +125,9 @@ const
       "us-east-2": "snowball.us-east-2.amazonaws.com",
       "us-east-1": "snowball.us-east-1.amazonaws.com",
       "cn-northwest-1": "snowball.cn-northwest-1.amazonaws.com.cn",
-      "ap-northeast-2": "snowball.ap-northeast-2.amazonaws.com",
       "ap-south-1": "snowball.ap-south-1.amazonaws.com",
       "eu-north-1": "snowball.eu-north-1.amazonaws.com",
+      "ap-northeast-2": "snowball.ap-northeast-2.amazonaws.com",
       "us-west-1": "snowball.us-west-1.amazonaws.com",
       "us-gov-east-1": "snowball.us-gov-east-1.amazonaws.com",
       "eu-west-3": "snowball.eu-west-3.amazonaws.com",
@@ -141,9 +142,9 @@ const
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
     base.}
 type
-  Call_CancelCluster_617205 = ref object of OpenApiRestCall_616866
-proc url_CancelCluster_617207(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CancelCluster_21625779 = ref object of OpenApiRestCall_21625435
+proc url_CancelCluster_21625781(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -152,8 +153,9 @@ proc url_CancelCluster_617207(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CancelCluster_617206(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
+proc validate_CancelCluster_21625780(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
   ## Cancels a cluster job. You can only cancel a cluster job while it's in the <code>AwaitingQuorum</code> status. You'll have at least an hour after creating a cluster job to cancel it.
   ## 
   var section: JsonNode
@@ -165,889 +167,95 @@ proc validate_CancelCluster_617206(path: JsonNode; query: JsonNode; header: Json
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617319 = header.getOrDefault("X-Amz-Date")
-  valid_617319 = validateParameter(valid_617319, JString, required = false,
-                                 default = nil)
-  if valid_617319 != nil:
-    section.add "X-Amz-Date", valid_617319
-  var valid_617320 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617320 = validateParameter(valid_617320, JString, required = false,
-                                 default = nil)
-  if valid_617320 != nil:
-    section.add "X-Amz-Security-Token", valid_617320
-  var valid_617321 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617321 = validateParameter(valid_617321, JString, required = false,
-                                 default = nil)
-  if valid_617321 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617321
-  var valid_617322 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617322 = validateParameter(valid_617322, JString, required = false,
-                                 default = nil)
-  if valid_617322 != nil:
-    section.add "X-Amz-Algorithm", valid_617322
-  var valid_617323 = header.getOrDefault("X-Amz-Signature")
-  valid_617323 = validateParameter(valid_617323, JString, required = false,
-                                 default = nil)
-  if valid_617323 != nil:
-    section.add "X-Amz-Signature", valid_617323
-  var valid_617324 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617324 = validateParameter(valid_617324, JString, required = false,
-                                 default = nil)
-  if valid_617324 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617324
-  var valid_617338 = header.getOrDefault("X-Amz-Target")
-  valid_617338 = validateParameter(valid_617338, JString, required = true, default = newJString(
+  var valid_21625882 = header.getOrDefault("X-Amz-Date")
+  valid_21625882 = validateParameter(valid_21625882, JString, required = false,
+                                   default = nil)
+  if valid_21625882 != nil:
+    section.add "X-Amz-Date", valid_21625882
+  var valid_21625883 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21625883 = validateParameter(valid_21625883, JString, required = false,
+                                   default = nil)
+  if valid_21625883 != nil:
+    section.add "X-Amz-Security-Token", valid_21625883
+  var valid_21625898 = header.getOrDefault("X-Amz-Target")
+  valid_21625898 = validateParameter(valid_21625898, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.CancelCluster"))
-  if valid_617338 != nil:
-    section.add "X-Amz-Target", valid_617338
-  var valid_617339 = header.getOrDefault("X-Amz-Credential")
-  valid_617339 = validateParameter(valid_617339, JString, required = false,
-                                 default = nil)
-  if valid_617339 != nil:
-    section.add "X-Amz-Credential", valid_617339
+  if valid_21625898 != nil:
+    section.add "X-Amz-Target", valid_21625898
+  var valid_21625899 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21625899 = validateParameter(valid_21625899, JString, required = false,
+                                   default = nil)
+  if valid_21625899 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21625899
+  var valid_21625900 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21625900 = validateParameter(valid_21625900, JString, required = false,
+                                   default = nil)
+  if valid_21625900 != nil:
+    section.add "X-Amz-Algorithm", valid_21625900
+  var valid_21625901 = header.getOrDefault("X-Amz-Signature")
+  valid_21625901 = validateParameter(valid_21625901, JString, required = false,
+                                   default = nil)
+  if valid_21625901 != nil:
+    section.add "X-Amz-Signature", valid_21625901
+  var valid_21625902 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21625902 = validateParameter(valid_21625902, JString, required = false,
+                                   default = nil)
+  if valid_21625902 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21625902
+  var valid_21625903 = header.getOrDefault("X-Amz-Credential")
+  valid_21625903 = validateParameter(valid_21625903, JString, required = false,
+                                   default = nil)
+  if valid_21625903 != nil:
+    section.add "X-Amz-Credential", valid_21625903
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617364: Call_CancelCluster_617205; path: JsonNode = nil;
+proc call*(call_21625929: Call_CancelCluster_21625779; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
   ## Cancels a cluster job. You can only cancel a cluster job while it's in the <code>AwaitingQuorum</code> status. You'll have at least an hour after creating a cluster job to cancel it.
   ## 
-  let valid = call_617364.validator(path, query, header, formData, body, _)
-  let scheme = call_617364.pickScheme
+  let valid = call_21625929.validator(path, query, header, formData, body, _)
+  let scheme = call_21625929.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617364.url(scheme.get, call_617364.host, call_617364.base,
-                         call_617364.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617364, url, valid, _)
+  let uri = call_21625929.makeUrl(scheme.get, call_21625929.host, call_21625929.base,
+                               call_21625929.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21625929, uri, valid, _)
 
-proc call*(call_617435: Call_CancelCluster_617205; body: JsonNode): Recallable =
+proc call*(call_21625992: Call_CancelCluster_21625779; body: JsonNode): Recallable =
   ## cancelCluster
   ## Cancels a cluster job. You can only cancel a cluster job while it's in the <code>AwaitingQuorum</code> status. You'll have at least an hour after creating a cluster job to cancel it.
   ##   body: JObject (required)
-  var body_617436 = newJObject()
+  var body_21625993 = newJObject()
   if body != nil:
-    body_617436 = body
-  result = call_617435.call(nil, nil, nil, nil, body_617436)
+    body_21625993 = body
+  result = call_21625992.call(nil, nil, nil, nil, body_21625993)
 
-var cancelCluster* = Call_CancelCluster_617205(name: "cancelCluster",
+var cancelCluster* = Call_CancelCluster_21625779(name: "cancelCluster",
     meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
     route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CancelCluster",
-    validator: validate_CancelCluster_617206, base: "/", url: url_CancelCluster_617207,
-    schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CancelCluster_21625780, base: "/",
+    makeUrl: url_CancelCluster_21625781, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CancelJob_617477 = ref object of OpenApiRestCall_616866
-proc url_CancelJob_617479(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_CancelJob_617478(path: JsonNode; query: JsonNode; header: JsonNode;
-                              formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## Cancels the specified job. You can only cancel a job before its <code>JobState</code> value changes to <code>PreparingAppliance</code>. Requesting the <code>ListJobs</code> or <code>DescribeJob</code> action returns a job's <code>JobState</code> as part of the response element data returned.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617480 = header.getOrDefault("X-Amz-Date")
-  valid_617480 = validateParameter(valid_617480, JString, required = false,
-                                 default = nil)
-  if valid_617480 != nil:
-    section.add "X-Amz-Date", valid_617480
-  var valid_617481 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617481 = validateParameter(valid_617481, JString, required = false,
-                                 default = nil)
-  if valid_617481 != nil:
-    section.add "X-Amz-Security-Token", valid_617481
-  var valid_617482 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617482 = validateParameter(valid_617482, JString, required = false,
-                                 default = nil)
-  if valid_617482 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617482
-  var valid_617483 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617483 = validateParameter(valid_617483, JString, required = false,
-                                 default = nil)
-  if valid_617483 != nil:
-    section.add "X-Amz-Algorithm", valid_617483
-  var valid_617484 = header.getOrDefault("X-Amz-Signature")
-  valid_617484 = validateParameter(valid_617484, JString, required = false,
-                                 default = nil)
-  if valid_617484 != nil:
-    section.add "X-Amz-Signature", valid_617484
-  var valid_617485 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617485 = validateParameter(valid_617485, JString, required = false,
-                                 default = nil)
-  if valid_617485 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617485
-  var valid_617486 = header.getOrDefault("X-Amz-Target")
-  valid_617486 = validateParameter(valid_617486, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.CancelJob"))
-  if valid_617486 != nil:
-    section.add "X-Amz-Target", valid_617486
-  var valid_617487 = header.getOrDefault("X-Amz-Credential")
-  valid_617487 = validateParameter(valid_617487, JString, required = false,
-                                 default = nil)
-  if valid_617487 != nil:
-    section.add "X-Amz-Credential", valid_617487
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617489: Call_CancelJob_617477; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Cancels the specified job. You can only cancel a job before its <code>JobState</code> value changes to <code>PreparingAppliance</code>. Requesting the <code>ListJobs</code> or <code>DescribeJob</code> action returns a job's <code>JobState</code> as part of the response element data returned.
-  ## 
-  let valid = call_617489.validator(path, query, header, formData, body, _)
-  let scheme = call_617489.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617489.url(scheme.get, call_617489.host, call_617489.base,
-                         call_617489.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617489, url, valid, _)
-
-proc call*(call_617490: Call_CancelJob_617477; body: JsonNode): Recallable =
-  ## cancelJob
-  ## Cancels the specified job. You can only cancel a job before its <code>JobState</code> value changes to <code>PreparingAppliance</code>. Requesting the <code>ListJobs</code> or <code>DescribeJob</code> action returns a job's <code>JobState</code> as part of the response element data returned.
-  ##   body: JObject (required)
-  var body_617491 = newJObject()
-  if body != nil:
-    body_617491 = body
-  result = call_617490.call(nil, nil, nil, nil, body_617491)
-
-var cancelJob* = Call_CancelJob_617477(name: "cancelJob", meth: HttpMethod.HttpPost,
-                                    host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CancelJob",
-                                    validator: validate_CancelJob_617478,
-                                    base: "/", url: url_CancelJob_617479,
-                                    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_CreateAddress_617492 = ref object of OpenApiRestCall_616866
-proc url_CreateAddress_617494(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_CreateAddress_617493(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## Creates an address for a Snowball to be shipped to. In most regions, addresses are validated at the time of creation. The address you provide must be located within the serviceable area of your region. If the address is invalid or unsupported, then an exception is thrown.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617495 = header.getOrDefault("X-Amz-Date")
-  valid_617495 = validateParameter(valid_617495, JString, required = false,
-                                 default = nil)
-  if valid_617495 != nil:
-    section.add "X-Amz-Date", valid_617495
-  var valid_617496 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617496 = validateParameter(valid_617496, JString, required = false,
-                                 default = nil)
-  if valid_617496 != nil:
-    section.add "X-Amz-Security-Token", valid_617496
-  var valid_617497 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617497 = validateParameter(valid_617497, JString, required = false,
-                                 default = nil)
-  if valid_617497 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617497
-  var valid_617498 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617498 = validateParameter(valid_617498, JString, required = false,
-                                 default = nil)
-  if valid_617498 != nil:
-    section.add "X-Amz-Algorithm", valid_617498
-  var valid_617499 = header.getOrDefault("X-Amz-Signature")
-  valid_617499 = validateParameter(valid_617499, JString, required = false,
-                                 default = nil)
-  if valid_617499 != nil:
-    section.add "X-Amz-Signature", valid_617499
-  var valid_617500 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617500 = validateParameter(valid_617500, JString, required = false,
-                                 default = nil)
-  if valid_617500 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617500
-  var valid_617501 = header.getOrDefault("X-Amz-Target")
-  valid_617501 = validateParameter(valid_617501, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.CreateAddress"))
-  if valid_617501 != nil:
-    section.add "X-Amz-Target", valid_617501
-  var valid_617502 = header.getOrDefault("X-Amz-Credential")
-  valid_617502 = validateParameter(valid_617502, JString, required = false,
-                                 default = nil)
-  if valid_617502 != nil:
-    section.add "X-Amz-Credential", valid_617502
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617504: Call_CreateAddress_617492; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Creates an address for a Snowball to be shipped to. In most regions, addresses are validated at the time of creation. The address you provide must be located within the serviceable area of your region. If the address is invalid or unsupported, then an exception is thrown.
-  ## 
-  let valid = call_617504.validator(path, query, header, formData, body, _)
-  let scheme = call_617504.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617504.url(scheme.get, call_617504.host, call_617504.base,
-                         call_617504.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617504, url, valid, _)
-
-proc call*(call_617505: Call_CreateAddress_617492; body: JsonNode): Recallable =
-  ## createAddress
-  ## Creates an address for a Snowball to be shipped to. In most regions, addresses are validated at the time of creation. The address you provide must be located within the serviceable area of your region. If the address is invalid or unsupported, then an exception is thrown.
-  ##   body: JObject (required)
-  var body_617506 = newJObject()
-  if body != nil:
-    body_617506 = body
-  result = call_617505.call(nil, nil, nil, nil, body_617506)
-
-var createAddress* = Call_CreateAddress_617492(name: "createAddress",
-    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CreateAddress",
-    validator: validate_CreateAddress_617493, base: "/", url: url_CreateAddress_617494,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_CreateCluster_617507 = ref object of OpenApiRestCall_616866
-proc url_CreateCluster_617509(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_CreateCluster_617508(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## Creates an empty cluster. Each cluster supports five nodes. You use the <a>CreateJob</a> action separately to create the jobs for each of these nodes. The cluster does not ship until these five node jobs have been created.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617510 = header.getOrDefault("X-Amz-Date")
-  valid_617510 = validateParameter(valid_617510, JString, required = false,
-                                 default = nil)
-  if valid_617510 != nil:
-    section.add "X-Amz-Date", valid_617510
-  var valid_617511 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617511 = validateParameter(valid_617511, JString, required = false,
-                                 default = nil)
-  if valid_617511 != nil:
-    section.add "X-Amz-Security-Token", valid_617511
-  var valid_617512 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617512 = validateParameter(valid_617512, JString, required = false,
-                                 default = nil)
-  if valid_617512 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617512
-  var valid_617513 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617513 = validateParameter(valid_617513, JString, required = false,
-                                 default = nil)
-  if valid_617513 != nil:
-    section.add "X-Amz-Algorithm", valid_617513
-  var valid_617514 = header.getOrDefault("X-Amz-Signature")
-  valid_617514 = validateParameter(valid_617514, JString, required = false,
-                                 default = nil)
-  if valid_617514 != nil:
-    section.add "X-Amz-Signature", valid_617514
-  var valid_617515 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617515 = validateParameter(valid_617515, JString, required = false,
-                                 default = nil)
-  if valid_617515 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617515
-  var valid_617516 = header.getOrDefault("X-Amz-Target")
-  valid_617516 = validateParameter(valid_617516, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.CreateCluster"))
-  if valid_617516 != nil:
-    section.add "X-Amz-Target", valid_617516
-  var valid_617517 = header.getOrDefault("X-Amz-Credential")
-  valid_617517 = validateParameter(valid_617517, JString, required = false,
-                                 default = nil)
-  if valid_617517 != nil:
-    section.add "X-Amz-Credential", valid_617517
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617519: Call_CreateCluster_617507; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Creates an empty cluster. Each cluster supports five nodes. You use the <a>CreateJob</a> action separately to create the jobs for each of these nodes. The cluster does not ship until these five node jobs have been created.
-  ## 
-  let valid = call_617519.validator(path, query, header, formData, body, _)
-  let scheme = call_617519.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617519.url(scheme.get, call_617519.host, call_617519.base,
-                         call_617519.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617519, url, valid, _)
-
-proc call*(call_617520: Call_CreateCluster_617507; body: JsonNode): Recallable =
-  ## createCluster
-  ## Creates an empty cluster. Each cluster supports five nodes. You use the <a>CreateJob</a> action separately to create the jobs for each of these nodes. The cluster does not ship until these five node jobs have been created.
-  ##   body: JObject (required)
-  var body_617521 = newJObject()
-  if body != nil:
-    body_617521 = body
-  result = call_617520.call(nil, nil, nil, nil, body_617521)
-
-var createCluster* = Call_CreateCluster_617507(name: "createCluster",
-    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CreateCluster",
-    validator: validate_CreateCluster_617508, base: "/", url: url_CreateCluster_617509,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_CreateJob_617522 = ref object of OpenApiRestCall_616866
-proc url_CreateJob_617524(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_CreateJob_617523(path: JsonNode; query: JsonNode; header: JsonNode;
-                              formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## Creates a job to import or export data between Amazon S3 and your on-premises data center. Your AWS account must have the right trust policies and permissions in place to create a job for Snowball. If you're creating a job for a node in a cluster, you only need to provide the <code>clusterId</code> value; the other job attributes are inherited from the cluster. 
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617525 = header.getOrDefault("X-Amz-Date")
-  valid_617525 = validateParameter(valid_617525, JString, required = false,
-                                 default = nil)
-  if valid_617525 != nil:
-    section.add "X-Amz-Date", valid_617525
-  var valid_617526 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617526 = validateParameter(valid_617526, JString, required = false,
-                                 default = nil)
-  if valid_617526 != nil:
-    section.add "X-Amz-Security-Token", valid_617526
-  var valid_617527 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617527 = validateParameter(valid_617527, JString, required = false,
-                                 default = nil)
-  if valid_617527 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617527
-  var valid_617528 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617528 = validateParameter(valid_617528, JString, required = false,
-                                 default = nil)
-  if valid_617528 != nil:
-    section.add "X-Amz-Algorithm", valid_617528
-  var valid_617529 = header.getOrDefault("X-Amz-Signature")
-  valid_617529 = validateParameter(valid_617529, JString, required = false,
-                                 default = nil)
-  if valid_617529 != nil:
-    section.add "X-Amz-Signature", valid_617529
-  var valid_617530 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617530 = validateParameter(valid_617530, JString, required = false,
-                                 default = nil)
-  if valid_617530 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617530
-  var valid_617531 = header.getOrDefault("X-Amz-Target")
-  valid_617531 = validateParameter(valid_617531, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.CreateJob"))
-  if valid_617531 != nil:
-    section.add "X-Amz-Target", valid_617531
-  var valid_617532 = header.getOrDefault("X-Amz-Credential")
-  valid_617532 = validateParameter(valid_617532, JString, required = false,
-                                 default = nil)
-  if valid_617532 != nil:
-    section.add "X-Amz-Credential", valid_617532
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617534: Call_CreateJob_617522; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Creates a job to import or export data between Amazon S3 and your on-premises data center. Your AWS account must have the right trust policies and permissions in place to create a job for Snowball. If you're creating a job for a node in a cluster, you only need to provide the <code>clusterId</code> value; the other job attributes are inherited from the cluster. 
-  ## 
-  let valid = call_617534.validator(path, query, header, formData, body, _)
-  let scheme = call_617534.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617534.url(scheme.get, call_617534.host, call_617534.base,
-                         call_617534.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617534, url, valid, _)
-
-proc call*(call_617535: Call_CreateJob_617522; body: JsonNode): Recallable =
-  ## createJob
-  ## Creates a job to import or export data between Amazon S3 and your on-premises data center. Your AWS account must have the right trust policies and permissions in place to create a job for Snowball. If you're creating a job for a node in a cluster, you only need to provide the <code>clusterId</code> value; the other job attributes are inherited from the cluster. 
-  ##   body: JObject (required)
-  var body_617536 = newJObject()
-  if body != nil:
-    body_617536 = body
-  result = call_617535.call(nil, nil, nil, nil, body_617536)
-
-var createJob* = Call_CreateJob_617522(name: "createJob", meth: HttpMethod.HttpPost,
-                                    host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CreateJob",
-                                    validator: validate_CreateJob_617523,
-                                    base: "/", url: url_CreateJob_617524,
-                                    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeAddress_617537 = ref object of OpenApiRestCall_616866
-proc url_DescribeAddress_617539(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeAddress_617538(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode =
-  ## Takes an <code>AddressId</code> and returns specific details about that address in the form of an <code>Address</code> object.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617540 = header.getOrDefault("X-Amz-Date")
-  valid_617540 = validateParameter(valid_617540, JString, required = false,
-                                 default = nil)
-  if valid_617540 != nil:
-    section.add "X-Amz-Date", valid_617540
-  var valid_617541 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617541 = validateParameter(valid_617541, JString, required = false,
-                                 default = nil)
-  if valid_617541 != nil:
-    section.add "X-Amz-Security-Token", valid_617541
-  var valid_617542 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617542 = validateParameter(valid_617542, JString, required = false,
-                                 default = nil)
-  if valid_617542 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617542
-  var valid_617543 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617543 = validateParameter(valid_617543, JString, required = false,
-                                 default = nil)
-  if valid_617543 != nil:
-    section.add "X-Amz-Algorithm", valid_617543
-  var valid_617544 = header.getOrDefault("X-Amz-Signature")
-  valid_617544 = validateParameter(valid_617544, JString, required = false,
-                                 default = nil)
-  if valid_617544 != nil:
-    section.add "X-Amz-Signature", valid_617544
-  var valid_617545 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617545 = validateParameter(valid_617545, JString, required = false,
-                                 default = nil)
-  if valid_617545 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617545
-  var valid_617546 = header.getOrDefault("X-Amz-Target")
-  valid_617546 = validateParameter(valid_617546, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.DescribeAddress"))
-  if valid_617546 != nil:
-    section.add "X-Amz-Target", valid_617546
-  var valid_617547 = header.getOrDefault("X-Amz-Credential")
-  valid_617547 = validateParameter(valid_617547, JString, required = false,
-                                 default = nil)
-  if valid_617547 != nil:
-    section.add "X-Amz-Credential", valid_617547
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617549: Call_DescribeAddress_617537; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Takes an <code>AddressId</code> and returns specific details about that address in the form of an <code>Address</code> object.
-  ## 
-  let valid = call_617549.validator(path, query, header, formData, body, _)
-  let scheme = call_617549.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617549.url(scheme.get, call_617549.host, call_617549.base,
-                         call_617549.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617549, url, valid, _)
-
-proc call*(call_617550: Call_DescribeAddress_617537; body: JsonNode): Recallable =
-  ## describeAddress
-  ## Takes an <code>AddressId</code> and returns specific details about that address in the form of an <code>Address</code> object.
-  ##   body: JObject (required)
-  var body_617551 = newJObject()
-  if body != nil:
-    body_617551 = body
-  result = call_617550.call(nil, nil, nil, nil, body_617551)
-
-var describeAddress* = Call_DescribeAddress_617537(name: "describeAddress",
-    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.DescribeAddress",
-    validator: validate_DescribeAddress_617538, base: "/", url: url_DescribeAddress_617539,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeAddresses_617552 = ref object of OpenApiRestCall_616866
-proc url_DescribeAddresses_617554(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeAddresses_617553(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode; _: string = ""): JsonNode =
-  ## Returns a specified number of <code>ADDRESS</code> objects. Calling this API in one of the US regions will return addresses from the list of all addresses associated with this account in all US regions.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   MaxResults: JString
-  ##             : Pagination limit
-  section = newJObject()
-  var valid_617555 = query.getOrDefault("NextToken")
-  valid_617555 = validateParameter(valid_617555, JString, required = false,
-                                 default = nil)
-  if valid_617555 != nil:
-    section.add "NextToken", valid_617555
-  var valid_617556 = query.getOrDefault("MaxResults")
-  valid_617556 = validateParameter(valid_617556, JString, required = false,
-                                 default = nil)
-  if valid_617556 != nil:
-    section.add "MaxResults", valid_617556
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617557 = header.getOrDefault("X-Amz-Date")
-  valid_617557 = validateParameter(valid_617557, JString, required = false,
-                                 default = nil)
-  if valid_617557 != nil:
-    section.add "X-Amz-Date", valid_617557
-  var valid_617558 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617558 = validateParameter(valid_617558, JString, required = false,
-                                 default = nil)
-  if valid_617558 != nil:
-    section.add "X-Amz-Security-Token", valid_617558
-  var valid_617559 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617559 = validateParameter(valid_617559, JString, required = false,
-                                 default = nil)
-  if valid_617559 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617559
-  var valid_617560 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617560 = validateParameter(valid_617560, JString, required = false,
-                                 default = nil)
-  if valid_617560 != nil:
-    section.add "X-Amz-Algorithm", valid_617560
-  var valid_617561 = header.getOrDefault("X-Amz-Signature")
-  valid_617561 = validateParameter(valid_617561, JString, required = false,
-                                 default = nil)
-  if valid_617561 != nil:
-    section.add "X-Amz-Signature", valid_617561
-  var valid_617562 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617562 = validateParameter(valid_617562, JString, required = false,
-                                 default = nil)
-  if valid_617562 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617562
-  var valid_617563 = header.getOrDefault("X-Amz-Target")
-  valid_617563 = validateParameter(valid_617563, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.DescribeAddresses"))
-  if valid_617563 != nil:
-    section.add "X-Amz-Target", valid_617563
-  var valid_617564 = header.getOrDefault("X-Amz-Credential")
-  valid_617564 = validateParameter(valid_617564, JString, required = false,
-                                 default = nil)
-  if valid_617564 != nil:
-    section.add "X-Amz-Credential", valid_617564
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617566: Call_DescribeAddresses_617552; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Returns a specified number of <code>ADDRESS</code> objects. Calling this API in one of the US regions will return addresses from the list of all addresses associated with this account in all US regions.
-  ## 
-  let valid = call_617566.validator(path, query, header, formData, body, _)
-  let scheme = call_617566.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617566.url(scheme.get, call_617566.host, call_617566.base,
-                         call_617566.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617566, url, valid, _)
-
-proc call*(call_617567: Call_DescribeAddresses_617552; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
-  ## describeAddresses
-  ## Returns a specified number of <code>ADDRESS</code> objects. Calling this API in one of the US regions will return addresses from the list of all addresses associated with this account in all US regions.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_617568 = newJObject()
-  var body_617569 = newJObject()
-  add(query_617568, "NextToken", newJString(NextToken))
-  if body != nil:
-    body_617569 = body
-  add(query_617568, "MaxResults", newJString(MaxResults))
-  result = call_617567.call(nil, query_617568, nil, nil, body_617569)
-
-var describeAddresses* = Call_DescribeAddresses_617552(name: "describeAddresses",
-    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.DescribeAddresses",
-    validator: validate_DescribeAddresses_617553, base: "/",
-    url: url_DescribeAddresses_617554, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeCluster_617571 = ref object of OpenApiRestCall_616866
-proc url_DescribeCluster_617573(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeCluster_617572(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode =
-  ## Returns information about a specific cluster including shipping information, cluster status, and other important metadata.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617574 = header.getOrDefault("X-Amz-Date")
-  valid_617574 = validateParameter(valid_617574, JString, required = false,
-                                 default = nil)
-  if valid_617574 != nil:
-    section.add "X-Amz-Date", valid_617574
-  var valid_617575 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617575 = validateParameter(valid_617575, JString, required = false,
-                                 default = nil)
-  if valid_617575 != nil:
-    section.add "X-Amz-Security-Token", valid_617575
-  var valid_617576 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617576 = validateParameter(valid_617576, JString, required = false,
-                                 default = nil)
-  if valid_617576 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617576
-  var valid_617577 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617577 = validateParameter(valid_617577, JString, required = false,
-                                 default = nil)
-  if valid_617577 != nil:
-    section.add "X-Amz-Algorithm", valid_617577
-  var valid_617578 = header.getOrDefault("X-Amz-Signature")
-  valid_617578 = validateParameter(valid_617578, JString, required = false,
-                                 default = nil)
-  if valid_617578 != nil:
-    section.add "X-Amz-Signature", valid_617578
-  var valid_617579 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617579 = validateParameter(valid_617579, JString, required = false,
-                                 default = nil)
-  if valid_617579 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617579
-  var valid_617580 = header.getOrDefault("X-Amz-Target")
-  valid_617580 = validateParameter(valid_617580, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.DescribeCluster"))
-  if valid_617580 != nil:
-    section.add "X-Amz-Target", valid_617580
-  var valid_617581 = header.getOrDefault("X-Amz-Credential")
-  valid_617581 = validateParameter(valid_617581, JString, required = false,
-                                 default = nil)
-  if valid_617581 != nil:
-    section.add "X-Amz-Credential", valid_617581
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617583: Call_DescribeCluster_617571; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Returns information about a specific cluster including shipping information, cluster status, and other important metadata.
-  ## 
-  let valid = call_617583.validator(path, query, header, formData, body, _)
-  let scheme = call_617583.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617583.url(scheme.get, call_617583.host, call_617583.base,
-                         call_617583.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617583, url, valid, _)
-
-proc call*(call_617584: Call_DescribeCluster_617571; body: JsonNode): Recallable =
-  ## describeCluster
-  ## Returns information about a specific cluster including shipping information, cluster status, and other important metadata.
-  ##   body: JObject (required)
-  var body_617585 = newJObject()
-  if body != nil:
-    body_617585 = body
-  result = call_617584.call(nil, nil, nil, nil, body_617585)
-
-var describeCluster* = Call_DescribeCluster_617571(name: "describeCluster",
-    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.DescribeCluster",
-    validator: validate_DescribeCluster_617572, base: "/", url: url_DescribeCluster_617573,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeJob_617586 = ref object of OpenApiRestCall_616866
-proc url_DescribeJob_617588(protocol: Scheme; host: string; base: string;
+  Call_CancelJob_21626029 = ref object of OpenApiRestCall_21625435
+proc url_CancelJob_21626031(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1057,9 +265,10 @@ proc url_DescribeJob_617588(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeJob_617587(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## Returns information about a specific job including shipping information, job status, and other important metadata. 
+proc validate_CancelJob_21626030(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Cancels the specified job. You can only cancel a job before its <code>JobState</code> value changes to <code>PreparingAppliance</code>. Requesting the <code>ListJobs</code> or <code>DescribeJob</code> action returns a job's <code>JobState</code> as part of the response element data returned.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1070,539 +279,96 @@ proc validate_DescribeJob_617587(path: JsonNode; query: JsonNode; header: JsonNo
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617589 = header.getOrDefault("X-Amz-Date")
-  valid_617589 = validateParameter(valid_617589, JString, required = false,
-                                 default = nil)
-  if valid_617589 != nil:
-    section.add "X-Amz-Date", valid_617589
-  var valid_617590 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617590 = validateParameter(valid_617590, JString, required = false,
-                                 default = nil)
-  if valid_617590 != nil:
-    section.add "X-Amz-Security-Token", valid_617590
-  var valid_617591 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617591 = validateParameter(valid_617591, JString, required = false,
-                                 default = nil)
-  if valid_617591 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617591
-  var valid_617592 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617592 = validateParameter(valid_617592, JString, required = false,
-                                 default = nil)
-  if valid_617592 != nil:
-    section.add "X-Amz-Algorithm", valid_617592
-  var valid_617593 = header.getOrDefault("X-Amz-Signature")
-  valid_617593 = validateParameter(valid_617593, JString, required = false,
-                                 default = nil)
-  if valid_617593 != nil:
-    section.add "X-Amz-Signature", valid_617593
-  var valid_617594 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617594 = validateParameter(valid_617594, JString, required = false,
-                                 default = nil)
-  if valid_617594 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617594
-  var valid_617595 = header.getOrDefault("X-Amz-Target")
-  valid_617595 = validateParameter(valid_617595, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.DescribeJob"))
-  if valid_617595 != nil:
-    section.add "X-Amz-Target", valid_617595
-  var valid_617596 = header.getOrDefault("X-Amz-Credential")
-  valid_617596 = validateParameter(valid_617596, JString, required = false,
-                                 default = nil)
-  if valid_617596 != nil:
-    section.add "X-Amz-Credential", valid_617596
+  var valid_21626032 = header.getOrDefault("X-Amz-Date")
+  valid_21626032 = validateParameter(valid_21626032, JString, required = false,
+                                   default = nil)
+  if valid_21626032 != nil:
+    section.add "X-Amz-Date", valid_21626032
+  var valid_21626033 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626033 = validateParameter(valid_21626033, JString, required = false,
+                                   default = nil)
+  if valid_21626033 != nil:
+    section.add "X-Amz-Security-Token", valid_21626033
+  var valid_21626034 = header.getOrDefault("X-Amz-Target")
+  valid_21626034 = validateParameter(valid_21626034, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.CancelJob"))
+  if valid_21626034 != nil:
+    section.add "X-Amz-Target", valid_21626034
+  var valid_21626035 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626035 = validateParameter(valid_21626035, JString, required = false,
+                                   default = nil)
+  if valid_21626035 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626035
+  var valid_21626036 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626036 = validateParameter(valid_21626036, JString, required = false,
+                                   default = nil)
+  if valid_21626036 != nil:
+    section.add "X-Amz-Algorithm", valid_21626036
+  var valid_21626037 = header.getOrDefault("X-Amz-Signature")
+  valid_21626037 = validateParameter(valid_21626037, JString, required = false,
+                                   default = nil)
+  if valid_21626037 != nil:
+    section.add "X-Amz-Signature", valid_21626037
+  var valid_21626038 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626038 = validateParameter(valid_21626038, JString, required = false,
+                                   default = nil)
+  if valid_21626038 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626038
+  var valid_21626039 = header.getOrDefault("X-Amz-Credential")
+  valid_21626039 = validateParameter(valid_21626039, JString, required = false,
+                                   default = nil)
+  if valid_21626039 != nil:
+    section.add "X-Amz-Credential", valid_21626039
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617598: Call_DescribeJob_617586; path: JsonNode = nil;
+proc call*(call_21626041: Call_CancelJob_21626029; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
-  ## Returns information about a specific job including shipping information, job status, and other important metadata. 
+  ## Cancels the specified job. You can only cancel a job before its <code>JobState</code> value changes to <code>PreparingAppliance</code>. Requesting the <code>ListJobs</code> or <code>DescribeJob</code> action returns a job's <code>JobState</code> as part of the response element data returned.
   ## 
-  let valid = call_617598.validator(path, query, header, formData, body, _)
-  let scheme = call_617598.pickScheme
+  let valid = call_21626041.validator(path, query, header, formData, body, _)
+  let scheme = call_21626041.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617598.url(scheme.get, call_617598.host, call_617598.base,
-                         call_617598.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617598, url, valid, _)
+  let uri = call_21626041.makeUrl(scheme.get, call_21626041.host, call_21626041.base,
+                               call_21626041.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626041, uri, valid, _)
 
-proc call*(call_617599: Call_DescribeJob_617586; body: JsonNode): Recallable =
-  ## describeJob
-  ## Returns information about a specific job including shipping information, job status, and other important metadata. 
+proc call*(call_21626042: Call_CancelJob_21626029; body: JsonNode): Recallable =
+  ## cancelJob
+  ## Cancels the specified job. You can only cancel a job before its <code>JobState</code> value changes to <code>PreparingAppliance</code>. Requesting the <code>ListJobs</code> or <code>DescribeJob</code> action returns a job's <code>JobState</code> as part of the response element data returned.
   ##   body: JObject (required)
-  var body_617600 = newJObject()
+  var body_21626043 = newJObject()
   if body != nil:
-    body_617600 = body
-  result = call_617599.call(nil, nil, nil, nil, body_617600)
+    body_21626043 = body
+  result = call_21626042.call(nil, nil, nil, nil, body_21626043)
 
-var describeJob* = Call_DescribeJob_617586(name: "describeJob",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.DescribeJob",
-                                        validator: validate_DescribeJob_617587,
-                                        base: "/", url: url_DescribeJob_617588,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var cancelJob* = Call_CancelJob_21626029(name: "cancelJob",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CancelJob",
+                                      validator: validate_CancelJob_21626030,
+                                      base: "/", makeUrl: url_CancelJob_21626031,
+                                      schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetJobManifest_617601 = ref object of OpenApiRestCall_616866
-proc url_GetJobManifest_617603(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_GetJobManifest_617602(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Returns a link to an Amazon S3 presigned URL for the manifest file associated with the specified <code>JobId</code> value. You can access the manifest file for up to 60 minutes after this request has been made. To access the manifest file after 60 minutes have passed, you'll have to make another call to the <code>GetJobManifest</code> action.</p> <p>The manifest is an encrypted file that you can download after your job enters the <code>WithCustomer</code> status. The manifest is decrypted by using the <code>UnlockCode</code> code value, when you pass both values to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of an <code>UnlockCode</code> value in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p> <p>The credentials of a given job, including its manifest file and unlock code, expire 90 days after the job is created.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617604 = header.getOrDefault("X-Amz-Date")
-  valid_617604 = validateParameter(valid_617604, JString, required = false,
-                                 default = nil)
-  if valid_617604 != nil:
-    section.add "X-Amz-Date", valid_617604
-  var valid_617605 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617605 = validateParameter(valid_617605, JString, required = false,
-                                 default = nil)
-  if valid_617605 != nil:
-    section.add "X-Amz-Security-Token", valid_617605
-  var valid_617606 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617606 = validateParameter(valid_617606, JString, required = false,
-                                 default = nil)
-  if valid_617606 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617606
-  var valid_617607 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617607 = validateParameter(valid_617607, JString, required = false,
-                                 default = nil)
-  if valid_617607 != nil:
-    section.add "X-Amz-Algorithm", valid_617607
-  var valid_617608 = header.getOrDefault("X-Amz-Signature")
-  valid_617608 = validateParameter(valid_617608, JString, required = false,
-                                 default = nil)
-  if valid_617608 != nil:
-    section.add "X-Amz-Signature", valid_617608
-  var valid_617609 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617609 = validateParameter(valid_617609, JString, required = false,
-                                 default = nil)
-  if valid_617609 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617609
-  var valid_617610 = header.getOrDefault("X-Amz-Target")
-  valid_617610 = validateParameter(valid_617610, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.GetJobManifest"))
-  if valid_617610 != nil:
-    section.add "X-Amz-Target", valid_617610
-  var valid_617611 = header.getOrDefault("X-Amz-Credential")
-  valid_617611 = validateParameter(valid_617611, JString, required = false,
-                                 default = nil)
-  if valid_617611 != nil:
-    section.add "X-Amz-Credential", valid_617611
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617613: Call_GetJobManifest_617601; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Returns a link to an Amazon S3 presigned URL for the manifest file associated with the specified <code>JobId</code> value. You can access the manifest file for up to 60 minutes after this request has been made. To access the manifest file after 60 minutes have passed, you'll have to make another call to the <code>GetJobManifest</code> action.</p> <p>The manifest is an encrypted file that you can download after your job enters the <code>WithCustomer</code> status. The manifest is decrypted by using the <code>UnlockCode</code> code value, when you pass both values to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of an <code>UnlockCode</code> value in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p> <p>The credentials of a given job, including its manifest file and unlock code, expire 90 days after the job is created.</p>
-  ## 
-  let valid = call_617613.validator(path, query, header, formData, body, _)
-  let scheme = call_617613.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617613.url(scheme.get, call_617613.host, call_617613.base,
-                         call_617613.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617613, url, valid, _)
-
-proc call*(call_617614: Call_GetJobManifest_617601; body: JsonNode): Recallable =
-  ## getJobManifest
-  ## <p>Returns a link to an Amazon S3 presigned URL for the manifest file associated with the specified <code>JobId</code> value. You can access the manifest file for up to 60 minutes after this request has been made. To access the manifest file after 60 minutes have passed, you'll have to make another call to the <code>GetJobManifest</code> action.</p> <p>The manifest is an encrypted file that you can download after your job enters the <code>WithCustomer</code> status. The manifest is decrypted by using the <code>UnlockCode</code> code value, when you pass both values to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of an <code>UnlockCode</code> value in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p> <p>The credentials of a given job, including its manifest file and unlock code, expire 90 days after the job is created.</p>
-  ##   body: JObject (required)
-  var body_617615 = newJObject()
-  if body != nil:
-    body_617615 = body
-  result = call_617614.call(nil, nil, nil, nil, body_617615)
-
-var getJobManifest* = Call_GetJobManifest_617601(name: "getJobManifest",
-    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.GetJobManifest",
-    validator: validate_GetJobManifest_617602, base: "/", url: url_GetJobManifest_617603,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_GetJobUnlockCode_617616 = ref object of OpenApiRestCall_616866
-proc url_GetJobUnlockCode_617618(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_GetJobUnlockCode_617617(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Returns the <code>UnlockCode</code> code value for the specified job. A particular <code>UnlockCode</code> value can be accessed for up to 90 days after the associated job has been created.</p> <p>The <code>UnlockCode</code> value is a 29-character code with 25 alphanumeric characters and 4 hyphens. This code is used to decrypt the manifest file when it is passed along with the manifest to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of the <code>UnlockCode</code> in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617619 = header.getOrDefault("X-Amz-Date")
-  valid_617619 = validateParameter(valid_617619, JString, required = false,
-                                 default = nil)
-  if valid_617619 != nil:
-    section.add "X-Amz-Date", valid_617619
-  var valid_617620 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617620 = validateParameter(valid_617620, JString, required = false,
-                                 default = nil)
-  if valid_617620 != nil:
-    section.add "X-Amz-Security-Token", valid_617620
-  var valid_617621 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617621 = validateParameter(valid_617621, JString, required = false,
-                                 default = nil)
-  if valid_617621 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617621
-  var valid_617622 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617622 = validateParameter(valid_617622, JString, required = false,
-                                 default = nil)
-  if valid_617622 != nil:
-    section.add "X-Amz-Algorithm", valid_617622
-  var valid_617623 = header.getOrDefault("X-Amz-Signature")
-  valid_617623 = validateParameter(valid_617623, JString, required = false,
-                                 default = nil)
-  if valid_617623 != nil:
-    section.add "X-Amz-Signature", valid_617623
-  var valid_617624 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617624 = validateParameter(valid_617624, JString, required = false,
-                                 default = nil)
-  if valid_617624 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617624
-  var valid_617625 = header.getOrDefault("X-Amz-Target")
-  valid_617625 = validateParameter(valid_617625, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.GetJobUnlockCode"))
-  if valid_617625 != nil:
-    section.add "X-Amz-Target", valid_617625
-  var valid_617626 = header.getOrDefault("X-Amz-Credential")
-  valid_617626 = validateParameter(valid_617626, JString, required = false,
-                                 default = nil)
-  if valid_617626 != nil:
-    section.add "X-Amz-Credential", valid_617626
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617628: Call_GetJobUnlockCode_617616; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Returns the <code>UnlockCode</code> code value for the specified job. A particular <code>UnlockCode</code> value can be accessed for up to 90 days after the associated job has been created.</p> <p>The <code>UnlockCode</code> value is a 29-character code with 25 alphanumeric characters and 4 hyphens. This code is used to decrypt the manifest file when it is passed along with the manifest to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of the <code>UnlockCode</code> in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p>
-  ## 
-  let valid = call_617628.validator(path, query, header, formData, body, _)
-  let scheme = call_617628.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617628.url(scheme.get, call_617628.host, call_617628.base,
-                         call_617628.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617628, url, valid, _)
-
-proc call*(call_617629: Call_GetJobUnlockCode_617616; body: JsonNode): Recallable =
-  ## getJobUnlockCode
-  ## <p>Returns the <code>UnlockCode</code> code value for the specified job. A particular <code>UnlockCode</code> value can be accessed for up to 90 days after the associated job has been created.</p> <p>The <code>UnlockCode</code> value is a 29-character code with 25 alphanumeric characters and 4 hyphens. This code is used to decrypt the manifest file when it is passed along with the manifest to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of the <code>UnlockCode</code> in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p>
-  ##   body: JObject (required)
-  var body_617630 = newJObject()
-  if body != nil:
-    body_617630 = body
-  result = call_617629.call(nil, nil, nil, nil, body_617630)
-
-var getJobUnlockCode* = Call_GetJobUnlockCode_617616(name: "getJobUnlockCode",
-    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.GetJobUnlockCode",
-    validator: validate_GetJobUnlockCode_617617, base: "/",
-    url: url_GetJobUnlockCode_617618, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_GetSnowballUsage_617631 = ref object of OpenApiRestCall_616866
-proc url_GetSnowballUsage_617633(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_GetSnowballUsage_617632(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Returns information about the Snowball service limit for your account, and also the number of Snowballs your account has in use.</p> <p>The default service limit for the number of Snowballs that you can have at one time is 1. If you want to increase your service limit, contact AWS Support.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617634 = header.getOrDefault("X-Amz-Date")
-  valid_617634 = validateParameter(valid_617634, JString, required = false,
-                                 default = nil)
-  if valid_617634 != nil:
-    section.add "X-Amz-Date", valid_617634
-  var valid_617635 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617635 = validateParameter(valid_617635, JString, required = false,
-                                 default = nil)
-  if valid_617635 != nil:
-    section.add "X-Amz-Security-Token", valid_617635
-  var valid_617636 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617636 = validateParameter(valid_617636, JString, required = false,
-                                 default = nil)
-  if valid_617636 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617636
-  var valid_617637 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617637 = validateParameter(valid_617637, JString, required = false,
-                                 default = nil)
-  if valid_617637 != nil:
-    section.add "X-Amz-Algorithm", valid_617637
-  var valid_617638 = header.getOrDefault("X-Amz-Signature")
-  valid_617638 = validateParameter(valid_617638, JString, required = false,
-                                 default = nil)
-  if valid_617638 != nil:
-    section.add "X-Amz-Signature", valid_617638
-  var valid_617639 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617639 = validateParameter(valid_617639, JString, required = false,
-                                 default = nil)
-  if valid_617639 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617639
-  var valid_617640 = header.getOrDefault("X-Amz-Target")
-  valid_617640 = validateParameter(valid_617640, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.GetSnowballUsage"))
-  if valid_617640 != nil:
-    section.add "X-Amz-Target", valid_617640
-  var valid_617641 = header.getOrDefault("X-Amz-Credential")
-  valid_617641 = validateParameter(valid_617641, JString, required = false,
-                                 default = nil)
-  if valid_617641 != nil:
-    section.add "X-Amz-Credential", valid_617641
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617643: Call_GetSnowballUsage_617631; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Returns information about the Snowball service limit for your account, and also the number of Snowballs your account has in use.</p> <p>The default service limit for the number of Snowballs that you can have at one time is 1. If you want to increase your service limit, contact AWS Support.</p>
-  ## 
-  let valid = call_617643.validator(path, query, header, formData, body, _)
-  let scheme = call_617643.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617643.url(scheme.get, call_617643.host, call_617643.base,
-                         call_617643.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617643, url, valid, _)
-
-proc call*(call_617644: Call_GetSnowballUsage_617631; body: JsonNode): Recallable =
-  ## getSnowballUsage
-  ## <p>Returns information about the Snowball service limit for your account, and also the number of Snowballs your account has in use.</p> <p>The default service limit for the number of Snowballs that you can have at one time is 1. If you want to increase your service limit, contact AWS Support.</p>
-  ##   body: JObject (required)
-  var body_617645 = newJObject()
-  if body != nil:
-    body_617645 = body
-  result = call_617644.call(nil, nil, nil, nil, body_617645)
-
-var getSnowballUsage* = Call_GetSnowballUsage_617631(name: "getSnowballUsage",
-    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.GetSnowballUsage",
-    validator: validate_GetSnowballUsage_617632, base: "/",
-    url: url_GetSnowballUsage_617633, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_GetSoftwareUpdates_617646 = ref object of OpenApiRestCall_616866
-proc url_GetSoftwareUpdates_617648(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_GetSoftwareUpdates_617647(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode =
-  ## Returns an Amazon S3 presigned URL for an update file associated with a specified <code>JobId</code>.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617649 = header.getOrDefault("X-Amz-Date")
-  valid_617649 = validateParameter(valid_617649, JString, required = false,
-                                 default = nil)
-  if valid_617649 != nil:
-    section.add "X-Amz-Date", valid_617649
-  var valid_617650 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617650 = validateParameter(valid_617650, JString, required = false,
-                                 default = nil)
-  if valid_617650 != nil:
-    section.add "X-Amz-Security-Token", valid_617650
-  var valid_617651 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617651 = validateParameter(valid_617651, JString, required = false,
-                                 default = nil)
-  if valid_617651 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617651
-  var valid_617652 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617652 = validateParameter(valid_617652, JString, required = false,
-                                 default = nil)
-  if valid_617652 != nil:
-    section.add "X-Amz-Algorithm", valid_617652
-  var valid_617653 = header.getOrDefault("X-Amz-Signature")
-  valid_617653 = validateParameter(valid_617653, JString, required = false,
-                                 default = nil)
-  if valid_617653 != nil:
-    section.add "X-Amz-Signature", valid_617653
-  var valid_617654 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617654 = validateParameter(valid_617654, JString, required = false,
-                                 default = nil)
-  if valid_617654 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617654
-  var valid_617655 = header.getOrDefault("X-Amz-Target")
-  valid_617655 = validateParameter(valid_617655, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.GetSoftwareUpdates"))
-  if valid_617655 != nil:
-    section.add "X-Amz-Target", valid_617655
-  var valid_617656 = header.getOrDefault("X-Amz-Credential")
-  valid_617656 = validateParameter(valid_617656, JString, required = false,
-                                 default = nil)
-  if valid_617656 != nil:
-    section.add "X-Amz-Credential", valid_617656
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617658: Call_GetSoftwareUpdates_617646; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Returns an Amazon S3 presigned URL for an update file associated with a specified <code>JobId</code>.
-  ## 
-  let valid = call_617658.validator(path, query, header, formData, body, _)
-  let scheme = call_617658.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617658.url(scheme.get, call_617658.host, call_617658.base,
-                         call_617658.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617658, url, valid, _)
-
-proc call*(call_617659: Call_GetSoftwareUpdates_617646; body: JsonNode): Recallable =
-  ## getSoftwareUpdates
-  ## Returns an Amazon S3 presigned URL for an update file associated with a specified <code>JobId</code>.
-  ##   body: JObject (required)
-  var body_617660 = newJObject()
-  if body != nil:
-    body_617660 = body
-  result = call_617659.call(nil, nil, nil, nil, body_617660)
-
-var getSoftwareUpdates* = Call_GetSoftwareUpdates_617646(
-    name: "getSoftwareUpdates", meth: HttpMethod.HttpPost,
-    host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.GetSoftwareUpdates",
-    validator: validate_GetSoftwareUpdates_617647, base: "/",
-    url: url_GetSoftwareUpdates_617648, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListClusterJobs_617661 = ref object of OpenApiRestCall_616866
-proc url_ListClusterJobs_617663(protocol: Scheme; host: string; base: string;
+  Call_CreateAddress_21626044 = ref object of OpenApiRestCall_21625435
+proc url_CreateAddress_21626046(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1612,10 +378,10 @@ proc url_ListClusterJobs_617663(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListClusterJobs_617662(path: JsonNode; query: JsonNode;
+proc validate_CreateAddress_21626045(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode =
-  ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object is for a job in the specified cluster and contains a job's state, a job's ID, and other information.
+                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+  ## Creates an address for a Snowball to be shipped to. In most regions, addresses are validated at the time of creation. The address you provide must be located within the serviceable area of your region. If the address is invalid or unsupported, then an exception is thrown.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1626,95 +392,96 @@ proc validate_ListClusterJobs_617662(path: JsonNode; query: JsonNode;
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617664 = header.getOrDefault("X-Amz-Date")
-  valid_617664 = validateParameter(valid_617664, JString, required = false,
-                                 default = nil)
-  if valid_617664 != nil:
-    section.add "X-Amz-Date", valid_617664
-  var valid_617665 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617665 = validateParameter(valid_617665, JString, required = false,
-                                 default = nil)
-  if valid_617665 != nil:
-    section.add "X-Amz-Security-Token", valid_617665
-  var valid_617666 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617666 = validateParameter(valid_617666, JString, required = false,
-                                 default = nil)
-  if valid_617666 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617666
-  var valid_617667 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617667 = validateParameter(valid_617667, JString, required = false,
-                                 default = nil)
-  if valid_617667 != nil:
-    section.add "X-Amz-Algorithm", valid_617667
-  var valid_617668 = header.getOrDefault("X-Amz-Signature")
-  valid_617668 = validateParameter(valid_617668, JString, required = false,
-                                 default = nil)
-  if valid_617668 != nil:
-    section.add "X-Amz-Signature", valid_617668
-  var valid_617669 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617669 = validateParameter(valid_617669, JString, required = false,
-                                 default = nil)
-  if valid_617669 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617669
-  var valid_617670 = header.getOrDefault("X-Amz-Target")
-  valid_617670 = validateParameter(valid_617670, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.ListClusterJobs"))
-  if valid_617670 != nil:
-    section.add "X-Amz-Target", valid_617670
-  var valid_617671 = header.getOrDefault("X-Amz-Credential")
-  valid_617671 = validateParameter(valid_617671, JString, required = false,
-                                 default = nil)
-  if valid_617671 != nil:
-    section.add "X-Amz-Credential", valid_617671
+  var valid_21626047 = header.getOrDefault("X-Amz-Date")
+  valid_21626047 = validateParameter(valid_21626047, JString, required = false,
+                                   default = nil)
+  if valid_21626047 != nil:
+    section.add "X-Amz-Date", valid_21626047
+  var valid_21626048 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626048 = validateParameter(valid_21626048, JString, required = false,
+                                   default = nil)
+  if valid_21626048 != nil:
+    section.add "X-Amz-Security-Token", valid_21626048
+  var valid_21626049 = header.getOrDefault("X-Amz-Target")
+  valid_21626049 = validateParameter(valid_21626049, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.CreateAddress"))
+  if valid_21626049 != nil:
+    section.add "X-Amz-Target", valid_21626049
+  var valid_21626050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626050 = validateParameter(valid_21626050, JString, required = false,
+                                   default = nil)
+  if valid_21626050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626050
+  var valid_21626051 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626051 = validateParameter(valid_21626051, JString, required = false,
+                                   default = nil)
+  if valid_21626051 != nil:
+    section.add "X-Amz-Algorithm", valid_21626051
+  var valid_21626052 = header.getOrDefault("X-Amz-Signature")
+  valid_21626052 = validateParameter(valid_21626052, JString, required = false,
+                                   default = nil)
+  if valid_21626052 != nil:
+    section.add "X-Amz-Signature", valid_21626052
+  var valid_21626053 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626053 = validateParameter(valid_21626053, JString, required = false,
+                                   default = nil)
+  if valid_21626053 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626053
+  var valid_21626054 = header.getOrDefault("X-Amz-Credential")
+  valid_21626054 = validateParameter(valid_21626054, JString, required = false,
+                                   default = nil)
+  if valid_21626054 != nil:
+    section.add "X-Amz-Credential", valid_21626054
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617673: Call_ListClusterJobs_617661; path: JsonNode = nil;
+proc call*(call_21626056: Call_CreateAddress_21626044; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
-  ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object is for a job in the specified cluster and contains a job's state, a job's ID, and other information.
+  ## Creates an address for a Snowball to be shipped to. In most regions, addresses are validated at the time of creation. The address you provide must be located within the serviceable area of your region. If the address is invalid or unsupported, then an exception is thrown.
   ## 
-  let valid = call_617673.validator(path, query, header, formData, body, _)
-  let scheme = call_617673.pickScheme
+  let valid = call_21626056.validator(path, query, header, formData, body, _)
+  let scheme = call_21626056.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617673.url(scheme.get, call_617673.host, call_617673.base,
-                         call_617673.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617673, url, valid, _)
+  let uri = call_21626056.makeUrl(scheme.get, call_21626056.host, call_21626056.base,
+                               call_21626056.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626056, uri, valid, _)
 
-proc call*(call_617674: Call_ListClusterJobs_617661; body: JsonNode): Recallable =
-  ## listClusterJobs
-  ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object is for a job in the specified cluster and contains a job's state, a job's ID, and other information.
+proc call*(call_21626057: Call_CreateAddress_21626044; body: JsonNode): Recallable =
+  ## createAddress
+  ## Creates an address for a Snowball to be shipped to. In most regions, addresses are validated at the time of creation. The address you provide must be located within the serviceable area of your region. If the address is invalid or unsupported, then an exception is thrown.
   ##   body: JObject (required)
-  var body_617675 = newJObject()
+  var body_21626058 = newJObject()
   if body != nil:
-    body_617675 = body
-  result = call_617674.call(nil, nil, nil, nil, body_617675)
+    body_21626058 = body
+  result = call_21626057.call(nil, nil, nil, nil, body_21626058)
 
-var listClusterJobs* = Call_ListClusterJobs_617661(name: "listClusterJobs",
+var createAddress* = Call_CreateAddress_21626044(name: "createAddress",
     meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.ListClusterJobs",
-    validator: validate_ListClusterJobs_617662, base: "/", url: url_ListClusterJobs_617663,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CreateAddress",
+    validator: validate_CreateAddress_21626045, base: "/",
+    makeUrl: url_CreateAddress_21626046, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListClusters_617676 = ref object of OpenApiRestCall_616866
-proc url_ListClusters_617678(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateCluster_21626059 = ref object of OpenApiRestCall_21625435
+proc url_CreateCluster_21626061(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1723,9 +490,10 @@ proc url_ListClusters_617678(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListClusters_617677(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## Returns an array of <code>ClusterListEntry</code> objects of the specified length. Each <code>ClusterListEntry</code> object contains a cluster's state, a cluster's ID, and other important status information.
+proc validate_CreateCluster_21626060(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+  ## Creates an empty cluster. Each cluster supports five nodes. You use the <a>CreateJob</a> action separately to create the jobs for each of these nodes. The cluster does not ship until these five node jobs have been created.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1736,94 +504,1020 @@ proc validate_ListClusters_617677(path: JsonNode; query: JsonNode; header: JsonN
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617679 = header.getOrDefault("X-Amz-Date")
-  valid_617679 = validateParameter(valid_617679, JString, required = false,
-                                 default = nil)
-  if valid_617679 != nil:
-    section.add "X-Amz-Date", valid_617679
-  var valid_617680 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617680 = validateParameter(valid_617680, JString, required = false,
-                                 default = nil)
-  if valid_617680 != nil:
-    section.add "X-Amz-Security-Token", valid_617680
-  var valid_617681 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617681 = validateParameter(valid_617681, JString, required = false,
-                                 default = nil)
-  if valid_617681 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617681
-  var valid_617682 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617682 = validateParameter(valid_617682, JString, required = false,
-                                 default = nil)
-  if valid_617682 != nil:
-    section.add "X-Amz-Algorithm", valid_617682
-  var valid_617683 = header.getOrDefault("X-Amz-Signature")
-  valid_617683 = validateParameter(valid_617683, JString, required = false,
-                                 default = nil)
-  if valid_617683 != nil:
-    section.add "X-Amz-Signature", valid_617683
-  var valid_617684 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617684 = validateParameter(valid_617684, JString, required = false,
-                                 default = nil)
-  if valid_617684 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617684
-  var valid_617685 = header.getOrDefault("X-Amz-Target")
-  valid_617685 = validateParameter(valid_617685, JString, required = true, default = newJString(
-      "AWSIESnowballJobManagementService.ListClusters"))
-  if valid_617685 != nil:
-    section.add "X-Amz-Target", valid_617685
-  var valid_617686 = header.getOrDefault("X-Amz-Credential")
-  valid_617686 = validateParameter(valid_617686, JString, required = false,
-                                 default = nil)
-  if valid_617686 != nil:
-    section.add "X-Amz-Credential", valid_617686
+  var valid_21626062 = header.getOrDefault("X-Amz-Date")
+  valid_21626062 = validateParameter(valid_21626062, JString, required = false,
+                                   default = nil)
+  if valid_21626062 != nil:
+    section.add "X-Amz-Date", valid_21626062
+  var valid_21626063 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626063 = validateParameter(valid_21626063, JString, required = false,
+                                   default = nil)
+  if valid_21626063 != nil:
+    section.add "X-Amz-Security-Token", valid_21626063
+  var valid_21626064 = header.getOrDefault("X-Amz-Target")
+  valid_21626064 = validateParameter(valid_21626064, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.CreateCluster"))
+  if valid_21626064 != nil:
+    section.add "X-Amz-Target", valid_21626064
+  var valid_21626065 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626065 = validateParameter(valid_21626065, JString, required = false,
+                                   default = nil)
+  if valid_21626065 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626065
+  var valid_21626066 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626066 = validateParameter(valid_21626066, JString, required = false,
+                                   default = nil)
+  if valid_21626066 != nil:
+    section.add "X-Amz-Algorithm", valid_21626066
+  var valid_21626067 = header.getOrDefault("X-Amz-Signature")
+  valid_21626067 = validateParameter(valid_21626067, JString, required = false,
+                                   default = nil)
+  if valid_21626067 != nil:
+    section.add "X-Amz-Signature", valid_21626067
+  var valid_21626068 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626068 = validateParameter(valid_21626068, JString, required = false,
+                                   default = nil)
+  if valid_21626068 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626068
+  var valid_21626069 = header.getOrDefault("X-Amz-Credential")
+  valid_21626069 = validateParameter(valid_21626069, JString, required = false,
+                                   default = nil)
+  if valid_21626069 != nil:
+    section.add "X-Amz-Credential", valid_21626069
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617688: Call_ListClusters_617676; path: JsonNode = nil;
+proc call*(call_21626071: Call_CreateCluster_21626059; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
-  ## Returns an array of <code>ClusterListEntry</code> objects of the specified length. Each <code>ClusterListEntry</code> object contains a cluster's state, a cluster's ID, and other important status information.
+  ## Creates an empty cluster. Each cluster supports five nodes. You use the <a>CreateJob</a> action separately to create the jobs for each of these nodes. The cluster does not ship until these five node jobs have been created.
   ## 
-  let valid = call_617688.validator(path, query, header, formData, body, _)
-  let scheme = call_617688.pickScheme
+  let valid = call_21626071.validator(path, query, header, formData, body, _)
+  let scheme = call_21626071.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617688.url(scheme.get, call_617688.host, call_617688.base,
-                         call_617688.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617688, url, valid, _)
+  let uri = call_21626071.makeUrl(scheme.get, call_21626071.host, call_21626071.base,
+                               call_21626071.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626071, uri, valid, _)
 
-proc call*(call_617689: Call_ListClusters_617676; body: JsonNode): Recallable =
-  ## listClusters
-  ## Returns an array of <code>ClusterListEntry</code> objects of the specified length. Each <code>ClusterListEntry</code> object contains a cluster's state, a cluster's ID, and other important status information.
+proc call*(call_21626072: Call_CreateCluster_21626059; body: JsonNode): Recallable =
+  ## createCluster
+  ## Creates an empty cluster. Each cluster supports five nodes. You use the <a>CreateJob</a> action separately to create the jobs for each of these nodes. The cluster does not ship until these five node jobs have been created.
   ##   body: JObject (required)
-  var body_617690 = newJObject()
+  var body_21626073 = newJObject()
   if body != nil:
-    body_617690 = body
-  result = call_617689.call(nil, nil, nil, nil, body_617690)
+    body_21626073 = body
+  result = call_21626072.call(nil, nil, nil, nil, body_21626073)
 
-var listClusters* = Call_ListClusters_617676(name: "listClusters",
+var createCluster* = Call_CreateCluster_21626059(name: "createCluster",
     meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
-    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.ListClusters",
-    validator: validate_ListClusters_617677, base: "/", url: url_ListClusters_617678,
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CreateCluster",
+    validator: validate_CreateCluster_21626060, base: "/",
+    makeUrl: url_CreateCluster_21626061, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_CreateJob_21626074 = ref object of OpenApiRestCall_21625435
+proc url_CreateJob_21626076(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_CreateJob_21626075(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Creates a job to import or export data between Amazon S3 and your on-premises data center. Your AWS account must have the right trust policies and permissions in place to create a job for Snowball. If you're creating a job for a node in a cluster, you only need to provide the <code>clusterId</code> value; the other job attributes are inherited from the cluster. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626077 = header.getOrDefault("X-Amz-Date")
+  valid_21626077 = validateParameter(valid_21626077, JString, required = false,
+                                   default = nil)
+  if valid_21626077 != nil:
+    section.add "X-Amz-Date", valid_21626077
+  var valid_21626078 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626078 = validateParameter(valid_21626078, JString, required = false,
+                                   default = nil)
+  if valid_21626078 != nil:
+    section.add "X-Amz-Security-Token", valid_21626078
+  var valid_21626079 = header.getOrDefault("X-Amz-Target")
+  valid_21626079 = validateParameter(valid_21626079, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.CreateJob"))
+  if valid_21626079 != nil:
+    section.add "X-Amz-Target", valid_21626079
+  var valid_21626080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626080 = validateParameter(valid_21626080, JString, required = false,
+                                   default = nil)
+  if valid_21626080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626080
+  var valid_21626081 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626081 = validateParameter(valid_21626081, JString, required = false,
+                                   default = nil)
+  if valid_21626081 != nil:
+    section.add "X-Amz-Algorithm", valid_21626081
+  var valid_21626082 = header.getOrDefault("X-Amz-Signature")
+  valid_21626082 = validateParameter(valid_21626082, JString, required = false,
+                                   default = nil)
+  if valid_21626082 != nil:
+    section.add "X-Amz-Signature", valid_21626082
+  var valid_21626083 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626083 = validateParameter(valid_21626083, JString, required = false,
+                                   default = nil)
+  if valid_21626083 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626083
+  var valid_21626084 = header.getOrDefault("X-Amz-Credential")
+  valid_21626084 = validateParameter(valid_21626084, JString, required = false,
+                                   default = nil)
+  if valid_21626084 != nil:
+    section.add "X-Amz-Credential", valid_21626084
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626086: Call_CreateJob_21626074; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Creates a job to import or export data between Amazon S3 and your on-premises data center. Your AWS account must have the right trust policies and permissions in place to create a job for Snowball. If you're creating a job for a node in a cluster, you only need to provide the <code>clusterId</code> value; the other job attributes are inherited from the cluster. 
+  ## 
+  let valid = call_21626086.validator(path, query, header, formData, body, _)
+  let scheme = call_21626086.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626086.makeUrl(scheme.get, call_21626086.host, call_21626086.base,
+                               call_21626086.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626086, uri, valid, _)
+
+proc call*(call_21626087: Call_CreateJob_21626074; body: JsonNode): Recallable =
+  ## createJob
+  ## Creates a job to import or export data between Amazon S3 and your on-premises data center. Your AWS account must have the right trust policies and permissions in place to create a job for Snowball. If you're creating a job for a node in a cluster, you only need to provide the <code>clusterId</code> value; the other job attributes are inherited from the cluster. 
+  ##   body: JObject (required)
+  var body_21626088 = newJObject()
+  if body != nil:
+    body_21626088 = body
+  result = call_21626087.call(nil, nil, nil, nil, body_21626088)
+
+var createJob* = Call_CreateJob_21626074(name: "createJob",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.CreateJob",
+                                      validator: validate_CreateJob_21626075,
+                                      base: "/", makeUrl: url_CreateJob_21626076,
+                                      schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeAddress_21626089 = ref object of OpenApiRestCall_21625435
+proc url_DescribeAddress_21626091(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeAddress_21626090(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Takes an <code>AddressId</code> and returns specific details about that address in the form of an <code>Address</code> object.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626092 = header.getOrDefault("X-Amz-Date")
+  valid_21626092 = validateParameter(valid_21626092, JString, required = false,
+                                   default = nil)
+  if valid_21626092 != nil:
+    section.add "X-Amz-Date", valid_21626092
+  var valid_21626093 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626093 = validateParameter(valid_21626093, JString, required = false,
+                                   default = nil)
+  if valid_21626093 != nil:
+    section.add "X-Amz-Security-Token", valid_21626093
+  var valid_21626094 = header.getOrDefault("X-Amz-Target")
+  valid_21626094 = validateParameter(valid_21626094, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.DescribeAddress"))
+  if valid_21626094 != nil:
+    section.add "X-Amz-Target", valid_21626094
+  var valid_21626095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626095 = validateParameter(valid_21626095, JString, required = false,
+                                   default = nil)
+  if valid_21626095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626095
+  var valid_21626096 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626096 = validateParameter(valid_21626096, JString, required = false,
+                                   default = nil)
+  if valid_21626096 != nil:
+    section.add "X-Amz-Algorithm", valid_21626096
+  var valid_21626097 = header.getOrDefault("X-Amz-Signature")
+  valid_21626097 = validateParameter(valid_21626097, JString, required = false,
+                                   default = nil)
+  if valid_21626097 != nil:
+    section.add "X-Amz-Signature", valid_21626097
+  var valid_21626098 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626098 = validateParameter(valid_21626098, JString, required = false,
+                                   default = nil)
+  if valid_21626098 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626098
+  var valid_21626099 = header.getOrDefault("X-Amz-Credential")
+  valid_21626099 = validateParameter(valid_21626099, JString, required = false,
+                                   default = nil)
+  if valid_21626099 != nil:
+    section.add "X-Amz-Credential", valid_21626099
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626101: Call_DescribeAddress_21626089; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Takes an <code>AddressId</code> and returns specific details about that address in the form of an <code>Address</code> object.
+  ## 
+  let valid = call_21626101.validator(path, query, header, formData, body, _)
+  let scheme = call_21626101.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626101.makeUrl(scheme.get, call_21626101.host, call_21626101.base,
+                               call_21626101.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626101, uri, valid, _)
+
+proc call*(call_21626102: Call_DescribeAddress_21626089; body: JsonNode): Recallable =
+  ## describeAddress
+  ## Takes an <code>AddressId</code> and returns specific details about that address in the form of an <code>Address</code> object.
+  ##   body: JObject (required)
+  var body_21626103 = newJObject()
+  if body != nil:
+    body_21626103 = body
+  result = call_21626102.call(nil, nil, nil, nil, body_21626103)
+
+var describeAddress* = Call_DescribeAddress_21626089(name: "describeAddress",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.DescribeAddress",
+    validator: validate_DescribeAddress_21626090, base: "/",
+    makeUrl: url_DescribeAddress_21626091, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeAddresses_21626104 = ref object of OpenApiRestCall_21625435
+proc url_DescribeAddresses_21626106(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeAddresses_21626105(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Returns a specified number of <code>ADDRESS</code> objects. Calling this API in one of the US regions will return addresses from the list of all addresses associated with this account in all US regions.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   NextToken: JString
+  ##            : Pagination token
+  ##   MaxResults: JString
+  ##             : Pagination limit
+  section = newJObject()
+  var valid_21626107 = query.getOrDefault("NextToken")
+  valid_21626107 = validateParameter(valid_21626107, JString, required = false,
+                                   default = nil)
+  if valid_21626107 != nil:
+    section.add "NextToken", valid_21626107
+  var valid_21626108 = query.getOrDefault("MaxResults")
+  valid_21626108 = validateParameter(valid_21626108, JString, required = false,
+                                   default = nil)
+  if valid_21626108 != nil:
+    section.add "MaxResults", valid_21626108
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626109 = header.getOrDefault("X-Amz-Date")
+  valid_21626109 = validateParameter(valid_21626109, JString, required = false,
+                                   default = nil)
+  if valid_21626109 != nil:
+    section.add "X-Amz-Date", valid_21626109
+  var valid_21626110 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626110 = validateParameter(valid_21626110, JString, required = false,
+                                   default = nil)
+  if valid_21626110 != nil:
+    section.add "X-Amz-Security-Token", valid_21626110
+  var valid_21626111 = header.getOrDefault("X-Amz-Target")
+  valid_21626111 = validateParameter(valid_21626111, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.DescribeAddresses"))
+  if valid_21626111 != nil:
+    section.add "X-Amz-Target", valid_21626111
+  var valid_21626112 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626112 = validateParameter(valid_21626112, JString, required = false,
+                                   default = nil)
+  if valid_21626112 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626112
+  var valid_21626113 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626113 = validateParameter(valid_21626113, JString, required = false,
+                                   default = nil)
+  if valid_21626113 != nil:
+    section.add "X-Amz-Algorithm", valid_21626113
+  var valid_21626114 = header.getOrDefault("X-Amz-Signature")
+  valid_21626114 = validateParameter(valid_21626114, JString, required = false,
+                                   default = nil)
+  if valid_21626114 != nil:
+    section.add "X-Amz-Signature", valid_21626114
+  var valid_21626115 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626115 = validateParameter(valid_21626115, JString, required = false,
+                                   default = nil)
+  if valid_21626115 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626115
+  var valid_21626116 = header.getOrDefault("X-Amz-Credential")
+  valid_21626116 = validateParameter(valid_21626116, JString, required = false,
+                                   default = nil)
+  if valid_21626116 != nil:
+    section.add "X-Amz-Credential", valid_21626116
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626118: Call_DescribeAddresses_21626104; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns a specified number of <code>ADDRESS</code> objects. Calling this API in one of the US regions will return addresses from the list of all addresses associated with this account in all US regions.
+  ## 
+  let valid = call_21626118.validator(path, query, header, formData, body, _)
+  let scheme = call_21626118.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626118.makeUrl(scheme.get, call_21626118.host, call_21626118.base,
+                               call_21626118.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626118, uri, valid, _)
+
+proc call*(call_21626119: Call_DescribeAddresses_21626104; body: JsonNode;
+          NextToken: string = ""; MaxResults: string = ""): Recallable =
+  ## describeAddresses
+  ## Returns a specified number of <code>ADDRESS</code> objects. Calling this API in one of the US regions will return addresses from the list of all addresses associated with this account in all US regions.
+  ##   NextToken: string
+  ##            : Pagination token
+  ##   body: JObject (required)
+  ##   MaxResults: string
+  ##             : Pagination limit
+  var query_21626121 = newJObject()
+  var body_21626122 = newJObject()
+  add(query_21626121, "NextToken", newJString(NextToken))
+  if body != nil:
+    body_21626122 = body
+  add(query_21626121, "MaxResults", newJString(MaxResults))
+  result = call_21626119.call(nil, query_21626121, nil, nil, body_21626122)
+
+var describeAddresses* = Call_DescribeAddresses_21626104(name: "describeAddresses",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.DescribeAddresses",
+    validator: validate_DescribeAddresses_21626105, base: "/",
+    makeUrl: url_DescribeAddresses_21626106, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeCluster_21626126 = ref object of OpenApiRestCall_21625435
+proc url_DescribeCluster_21626128(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeCluster_21626127(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Returns information about a specific cluster including shipping information, cluster status, and other important metadata.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626129 = header.getOrDefault("X-Amz-Date")
+  valid_21626129 = validateParameter(valid_21626129, JString, required = false,
+                                   default = nil)
+  if valid_21626129 != nil:
+    section.add "X-Amz-Date", valid_21626129
+  var valid_21626130 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626130 = validateParameter(valid_21626130, JString, required = false,
+                                   default = nil)
+  if valid_21626130 != nil:
+    section.add "X-Amz-Security-Token", valid_21626130
+  var valid_21626131 = header.getOrDefault("X-Amz-Target")
+  valid_21626131 = validateParameter(valid_21626131, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.DescribeCluster"))
+  if valid_21626131 != nil:
+    section.add "X-Amz-Target", valid_21626131
+  var valid_21626132 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626132 = validateParameter(valid_21626132, JString, required = false,
+                                   default = nil)
+  if valid_21626132 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626132
+  var valid_21626133 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626133 = validateParameter(valid_21626133, JString, required = false,
+                                   default = nil)
+  if valid_21626133 != nil:
+    section.add "X-Amz-Algorithm", valid_21626133
+  var valid_21626134 = header.getOrDefault("X-Amz-Signature")
+  valid_21626134 = validateParameter(valid_21626134, JString, required = false,
+                                   default = nil)
+  if valid_21626134 != nil:
+    section.add "X-Amz-Signature", valid_21626134
+  var valid_21626135 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626135 = validateParameter(valid_21626135, JString, required = false,
+                                   default = nil)
+  if valid_21626135 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626135
+  var valid_21626136 = header.getOrDefault("X-Amz-Credential")
+  valid_21626136 = validateParameter(valid_21626136, JString, required = false,
+                                   default = nil)
+  if valid_21626136 != nil:
+    section.add "X-Amz-Credential", valid_21626136
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626138: Call_DescribeCluster_21626126; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns information about a specific cluster including shipping information, cluster status, and other important metadata.
+  ## 
+  let valid = call_21626138.validator(path, query, header, formData, body, _)
+  let scheme = call_21626138.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626138.makeUrl(scheme.get, call_21626138.host, call_21626138.base,
+                               call_21626138.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626138, uri, valid, _)
+
+proc call*(call_21626139: Call_DescribeCluster_21626126; body: JsonNode): Recallable =
+  ## describeCluster
+  ## Returns information about a specific cluster including shipping information, cluster status, and other important metadata.
+  ##   body: JObject (required)
+  var body_21626140 = newJObject()
+  if body != nil:
+    body_21626140 = body
+  result = call_21626139.call(nil, nil, nil, nil, body_21626140)
+
+var describeCluster* = Call_DescribeCluster_21626126(name: "describeCluster",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.DescribeCluster",
+    validator: validate_DescribeCluster_21626127, base: "/",
+    makeUrl: url_DescribeCluster_21626128, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeJob_21626141 = ref object of OpenApiRestCall_21625435
+proc url_DescribeJob_21626143(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeJob_21626142(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Returns information about a specific job including shipping information, job status, and other important metadata. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626144 = header.getOrDefault("X-Amz-Date")
+  valid_21626144 = validateParameter(valid_21626144, JString, required = false,
+                                   default = nil)
+  if valid_21626144 != nil:
+    section.add "X-Amz-Date", valid_21626144
+  var valid_21626145 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626145 = validateParameter(valid_21626145, JString, required = false,
+                                   default = nil)
+  if valid_21626145 != nil:
+    section.add "X-Amz-Security-Token", valid_21626145
+  var valid_21626146 = header.getOrDefault("X-Amz-Target")
+  valid_21626146 = validateParameter(valid_21626146, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.DescribeJob"))
+  if valid_21626146 != nil:
+    section.add "X-Amz-Target", valid_21626146
+  var valid_21626147 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626147 = validateParameter(valid_21626147, JString, required = false,
+                                   default = nil)
+  if valid_21626147 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626147
+  var valid_21626148 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626148 = validateParameter(valid_21626148, JString, required = false,
+                                   default = nil)
+  if valid_21626148 != nil:
+    section.add "X-Amz-Algorithm", valid_21626148
+  var valid_21626149 = header.getOrDefault("X-Amz-Signature")
+  valid_21626149 = validateParameter(valid_21626149, JString, required = false,
+                                   default = nil)
+  if valid_21626149 != nil:
+    section.add "X-Amz-Signature", valid_21626149
+  var valid_21626150 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626150 = validateParameter(valid_21626150, JString, required = false,
+                                   default = nil)
+  if valid_21626150 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626150
+  var valid_21626151 = header.getOrDefault("X-Amz-Credential")
+  valid_21626151 = validateParameter(valid_21626151, JString, required = false,
+                                   default = nil)
+  if valid_21626151 != nil:
+    section.add "X-Amz-Credential", valid_21626151
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626153: Call_DescribeJob_21626141; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns information about a specific job including shipping information, job status, and other important metadata. 
+  ## 
+  let valid = call_21626153.validator(path, query, header, formData, body, _)
+  let scheme = call_21626153.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626153.makeUrl(scheme.get, call_21626153.host, call_21626153.base,
+                               call_21626153.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626153, uri, valid, _)
+
+proc call*(call_21626154: Call_DescribeJob_21626141; body: JsonNode): Recallable =
+  ## describeJob
+  ## Returns information about a specific job including shipping information, job status, and other important metadata. 
+  ##   body: JObject (required)
+  var body_21626155 = newJObject()
+  if body != nil:
+    body_21626155 = body
+  result = call_21626154.call(nil, nil, nil, nil, body_21626155)
+
+var describeJob* = Call_DescribeJob_21626141(name: "describeJob",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.DescribeJob",
+    validator: validate_DescribeJob_21626142, base: "/", makeUrl: url_DescribeJob_21626143,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCompatibleImages_617691 = ref object of OpenApiRestCall_616866
-proc url_ListCompatibleImages_617693(protocol: Scheme; host: string; base: string;
+  Call_GetJobManifest_21626156 = ref object of OpenApiRestCall_21625435
+proc url_GetJobManifest_21626158(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetJobManifest_21626157(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Returns a link to an Amazon S3 presigned URL for the manifest file associated with the specified <code>JobId</code> value. You can access the manifest file for up to 60 minutes after this request has been made. To access the manifest file after 60 minutes have passed, you'll have to make another call to the <code>GetJobManifest</code> action.</p> <p>The manifest is an encrypted file that you can download after your job enters the <code>WithCustomer</code> status. The manifest is decrypted by using the <code>UnlockCode</code> code value, when you pass both values to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of an <code>UnlockCode</code> value in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p> <p>The credentials of a given job, including its manifest file and unlock code, expire 90 days after the job is created.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626159 = header.getOrDefault("X-Amz-Date")
+  valid_21626159 = validateParameter(valid_21626159, JString, required = false,
+                                   default = nil)
+  if valid_21626159 != nil:
+    section.add "X-Amz-Date", valid_21626159
+  var valid_21626160 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626160 = validateParameter(valid_21626160, JString, required = false,
+                                   default = nil)
+  if valid_21626160 != nil:
+    section.add "X-Amz-Security-Token", valid_21626160
+  var valid_21626161 = header.getOrDefault("X-Amz-Target")
+  valid_21626161 = validateParameter(valid_21626161, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.GetJobManifest"))
+  if valid_21626161 != nil:
+    section.add "X-Amz-Target", valid_21626161
+  var valid_21626162 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626162 = validateParameter(valid_21626162, JString, required = false,
+                                   default = nil)
+  if valid_21626162 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626162
+  var valid_21626163 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626163 = validateParameter(valid_21626163, JString, required = false,
+                                   default = nil)
+  if valid_21626163 != nil:
+    section.add "X-Amz-Algorithm", valid_21626163
+  var valid_21626164 = header.getOrDefault("X-Amz-Signature")
+  valid_21626164 = validateParameter(valid_21626164, JString, required = false,
+                                   default = nil)
+  if valid_21626164 != nil:
+    section.add "X-Amz-Signature", valid_21626164
+  var valid_21626165 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626165 = validateParameter(valid_21626165, JString, required = false,
+                                   default = nil)
+  if valid_21626165 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626165
+  var valid_21626166 = header.getOrDefault("X-Amz-Credential")
+  valid_21626166 = validateParameter(valid_21626166, JString, required = false,
+                                   default = nil)
+  if valid_21626166 != nil:
+    section.add "X-Amz-Credential", valid_21626166
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626168: Call_GetJobManifest_21626156; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns a link to an Amazon S3 presigned URL for the manifest file associated with the specified <code>JobId</code> value. You can access the manifest file for up to 60 minutes after this request has been made. To access the manifest file after 60 minutes have passed, you'll have to make another call to the <code>GetJobManifest</code> action.</p> <p>The manifest is an encrypted file that you can download after your job enters the <code>WithCustomer</code> status. The manifest is decrypted by using the <code>UnlockCode</code> code value, when you pass both values to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of an <code>UnlockCode</code> value in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p> <p>The credentials of a given job, including its manifest file and unlock code, expire 90 days after the job is created.</p>
+  ## 
+  let valid = call_21626168.validator(path, query, header, formData, body, _)
+  let scheme = call_21626168.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626168.makeUrl(scheme.get, call_21626168.host, call_21626168.base,
+                               call_21626168.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626168, uri, valid, _)
+
+proc call*(call_21626169: Call_GetJobManifest_21626156; body: JsonNode): Recallable =
+  ## getJobManifest
+  ## <p>Returns a link to an Amazon S3 presigned URL for the manifest file associated with the specified <code>JobId</code> value. You can access the manifest file for up to 60 minutes after this request has been made. To access the manifest file after 60 minutes have passed, you'll have to make another call to the <code>GetJobManifest</code> action.</p> <p>The manifest is an encrypted file that you can download after your job enters the <code>WithCustomer</code> status. The manifest is decrypted by using the <code>UnlockCode</code> code value, when you pass both values to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of an <code>UnlockCode</code> value in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p> <p>The credentials of a given job, including its manifest file and unlock code, expire 90 days after the job is created.</p>
+  ##   body: JObject (required)
+  var body_21626170 = newJObject()
+  if body != nil:
+    body_21626170 = body
+  result = call_21626169.call(nil, nil, nil, nil, body_21626170)
+
+var getJobManifest* = Call_GetJobManifest_21626156(name: "getJobManifest",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.GetJobManifest",
+    validator: validate_GetJobManifest_21626157, base: "/",
+    makeUrl: url_GetJobManifest_21626158, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetJobUnlockCode_21626171 = ref object of OpenApiRestCall_21625435
+proc url_GetJobUnlockCode_21626173(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetJobUnlockCode_21626172(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Returns the <code>UnlockCode</code> code value for the specified job. A particular <code>UnlockCode</code> value can be accessed for up to 90 days after the associated job has been created.</p> <p>The <code>UnlockCode</code> value is a 29-character code with 25 alphanumeric characters and 4 hyphens. This code is used to decrypt the manifest file when it is passed along with the manifest to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of the <code>UnlockCode</code> in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626174 = header.getOrDefault("X-Amz-Date")
+  valid_21626174 = validateParameter(valid_21626174, JString, required = false,
+                                   default = nil)
+  if valid_21626174 != nil:
+    section.add "X-Amz-Date", valid_21626174
+  var valid_21626175 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626175 = validateParameter(valid_21626175, JString, required = false,
+                                   default = nil)
+  if valid_21626175 != nil:
+    section.add "X-Amz-Security-Token", valid_21626175
+  var valid_21626176 = header.getOrDefault("X-Amz-Target")
+  valid_21626176 = validateParameter(valid_21626176, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.GetJobUnlockCode"))
+  if valid_21626176 != nil:
+    section.add "X-Amz-Target", valid_21626176
+  var valid_21626177 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626177 = validateParameter(valid_21626177, JString, required = false,
+                                   default = nil)
+  if valid_21626177 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626177
+  var valid_21626178 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626178 = validateParameter(valid_21626178, JString, required = false,
+                                   default = nil)
+  if valid_21626178 != nil:
+    section.add "X-Amz-Algorithm", valid_21626178
+  var valid_21626179 = header.getOrDefault("X-Amz-Signature")
+  valid_21626179 = validateParameter(valid_21626179, JString, required = false,
+                                   default = nil)
+  if valid_21626179 != nil:
+    section.add "X-Amz-Signature", valid_21626179
+  var valid_21626180 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626180 = validateParameter(valid_21626180, JString, required = false,
+                                   default = nil)
+  if valid_21626180 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626180
+  var valid_21626181 = header.getOrDefault("X-Amz-Credential")
+  valid_21626181 = validateParameter(valid_21626181, JString, required = false,
+                                   default = nil)
+  if valid_21626181 != nil:
+    section.add "X-Amz-Credential", valid_21626181
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626183: Call_GetJobUnlockCode_21626171; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns the <code>UnlockCode</code> code value for the specified job. A particular <code>UnlockCode</code> value can be accessed for up to 90 days after the associated job has been created.</p> <p>The <code>UnlockCode</code> value is a 29-character code with 25 alphanumeric characters and 4 hyphens. This code is used to decrypt the manifest file when it is passed along with the manifest to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of the <code>UnlockCode</code> in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p>
+  ## 
+  let valid = call_21626183.validator(path, query, header, formData, body, _)
+  let scheme = call_21626183.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626183.makeUrl(scheme.get, call_21626183.host, call_21626183.base,
+                               call_21626183.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626183, uri, valid, _)
+
+proc call*(call_21626184: Call_GetJobUnlockCode_21626171; body: JsonNode): Recallable =
+  ## getJobUnlockCode
+  ## <p>Returns the <code>UnlockCode</code> code value for the specified job. A particular <code>UnlockCode</code> value can be accessed for up to 90 days after the associated job has been created.</p> <p>The <code>UnlockCode</code> value is a 29-character code with 25 alphanumeric characters and 4 hyphens. This code is used to decrypt the manifest file when it is passed along with the manifest to the Snowball through the Snowball client when the client is started for the first time.</p> <p>As a best practice, we recommend that you don't save a copy of the <code>UnlockCode</code> in the same location as the manifest file for that job. Saving these separately helps prevent unauthorized parties from gaining access to the Snowball associated with that job.</p>
+  ##   body: JObject (required)
+  var body_21626185 = newJObject()
+  if body != nil:
+    body_21626185 = body
+  result = call_21626184.call(nil, nil, nil, nil, body_21626185)
+
+var getJobUnlockCode* = Call_GetJobUnlockCode_21626171(name: "getJobUnlockCode",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.GetJobUnlockCode",
+    validator: validate_GetJobUnlockCode_21626172, base: "/",
+    makeUrl: url_GetJobUnlockCode_21626173, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetSnowballUsage_21626186 = ref object of OpenApiRestCall_21625435
+proc url_GetSnowballUsage_21626188(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetSnowballUsage_21626187(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Returns information about the Snowball service limit for your account, and also the number of Snowballs your account has in use.</p> <p>The default service limit for the number of Snowballs that you can have at one time is 1. If you want to increase your service limit, contact AWS Support.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626189 = header.getOrDefault("X-Amz-Date")
+  valid_21626189 = validateParameter(valid_21626189, JString, required = false,
+                                   default = nil)
+  if valid_21626189 != nil:
+    section.add "X-Amz-Date", valid_21626189
+  var valid_21626190 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626190 = validateParameter(valid_21626190, JString, required = false,
+                                   default = nil)
+  if valid_21626190 != nil:
+    section.add "X-Amz-Security-Token", valid_21626190
+  var valid_21626191 = header.getOrDefault("X-Amz-Target")
+  valid_21626191 = validateParameter(valid_21626191, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.GetSnowballUsage"))
+  if valid_21626191 != nil:
+    section.add "X-Amz-Target", valid_21626191
+  var valid_21626192 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626192 = validateParameter(valid_21626192, JString, required = false,
+                                   default = nil)
+  if valid_21626192 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626192
+  var valid_21626193 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626193 = validateParameter(valid_21626193, JString, required = false,
+                                   default = nil)
+  if valid_21626193 != nil:
+    section.add "X-Amz-Algorithm", valid_21626193
+  var valid_21626194 = header.getOrDefault("X-Amz-Signature")
+  valid_21626194 = validateParameter(valid_21626194, JString, required = false,
+                                   default = nil)
+  if valid_21626194 != nil:
+    section.add "X-Amz-Signature", valid_21626194
+  var valid_21626195 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626195 = validateParameter(valid_21626195, JString, required = false,
+                                   default = nil)
+  if valid_21626195 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626195
+  var valid_21626196 = header.getOrDefault("X-Amz-Credential")
+  valid_21626196 = validateParameter(valid_21626196, JString, required = false,
+                                   default = nil)
+  if valid_21626196 != nil:
+    section.add "X-Amz-Credential", valid_21626196
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626198: Call_GetSnowballUsage_21626186; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns information about the Snowball service limit for your account, and also the number of Snowballs your account has in use.</p> <p>The default service limit for the number of Snowballs that you can have at one time is 1. If you want to increase your service limit, contact AWS Support.</p>
+  ## 
+  let valid = call_21626198.validator(path, query, header, formData, body, _)
+  let scheme = call_21626198.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626198.makeUrl(scheme.get, call_21626198.host, call_21626198.base,
+                               call_21626198.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626198, uri, valid, _)
+
+proc call*(call_21626199: Call_GetSnowballUsage_21626186; body: JsonNode): Recallable =
+  ## getSnowballUsage
+  ## <p>Returns information about the Snowball service limit for your account, and also the number of Snowballs your account has in use.</p> <p>The default service limit for the number of Snowballs that you can have at one time is 1. If you want to increase your service limit, contact AWS Support.</p>
+  ##   body: JObject (required)
+  var body_21626200 = newJObject()
+  if body != nil:
+    body_21626200 = body
+  result = call_21626199.call(nil, nil, nil, nil, body_21626200)
+
+var getSnowballUsage* = Call_GetSnowballUsage_21626186(name: "getSnowballUsage",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.GetSnowballUsage",
+    validator: validate_GetSnowballUsage_21626187, base: "/",
+    makeUrl: url_GetSnowballUsage_21626188, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetSoftwareUpdates_21626201 = ref object of OpenApiRestCall_21625435
+proc url_GetSoftwareUpdates_21626203(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1833,8 +1527,346 @@ proc url_ListCompatibleImages_617693(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListCompatibleImages_617692(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
+proc validate_GetSoftwareUpdates_21626202(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Returns an Amazon S3 presigned URL for an update file associated with a specified <code>JobId</code>.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626204 = header.getOrDefault("X-Amz-Date")
+  valid_21626204 = validateParameter(valid_21626204, JString, required = false,
+                                   default = nil)
+  if valid_21626204 != nil:
+    section.add "X-Amz-Date", valid_21626204
+  var valid_21626205 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626205 = validateParameter(valid_21626205, JString, required = false,
+                                   default = nil)
+  if valid_21626205 != nil:
+    section.add "X-Amz-Security-Token", valid_21626205
+  var valid_21626206 = header.getOrDefault("X-Amz-Target")
+  valid_21626206 = validateParameter(valid_21626206, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.GetSoftwareUpdates"))
+  if valid_21626206 != nil:
+    section.add "X-Amz-Target", valid_21626206
+  var valid_21626207 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626207 = validateParameter(valid_21626207, JString, required = false,
+                                   default = nil)
+  if valid_21626207 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626207
+  var valid_21626208 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626208 = validateParameter(valid_21626208, JString, required = false,
+                                   default = nil)
+  if valid_21626208 != nil:
+    section.add "X-Amz-Algorithm", valid_21626208
+  var valid_21626209 = header.getOrDefault("X-Amz-Signature")
+  valid_21626209 = validateParameter(valid_21626209, JString, required = false,
+                                   default = nil)
+  if valid_21626209 != nil:
+    section.add "X-Amz-Signature", valid_21626209
+  var valid_21626210 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626210 = validateParameter(valid_21626210, JString, required = false,
+                                   default = nil)
+  if valid_21626210 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626210
+  var valid_21626211 = header.getOrDefault("X-Amz-Credential")
+  valid_21626211 = validateParameter(valid_21626211, JString, required = false,
+                                   default = nil)
+  if valid_21626211 != nil:
+    section.add "X-Amz-Credential", valid_21626211
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626213: Call_GetSoftwareUpdates_21626201; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns an Amazon S3 presigned URL for an update file associated with a specified <code>JobId</code>.
+  ## 
+  let valid = call_21626213.validator(path, query, header, formData, body, _)
+  let scheme = call_21626213.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626213.makeUrl(scheme.get, call_21626213.host, call_21626213.base,
+                               call_21626213.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626213, uri, valid, _)
+
+proc call*(call_21626214: Call_GetSoftwareUpdates_21626201; body: JsonNode): Recallable =
+  ## getSoftwareUpdates
+  ## Returns an Amazon S3 presigned URL for an update file associated with a specified <code>JobId</code>.
+  ##   body: JObject (required)
+  var body_21626215 = newJObject()
+  if body != nil:
+    body_21626215 = body
+  result = call_21626214.call(nil, nil, nil, nil, body_21626215)
+
+var getSoftwareUpdates* = Call_GetSoftwareUpdates_21626201(
+    name: "getSoftwareUpdates", meth: HttpMethod.HttpPost,
+    host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.GetSoftwareUpdates",
+    validator: validate_GetSoftwareUpdates_21626202, base: "/",
+    makeUrl: url_GetSoftwareUpdates_21626203, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListClusterJobs_21626216 = ref object of OpenApiRestCall_21625435
+proc url_ListClusterJobs_21626218(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListClusterJobs_21626217(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object is for a job in the specified cluster and contains a job's state, a job's ID, and other information.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626219 = header.getOrDefault("X-Amz-Date")
+  valid_21626219 = validateParameter(valid_21626219, JString, required = false,
+                                   default = nil)
+  if valid_21626219 != nil:
+    section.add "X-Amz-Date", valid_21626219
+  var valid_21626220 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626220 = validateParameter(valid_21626220, JString, required = false,
+                                   default = nil)
+  if valid_21626220 != nil:
+    section.add "X-Amz-Security-Token", valid_21626220
+  var valid_21626221 = header.getOrDefault("X-Amz-Target")
+  valid_21626221 = validateParameter(valid_21626221, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.ListClusterJobs"))
+  if valid_21626221 != nil:
+    section.add "X-Amz-Target", valid_21626221
+  var valid_21626222 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626222 = validateParameter(valid_21626222, JString, required = false,
+                                   default = nil)
+  if valid_21626222 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626222
+  var valid_21626223 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626223 = validateParameter(valid_21626223, JString, required = false,
+                                   default = nil)
+  if valid_21626223 != nil:
+    section.add "X-Amz-Algorithm", valid_21626223
+  var valid_21626224 = header.getOrDefault("X-Amz-Signature")
+  valid_21626224 = validateParameter(valid_21626224, JString, required = false,
+                                   default = nil)
+  if valid_21626224 != nil:
+    section.add "X-Amz-Signature", valid_21626224
+  var valid_21626225 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626225 = validateParameter(valid_21626225, JString, required = false,
+                                   default = nil)
+  if valid_21626225 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626225
+  var valid_21626226 = header.getOrDefault("X-Amz-Credential")
+  valid_21626226 = validateParameter(valid_21626226, JString, required = false,
+                                   default = nil)
+  if valid_21626226 != nil:
+    section.add "X-Amz-Credential", valid_21626226
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626228: Call_ListClusterJobs_21626216; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object is for a job in the specified cluster and contains a job's state, a job's ID, and other information.
+  ## 
+  let valid = call_21626228.validator(path, query, header, formData, body, _)
+  let scheme = call_21626228.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626228.makeUrl(scheme.get, call_21626228.host, call_21626228.base,
+                               call_21626228.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626228, uri, valid, _)
+
+proc call*(call_21626229: Call_ListClusterJobs_21626216; body: JsonNode): Recallable =
+  ## listClusterJobs
+  ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object is for a job in the specified cluster and contains a job's state, a job's ID, and other information.
+  ##   body: JObject (required)
+  var body_21626230 = newJObject()
+  if body != nil:
+    body_21626230 = body
+  result = call_21626229.call(nil, nil, nil, nil, body_21626230)
+
+var listClusterJobs* = Call_ListClusterJobs_21626216(name: "listClusterJobs",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.ListClusterJobs",
+    validator: validate_ListClusterJobs_21626217, base: "/",
+    makeUrl: url_ListClusterJobs_21626218, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListClusters_21626231 = ref object of OpenApiRestCall_21625435
+proc url_ListClusters_21626233(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListClusters_21626232(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+  ## Returns an array of <code>ClusterListEntry</code> objects of the specified length. Each <code>ClusterListEntry</code> object contains a cluster's state, a cluster's ID, and other important status information.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626234 = header.getOrDefault("X-Amz-Date")
+  valid_21626234 = validateParameter(valid_21626234, JString, required = false,
+                                   default = nil)
+  if valid_21626234 != nil:
+    section.add "X-Amz-Date", valid_21626234
+  var valid_21626235 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626235 = validateParameter(valid_21626235, JString, required = false,
+                                   default = nil)
+  if valid_21626235 != nil:
+    section.add "X-Amz-Security-Token", valid_21626235
+  var valid_21626236 = header.getOrDefault("X-Amz-Target")
+  valid_21626236 = validateParameter(valid_21626236, JString, required = true, default = newJString(
+      "AWSIESnowballJobManagementService.ListClusters"))
+  if valid_21626236 != nil:
+    section.add "X-Amz-Target", valid_21626236
+  var valid_21626237 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626237 = validateParameter(valid_21626237, JString, required = false,
+                                   default = nil)
+  if valid_21626237 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626237
+  var valid_21626238 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626238 = validateParameter(valid_21626238, JString, required = false,
+                                   default = nil)
+  if valid_21626238 != nil:
+    section.add "X-Amz-Algorithm", valid_21626238
+  var valid_21626239 = header.getOrDefault("X-Amz-Signature")
+  valid_21626239 = validateParameter(valid_21626239, JString, required = false,
+                                   default = nil)
+  if valid_21626239 != nil:
+    section.add "X-Amz-Signature", valid_21626239
+  var valid_21626240 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626240 = validateParameter(valid_21626240, JString, required = false,
+                                   default = nil)
+  if valid_21626240 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626240
+  var valid_21626241 = header.getOrDefault("X-Amz-Credential")
+  valid_21626241 = validateParameter(valid_21626241, JString, required = false,
+                                   default = nil)
+  if valid_21626241 != nil:
+    section.add "X-Amz-Credential", valid_21626241
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626243: Call_ListClusters_21626231; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns an array of <code>ClusterListEntry</code> objects of the specified length. Each <code>ClusterListEntry</code> object contains a cluster's state, a cluster's ID, and other important status information.
+  ## 
+  let valid = call_21626243.validator(path, query, header, formData, body, _)
+  let scheme = call_21626243.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626243.makeUrl(scheme.get, call_21626243.host, call_21626243.base,
+                               call_21626243.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626243, uri, valid, _)
+
+proc call*(call_21626244: Call_ListClusters_21626231; body: JsonNode): Recallable =
+  ## listClusters
+  ## Returns an array of <code>ClusterListEntry</code> objects of the specified length. Each <code>ClusterListEntry</code> object contains a cluster's state, a cluster's ID, and other important status information.
+  ##   body: JObject (required)
+  var body_21626245 = newJObject()
+  if body != nil:
+    body_21626245 = body
+  result = call_21626244.call(nil, nil, nil, nil, body_21626245)
+
+var listClusters* = Call_ListClusters_21626231(name: "listClusters",
+    meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
+    route: "/#X-Amz-Target=AWSIESnowballJobManagementService.ListClusters",
+    validator: validate_ListClusters_21626232, base: "/", makeUrl: url_ListClusters_21626233,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListCompatibleImages_21626246 = ref object of OpenApiRestCall_21625435
+proc url_ListCompatibleImages_21626248(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListCompatibleImages_21626247(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## This action returns a list of the different Amazon EC2 Amazon Machine Images (AMIs) that are owned by your AWS account that would be supported for use on a Snowball Edge device. Currently, supported AMIs are based on the CentOS 7 (x86_64) - with Updates HVM, Ubuntu Server 14.04 LTS (HVM), and Ubuntu 16.04 LTS - Xenial (HVM) images, available on the AWS Marketplace.
   ## 
   var section: JsonNode
@@ -1846,95 +1878,97 @@ proc validate_ListCompatibleImages_617692(path: JsonNode; query: JsonNode;
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617694 = header.getOrDefault("X-Amz-Date")
-  valid_617694 = validateParameter(valid_617694, JString, required = false,
-                                 default = nil)
-  if valid_617694 != nil:
-    section.add "X-Amz-Date", valid_617694
-  var valid_617695 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617695 = validateParameter(valid_617695, JString, required = false,
-                                 default = nil)
-  if valid_617695 != nil:
-    section.add "X-Amz-Security-Token", valid_617695
-  var valid_617696 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617696 = validateParameter(valid_617696, JString, required = false,
-                                 default = nil)
-  if valid_617696 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617696
-  var valid_617697 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617697 = validateParameter(valid_617697, JString, required = false,
-                                 default = nil)
-  if valid_617697 != nil:
-    section.add "X-Amz-Algorithm", valid_617697
-  var valid_617698 = header.getOrDefault("X-Amz-Signature")
-  valid_617698 = validateParameter(valid_617698, JString, required = false,
-                                 default = nil)
-  if valid_617698 != nil:
-    section.add "X-Amz-Signature", valid_617698
-  var valid_617699 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617699 = validateParameter(valid_617699, JString, required = false,
-                                 default = nil)
-  if valid_617699 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617699
-  var valid_617700 = header.getOrDefault("X-Amz-Target")
-  valid_617700 = validateParameter(valid_617700, JString, required = true, default = newJString(
+  var valid_21626249 = header.getOrDefault("X-Amz-Date")
+  valid_21626249 = validateParameter(valid_21626249, JString, required = false,
+                                   default = nil)
+  if valid_21626249 != nil:
+    section.add "X-Amz-Date", valid_21626249
+  var valid_21626250 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626250 = validateParameter(valid_21626250, JString, required = false,
+                                   default = nil)
+  if valid_21626250 != nil:
+    section.add "X-Amz-Security-Token", valid_21626250
+  var valid_21626251 = header.getOrDefault("X-Amz-Target")
+  valid_21626251 = validateParameter(valid_21626251, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.ListCompatibleImages"))
-  if valid_617700 != nil:
-    section.add "X-Amz-Target", valid_617700
-  var valid_617701 = header.getOrDefault("X-Amz-Credential")
-  valid_617701 = validateParameter(valid_617701, JString, required = false,
-                                 default = nil)
-  if valid_617701 != nil:
-    section.add "X-Amz-Credential", valid_617701
+  if valid_21626251 != nil:
+    section.add "X-Amz-Target", valid_21626251
+  var valid_21626252 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626252 = validateParameter(valid_21626252, JString, required = false,
+                                   default = nil)
+  if valid_21626252 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626252
+  var valid_21626253 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626253 = validateParameter(valid_21626253, JString, required = false,
+                                   default = nil)
+  if valid_21626253 != nil:
+    section.add "X-Amz-Algorithm", valid_21626253
+  var valid_21626254 = header.getOrDefault("X-Amz-Signature")
+  valid_21626254 = validateParameter(valid_21626254, JString, required = false,
+                                   default = nil)
+  if valid_21626254 != nil:
+    section.add "X-Amz-Signature", valid_21626254
+  var valid_21626255 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626255 = validateParameter(valid_21626255, JString, required = false,
+                                   default = nil)
+  if valid_21626255 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626255
+  var valid_21626256 = header.getOrDefault("X-Amz-Credential")
+  valid_21626256 = validateParameter(valid_21626256, JString, required = false,
+                                   default = nil)
+  if valid_21626256 != nil:
+    section.add "X-Amz-Credential", valid_21626256
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617703: Call_ListCompatibleImages_617691; path: JsonNode = nil;
+proc call*(call_21626258: Call_ListCompatibleImages_21626246; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
   ## This action returns a list of the different Amazon EC2 Amazon Machine Images (AMIs) that are owned by your AWS account that would be supported for use on a Snowball Edge device. Currently, supported AMIs are based on the CentOS 7 (x86_64) - with Updates HVM, Ubuntu Server 14.04 LTS (HVM), and Ubuntu 16.04 LTS - Xenial (HVM) images, available on the AWS Marketplace.
   ## 
-  let valid = call_617703.validator(path, query, header, formData, body, _)
-  let scheme = call_617703.pickScheme
+  let valid = call_21626258.validator(path, query, header, formData, body, _)
+  let scheme = call_21626258.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617703.url(scheme.get, call_617703.host, call_617703.base,
-                         call_617703.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617703, url, valid, _)
+  let uri = call_21626258.makeUrl(scheme.get, call_21626258.host, call_21626258.base,
+                               call_21626258.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626258, uri, valid, _)
 
-proc call*(call_617704: Call_ListCompatibleImages_617691; body: JsonNode): Recallable =
+proc call*(call_21626259: Call_ListCompatibleImages_21626246; body: JsonNode): Recallable =
   ## listCompatibleImages
   ## This action returns a list of the different Amazon EC2 Amazon Machine Images (AMIs) that are owned by your AWS account that would be supported for use on a Snowball Edge device. Currently, supported AMIs are based on the CentOS 7 (x86_64) - with Updates HVM, Ubuntu Server 14.04 LTS (HVM), and Ubuntu 16.04 LTS - Xenial (HVM) images, available on the AWS Marketplace.
   ##   body: JObject (required)
-  var body_617705 = newJObject()
+  var body_21626260 = newJObject()
   if body != nil:
-    body_617705 = body
-  result = call_617704.call(nil, nil, nil, nil, body_617705)
+    body_21626260 = body
+  result = call_21626259.call(nil, nil, nil, nil, body_21626260)
 
-var listCompatibleImages* = Call_ListCompatibleImages_617691(
+var listCompatibleImages* = Call_ListCompatibleImages_21626246(
     name: "listCompatibleImages", meth: HttpMethod.HttpPost,
     host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.ListCompatibleImages",
-    validator: validate_ListCompatibleImages_617692, base: "/",
-    url: url_ListCompatibleImages_617693, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListCompatibleImages_21626247, base: "/",
+    makeUrl: url_ListCompatibleImages_21626248,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListJobs_617706 = ref object of OpenApiRestCall_616866
-proc url_ListJobs_617708(protocol: Scheme; host: string; base: string; route: string;
-                        path: JsonNode; query: JsonNode): Uri =
+  Call_ListJobs_21626261 = ref object of OpenApiRestCall_21625435
+proc url_ListJobs_21626263(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1943,8 +1977,9 @@ proc url_ListJobs_617708(protocol: Scheme; host: string; base: string; route: st
   else:
     result.path = base & route
 
-proc validate_ListJobs_617707(path: JsonNode; query: JsonNode; header: JsonNode;
-                             formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
+proc validate_ListJobs_21626262(path: JsonNode; query: JsonNode; header: JsonNode;
+                               formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object contains a job's state, a job's ID, and a value that indicates whether the job is a job part, in the case of export jobs. Calling this API action in one of the US regions will return jobs from the list of all jobs associated with this account in all US regions.
   ## 
   var section: JsonNode
@@ -1957,93 +1992,94 @@ proc validate_ListJobs_617707(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_617709 = query.getOrDefault("NextToken")
-  valid_617709 = validateParameter(valid_617709, JString, required = false,
-                                 default = nil)
-  if valid_617709 != nil:
-    section.add "NextToken", valid_617709
-  var valid_617710 = query.getOrDefault("MaxResults")
-  valid_617710 = validateParameter(valid_617710, JString, required = false,
-                                 default = nil)
-  if valid_617710 != nil:
-    section.add "MaxResults", valid_617710
+  var valid_21626264 = query.getOrDefault("NextToken")
+  valid_21626264 = validateParameter(valid_21626264, JString, required = false,
+                                   default = nil)
+  if valid_21626264 != nil:
+    section.add "NextToken", valid_21626264
+  var valid_21626265 = query.getOrDefault("MaxResults")
+  valid_21626265 = validateParameter(valid_21626265, JString, required = false,
+                                   default = nil)
+  if valid_21626265 != nil:
+    section.add "MaxResults", valid_21626265
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617711 = header.getOrDefault("X-Amz-Date")
-  valid_617711 = validateParameter(valid_617711, JString, required = false,
-                                 default = nil)
-  if valid_617711 != nil:
-    section.add "X-Amz-Date", valid_617711
-  var valid_617712 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617712 = validateParameter(valid_617712, JString, required = false,
-                                 default = nil)
-  if valid_617712 != nil:
-    section.add "X-Amz-Security-Token", valid_617712
-  var valid_617713 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617713 = validateParameter(valid_617713, JString, required = false,
-                                 default = nil)
-  if valid_617713 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617713
-  var valid_617714 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617714 = validateParameter(valid_617714, JString, required = false,
-                                 default = nil)
-  if valid_617714 != nil:
-    section.add "X-Amz-Algorithm", valid_617714
-  var valid_617715 = header.getOrDefault("X-Amz-Signature")
-  valid_617715 = validateParameter(valid_617715, JString, required = false,
-                                 default = nil)
-  if valid_617715 != nil:
-    section.add "X-Amz-Signature", valid_617715
-  var valid_617716 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617716 = validateParameter(valid_617716, JString, required = false,
-                                 default = nil)
-  if valid_617716 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617716
-  var valid_617717 = header.getOrDefault("X-Amz-Target")
-  valid_617717 = validateParameter(valid_617717, JString, required = true, default = newJString(
+  var valid_21626266 = header.getOrDefault("X-Amz-Date")
+  valid_21626266 = validateParameter(valid_21626266, JString, required = false,
+                                   default = nil)
+  if valid_21626266 != nil:
+    section.add "X-Amz-Date", valid_21626266
+  var valid_21626267 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626267 = validateParameter(valid_21626267, JString, required = false,
+                                   default = nil)
+  if valid_21626267 != nil:
+    section.add "X-Amz-Security-Token", valid_21626267
+  var valid_21626268 = header.getOrDefault("X-Amz-Target")
+  valid_21626268 = validateParameter(valid_21626268, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.ListJobs"))
-  if valid_617717 != nil:
-    section.add "X-Amz-Target", valid_617717
-  var valid_617718 = header.getOrDefault("X-Amz-Credential")
-  valid_617718 = validateParameter(valid_617718, JString, required = false,
-                                 default = nil)
-  if valid_617718 != nil:
-    section.add "X-Amz-Credential", valid_617718
+  if valid_21626268 != nil:
+    section.add "X-Amz-Target", valid_21626268
+  var valid_21626269 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626269 = validateParameter(valid_21626269, JString, required = false,
+                                   default = nil)
+  if valid_21626269 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626269
+  var valid_21626270 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626270 = validateParameter(valid_21626270, JString, required = false,
+                                   default = nil)
+  if valid_21626270 != nil:
+    section.add "X-Amz-Algorithm", valid_21626270
+  var valid_21626271 = header.getOrDefault("X-Amz-Signature")
+  valid_21626271 = validateParameter(valid_21626271, JString, required = false,
+                                   default = nil)
+  if valid_21626271 != nil:
+    section.add "X-Amz-Signature", valid_21626271
+  var valid_21626272 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626272 = validateParameter(valid_21626272, JString, required = false,
+                                   default = nil)
+  if valid_21626272 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626272
+  var valid_21626273 = header.getOrDefault("X-Amz-Credential")
+  valid_21626273 = validateParameter(valid_21626273, JString, required = false,
+                                   default = nil)
+  if valid_21626273 != nil:
+    section.add "X-Amz-Credential", valid_21626273
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617720: Call_ListJobs_617706; path: JsonNode = nil;
+proc call*(call_21626275: Call_ListJobs_21626261; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
   ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object contains a job's state, a job's ID, and a value that indicates whether the job is a job part, in the case of export jobs. Calling this API action in one of the US regions will return jobs from the list of all jobs associated with this account in all US regions.
   ## 
-  let valid = call_617720.validator(path, query, header, formData, body, _)
-  let scheme = call_617720.pickScheme
+  let valid = call_21626275.validator(path, query, header, formData, body, _)
+  let scheme = call_21626275.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617720.url(scheme.get, call_617720.host, call_617720.base,
-                         call_617720.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617720, url, valid, _)
+  let uri = call_21626275.makeUrl(scheme.get, call_21626275.host, call_21626275.base,
+                               call_21626275.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626275, uri, valid, _)
 
-proc call*(call_617721: Call_ListJobs_617706; body: JsonNode; NextToken: string = "";
-          MaxResults: string = ""): Recallable =
+proc call*(call_21626276: Call_ListJobs_21626261; body: JsonNode;
+          NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listJobs
   ## Returns an array of <code>JobListEntry</code> objects of the specified length. Each <code>JobListEntry</code> object contains a job's state, a job's ID, and a value that indicates whether the job is a job part, in the case of export jobs. Calling this API action in one of the US regions will return jobs from the list of all jobs associated with this account in all US regions.
   ##   NextToken: string
@@ -2051,23 +2087,23 @@ proc call*(call_617721: Call_ListJobs_617706; body: JsonNode; NextToken: string 
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_617722 = newJObject()
-  var body_617723 = newJObject()
-  add(query_617722, "NextToken", newJString(NextToken))
+  var query_21626277 = newJObject()
+  var body_21626278 = newJObject()
+  add(query_21626277, "NextToken", newJString(NextToken))
   if body != nil:
-    body_617723 = body
-  add(query_617722, "MaxResults", newJString(MaxResults))
-  result = call_617721.call(nil, query_617722, nil, nil, body_617723)
+    body_21626278 = body
+  add(query_21626277, "MaxResults", newJString(MaxResults))
+  result = call_21626276.call(nil, query_21626277, nil, nil, body_21626278)
 
-var listJobs* = Call_ListJobs_617706(name: "listJobs", meth: HttpMethod.HttpPost,
-                                  host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.ListJobs",
-                                  validator: validate_ListJobs_617707, base: "/",
-                                  url: url_ListJobs_617708,
-                                  schemes: {Scheme.Https, Scheme.Http})
+var listJobs* = Call_ListJobs_21626261(name: "listJobs", meth: HttpMethod.HttpPost,
+                                    host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.ListJobs",
+                                    validator: validate_ListJobs_21626262,
+                                    base: "/", makeUrl: url_ListJobs_21626263,
+                                    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateCluster_617724 = ref object of OpenApiRestCall_616866
-proc url_UpdateCluster_617726(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateCluster_21626279 = ref object of OpenApiRestCall_21625435
+proc url_UpdateCluster_21626281(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2076,8 +2112,9 @@ proc url_UpdateCluster_617726(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateCluster_617725(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
+proc validate_UpdateCluster_21626280(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
   ## While a cluster's <code>ClusterState</code> value is in the <code>AwaitingQuorum</code> state, you can update some of the information associated with a cluster. Once the cluster changes to a different job state, usually 60 minutes after the cluster being created, this action is no longer available.
   ## 
   var section: JsonNode
@@ -2089,95 +2126,96 @@ proc validate_UpdateCluster_617725(path: JsonNode; query: JsonNode; header: Json
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617727 = header.getOrDefault("X-Amz-Date")
-  valid_617727 = validateParameter(valid_617727, JString, required = false,
-                                 default = nil)
-  if valid_617727 != nil:
-    section.add "X-Amz-Date", valid_617727
-  var valid_617728 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617728 = validateParameter(valid_617728, JString, required = false,
-                                 default = nil)
-  if valid_617728 != nil:
-    section.add "X-Amz-Security-Token", valid_617728
-  var valid_617729 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617729 = validateParameter(valid_617729, JString, required = false,
-                                 default = nil)
-  if valid_617729 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617729
-  var valid_617730 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617730 = validateParameter(valid_617730, JString, required = false,
-                                 default = nil)
-  if valid_617730 != nil:
-    section.add "X-Amz-Algorithm", valid_617730
-  var valid_617731 = header.getOrDefault("X-Amz-Signature")
-  valid_617731 = validateParameter(valid_617731, JString, required = false,
-                                 default = nil)
-  if valid_617731 != nil:
-    section.add "X-Amz-Signature", valid_617731
-  var valid_617732 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617732 = validateParameter(valid_617732, JString, required = false,
-                                 default = nil)
-  if valid_617732 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617732
-  var valid_617733 = header.getOrDefault("X-Amz-Target")
-  valid_617733 = validateParameter(valid_617733, JString, required = true, default = newJString(
+  var valid_21626282 = header.getOrDefault("X-Amz-Date")
+  valid_21626282 = validateParameter(valid_21626282, JString, required = false,
+                                   default = nil)
+  if valid_21626282 != nil:
+    section.add "X-Amz-Date", valid_21626282
+  var valid_21626283 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626283 = validateParameter(valid_21626283, JString, required = false,
+                                   default = nil)
+  if valid_21626283 != nil:
+    section.add "X-Amz-Security-Token", valid_21626283
+  var valid_21626284 = header.getOrDefault("X-Amz-Target")
+  valid_21626284 = validateParameter(valid_21626284, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.UpdateCluster"))
-  if valid_617733 != nil:
-    section.add "X-Amz-Target", valid_617733
-  var valid_617734 = header.getOrDefault("X-Amz-Credential")
-  valid_617734 = validateParameter(valid_617734, JString, required = false,
-                                 default = nil)
-  if valid_617734 != nil:
-    section.add "X-Amz-Credential", valid_617734
+  if valid_21626284 != nil:
+    section.add "X-Amz-Target", valid_21626284
+  var valid_21626285 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626285 = validateParameter(valid_21626285, JString, required = false,
+                                   default = nil)
+  if valid_21626285 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626285
+  var valid_21626286 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626286 = validateParameter(valid_21626286, JString, required = false,
+                                   default = nil)
+  if valid_21626286 != nil:
+    section.add "X-Amz-Algorithm", valid_21626286
+  var valid_21626287 = header.getOrDefault("X-Amz-Signature")
+  valid_21626287 = validateParameter(valid_21626287, JString, required = false,
+                                   default = nil)
+  if valid_21626287 != nil:
+    section.add "X-Amz-Signature", valid_21626287
+  var valid_21626288 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626288 = validateParameter(valid_21626288, JString, required = false,
+                                   default = nil)
+  if valid_21626288 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626288
+  var valid_21626289 = header.getOrDefault("X-Amz-Credential")
+  valid_21626289 = validateParameter(valid_21626289, JString, required = false,
+                                   default = nil)
+  if valid_21626289 != nil:
+    section.add "X-Amz-Credential", valid_21626289
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617736: Call_UpdateCluster_617724; path: JsonNode = nil;
+proc call*(call_21626291: Call_UpdateCluster_21626279; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
   ## While a cluster's <code>ClusterState</code> value is in the <code>AwaitingQuorum</code> state, you can update some of the information associated with a cluster. Once the cluster changes to a different job state, usually 60 minutes after the cluster being created, this action is no longer available.
   ## 
-  let valid = call_617736.validator(path, query, header, formData, body, _)
-  let scheme = call_617736.pickScheme
+  let valid = call_21626291.validator(path, query, header, formData, body, _)
+  let scheme = call_21626291.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617736.url(scheme.get, call_617736.host, call_617736.base,
-                         call_617736.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617736, url, valid, _)
+  let uri = call_21626291.makeUrl(scheme.get, call_21626291.host, call_21626291.base,
+                               call_21626291.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626291, uri, valid, _)
 
-proc call*(call_617737: Call_UpdateCluster_617724; body: JsonNode): Recallable =
+proc call*(call_21626292: Call_UpdateCluster_21626279; body: JsonNode): Recallable =
   ## updateCluster
   ## While a cluster's <code>ClusterState</code> value is in the <code>AwaitingQuorum</code> state, you can update some of the information associated with a cluster. Once the cluster changes to a different job state, usually 60 minutes after the cluster being created, this action is no longer available.
   ##   body: JObject (required)
-  var body_617738 = newJObject()
+  var body_21626293 = newJObject()
   if body != nil:
-    body_617738 = body
-  result = call_617737.call(nil, nil, nil, nil, body_617738)
+    body_21626293 = body
+  result = call_21626292.call(nil, nil, nil, nil, body_21626293)
 
-var updateCluster* = Call_UpdateCluster_617724(name: "updateCluster",
+var updateCluster* = Call_UpdateCluster_21626279(name: "updateCluster",
     meth: HttpMethod.HttpPost, host: "snowball.amazonaws.com",
     route: "/#X-Amz-Target=AWSIESnowballJobManagementService.UpdateCluster",
-    validator: validate_UpdateCluster_617725, base: "/", url: url_UpdateCluster_617726,
-    schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateCluster_21626280, base: "/",
+    makeUrl: url_UpdateCluster_21626281, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateJob_617739 = ref object of OpenApiRestCall_616866
-proc url_UpdateJob_617741(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateJob_21626294 = ref object of OpenApiRestCall_21625435
+proc url_UpdateJob_21626296(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2186,8 +2224,9 @@ proc url_UpdateJob_617741(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & route
 
-proc validate_UpdateJob_617740(path: JsonNode; query: JsonNode; header: JsonNode;
-                              formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
+proc validate_UpdateJob_21626295(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## While a job's <code>JobState</code> value is <code>New</code>, you can update some of the information associated with a job. Once the job changes to a different job state, usually within 60 minutes of the job being created, this action is no longer available.
   ## 
   var section: JsonNode
@@ -2199,91 +2238,93 @@ proc validate_UpdateJob_617740(path: JsonNode; query: JsonNode; header: JsonNode
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617742 = header.getOrDefault("X-Amz-Date")
-  valid_617742 = validateParameter(valid_617742, JString, required = false,
-                                 default = nil)
-  if valid_617742 != nil:
-    section.add "X-Amz-Date", valid_617742
-  var valid_617743 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617743 = validateParameter(valid_617743, JString, required = false,
-                                 default = nil)
-  if valid_617743 != nil:
-    section.add "X-Amz-Security-Token", valid_617743
-  var valid_617744 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617744 = validateParameter(valid_617744, JString, required = false,
-                                 default = nil)
-  if valid_617744 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617744
-  var valid_617745 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617745 = validateParameter(valid_617745, JString, required = false,
-                                 default = nil)
-  if valid_617745 != nil:
-    section.add "X-Amz-Algorithm", valid_617745
-  var valid_617746 = header.getOrDefault("X-Amz-Signature")
-  valid_617746 = validateParameter(valid_617746, JString, required = false,
-                                 default = nil)
-  if valid_617746 != nil:
-    section.add "X-Amz-Signature", valid_617746
-  var valid_617747 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617747 = validateParameter(valid_617747, JString, required = false,
-                                 default = nil)
-  if valid_617747 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617747
-  var valid_617748 = header.getOrDefault("X-Amz-Target")
-  valid_617748 = validateParameter(valid_617748, JString, required = true, default = newJString(
+  var valid_21626297 = header.getOrDefault("X-Amz-Date")
+  valid_21626297 = validateParameter(valid_21626297, JString, required = false,
+                                   default = nil)
+  if valid_21626297 != nil:
+    section.add "X-Amz-Date", valid_21626297
+  var valid_21626298 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626298 = validateParameter(valid_21626298, JString, required = false,
+                                   default = nil)
+  if valid_21626298 != nil:
+    section.add "X-Amz-Security-Token", valid_21626298
+  var valid_21626299 = header.getOrDefault("X-Amz-Target")
+  valid_21626299 = validateParameter(valid_21626299, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.UpdateJob"))
-  if valid_617748 != nil:
-    section.add "X-Amz-Target", valid_617748
-  var valid_617749 = header.getOrDefault("X-Amz-Credential")
-  valid_617749 = validateParameter(valid_617749, JString, required = false,
-                                 default = nil)
-  if valid_617749 != nil:
-    section.add "X-Amz-Credential", valid_617749
+  if valid_21626299 != nil:
+    section.add "X-Amz-Target", valid_21626299
+  var valid_21626300 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626300 = validateParameter(valid_21626300, JString, required = false,
+                                   default = nil)
+  if valid_21626300 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626300
+  var valid_21626301 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626301 = validateParameter(valid_21626301, JString, required = false,
+                                   default = nil)
+  if valid_21626301 != nil:
+    section.add "X-Amz-Algorithm", valid_21626301
+  var valid_21626302 = header.getOrDefault("X-Amz-Signature")
+  valid_21626302 = validateParameter(valid_21626302, JString, required = false,
+                                   default = nil)
+  if valid_21626302 != nil:
+    section.add "X-Amz-Signature", valid_21626302
+  var valid_21626303 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626303 = validateParameter(valid_21626303, JString, required = false,
+                                   default = nil)
+  if valid_21626303 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626303
+  var valid_21626304 = header.getOrDefault("X-Amz-Credential")
+  valid_21626304 = validateParameter(valid_21626304, JString, required = false,
+                                   default = nil)
+  if valid_21626304 != nil:
+    section.add "X-Amz-Credential", valid_21626304
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617751: Call_UpdateJob_617739; path: JsonNode = nil;
+proc call*(call_21626306: Call_UpdateJob_21626294; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
   ## While a job's <code>JobState</code> value is <code>New</code>, you can update some of the information associated with a job. Once the job changes to a different job state, usually within 60 minutes of the job being created, this action is no longer available.
   ## 
-  let valid = call_617751.validator(path, query, header, formData, body, _)
-  let scheme = call_617751.pickScheme
+  let valid = call_21626306.validator(path, query, header, formData, body, _)
+  let scheme = call_21626306.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617751.url(scheme.get, call_617751.host, call_617751.base,
-                         call_617751.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617751, url, valid, _)
+  let uri = call_21626306.makeUrl(scheme.get, call_21626306.host, call_21626306.base,
+                               call_21626306.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626306, uri, valid, _)
 
-proc call*(call_617752: Call_UpdateJob_617739; body: JsonNode): Recallable =
+proc call*(call_21626307: Call_UpdateJob_21626294; body: JsonNode): Recallable =
   ## updateJob
   ## While a job's <code>JobState</code> value is <code>New</code>, you can update some of the information associated with a job. Once the job changes to a different job state, usually within 60 minutes of the job being created, this action is no longer available.
   ##   body: JObject (required)
-  var body_617753 = newJObject()
+  var body_21626308 = newJObject()
   if body != nil:
-    body_617753 = body
-  result = call_617752.call(nil, nil, nil, nil, body_617753)
+    body_21626308 = body
+  result = call_21626307.call(nil, nil, nil, nil, body_21626308)
 
-var updateJob* = Call_UpdateJob_617739(name: "updateJob", meth: HttpMethod.HttpPost,
-                                    host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.UpdateJob",
-                                    validator: validate_UpdateJob_617740,
-                                    base: "/", url: url_UpdateJob_617741,
-                                    schemes: {Scheme.Https, Scheme.Http})
+var updateJob* = Call_UpdateJob_21626294(name: "updateJob",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "snowball.amazonaws.com", route: "/#X-Amz-Target=AWSIESnowballJobManagementService.UpdateJob",
+                                      validator: validate_UpdateJob_21626295,
+                                      base: "/", makeUrl: url_UpdateJob_21626296,
+                                      schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -2366,10 +2407,13 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body = ""): Re
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
   else:
-    headers["content-md5"] = $text.toMD5
+    headers["content-md5"] = base64.encode text.toMD5
   if not headers.hasKey($SecurityToken):
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
       headers[$SecurityToken] = session
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)
+
+when not defined(ssl):
+  {.error: "use ssl".}

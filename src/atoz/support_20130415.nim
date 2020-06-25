@@ -1,6 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
+  httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS Support
@@ -17,27 +18,27 @@ import
 type
   Scheme {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
-  ValidatorSignature = proc (query: JsonNode = nil; body: JsonNode = nil;
-                          header: JsonNode = nil; path: JsonNode = nil;
-                          formData: JsonNode = nil): JsonNode
+  ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
+                          header: JsonNode = nil; formData: JsonNode = nil;
+                          body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
     base*: string
     host*: string
     schemes*: set[Scheme]
-    url*: proc (protocol: Scheme; host: string; base: string; route: string;
-              path: JsonNode; query: JsonNode): Uri
+    makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
+                  path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_610658 = ref object of OpenApiRestCall
+  OpenApiRestCall_21625435 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_610658](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_21625435](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_610658): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -54,8 +55,9 @@ proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
   ## ensure an input is of the correct json type and yield
   ## a suitable default value when appropriate
   if js == nil:
-    if default != nil:
-      return validateParameter(default, kind, required = required)
+    if required:
+      if default != nil:
+        return validateParameter(default, kind, required = required)
   result = js
   if result == nil:
     assert not required, $kind & " expected; received nil"
@@ -109,11 +111,12 @@ const
       "cn-north-1": "support.cn-north-1.amazonaws.com.cn"}.toTable}.toTable
 const
   awsServiceName = "support"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
+    base.}
 type
-  Call_AddAttachmentsToSet_610996 = ref object of OpenApiRestCall_610658
-proc url_AddAttachmentsToSet_610998(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_AddAttachmentsToSet_21625779 = ref object of OpenApiRestCall_21625435
+proc url_AddAttachmentsToSet_21625781(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -122,9 +125,9 @@ proc url_AddAttachmentsToSet_610998(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_AddAttachmentsToSet_610997(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode): JsonNode =
+proc validate_AddAttachmentsToSet_21625780(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## <p>Adds one or more attachments to an attachment set. If an <code>attachmentSetId</code> is not specified, a new attachment set is created, and the ID of the set is returned in the response. If an <code>attachmentSetId</code> is specified, the attachments are added to the specified set, if it exists.</p> <p>An attachment set is a temporary container for attachments that are to be added to a case or case communication. The set is available for one hour after it is created; the <code>expiryTime</code> returned in the response indicates when the set expires. The maximum number of attachments in a set is 3, and the maximum size of any attachment in the set is 5 MB.</p>
   ## 
   var section: JsonNode
@@ -134,97 +137,101 @@ proc validate_AddAttachmentsToSet_610997(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_611123 = header.getOrDefault("X-Amz-Target")
-  valid_611123 = validateParameter(valid_611123, JString, required = true, default = newJString(
+  var valid_21625882 = header.getOrDefault("X-Amz-Date")
+  valid_21625882 = validateParameter(valid_21625882, JString, required = false,
+                                   default = nil)
+  if valid_21625882 != nil:
+    section.add "X-Amz-Date", valid_21625882
+  var valid_21625883 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21625883 = validateParameter(valid_21625883, JString, required = false,
+                                   default = nil)
+  if valid_21625883 != nil:
+    section.add "X-Amz-Security-Token", valid_21625883
+  var valid_21625898 = header.getOrDefault("X-Amz-Target")
+  valid_21625898 = validateParameter(valid_21625898, JString, required = true, default = newJString(
       "AWSSupport_20130415.AddAttachmentsToSet"))
-  if valid_611123 != nil:
-    section.add "X-Amz-Target", valid_611123
-  var valid_611124 = header.getOrDefault("X-Amz-Signature")
-  valid_611124 = validateParameter(valid_611124, JString, required = false,
-                                 default = nil)
-  if valid_611124 != nil:
-    section.add "X-Amz-Signature", valid_611124
-  var valid_611125 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611125 = validateParameter(valid_611125, JString, required = false,
-                                 default = nil)
-  if valid_611125 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611125
-  var valid_611126 = header.getOrDefault("X-Amz-Date")
-  valid_611126 = validateParameter(valid_611126, JString, required = false,
-                                 default = nil)
-  if valid_611126 != nil:
-    section.add "X-Amz-Date", valid_611126
-  var valid_611127 = header.getOrDefault("X-Amz-Credential")
-  valid_611127 = validateParameter(valid_611127, JString, required = false,
-                                 default = nil)
-  if valid_611127 != nil:
-    section.add "X-Amz-Credential", valid_611127
-  var valid_611128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611128 = validateParameter(valid_611128, JString, required = false,
-                                 default = nil)
-  if valid_611128 != nil:
-    section.add "X-Amz-Security-Token", valid_611128
-  var valid_611129 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611129 = validateParameter(valid_611129, JString, required = false,
-                                 default = nil)
-  if valid_611129 != nil:
-    section.add "X-Amz-Algorithm", valid_611129
-  var valid_611130 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611130 = validateParameter(valid_611130, JString, required = false,
-                                 default = nil)
-  if valid_611130 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611130
+  if valid_21625898 != nil:
+    section.add "X-Amz-Target", valid_21625898
+  var valid_21625899 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21625899 = validateParameter(valid_21625899, JString, required = false,
+                                   default = nil)
+  if valid_21625899 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21625899
+  var valid_21625900 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21625900 = validateParameter(valid_21625900, JString, required = false,
+                                   default = nil)
+  if valid_21625900 != nil:
+    section.add "X-Amz-Algorithm", valid_21625900
+  var valid_21625901 = header.getOrDefault("X-Amz-Signature")
+  valid_21625901 = validateParameter(valid_21625901, JString, required = false,
+                                   default = nil)
+  if valid_21625901 != nil:
+    section.add "X-Amz-Signature", valid_21625901
+  var valid_21625902 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21625902 = validateParameter(valid_21625902, JString, required = false,
+                                   default = nil)
+  if valid_21625902 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21625902
+  var valid_21625903 = header.getOrDefault("X-Amz-Credential")
+  valid_21625903 = validateParameter(valid_21625903, JString, required = false,
+                                   default = nil)
+  if valid_21625903 != nil:
+    section.add "X-Amz-Credential", valid_21625903
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_611154: Call_AddAttachmentsToSet_610996; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+proc call*(call_21625929: Call_AddAttachmentsToSet_21625779; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Adds one or more attachments to an attachment set. If an <code>attachmentSetId</code> is not specified, a new attachment set is created, and the ID of the set is returned in the response. If an <code>attachmentSetId</code> is specified, the attachments are added to the specified set, if it exists.</p> <p>An attachment set is a temporary container for attachments that are to be added to a case or case communication. The set is available for one hour after it is created; the <code>expiryTime</code> returned in the response indicates when the set expires. The maximum number of attachments in a set is 3, and the maximum size of any attachment in the set is 5 MB.</p>
   ## 
-  let valid = call_611154.validator(path, query, header, formData, body)
-  let scheme = call_611154.pickScheme
+  let valid = call_21625929.validator(path, query, header, formData, body, _)
+  let scheme = call_21625929.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611154.url(scheme.get, call_611154.host, call_611154.base,
-                         call_611154.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611154, url, valid)
+  let uri = call_21625929.makeUrl(scheme.get, call_21625929.host, call_21625929.base,
+                               call_21625929.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21625929, uri, valid, _)
 
-proc call*(call_611225: Call_AddAttachmentsToSet_610996; body: JsonNode): Recallable =
+proc call*(call_21625992: Call_AddAttachmentsToSet_21625779; body: JsonNode): Recallable =
   ## addAttachmentsToSet
   ## <p>Adds one or more attachments to an attachment set. If an <code>attachmentSetId</code> is not specified, a new attachment set is created, and the ID of the set is returned in the response. If an <code>attachmentSetId</code> is specified, the attachments are added to the specified set, if it exists.</p> <p>An attachment set is a temporary container for attachments that are to be added to a case or case communication. The set is available for one hour after it is created; the <code>expiryTime</code> returned in the response indicates when the set expires. The maximum number of attachments in a set is 3, and the maximum size of any attachment in the set is 5 MB.</p>
   ##   body: JObject (required)
-  var body_611226 = newJObject()
+  var body_21625993 = newJObject()
   if body != nil:
-    body_611226 = body
-  result = call_611225.call(nil, nil, nil, nil, body_611226)
+    body_21625993 = body
+  result = call_21625992.call(nil, nil, nil, nil, body_21625993)
 
-var addAttachmentsToSet* = Call_AddAttachmentsToSet_610996(
+var addAttachmentsToSet* = Call_AddAttachmentsToSet_21625779(
     name: "addAttachmentsToSet", meth: HttpMethod.HttpPost,
     host: "support.amazonaws.com",
     route: "/#X-Amz-Target=AWSSupport_20130415.AddAttachmentsToSet",
-    validator: validate_AddAttachmentsToSet_610997, base: "/",
-    url: url_AddAttachmentsToSet_610998, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AddAttachmentsToSet_21625780, base: "/",
+    makeUrl: url_AddAttachmentsToSet_21625781,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AddCommunicationToCase_611265 = ref object of OpenApiRestCall_610658
-proc url_AddCommunicationToCase_611267(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_AddCommunicationToCase_21626029 = ref object of OpenApiRestCall_21625435
+proc url_AddCommunicationToCase_21626031(protocol: Scheme; host: string;
+                                        base: string; route: string; path: JsonNode;
+                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -233,8 +240,9 @@ proc url_AddCommunicationToCase_611267(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_AddCommunicationToCase_611266(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+proc validate_AddCommunicationToCase_21626030(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## <p>Adds additional customer communication to an AWS Support case. You use the <code>caseId</code> value to identify the case to add communication to. You can list a set of email addresses to copy on the communication using the <code>ccEmailAddresses</code> value. The <code>communicationBody</code> value contains the text of the communication.</p> <p>The response indicates the success or failure of the request.</p> <p>This operation implements a subset of the features of the AWS Support Center.</p>
   ## 
   var section: JsonNode
@@ -244,97 +252,100 @@ proc validate_AddCommunicationToCase_611266(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_611268 = header.getOrDefault("X-Amz-Target")
-  valid_611268 = validateParameter(valid_611268, JString, required = true, default = newJString(
+  var valid_21626032 = header.getOrDefault("X-Amz-Date")
+  valid_21626032 = validateParameter(valid_21626032, JString, required = false,
+                                   default = nil)
+  if valid_21626032 != nil:
+    section.add "X-Amz-Date", valid_21626032
+  var valid_21626033 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626033 = validateParameter(valid_21626033, JString, required = false,
+                                   default = nil)
+  if valid_21626033 != nil:
+    section.add "X-Amz-Security-Token", valid_21626033
+  var valid_21626034 = header.getOrDefault("X-Amz-Target")
+  valid_21626034 = validateParameter(valid_21626034, JString, required = true, default = newJString(
       "AWSSupport_20130415.AddCommunicationToCase"))
-  if valid_611268 != nil:
-    section.add "X-Amz-Target", valid_611268
-  var valid_611269 = header.getOrDefault("X-Amz-Signature")
-  valid_611269 = validateParameter(valid_611269, JString, required = false,
-                                 default = nil)
-  if valid_611269 != nil:
-    section.add "X-Amz-Signature", valid_611269
-  var valid_611270 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611270 = validateParameter(valid_611270, JString, required = false,
-                                 default = nil)
-  if valid_611270 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611270
-  var valid_611271 = header.getOrDefault("X-Amz-Date")
-  valid_611271 = validateParameter(valid_611271, JString, required = false,
-                                 default = nil)
-  if valid_611271 != nil:
-    section.add "X-Amz-Date", valid_611271
-  var valid_611272 = header.getOrDefault("X-Amz-Credential")
-  valid_611272 = validateParameter(valid_611272, JString, required = false,
-                                 default = nil)
-  if valid_611272 != nil:
-    section.add "X-Amz-Credential", valid_611272
-  var valid_611273 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611273 = validateParameter(valid_611273, JString, required = false,
-                                 default = nil)
-  if valid_611273 != nil:
-    section.add "X-Amz-Security-Token", valid_611273
-  var valid_611274 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611274 = validateParameter(valid_611274, JString, required = false,
-                                 default = nil)
-  if valid_611274 != nil:
-    section.add "X-Amz-Algorithm", valid_611274
-  var valid_611275 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611275 = validateParameter(valid_611275, JString, required = false,
-                                 default = nil)
-  if valid_611275 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611275
+  if valid_21626034 != nil:
+    section.add "X-Amz-Target", valid_21626034
+  var valid_21626035 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626035 = validateParameter(valid_21626035, JString, required = false,
+                                   default = nil)
+  if valid_21626035 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626035
+  var valid_21626036 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626036 = validateParameter(valid_21626036, JString, required = false,
+                                   default = nil)
+  if valid_21626036 != nil:
+    section.add "X-Amz-Algorithm", valid_21626036
+  var valid_21626037 = header.getOrDefault("X-Amz-Signature")
+  valid_21626037 = validateParameter(valid_21626037, JString, required = false,
+                                   default = nil)
+  if valid_21626037 != nil:
+    section.add "X-Amz-Signature", valid_21626037
+  var valid_21626038 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626038 = validateParameter(valid_21626038, JString, required = false,
+                                   default = nil)
+  if valid_21626038 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626038
+  var valid_21626039 = header.getOrDefault("X-Amz-Credential")
+  valid_21626039 = validateParameter(valid_21626039, JString, required = false,
+                                   default = nil)
+  if valid_21626039 != nil:
+    section.add "X-Amz-Credential", valid_21626039
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_611277: Call_AddCommunicationToCase_611265; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+proc call*(call_21626041: Call_AddCommunicationToCase_21626029;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Adds additional customer communication to an AWS Support case. You use the <code>caseId</code> value to identify the case to add communication to. You can list a set of email addresses to copy on the communication using the <code>ccEmailAddresses</code> value. The <code>communicationBody</code> value contains the text of the communication.</p> <p>The response indicates the success or failure of the request.</p> <p>This operation implements a subset of the features of the AWS Support Center.</p>
   ## 
-  let valid = call_611277.validator(path, query, header, formData, body)
-  let scheme = call_611277.pickScheme
+  let valid = call_21626041.validator(path, query, header, formData, body, _)
+  let scheme = call_21626041.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611277.url(scheme.get, call_611277.host, call_611277.base,
-                         call_611277.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611277, url, valid)
+  let uri = call_21626041.makeUrl(scheme.get, call_21626041.host, call_21626041.base,
+                               call_21626041.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626041, uri, valid, _)
 
-proc call*(call_611278: Call_AddCommunicationToCase_611265; body: JsonNode): Recallable =
+proc call*(call_21626042: Call_AddCommunicationToCase_21626029; body: JsonNode): Recallable =
   ## addCommunicationToCase
   ## <p>Adds additional customer communication to an AWS Support case. You use the <code>caseId</code> value to identify the case to add communication to. You can list a set of email addresses to copy on the communication using the <code>ccEmailAddresses</code> value. The <code>communicationBody</code> value contains the text of the communication.</p> <p>The response indicates the success or failure of the request.</p> <p>This operation implements a subset of the features of the AWS Support Center.</p>
   ##   body: JObject (required)
-  var body_611279 = newJObject()
+  var body_21626043 = newJObject()
   if body != nil:
-    body_611279 = body
-  result = call_611278.call(nil, nil, nil, nil, body_611279)
+    body_21626043 = body
+  result = call_21626042.call(nil, nil, nil, nil, body_21626043)
 
-var addCommunicationToCase* = Call_AddCommunicationToCase_611265(
+var addCommunicationToCase* = Call_AddCommunicationToCase_21626029(
     name: "addCommunicationToCase", meth: HttpMethod.HttpPost,
     host: "support.amazonaws.com",
     route: "/#X-Amz-Target=AWSSupport_20130415.AddCommunicationToCase",
-    validator: validate_AddCommunicationToCase_611266, base: "/",
-    url: url_AddCommunicationToCase_611267, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AddCommunicationToCase_21626030, base: "/",
+    makeUrl: url_AddCommunicationToCase_21626031,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateCase_611280 = ref object of OpenApiRestCall_610658
-proc url_CreateCase_611282(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
+  Call_CreateCase_21626044 = ref object of OpenApiRestCall_21625435
+proc url_CreateCase_21626046(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -343,8 +354,9 @@ proc url_CreateCase_611282(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_CreateCase_611281(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode): JsonNode =
+proc validate_CreateCase_21626045(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## <p>Creates a new case in the AWS Support Center. This operation is modeled on the behavior of the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. Its parameters require you to specify the following information:</p> <ul> <li> <p> <b>issueType.</b> The type of issue for the case. You can specify either "customer-service" or "technical." If you do not indicate a value, the default is "technical."</p> <note> <p>Service limit increases are not supported by the Support API; you must submit service limit increase requests in <a href="https://console.aws.amazon.com/support">Support Center</a>.</p> <p>The <code>caseId</code> is not the <code>displayId</code> that appears in <a href="https://console.aws.amazon.com/support">Support Center</a>. You can use the <a>DescribeCases</a> API to get the <code>displayId</code>.</p> </note> </li> <li> <p> <b>serviceCode.</b> The code for an AWS service. You can get the possible <code>serviceCode</code> values by calling <a>DescribeServices</a>.</p> </li> <li> <p> <b>categoryCode.</b> The category for the service defined for the <code>serviceCode</code> value. You also get the category code for a service by calling <a>DescribeServices</a>. Each AWS service defines its own set of category codes.</p> </li> <li> <p> <b>severityCode.</b> A value that indicates the urgency of the case, which in turn determines the response time according to your service level agreement with AWS Support. You can get the possible <code>severityCode</code> values by calling <a>DescribeSeverityLevels</a>. For more information about the meaning of the codes, see <a>SeverityLevel</a> and <a href="https://docs.aws.amazon.com/awssupport/latest/user/getting-started.html#choosing-severity">Choosing a Severity</a>.</p> </li> <li> <p> <b>subject.</b> The <b>Subject</b> field on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page.</p> </li> <li> <p> <b>communicationBody.</b> The <b>Description</b> field on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page.</p> </li> <li> <p> <b>attachmentSetId.</b> The ID of a set of attachments that has been created by using <a>AddAttachmentsToSet</a>.</p> </li> <li> <p> <b>language.</b> The human language in which AWS Support handles the case. English and Japanese are currently supported.</p> </li> <li> <p> <b>ccEmailAddresses.</b> The AWS Support Center <b>CC</b> field on the <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. You can list email addresses to be copied on any correspondence about the case. The account that opens the case is already identified by passing the AWS Credentials in the HTTP POST method or in a method or function call from one of the programming languages supported by an <a href="http://aws.amazon.com/tools/">AWS SDK</a>. </p> </li> </ul> <note> <p>To add additional communication or attachments to an existing case, use <a>AddCommunicationToCase</a>.</p> </note> <p>A successful <a>CreateCase</a> request returns an AWS Support case number. Case numbers are used by the <a>DescribeCases</a> operation to retrieve existing AWS Support cases.</p>
   ## 
   var section: JsonNode
@@ -354,96 +366,484 @@ proc validate_CreateCase_611281(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_611283 = header.getOrDefault("X-Amz-Target")
-  valid_611283 = validateParameter(valid_611283, JString, required = true, default = newJString(
+  var valid_21626047 = header.getOrDefault("X-Amz-Date")
+  valid_21626047 = validateParameter(valid_21626047, JString, required = false,
+                                   default = nil)
+  if valid_21626047 != nil:
+    section.add "X-Amz-Date", valid_21626047
+  var valid_21626048 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626048 = validateParameter(valid_21626048, JString, required = false,
+                                   default = nil)
+  if valid_21626048 != nil:
+    section.add "X-Amz-Security-Token", valid_21626048
+  var valid_21626049 = header.getOrDefault("X-Amz-Target")
+  valid_21626049 = validateParameter(valid_21626049, JString, required = true, default = newJString(
       "AWSSupport_20130415.CreateCase"))
-  if valid_611283 != nil:
-    section.add "X-Amz-Target", valid_611283
-  var valid_611284 = header.getOrDefault("X-Amz-Signature")
-  valid_611284 = validateParameter(valid_611284, JString, required = false,
-                                 default = nil)
-  if valid_611284 != nil:
-    section.add "X-Amz-Signature", valid_611284
-  var valid_611285 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611285 = validateParameter(valid_611285, JString, required = false,
-                                 default = nil)
-  if valid_611285 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611285
-  var valid_611286 = header.getOrDefault("X-Amz-Date")
-  valid_611286 = validateParameter(valid_611286, JString, required = false,
-                                 default = nil)
-  if valid_611286 != nil:
-    section.add "X-Amz-Date", valid_611286
-  var valid_611287 = header.getOrDefault("X-Amz-Credential")
-  valid_611287 = validateParameter(valid_611287, JString, required = false,
-                                 default = nil)
-  if valid_611287 != nil:
-    section.add "X-Amz-Credential", valid_611287
-  var valid_611288 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611288 = validateParameter(valid_611288, JString, required = false,
-                                 default = nil)
-  if valid_611288 != nil:
-    section.add "X-Amz-Security-Token", valid_611288
-  var valid_611289 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611289 = validateParameter(valid_611289, JString, required = false,
-                                 default = nil)
-  if valid_611289 != nil:
-    section.add "X-Amz-Algorithm", valid_611289
-  var valid_611290 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611290 = validateParameter(valid_611290, JString, required = false,
-                                 default = nil)
-  if valid_611290 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611290
+  if valid_21626049 != nil:
+    section.add "X-Amz-Target", valid_21626049
+  var valid_21626050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626050 = validateParameter(valid_21626050, JString, required = false,
+                                   default = nil)
+  if valid_21626050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626050
+  var valid_21626051 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626051 = validateParameter(valid_21626051, JString, required = false,
+                                   default = nil)
+  if valid_21626051 != nil:
+    section.add "X-Amz-Algorithm", valid_21626051
+  var valid_21626052 = header.getOrDefault("X-Amz-Signature")
+  valid_21626052 = validateParameter(valid_21626052, JString, required = false,
+                                   default = nil)
+  if valid_21626052 != nil:
+    section.add "X-Amz-Signature", valid_21626052
+  var valid_21626053 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626053 = validateParameter(valid_21626053, JString, required = false,
+                                   default = nil)
+  if valid_21626053 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626053
+  var valid_21626054 = header.getOrDefault("X-Amz-Credential")
+  valid_21626054 = validateParameter(valid_21626054, JString, required = false,
+                                   default = nil)
+  if valid_21626054 != nil:
+    section.add "X-Amz-Credential", valid_21626054
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_611292: Call_CreateCase_611280; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+proc call*(call_21626056: Call_CreateCase_21626044; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Creates a new case in the AWS Support Center. This operation is modeled on the behavior of the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. Its parameters require you to specify the following information:</p> <ul> <li> <p> <b>issueType.</b> The type of issue for the case. You can specify either "customer-service" or "technical." If you do not indicate a value, the default is "technical."</p> <note> <p>Service limit increases are not supported by the Support API; you must submit service limit increase requests in <a href="https://console.aws.amazon.com/support">Support Center</a>.</p> <p>The <code>caseId</code> is not the <code>displayId</code> that appears in <a href="https://console.aws.amazon.com/support">Support Center</a>. You can use the <a>DescribeCases</a> API to get the <code>displayId</code>.</p> </note> </li> <li> <p> <b>serviceCode.</b> The code for an AWS service. You can get the possible <code>serviceCode</code> values by calling <a>DescribeServices</a>.</p> </li> <li> <p> <b>categoryCode.</b> The category for the service defined for the <code>serviceCode</code> value. You also get the category code for a service by calling <a>DescribeServices</a>. Each AWS service defines its own set of category codes.</p> </li> <li> <p> <b>severityCode.</b> A value that indicates the urgency of the case, which in turn determines the response time according to your service level agreement with AWS Support. You can get the possible <code>severityCode</code> values by calling <a>DescribeSeverityLevels</a>. For more information about the meaning of the codes, see <a>SeverityLevel</a> and <a href="https://docs.aws.amazon.com/awssupport/latest/user/getting-started.html#choosing-severity">Choosing a Severity</a>.</p> </li> <li> <p> <b>subject.</b> The <b>Subject</b> field on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page.</p> </li> <li> <p> <b>communicationBody.</b> The <b>Description</b> field on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page.</p> </li> <li> <p> <b>attachmentSetId.</b> The ID of a set of attachments that has been created by using <a>AddAttachmentsToSet</a>.</p> </li> <li> <p> <b>language.</b> The human language in which AWS Support handles the case. English and Japanese are currently supported.</p> </li> <li> <p> <b>ccEmailAddresses.</b> The AWS Support Center <b>CC</b> field on the <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. You can list email addresses to be copied on any correspondence about the case. The account that opens the case is already identified by passing the AWS Credentials in the HTTP POST method or in a method or function call from one of the programming languages supported by an <a href="http://aws.amazon.com/tools/">AWS SDK</a>. </p> </li> </ul> <note> <p>To add additional communication or attachments to an existing case, use <a>AddCommunicationToCase</a>.</p> </note> <p>A successful <a>CreateCase</a> request returns an AWS Support case number. Case numbers are used by the <a>DescribeCases</a> operation to retrieve existing AWS Support cases.</p>
   ## 
-  let valid = call_611292.validator(path, query, header, formData, body)
-  let scheme = call_611292.pickScheme
+  let valid = call_21626056.validator(path, query, header, formData, body, _)
+  let scheme = call_21626056.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611292.url(scheme.get, call_611292.host, call_611292.base,
-                         call_611292.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611292, url, valid)
+  let uri = call_21626056.makeUrl(scheme.get, call_21626056.host, call_21626056.base,
+                               call_21626056.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626056, uri, valid, _)
 
-proc call*(call_611293: Call_CreateCase_611280; body: JsonNode): Recallable =
+proc call*(call_21626057: Call_CreateCase_21626044; body: JsonNode): Recallable =
   ## createCase
   ## <p>Creates a new case in the AWS Support Center. This operation is modeled on the behavior of the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. Its parameters require you to specify the following information:</p> <ul> <li> <p> <b>issueType.</b> The type of issue for the case. You can specify either "customer-service" or "technical." If you do not indicate a value, the default is "technical."</p> <note> <p>Service limit increases are not supported by the Support API; you must submit service limit increase requests in <a href="https://console.aws.amazon.com/support">Support Center</a>.</p> <p>The <code>caseId</code> is not the <code>displayId</code> that appears in <a href="https://console.aws.amazon.com/support">Support Center</a>. You can use the <a>DescribeCases</a> API to get the <code>displayId</code>.</p> </note> </li> <li> <p> <b>serviceCode.</b> The code for an AWS service. You can get the possible <code>serviceCode</code> values by calling <a>DescribeServices</a>.</p> </li> <li> <p> <b>categoryCode.</b> The category for the service defined for the <code>serviceCode</code> value. You also get the category code for a service by calling <a>DescribeServices</a>. Each AWS service defines its own set of category codes.</p> </li> <li> <p> <b>severityCode.</b> A value that indicates the urgency of the case, which in turn determines the response time according to your service level agreement with AWS Support. You can get the possible <code>severityCode</code> values by calling <a>DescribeSeverityLevels</a>. For more information about the meaning of the codes, see <a>SeverityLevel</a> and <a href="https://docs.aws.amazon.com/awssupport/latest/user/getting-started.html#choosing-severity">Choosing a Severity</a>.</p> </li> <li> <p> <b>subject.</b> The <b>Subject</b> field on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page.</p> </li> <li> <p> <b>communicationBody.</b> The <b>Description</b> field on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page.</p> </li> <li> <p> <b>attachmentSetId.</b> The ID of a set of attachments that has been created by using <a>AddAttachmentsToSet</a>.</p> </li> <li> <p> <b>language.</b> The human language in which AWS Support handles the case. English and Japanese are currently supported.</p> </li> <li> <p> <b>ccEmailAddresses.</b> The AWS Support Center <b>CC</b> field on the <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. You can list email addresses to be copied on any correspondence about the case. The account that opens the case is already identified by passing the AWS Credentials in the HTTP POST method or in a method or function call from one of the programming languages supported by an <a href="http://aws.amazon.com/tools/">AWS SDK</a>. </p> </li> </ul> <note> <p>To add additional communication or attachments to an existing case, use <a>AddCommunicationToCase</a>.</p> </note> <p>A successful <a>CreateCase</a> request returns an AWS Support case number. Case numbers are used by the <a>DescribeCases</a> operation to retrieve existing AWS Support cases.</p>
   ##   body: JObject (required)
-  var body_611294 = newJObject()
+  var body_21626058 = newJObject()
   if body != nil:
-    body_611294 = body
-  result = call_611293.call(nil, nil, nil, nil, body_611294)
+    body_21626058 = body
+  result = call_21626057.call(nil, nil, nil, nil, body_21626058)
 
-var createCase* = Call_CreateCase_611280(name: "createCase",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.CreateCase",
-                                      validator: validate_CreateCase_611281,
-                                      base: "/", url: url_CreateCase_611282,
-                                      schemes: {Scheme.Https, Scheme.Http})
+var createCase* = Call_CreateCase_21626044(name: "createCase",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.CreateCase",
+                                        validator: validate_CreateCase_21626045,
+                                        base: "/", makeUrl: url_CreateCase_21626046,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeAttachment_611295 = ref object of OpenApiRestCall_610658
-proc url_DescribeAttachment_611297(protocol: Scheme; host: string; base: string;
+  Call_DescribeAttachment_21626059 = ref object of OpenApiRestCall_21625435
+proc url_DescribeAttachment_21626061(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeAttachment_21626060(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Returns the attachment that has the specified ID. Attachment IDs are generated by the case management system when you add an attachment to a case or case communication. Attachment IDs are returned in the <a>AttachmentDetails</a> objects that are returned by the <a>DescribeCommunications</a> operation.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626062 = header.getOrDefault("X-Amz-Date")
+  valid_21626062 = validateParameter(valid_21626062, JString, required = false,
+                                   default = nil)
+  if valid_21626062 != nil:
+    section.add "X-Amz-Date", valid_21626062
+  var valid_21626063 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626063 = validateParameter(valid_21626063, JString, required = false,
+                                   default = nil)
+  if valid_21626063 != nil:
+    section.add "X-Amz-Security-Token", valid_21626063
+  var valid_21626064 = header.getOrDefault("X-Amz-Target")
+  valid_21626064 = validateParameter(valid_21626064, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeAttachment"))
+  if valid_21626064 != nil:
+    section.add "X-Amz-Target", valid_21626064
+  var valid_21626065 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626065 = validateParameter(valid_21626065, JString, required = false,
+                                   default = nil)
+  if valid_21626065 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626065
+  var valid_21626066 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626066 = validateParameter(valid_21626066, JString, required = false,
+                                   default = nil)
+  if valid_21626066 != nil:
+    section.add "X-Amz-Algorithm", valid_21626066
+  var valid_21626067 = header.getOrDefault("X-Amz-Signature")
+  valid_21626067 = validateParameter(valid_21626067, JString, required = false,
+                                   default = nil)
+  if valid_21626067 != nil:
+    section.add "X-Amz-Signature", valid_21626067
+  var valid_21626068 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626068 = validateParameter(valid_21626068, JString, required = false,
+                                   default = nil)
+  if valid_21626068 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626068
+  var valid_21626069 = header.getOrDefault("X-Amz-Credential")
+  valid_21626069 = validateParameter(valid_21626069, JString, required = false,
+                                   default = nil)
+  if valid_21626069 != nil:
+    section.add "X-Amz-Credential", valid_21626069
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626071: Call_DescribeAttachment_21626059; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns the attachment that has the specified ID. Attachment IDs are generated by the case management system when you add an attachment to a case or case communication. Attachment IDs are returned in the <a>AttachmentDetails</a> objects that are returned by the <a>DescribeCommunications</a> operation.
+  ## 
+  let valid = call_21626071.validator(path, query, header, formData, body, _)
+  let scheme = call_21626071.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626071.makeUrl(scheme.get, call_21626071.host, call_21626071.base,
+                               call_21626071.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626071, uri, valid, _)
+
+proc call*(call_21626072: Call_DescribeAttachment_21626059; body: JsonNode): Recallable =
+  ## describeAttachment
+  ## Returns the attachment that has the specified ID. Attachment IDs are generated by the case management system when you add an attachment to a case or case communication. Attachment IDs are returned in the <a>AttachmentDetails</a> objects that are returned by the <a>DescribeCommunications</a> operation.
+  ##   body: JObject (required)
+  var body_21626073 = newJObject()
+  if body != nil:
+    body_21626073 = body
+  result = call_21626072.call(nil, nil, nil, nil, body_21626073)
+
+var describeAttachment* = Call_DescribeAttachment_21626059(
+    name: "describeAttachment", meth: HttpMethod.HttpPost,
+    host: "support.amazonaws.com",
+    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeAttachment",
+    validator: validate_DescribeAttachment_21626060, base: "/",
+    makeUrl: url_DescribeAttachment_21626061, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeCases_21626074 = ref object of OpenApiRestCall_21625435
+proc url_DescribeCases_21626076(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeCases_21626075(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+  ## <p>Returns a list of cases that you specify by passing one or more case IDs. In addition, you can filter the cases by date by setting values for the <code>afterTime</code> and <code>beforeTime</code> request parameters. You can set values for the <code>includeResolvedCases</code> and <code>includeCommunications</code> request parameters to control how much information is returned.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>The response returns the following in JSON format:</p> <ul> <li> <p>One or more <a>CaseDetails</a> data types.</p> </li> <li> <p>One or more <code>nextToken</code> values, which specify where to paginate the returned records represented by the <code>CaseDetails</code> objects.</p> </li> </ul>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   maxResults: JString
+  ##             : Pagination limit
+  ##   nextToken: JString
+  ##            : Pagination token
+  section = newJObject()
+  var valid_21626077 = query.getOrDefault("maxResults")
+  valid_21626077 = validateParameter(valid_21626077, JString, required = false,
+                                   default = nil)
+  if valid_21626077 != nil:
+    section.add "maxResults", valid_21626077
+  var valid_21626078 = query.getOrDefault("nextToken")
+  valid_21626078 = validateParameter(valid_21626078, JString, required = false,
+                                   default = nil)
+  if valid_21626078 != nil:
+    section.add "nextToken", valid_21626078
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626079 = header.getOrDefault("X-Amz-Date")
+  valid_21626079 = validateParameter(valid_21626079, JString, required = false,
+                                   default = nil)
+  if valid_21626079 != nil:
+    section.add "X-Amz-Date", valid_21626079
+  var valid_21626080 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626080 = validateParameter(valid_21626080, JString, required = false,
+                                   default = nil)
+  if valid_21626080 != nil:
+    section.add "X-Amz-Security-Token", valid_21626080
+  var valid_21626081 = header.getOrDefault("X-Amz-Target")
+  valid_21626081 = validateParameter(valid_21626081, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeCases"))
+  if valid_21626081 != nil:
+    section.add "X-Amz-Target", valid_21626081
+  var valid_21626082 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626082 = validateParameter(valid_21626082, JString, required = false,
+                                   default = nil)
+  if valid_21626082 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626082
+  var valid_21626083 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626083 = validateParameter(valid_21626083, JString, required = false,
+                                   default = nil)
+  if valid_21626083 != nil:
+    section.add "X-Amz-Algorithm", valid_21626083
+  var valid_21626084 = header.getOrDefault("X-Amz-Signature")
+  valid_21626084 = validateParameter(valid_21626084, JString, required = false,
+                                   default = nil)
+  if valid_21626084 != nil:
+    section.add "X-Amz-Signature", valid_21626084
+  var valid_21626085 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626085 = validateParameter(valid_21626085, JString, required = false,
+                                   default = nil)
+  if valid_21626085 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626085
+  var valid_21626086 = header.getOrDefault("X-Amz-Credential")
+  valid_21626086 = validateParameter(valid_21626086, JString, required = false,
+                                   default = nil)
+  if valid_21626086 != nil:
+    section.add "X-Amz-Credential", valid_21626086
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626088: Call_DescribeCases_21626074; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns a list of cases that you specify by passing one or more case IDs. In addition, you can filter the cases by date by setting values for the <code>afterTime</code> and <code>beforeTime</code> request parameters. You can set values for the <code>includeResolvedCases</code> and <code>includeCommunications</code> request parameters to control how much information is returned.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>The response returns the following in JSON format:</p> <ul> <li> <p>One or more <a>CaseDetails</a> data types.</p> </li> <li> <p>One or more <code>nextToken</code> values, which specify where to paginate the returned records represented by the <code>CaseDetails</code> objects.</p> </li> </ul>
+  ## 
+  let valid = call_21626088.validator(path, query, header, formData, body, _)
+  let scheme = call_21626088.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626088.makeUrl(scheme.get, call_21626088.host, call_21626088.base,
+                               call_21626088.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626088, uri, valid, _)
+
+proc call*(call_21626089: Call_DescribeCases_21626074; body: JsonNode;
+          maxResults: string = ""; nextToken: string = ""): Recallable =
+  ## describeCases
+  ## <p>Returns a list of cases that you specify by passing one or more case IDs. In addition, you can filter the cases by date by setting values for the <code>afterTime</code> and <code>beforeTime</code> request parameters. You can set values for the <code>includeResolvedCases</code> and <code>includeCommunications</code> request parameters to control how much information is returned.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>The response returns the following in JSON format:</p> <ul> <li> <p>One or more <a>CaseDetails</a> data types.</p> </li> <li> <p>One or more <code>nextToken</code> values, which specify where to paginate the returned records represented by the <code>CaseDetails</code> objects.</p> </li> </ul>
+  ##   maxResults: string
+  ##             : Pagination limit
+  ##   nextToken: string
+  ##            : Pagination token
+  ##   body: JObject (required)
+  var query_21626091 = newJObject()
+  var body_21626092 = newJObject()
+  add(query_21626091, "maxResults", newJString(maxResults))
+  add(query_21626091, "nextToken", newJString(nextToken))
+  if body != nil:
+    body_21626092 = body
+  result = call_21626089.call(nil, query_21626091, nil, nil, body_21626092)
+
+var describeCases* = Call_DescribeCases_21626074(name: "describeCases",
+    meth: HttpMethod.HttpPost, host: "support.amazonaws.com",
+    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeCases",
+    validator: validate_DescribeCases_21626075, base: "/",
+    makeUrl: url_DescribeCases_21626076, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeCommunications_21626096 = ref object of OpenApiRestCall_21625435
+proc url_DescribeCommunications_21626098(protocol: Scheme; host: string;
+                                        base: string; route: string; path: JsonNode;
+                                        query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeCommunications_21626097(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Returns communications (and attachments) for one or more support cases. You can use the <code>afterTime</code> and <code>beforeTime</code> parameters to filter by date. You can use the <code>caseId</code> parameter to restrict the results to a particular case.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>You can use the <code>maxResults</code> and <code>nextToken</code> parameters to control the pagination of the result set. Set <code>maxResults</code> to the number of cases you want displayed on each page, and use <code>nextToken</code> to specify the resumption of pagination.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   maxResults: JString
+  ##             : Pagination limit
+  ##   nextToken: JString
+  ##            : Pagination token
+  section = newJObject()
+  var valid_21626099 = query.getOrDefault("maxResults")
+  valid_21626099 = validateParameter(valid_21626099, JString, required = false,
+                                   default = nil)
+  if valid_21626099 != nil:
+    section.add "maxResults", valid_21626099
+  var valid_21626100 = query.getOrDefault("nextToken")
+  valid_21626100 = validateParameter(valid_21626100, JString, required = false,
+                                   default = nil)
+  if valid_21626100 != nil:
+    section.add "nextToken", valid_21626100
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626101 = header.getOrDefault("X-Amz-Date")
+  valid_21626101 = validateParameter(valid_21626101, JString, required = false,
+                                   default = nil)
+  if valid_21626101 != nil:
+    section.add "X-Amz-Date", valid_21626101
+  var valid_21626102 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626102 = validateParameter(valid_21626102, JString, required = false,
+                                   default = nil)
+  if valid_21626102 != nil:
+    section.add "X-Amz-Security-Token", valid_21626102
+  var valid_21626103 = header.getOrDefault("X-Amz-Target")
+  valid_21626103 = validateParameter(valid_21626103, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeCommunications"))
+  if valid_21626103 != nil:
+    section.add "X-Amz-Target", valid_21626103
+  var valid_21626104 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626104 = validateParameter(valid_21626104, JString, required = false,
+                                   default = nil)
+  if valid_21626104 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626104
+  var valid_21626105 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626105 = validateParameter(valid_21626105, JString, required = false,
+                                   default = nil)
+  if valid_21626105 != nil:
+    section.add "X-Amz-Algorithm", valid_21626105
+  var valid_21626106 = header.getOrDefault("X-Amz-Signature")
+  valid_21626106 = validateParameter(valid_21626106, JString, required = false,
+                                   default = nil)
+  if valid_21626106 != nil:
+    section.add "X-Amz-Signature", valid_21626106
+  var valid_21626107 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626107 = validateParameter(valid_21626107, JString, required = false,
+                                   default = nil)
+  if valid_21626107 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626107
+  var valid_21626108 = header.getOrDefault("X-Amz-Credential")
+  valid_21626108 = validateParameter(valid_21626108, JString, required = false,
+                                   default = nil)
+  if valid_21626108 != nil:
+    section.add "X-Amz-Credential", valid_21626108
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626110: Call_DescribeCommunications_21626096;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns communications (and attachments) for one or more support cases. You can use the <code>afterTime</code> and <code>beforeTime</code> parameters to filter by date. You can use the <code>caseId</code> parameter to restrict the results to a particular case.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>You can use the <code>maxResults</code> and <code>nextToken</code> parameters to control the pagination of the result set. Set <code>maxResults</code> to the number of cases you want displayed on each page, and use <code>nextToken</code> to specify the resumption of pagination.</p>
+  ## 
+  let valid = call_21626110.validator(path, query, header, formData, body, _)
+  let scheme = call_21626110.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626110.makeUrl(scheme.get, call_21626110.host, call_21626110.base,
+                               call_21626110.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626110, uri, valid, _)
+
+proc call*(call_21626111: Call_DescribeCommunications_21626096; body: JsonNode;
+          maxResults: string = ""; nextToken: string = ""): Recallable =
+  ## describeCommunications
+  ## <p>Returns communications (and attachments) for one or more support cases. You can use the <code>afterTime</code> and <code>beforeTime</code> parameters to filter by date. You can use the <code>caseId</code> parameter to restrict the results to a particular case.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>You can use the <code>maxResults</code> and <code>nextToken</code> parameters to control the pagination of the result set. Set <code>maxResults</code> to the number of cases you want displayed on each page, and use <code>nextToken</code> to specify the resumption of pagination.</p>
+  ##   maxResults: string
+  ##             : Pagination limit
+  ##   nextToken: string
+  ##            : Pagination token
+  ##   body: JObject (required)
+  var query_21626112 = newJObject()
+  var body_21626113 = newJObject()
+  add(query_21626112, "maxResults", newJString(maxResults))
+  add(query_21626112, "nextToken", newJString(nextToken))
+  if body != nil:
+    body_21626113 = body
+  result = call_21626111.call(nil, query_21626112, nil, nil, body_21626113)
+
+var describeCommunications* = Call_DescribeCommunications_21626096(
+    name: "describeCommunications", meth: HttpMethod.HttpPost,
+    host: "support.amazonaws.com",
+    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeCommunications",
+    validator: validate_DescribeCommunications_21626097, base: "/",
+    makeUrl: url_DescribeCommunications_21626098,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeServices_21626114 = ref object of OpenApiRestCall_21625435
+proc url_DescribeServices_21626116(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -453,10 +853,11 @@ proc url_DescribeAttachment_611297(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeAttachment_611296(path: JsonNode; query: JsonNode;
+proc validate_DescribeServices_21626115(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
-                                       body: JsonNode): JsonNode =
-  ## Returns the attachment that has the specified ID. Attachment IDs are generated by the case management system when you add an attachment to a case or case communication. Attachment IDs are returned in the <a>AttachmentDetails</a> objects that are returned by the <a>DescribeCommunications</a> operation.
+                                       body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Returns the current list of AWS services and a list of service categories that applies to each one. You then use service names and categories in your <a>CreateCase</a> requests. Each AWS service has its own set of categories.</p> <p>The service codes and category codes correspond to the values that are displayed in the <b>Service</b> and <b>Category</b> drop-down lists on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. The values in those fields, however, do not necessarily match the service codes and categories returned by the <code>DescribeServices</code> request. Always use the service codes and categories obtained programmatically. This practice ensures that you always have the most recent set of service and category codes.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -465,96 +866,783 @@ proc validate_DescribeAttachment_611296(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_611298 = header.getOrDefault("X-Amz-Target")
-  valid_611298 = validateParameter(valid_611298, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeAttachment"))
-  if valid_611298 != nil:
-    section.add "X-Amz-Target", valid_611298
-  var valid_611299 = header.getOrDefault("X-Amz-Signature")
-  valid_611299 = validateParameter(valid_611299, JString, required = false,
-                                 default = nil)
-  if valid_611299 != nil:
-    section.add "X-Amz-Signature", valid_611299
-  var valid_611300 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611300 = validateParameter(valid_611300, JString, required = false,
-                                 default = nil)
-  if valid_611300 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611300
-  var valid_611301 = header.getOrDefault("X-Amz-Date")
-  valid_611301 = validateParameter(valid_611301, JString, required = false,
-                                 default = nil)
-  if valid_611301 != nil:
-    section.add "X-Amz-Date", valid_611301
-  var valid_611302 = header.getOrDefault("X-Amz-Credential")
-  valid_611302 = validateParameter(valid_611302, JString, required = false,
-                                 default = nil)
-  if valid_611302 != nil:
-    section.add "X-Amz-Credential", valid_611302
-  var valid_611303 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611303 = validateParameter(valid_611303, JString, required = false,
-                                 default = nil)
-  if valid_611303 != nil:
-    section.add "X-Amz-Security-Token", valid_611303
-  var valid_611304 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611304 = validateParameter(valid_611304, JString, required = false,
-                                 default = nil)
-  if valid_611304 != nil:
-    section.add "X-Amz-Algorithm", valid_611304
-  var valid_611305 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611305 = validateParameter(valid_611305, JString, required = false,
-                                 default = nil)
-  if valid_611305 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611305
+  var valid_21626117 = header.getOrDefault("X-Amz-Date")
+  valid_21626117 = validateParameter(valid_21626117, JString, required = false,
+                                   default = nil)
+  if valid_21626117 != nil:
+    section.add "X-Amz-Date", valid_21626117
+  var valid_21626118 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626118 = validateParameter(valid_21626118, JString, required = false,
+                                   default = nil)
+  if valid_21626118 != nil:
+    section.add "X-Amz-Security-Token", valid_21626118
+  var valid_21626119 = header.getOrDefault("X-Amz-Target")
+  valid_21626119 = validateParameter(valid_21626119, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeServices"))
+  if valid_21626119 != nil:
+    section.add "X-Amz-Target", valid_21626119
+  var valid_21626120 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626120 = validateParameter(valid_21626120, JString, required = false,
+                                   default = nil)
+  if valid_21626120 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626120
+  var valid_21626121 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626121 = validateParameter(valid_21626121, JString, required = false,
+                                   default = nil)
+  if valid_21626121 != nil:
+    section.add "X-Amz-Algorithm", valid_21626121
+  var valid_21626122 = header.getOrDefault("X-Amz-Signature")
+  valid_21626122 = validateParameter(valid_21626122, JString, required = false,
+                                   default = nil)
+  if valid_21626122 != nil:
+    section.add "X-Amz-Signature", valid_21626122
+  var valid_21626123 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626123 = validateParameter(valid_21626123, JString, required = false,
+                                   default = nil)
+  if valid_21626123 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626123
+  var valid_21626124 = header.getOrDefault("X-Amz-Credential")
+  valid_21626124 = validateParameter(valid_21626124, JString, required = false,
+                                   default = nil)
+  if valid_21626124 != nil:
+    section.add "X-Amz-Credential", valid_21626124
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_611307: Call_DescribeAttachment_611295; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns the attachment that has the specified ID. Attachment IDs are generated by the case management system when you add an attachment to a case or case communication. Attachment IDs are returned in the <a>AttachmentDetails</a> objects that are returned by the <a>DescribeCommunications</a> operation.
+proc call*(call_21626126: Call_DescribeServices_21626114; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns the current list of AWS services and a list of service categories that applies to each one. You then use service names and categories in your <a>CreateCase</a> requests. Each AWS service has its own set of categories.</p> <p>The service codes and category codes correspond to the values that are displayed in the <b>Service</b> and <b>Category</b> drop-down lists on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. The values in those fields, however, do not necessarily match the service codes and categories returned by the <code>DescribeServices</code> request. Always use the service codes and categories obtained programmatically. This practice ensures that you always have the most recent set of service and category codes.</p>
   ## 
-  let valid = call_611307.validator(path, query, header, formData, body)
-  let scheme = call_611307.pickScheme
+  let valid = call_21626126.validator(path, query, header, formData, body, _)
+  let scheme = call_21626126.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611307.url(scheme.get, call_611307.host, call_611307.base,
-                         call_611307.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611307, url, valid)
+  let uri = call_21626126.makeUrl(scheme.get, call_21626126.host, call_21626126.base,
+                               call_21626126.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626126, uri, valid, _)
 
-proc call*(call_611308: Call_DescribeAttachment_611295; body: JsonNode): Recallable =
-  ## describeAttachment
-  ## Returns the attachment that has the specified ID. Attachment IDs are generated by the case management system when you add an attachment to a case or case communication. Attachment IDs are returned in the <a>AttachmentDetails</a> objects that are returned by the <a>DescribeCommunications</a> operation.
+proc call*(call_21626127: Call_DescribeServices_21626114; body: JsonNode): Recallable =
+  ## describeServices
+  ## <p>Returns the current list of AWS services and a list of service categories that applies to each one. You then use service names and categories in your <a>CreateCase</a> requests. Each AWS service has its own set of categories.</p> <p>The service codes and category codes correspond to the values that are displayed in the <b>Service</b> and <b>Category</b> drop-down lists on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. The values in those fields, however, do not necessarily match the service codes and categories returned by the <code>DescribeServices</code> request. Always use the service codes and categories obtained programmatically. This practice ensures that you always have the most recent set of service and category codes.</p>
   ##   body: JObject (required)
-  var body_611309 = newJObject()
+  var body_21626128 = newJObject()
   if body != nil:
-    body_611309 = body
-  result = call_611308.call(nil, nil, nil, nil, body_611309)
+    body_21626128 = body
+  result = call_21626127.call(nil, nil, nil, nil, body_21626128)
 
-var describeAttachment* = Call_DescribeAttachment_611295(
-    name: "describeAttachment", meth: HttpMethod.HttpPost,
-    host: "support.amazonaws.com",
-    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeAttachment",
-    validator: validate_DescribeAttachment_611296, base: "/",
-    url: url_DescribeAttachment_611297, schemes: {Scheme.Https, Scheme.Http})
+var describeServices* = Call_DescribeServices_21626114(name: "describeServices",
+    meth: HttpMethod.HttpPost, host: "support.amazonaws.com",
+    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeServices",
+    validator: validate_DescribeServices_21626115, base: "/",
+    makeUrl: url_DescribeServices_21626116, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCases_611310 = ref object of OpenApiRestCall_610658
-proc url_DescribeCases_611312(protocol: Scheme; host: string; base: string;
+  Call_DescribeSeverityLevels_21626129 = ref object of OpenApiRestCall_21625435
+proc url_DescribeSeverityLevels_21626131(protocol: Scheme; host: string;
+                                        base: string; route: string; path: JsonNode;
+                                        query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeSeverityLevels_21626130(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Returns the list of severity levels that you can assign to an AWS Support case. The severity level for a case is also a field in the <a>CaseDetails</a> data type included in any <a>CreateCase</a> request.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626132 = header.getOrDefault("X-Amz-Date")
+  valid_21626132 = validateParameter(valid_21626132, JString, required = false,
+                                   default = nil)
+  if valid_21626132 != nil:
+    section.add "X-Amz-Date", valid_21626132
+  var valid_21626133 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626133 = validateParameter(valid_21626133, JString, required = false,
+                                   default = nil)
+  if valid_21626133 != nil:
+    section.add "X-Amz-Security-Token", valid_21626133
+  var valid_21626134 = header.getOrDefault("X-Amz-Target")
+  valid_21626134 = validateParameter(valid_21626134, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeSeverityLevels"))
+  if valid_21626134 != nil:
+    section.add "X-Amz-Target", valid_21626134
+  var valid_21626135 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626135 = validateParameter(valid_21626135, JString, required = false,
+                                   default = nil)
+  if valid_21626135 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626135
+  var valid_21626136 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626136 = validateParameter(valid_21626136, JString, required = false,
+                                   default = nil)
+  if valid_21626136 != nil:
+    section.add "X-Amz-Algorithm", valid_21626136
+  var valid_21626137 = header.getOrDefault("X-Amz-Signature")
+  valid_21626137 = validateParameter(valid_21626137, JString, required = false,
+                                   default = nil)
+  if valid_21626137 != nil:
+    section.add "X-Amz-Signature", valid_21626137
+  var valid_21626138 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626138 = validateParameter(valid_21626138, JString, required = false,
+                                   default = nil)
+  if valid_21626138 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626138
+  var valid_21626139 = header.getOrDefault("X-Amz-Credential")
+  valid_21626139 = validateParameter(valid_21626139, JString, required = false,
+                                   default = nil)
+  if valid_21626139 != nil:
+    section.add "X-Amz-Credential", valid_21626139
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626141: Call_DescribeSeverityLevels_21626129;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns the list of severity levels that you can assign to an AWS Support case. The severity level for a case is also a field in the <a>CaseDetails</a> data type included in any <a>CreateCase</a> request.
+  ## 
+  let valid = call_21626141.validator(path, query, header, formData, body, _)
+  let scheme = call_21626141.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626141.makeUrl(scheme.get, call_21626141.host, call_21626141.base,
+                               call_21626141.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626141, uri, valid, _)
+
+proc call*(call_21626142: Call_DescribeSeverityLevels_21626129; body: JsonNode): Recallable =
+  ## describeSeverityLevels
+  ## Returns the list of severity levels that you can assign to an AWS Support case. The severity level for a case is also a field in the <a>CaseDetails</a> data type included in any <a>CreateCase</a> request.
+  ##   body: JObject (required)
+  var body_21626143 = newJObject()
+  if body != nil:
+    body_21626143 = body
+  result = call_21626142.call(nil, nil, nil, nil, body_21626143)
+
+var describeSeverityLevels* = Call_DescribeSeverityLevels_21626129(
+    name: "describeSeverityLevels", meth: HttpMethod.HttpPost,
+    host: "support.amazonaws.com",
+    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeSeverityLevels",
+    validator: validate_DescribeSeverityLevels_21626130, base: "/",
+    makeUrl: url_DescribeSeverityLevels_21626131,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeTrustedAdvisorCheckRefreshStatuses_21626144 = ref object of OpenApiRestCall_21625435
+proc url_DescribeTrustedAdvisorCheckRefreshStatuses_21626146(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeTrustedAdvisorCheckRefreshStatuses_21626145(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
+  ## <p>Returns the refresh status of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and their refresh statuses cannot be retrieved by using this operation. Use of the <code>DescribeTrustedAdvisorCheckRefreshStatuses</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626147 = header.getOrDefault("X-Amz-Date")
+  valid_21626147 = validateParameter(valid_21626147, JString, required = false,
+                                   default = nil)
+  if valid_21626147 != nil:
+    section.add "X-Amz-Date", valid_21626147
+  var valid_21626148 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626148 = validateParameter(valid_21626148, JString, required = false,
+                                   default = nil)
+  if valid_21626148 != nil:
+    section.add "X-Amz-Security-Token", valid_21626148
+  var valid_21626149 = header.getOrDefault("X-Amz-Target")
+  valid_21626149 = validateParameter(valid_21626149, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeTrustedAdvisorCheckRefreshStatuses"))
+  if valid_21626149 != nil:
+    section.add "X-Amz-Target", valid_21626149
+  var valid_21626150 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626150 = validateParameter(valid_21626150, JString, required = false,
+                                   default = nil)
+  if valid_21626150 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626150
+  var valid_21626151 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626151 = validateParameter(valid_21626151, JString, required = false,
+                                   default = nil)
+  if valid_21626151 != nil:
+    section.add "X-Amz-Algorithm", valid_21626151
+  var valid_21626152 = header.getOrDefault("X-Amz-Signature")
+  valid_21626152 = validateParameter(valid_21626152, JString, required = false,
+                                   default = nil)
+  if valid_21626152 != nil:
+    section.add "X-Amz-Signature", valid_21626152
+  var valid_21626153 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626153 = validateParameter(valid_21626153, JString, required = false,
+                                   default = nil)
+  if valid_21626153 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626153
+  var valid_21626154 = header.getOrDefault("X-Amz-Credential")
+  valid_21626154 = validateParameter(valid_21626154, JString, required = false,
+                                   default = nil)
+  if valid_21626154 != nil:
+    section.add "X-Amz-Credential", valid_21626154
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626156: Call_DescribeTrustedAdvisorCheckRefreshStatuses_21626144;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns the refresh status of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and their refresh statuses cannot be retrieved by using this operation. Use of the <code>DescribeTrustedAdvisorCheckRefreshStatuses</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note>
+  ## 
+  let valid = call_21626156.validator(path, query, header, formData, body, _)
+  let scheme = call_21626156.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626156.makeUrl(scheme.get, call_21626156.host, call_21626156.base,
+                               call_21626156.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626156, uri, valid, _)
+
+proc call*(call_21626157: Call_DescribeTrustedAdvisorCheckRefreshStatuses_21626144;
+          body: JsonNode): Recallable =
+  ## describeTrustedAdvisorCheckRefreshStatuses
+  ## <p>Returns the refresh status of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and their refresh statuses cannot be retrieved by using this operation. Use of the <code>DescribeTrustedAdvisorCheckRefreshStatuses</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note>
+  ##   body: JObject (required)
+  var body_21626158 = newJObject()
+  if body != nil:
+    body_21626158 = body
+  result = call_21626157.call(nil, nil, nil, nil, body_21626158)
+
+var describeTrustedAdvisorCheckRefreshStatuses* = Call_DescribeTrustedAdvisorCheckRefreshStatuses_21626144(
+    name: "describeTrustedAdvisorCheckRefreshStatuses", meth: HttpMethod.HttpPost,
+    host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.DescribeTrustedAdvisorCheckRefreshStatuses",
+    validator: validate_DescribeTrustedAdvisorCheckRefreshStatuses_21626145,
+    base: "/", makeUrl: url_DescribeTrustedAdvisorCheckRefreshStatuses_21626146,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeTrustedAdvisorCheckResult_21626159 = ref object of OpenApiRestCall_21625435
+proc url_DescribeTrustedAdvisorCheckResult_21626161(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeTrustedAdvisorCheckResult_21626160(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
+  ## <p>Returns the results of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains a <a>TrustedAdvisorCheckResult</a> object, which contains these three objects:</p> <ul> <li> <p> <a>TrustedAdvisorCategorySpecificSummary</a> </p> </li> <li> <p> <a>TrustedAdvisorResourceDetail</a> </p> </li> <li> <p> <a>TrustedAdvisorResourcesSummary</a> </p> </li> </ul> <p>In addition, the response contains these fields:</p> <ul> <li> <p> <b>status.</b> The alert status of the check: "ok" (green), "warning" (yellow), "error" (red), or "not_available".</p> </li> <li> <p> <b>timestamp.</b> The time of the last refresh of the check.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626162 = header.getOrDefault("X-Amz-Date")
+  valid_21626162 = validateParameter(valid_21626162, JString, required = false,
+                                   default = nil)
+  if valid_21626162 != nil:
+    section.add "X-Amz-Date", valid_21626162
+  var valid_21626163 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626163 = validateParameter(valid_21626163, JString, required = false,
+                                   default = nil)
+  if valid_21626163 != nil:
+    section.add "X-Amz-Security-Token", valid_21626163
+  var valid_21626164 = header.getOrDefault("X-Amz-Target")
+  valid_21626164 = validateParameter(valid_21626164, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeTrustedAdvisorCheckResult"))
+  if valid_21626164 != nil:
+    section.add "X-Amz-Target", valid_21626164
+  var valid_21626165 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626165 = validateParameter(valid_21626165, JString, required = false,
+                                   default = nil)
+  if valid_21626165 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626165
+  var valid_21626166 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626166 = validateParameter(valid_21626166, JString, required = false,
+                                   default = nil)
+  if valid_21626166 != nil:
+    section.add "X-Amz-Algorithm", valid_21626166
+  var valid_21626167 = header.getOrDefault("X-Amz-Signature")
+  valid_21626167 = validateParameter(valid_21626167, JString, required = false,
+                                   default = nil)
+  if valid_21626167 != nil:
+    section.add "X-Amz-Signature", valid_21626167
+  var valid_21626168 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626168 = validateParameter(valid_21626168, JString, required = false,
+                                   default = nil)
+  if valid_21626168 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626168
+  var valid_21626169 = header.getOrDefault("X-Amz-Credential")
+  valid_21626169 = validateParameter(valid_21626169, JString, required = false,
+                                   default = nil)
+  if valid_21626169 != nil:
+    section.add "X-Amz-Credential", valid_21626169
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626171: Call_DescribeTrustedAdvisorCheckResult_21626159;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns the results of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains a <a>TrustedAdvisorCheckResult</a> object, which contains these three objects:</p> <ul> <li> <p> <a>TrustedAdvisorCategorySpecificSummary</a> </p> </li> <li> <p> <a>TrustedAdvisorResourceDetail</a> </p> </li> <li> <p> <a>TrustedAdvisorResourcesSummary</a> </p> </li> </ul> <p>In addition, the response contains these fields:</p> <ul> <li> <p> <b>status.</b> The alert status of the check: "ok" (green), "warning" (yellow), "error" (red), or "not_available".</p> </li> <li> <p> <b>timestamp.</b> The time of the last refresh of the check.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
+  ## 
+  let valid = call_21626171.validator(path, query, header, formData, body, _)
+  let scheme = call_21626171.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626171.makeUrl(scheme.get, call_21626171.host, call_21626171.base,
+                               call_21626171.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626171, uri, valid, _)
+
+proc call*(call_21626172: Call_DescribeTrustedAdvisorCheckResult_21626159;
+          body: JsonNode): Recallable =
+  ## describeTrustedAdvisorCheckResult
+  ## <p>Returns the results of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains a <a>TrustedAdvisorCheckResult</a> object, which contains these three objects:</p> <ul> <li> <p> <a>TrustedAdvisorCategorySpecificSummary</a> </p> </li> <li> <p> <a>TrustedAdvisorResourceDetail</a> </p> </li> <li> <p> <a>TrustedAdvisorResourcesSummary</a> </p> </li> </ul> <p>In addition, the response contains these fields:</p> <ul> <li> <p> <b>status.</b> The alert status of the check: "ok" (green), "warning" (yellow), "error" (red), or "not_available".</p> </li> <li> <p> <b>timestamp.</b> The time of the last refresh of the check.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
+  ##   body: JObject (required)
+  var body_21626173 = newJObject()
+  if body != nil:
+    body_21626173 = body
+  result = call_21626172.call(nil, nil, nil, nil, body_21626173)
+
+var describeTrustedAdvisorCheckResult* = Call_DescribeTrustedAdvisorCheckResult_21626159(
+    name: "describeTrustedAdvisorCheckResult", meth: HttpMethod.HttpPost,
+    host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.DescribeTrustedAdvisorCheckResult",
+    validator: validate_DescribeTrustedAdvisorCheckResult_21626160, base: "/",
+    makeUrl: url_DescribeTrustedAdvisorCheckResult_21626161,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeTrustedAdvisorCheckSummaries_21626174 = ref object of OpenApiRestCall_21625435
+proc url_DescribeTrustedAdvisorCheckSummaries_21626176(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeTrustedAdvisorCheckSummaries_21626175(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
+  ## <p>Returns the summaries of the results of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains an array of <a>TrustedAdvisorCheckSummary</a> objects.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626177 = header.getOrDefault("X-Amz-Date")
+  valid_21626177 = validateParameter(valid_21626177, JString, required = false,
+                                   default = nil)
+  if valid_21626177 != nil:
+    section.add "X-Amz-Date", valid_21626177
+  var valid_21626178 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626178 = validateParameter(valid_21626178, JString, required = false,
+                                   default = nil)
+  if valid_21626178 != nil:
+    section.add "X-Amz-Security-Token", valid_21626178
+  var valid_21626179 = header.getOrDefault("X-Amz-Target")
+  valid_21626179 = validateParameter(valid_21626179, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeTrustedAdvisorCheckSummaries"))
+  if valid_21626179 != nil:
+    section.add "X-Amz-Target", valid_21626179
+  var valid_21626180 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626180 = validateParameter(valid_21626180, JString, required = false,
+                                   default = nil)
+  if valid_21626180 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626180
+  var valid_21626181 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626181 = validateParameter(valid_21626181, JString, required = false,
+                                   default = nil)
+  if valid_21626181 != nil:
+    section.add "X-Amz-Algorithm", valid_21626181
+  var valid_21626182 = header.getOrDefault("X-Amz-Signature")
+  valid_21626182 = validateParameter(valid_21626182, JString, required = false,
+                                   default = nil)
+  if valid_21626182 != nil:
+    section.add "X-Amz-Signature", valid_21626182
+  var valid_21626183 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626183 = validateParameter(valid_21626183, JString, required = false,
+                                   default = nil)
+  if valid_21626183 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626183
+  var valid_21626184 = header.getOrDefault("X-Amz-Credential")
+  valid_21626184 = validateParameter(valid_21626184, JString, required = false,
+                                   default = nil)
+  if valid_21626184 != nil:
+    section.add "X-Amz-Credential", valid_21626184
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626186: Call_DescribeTrustedAdvisorCheckSummaries_21626174;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Returns the summaries of the results of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains an array of <a>TrustedAdvisorCheckSummary</a> objects.</p>
+  ## 
+  let valid = call_21626186.validator(path, query, header, formData, body, _)
+  let scheme = call_21626186.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626186.makeUrl(scheme.get, call_21626186.host, call_21626186.base,
+                               call_21626186.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626186, uri, valid, _)
+
+proc call*(call_21626187: Call_DescribeTrustedAdvisorCheckSummaries_21626174;
+          body: JsonNode): Recallable =
+  ## describeTrustedAdvisorCheckSummaries
+  ## <p>Returns the summaries of the results of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains an array of <a>TrustedAdvisorCheckSummary</a> objects.</p>
+  ##   body: JObject (required)
+  var body_21626188 = newJObject()
+  if body != nil:
+    body_21626188 = body
+  result = call_21626187.call(nil, nil, nil, nil, body_21626188)
+
+var describeTrustedAdvisorCheckSummaries* = Call_DescribeTrustedAdvisorCheckSummaries_21626174(
+    name: "describeTrustedAdvisorCheckSummaries", meth: HttpMethod.HttpPost,
+    host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.DescribeTrustedAdvisorCheckSummaries",
+    validator: validate_DescribeTrustedAdvisorCheckSummaries_21626175, base: "/",
+    makeUrl: url_DescribeTrustedAdvisorCheckSummaries_21626176,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeTrustedAdvisorChecks_21626189 = ref object of OpenApiRestCall_21625435
+proc url_DescribeTrustedAdvisorChecks_21626191(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeTrustedAdvisorChecks_21626190(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
+  ## Returns information about all available Trusted Advisor checks, including name, ID, category, description, and metadata. You must specify a language code; English ("en") and Japanese ("ja") are currently supported. The response contains a <a>TrustedAdvisorCheckDescription</a> for each check. The region must be set to us-east-1.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626192 = header.getOrDefault("X-Amz-Date")
+  valid_21626192 = validateParameter(valid_21626192, JString, required = false,
+                                   default = nil)
+  if valid_21626192 != nil:
+    section.add "X-Amz-Date", valid_21626192
+  var valid_21626193 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626193 = validateParameter(valid_21626193, JString, required = false,
+                                   default = nil)
+  if valid_21626193 != nil:
+    section.add "X-Amz-Security-Token", valid_21626193
+  var valid_21626194 = header.getOrDefault("X-Amz-Target")
+  valid_21626194 = validateParameter(valid_21626194, JString, required = true, default = newJString(
+      "AWSSupport_20130415.DescribeTrustedAdvisorChecks"))
+  if valid_21626194 != nil:
+    section.add "X-Amz-Target", valid_21626194
+  var valid_21626195 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626195 = validateParameter(valid_21626195, JString, required = false,
+                                   default = nil)
+  if valid_21626195 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626195
+  var valid_21626196 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626196 = validateParameter(valid_21626196, JString, required = false,
+                                   default = nil)
+  if valid_21626196 != nil:
+    section.add "X-Amz-Algorithm", valid_21626196
+  var valid_21626197 = header.getOrDefault("X-Amz-Signature")
+  valid_21626197 = validateParameter(valid_21626197, JString, required = false,
+                                   default = nil)
+  if valid_21626197 != nil:
+    section.add "X-Amz-Signature", valid_21626197
+  var valid_21626198 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626198 = validateParameter(valid_21626198, JString, required = false,
+                                   default = nil)
+  if valid_21626198 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626198
+  var valid_21626199 = header.getOrDefault("X-Amz-Credential")
+  valid_21626199 = validateParameter(valid_21626199, JString, required = false,
+                                   default = nil)
+  if valid_21626199 != nil:
+    section.add "X-Amz-Credential", valid_21626199
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626201: Call_DescribeTrustedAdvisorChecks_21626189;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Returns information about all available Trusted Advisor checks, including name, ID, category, description, and metadata. You must specify a language code; English ("en") and Japanese ("ja") are currently supported. The response contains a <a>TrustedAdvisorCheckDescription</a> for each check. The region must be set to us-east-1.
+  ## 
+  let valid = call_21626201.validator(path, query, header, formData, body, _)
+  let scheme = call_21626201.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626201.makeUrl(scheme.get, call_21626201.host, call_21626201.base,
+                               call_21626201.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626201, uri, valid, _)
+
+proc call*(call_21626202: Call_DescribeTrustedAdvisorChecks_21626189;
+          body: JsonNode): Recallable =
+  ## describeTrustedAdvisorChecks
+  ## Returns information about all available Trusted Advisor checks, including name, ID, category, description, and metadata. You must specify a language code; English ("en") and Japanese ("ja") are currently supported. The response contains a <a>TrustedAdvisorCheckDescription</a> for each check. The region must be set to us-east-1.
+  ##   body: JObject (required)
+  var body_21626203 = newJObject()
+  if body != nil:
+    body_21626203 = body
+  result = call_21626202.call(nil, nil, nil, nil, body_21626203)
+
+var describeTrustedAdvisorChecks* = Call_DescribeTrustedAdvisorChecks_21626189(
+    name: "describeTrustedAdvisorChecks", meth: HttpMethod.HttpPost,
+    host: "support.amazonaws.com",
+    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeTrustedAdvisorChecks",
+    validator: validate_DescribeTrustedAdvisorChecks_21626190, base: "/",
+    makeUrl: url_DescribeTrustedAdvisorChecks_21626191,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_RefreshTrustedAdvisorCheck_21626204 = ref object of OpenApiRestCall_21625435
+proc url_RefreshTrustedAdvisorCheck_21626206(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_RefreshTrustedAdvisorCheck_21626205(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Requests a refresh of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and they cannot be refreshed by using this operation. Use of the <code>RefreshTrustedAdvisorCheck</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note> <p>The response contains a <a>TrustedAdvisorCheckRefreshStatus</a> object, which contains these fields:</p> <ul> <li> <p> <b>status.</b> The refresh status of the check: </p> <ul> <li> <p> <code>none:</code> The check is not refreshed or the non-success status exceeds the timeout</p> </li> <li> <p> <code>enqueued:</code> The check refresh requests has entered the refresh queue</p> </li> <li> <p> <code>processing:</code> The check refresh request is picked up by the rule processing engine</p> </li> <li> <p> <code>success:</code> The check is successfully refreshed</p> </li> <li> <p> <code>abandoned:</code> The check refresh has failed</p> </li> </ul> </li> <li> <p> <b>millisUntilNextRefreshable.</b> The amount of time, in milliseconds, until the check is eligible for refresh.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626207 = header.getOrDefault("X-Amz-Date")
+  valid_21626207 = validateParameter(valid_21626207, JString, required = false,
+                                   default = nil)
+  if valid_21626207 != nil:
+    section.add "X-Amz-Date", valid_21626207
+  var valid_21626208 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626208 = validateParameter(valid_21626208, JString, required = false,
+                                   default = nil)
+  if valid_21626208 != nil:
+    section.add "X-Amz-Security-Token", valid_21626208
+  var valid_21626209 = header.getOrDefault("X-Amz-Target")
+  valid_21626209 = validateParameter(valid_21626209, JString, required = true, default = newJString(
+      "AWSSupport_20130415.RefreshTrustedAdvisorCheck"))
+  if valid_21626209 != nil:
+    section.add "X-Amz-Target", valid_21626209
+  var valid_21626210 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626210 = validateParameter(valid_21626210, JString, required = false,
+                                   default = nil)
+  if valid_21626210 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626210
+  var valid_21626211 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626211 = validateParameter(valid_21626211, JString, required = false,
+                                   default = nil)
+  if valid_21626211 != nil:
+    section.add "X-Amz-Algorithm", valid_21626211
+  var valid_21626212 = header.getOrDefault("X-Amz-Signature")
+  valid_21626212 = validateParameter(valid_21626212, JString, required = false,
+                                   default = nil)
+  if valid_21626212 != nil:
+    section.add "X-Amz-Signature", valid_21626212
+  var valid_21626213 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626213 = validateParameter(valid_21626213, JString, required = false,
+                                   default = nil)
+  if valid_21626213 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626213
+  var valid_21626214 = header.getOrDefault("X-Amz-Credential")
+  valid_21626214 = validateParameter(valid_21626214, JString, required = false,
+                                   default = nil)
+  if valid_21626214 != nil:
+    section.add "X-Amz-Credential", valid_21626214
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626216: Call_RefreshTrustedAdvisorCheck_21626204;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Requests a refresh of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and they cannot be refreshed by using this operation. Use of the <code>RefreshTrustedAdvisorCheck</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note> <p>The response contains a <a>TrustedAdvisorCheckRefreshStatus</a> object, which contains these fields:</p> <ul> <li> <p> <b>status.</b> The refresh status of the check: </p> <ul> <li> <p> <code>none:</code> The check is not refreshed or the non-success status exceeds the timeout</p> </li> <li> <p> <code>enqueued:</code> The check refresh requests has entered the refresh queue</p> </li> <li> <p> <code>processing:</code> The check refresh request is picked up by the rule processing engine</p> </li> <li> <p> <code>success:</code> The check is successfully refreshed</p> </li> <li> <p> <code>abandoned:</code> The check refresh has failed</p> </li> </ul> </li> <li> <p> <b>millisUntilNextRefreshable.</b> The amount of time, in milliseconds, until the check is eligible for refresh.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
+  ## 
+  let valid = call_21626216.validator(path, query, header, formData, body, _)
+  let scheme = call_21626216.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626216.makeUrl(scheme.get, call_21626216.host, call_21626216.base,
+                               call_21626216.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626216, uri, valid, _)
+
+proc call*(call_21626217: Call_RefreshTrustedAdvisorCheck_21626204; body: JsonNode): Recallable =
+  ## refreshTrustedAdvisorCheck
+  ## <p>Requests a refresh of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and they cannot be refreshed by using this operation. Use of the <code>RefreshTrustedAdvisorCheck</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note> <p>The response contains a <a>TrustedAdvisorCheckRefreshStatus</a> object, which contains these fields:</p> <ul> <li> <p> <b>status.</b> The refresh status of the check: </p> <ul> <li> <p> <code>none:</code> The check is not refreshed or the non-success status exceeds the timeout</p> </li> <li> <p> <code>enqueued:</code> The check refresh requests has entered the refresh queue</p> </li> <li> <p> <code>processing:</code> The check refresh request is picked up by the rule processing engine</p> </li> <li> <p> <code>success:</code> The check is successfully refreshed</p> </li> <li> <p> <code>abandoned:</code> The check refresh has failed</p> </li> </ul> </li> <li> <p> <b>millisUntilNextRefreshable.</b> The amount of time, in milliseconds, until the check is eligible for refresh.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
+  ##   body: JObject (required)
+  var body_21626218 = newJObject()
+  if body != nil:
+    body_21626218 = body
+  result = call_21626217.call(nil, nil, nil, nil, body_21626218)
+
+var refreshTrustedAdvisorCheck* = Call_RefreshTrustedAdvisorCheck_21626204(
+    name: "refreshTrustedAdvisorCheck", meth: HttpMethod.HttpPost,
+    host: "support.amazonaws.com",
+    route: "/#X-Amz-Target=AWSSupport_20130415.RefreshTrustedAdvisorCheck",
+    validator: validate_RefreshTrustedAdvisorCheck_21626205, base: "/",
+    makeUrl: url_RefreshTrustedAdvisorCheck_21626206,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ResolveCase_21626219 = ref object of OpenApiRestCall_21625435
+proc url_ResolveCase_21626221(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -564,1051 +1652,9 @@ proc url_DescribeCases_611312(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeCases_611311(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns a list of cases that you specify by passing one or more case IDs. In addition, you can filter the cases by date by setting values for the <code>afterTime</code> and <code>beforeTime</code> request parameters. You can set values for the <code>includeResolvedCases</code> and <code>includeCommunications</code> request parameters to control how much information is returned.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>The response returns the following in JSON format:</p> <ul> <li> <p>One or more <a>CaseDetails</a> data types.</p> </li> <li> <p>One or more <code>nextToken</code> values, which specify where to paginate the returned records represented by the <code>CaseDetails</code> objects.</p> </li> </ul>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : Pagination token
-  ##   maxResults: JString
-  ##             : Pagination limit
-  section = newJObject()
-  var valid_611313 = query.getOrDefault("nextToken")
-  valid_611313 = validateParameter(valid_611313, JString, required = false,
-                                 default = nil)
-  if valid_611313 != nil:
-    section.add "nextToken", valid_611313
-  var valid_611314 = query.getOrDefault("maxResults")
-  valid_611314 = validateParameter(valid_611314, JString, required = false,
-                                 default = nil)
-  if valid_611314 != nil:
-    section.add "maxResults", valid_611314
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611315 = header.getOrDefault("X-Amz-Target")
-  valid_611315 = validateParameter(valid_611315, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeCases"))
-  if valid_611315 != nil:
-    section.add "X-Amz-Target", valid_611315
-  var valid_611316 = header.getOrDefault("X-Amz-Signature")
-  valid_611316 = validateParameter(valid_611316, JString, required = false,
-                                 default = nil)
-  if valid_611316 != nil:
-    section.add "X-Amz-Signature", valid_611316
-  var valid_611317 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611317 = validateParameter(valid_611317, JString, required = false,
-                                 default = nil)
-  if valid_611317 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611317
-  var valid_611318 = header.getOrDefault("X-Amz-Date")
-  valid_611318 = validateParameter(valid_611318, JString, required = false,
-                                 default = nil)
-  if valid_611318 != nil:
-    section.add "X-Amz-Date", valid_611318
-  var valid_611319 = header.getOrDefault("X-Amz-Credential")
-  valid_611319 = validateParameter(valid_611319, JString, required = false,
-                                 default = nil)
-  if valid_611319 != nil:
-    section.add "X-Amz-Credential", valid_611319
-  var valid_611320 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611320 = validateParameter(valid_611320, JString, required = false,
-                                 default = nil)
-  if valid_611320 != nil:
-    section.add "X-Amz-Security-Token", valid_611320
-  var valid_611321 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611321 = validateParameter(valid_611321, JString, required = false,
-                                 default = nil)
-  if valid_611321 != nil:
-    section.add "X-Amz-Algorithm", valid_611321
-  var valid_611322 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611322 = validateParameter(valid_611322, JString, required = false,
-                                 default = nil)
-  if valid_611322 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611322
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611324: Call_DescribeCases_611310; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns a list of cases that you specify by passing one or more case IDs. In addition, you can filter the cases by date by setting values for the <code>afterTime</code> and <code>beforeTime</code> request parameters. You can set values for the <code>includeResolvedCases</code> and <code>includeCommunications</code> request parameters to control how much information is returned.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>The response returns the following in JSON format:</p> <ul> <li> <p>One or more <a>CaseDetails</a> data types.</p> </li> <li> <p>One or more <code>nextToken</code> values, which specify where to paginate the returned records represented by the <code>CaseDetails</code> objects.</p> </li> </ul>
-  ## 
-  let valid = call_611324.validator(path, query, header, formData, body)
-  let scheme = call_611324.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611324.url(scheme.get, call_611324.host, call_611324.base,
-                         call_611324.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611324, url, valid)
-
-proc call*(call_611325: Call_DescribeCases_611310; body: JsonNode;
-          nextToken: string = ""; maxResults: string = ""): Recallable =
-  ## describeCases
-  ## <p>Returns a list of cases that you specify by passing one or more case IDs. In addition, you can filter the cases by date by setting values for the <code>afterTime</code> and <code>beforeTime</code> request parameters. You can set values for the <code>includeResolvedCases</code> and <code>includeCommunications</code> request parameters to control how much information is returned.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>The response returns the following in JSON format:</p> <ul> <li> <p>One or more <a>CaseDetails</a> data types.</p> </li> <li> <p>One or more <code>nextToken</code> values, which specify where to paginate the returned records represented by the <code>CaseDetails</code> objects.</p> </li> </ul>
-  ##   nextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   maxResults: string
-  ##             : Pagination limit
-  var query_611326 = newJObject()
-  var body_611327 = newJObject()
-  add(query_611326, "nextToken", newJString(nextToken))
-  if body != nil:
-    body_611327 = body
-  add(query_611326, "maxResults", newJString(maxResults))
-  result = call_611325.call(nil, query_611326, nil, nil, body_611327)
-
-var describeCases* = Call_DescribeCases_611310(name: "describeCases",
-    meth: HttpMethod.HttpPost, host: "support.amazonaws.com",
-    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeCases",
-    validator: validate_DescribeCases_611311, base: "/", url: url_DescribeCases_611312,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeCommunications_611329 = ref object of OpenApiRestCall_610658
-proc url_DescribeCommunications_611331(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeCommunications_611330(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns communications (and attachments) for one or more support cases. You can use the <code>afterTime</code> and <code>beforeTime</code> parameters to filter by date. You can use the <code>caseId</code> parameter to restrict the results to a particular case.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>You can use the <code>maxResults</code> and <code>nextToken</code> parameters to control the pagination of the result set. Set <code>maxResults</code> to the number of cases you want displayed on each page, and use <code>nextToken</code> to specify the resumption of pagination.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : Pagination token
-  ##   maxResults: JString
-  ##             : Pagination limit
-  section = newJObject()
-  var valid_611332 = query.getOrDefault("nextToken")
-  valid_611332 = validateParameter(valid_611332, JString, required = false,
-                                 default = nil)
-  if valid_611332 != nil:
-    section.add "nextToken", valid_611332
-  var valid_611333 = query.getOrDefault("maxResults")
-  valid_611333 = validateParameter(valid_611333, JString, required = false,
-                                 default = nil)
-  if valid_611333 != nil:
-    section.add "maxResults", valid_611333
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611334 = header.getOrDefault("X-Amz-Target")
-  valid_611334 = validateParameter(valid_611334, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeCommunications"))
-  if valid_611334 != nil:
-    section.add "X-Amz-Target", valid_611334
-  var valid_611335 = header.getOrDefault("X-Amz-Signature")
-  valid_611335 = validateParameter(valid_611335, JString, required = false,
-                                 default = nil)
-  if valid_611335 != nil:
-    section.add "X-Amz-Signature", valid_611335
-  var valid_611336 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611336 = validateParameter(valid_611336, JString, required = false,
-                                 default = nil)
-  if valid_611336 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611336
-  var valid_611337 = header.getOrDefault("X-Amz-Date")
-  valid_611337 = validateParameter(valid_611337, JString, required = false,
-                                 default = nil)
-  if valid_611337 != nil:
-    section.add "X-Amz-Date", valid_611337
-  var valid_611338 = header.getOrDefault("X-Amz-Credential")
-  valid_611338 = validateParameter(valid_611338, JString, required = false,
-                                 default = nil)
-  if valid_611338 != nil:
-    section.add "X-Amz-Credential", valid_611338
-  var valid_611339 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611339 = validateParameter(valid_611339, JString, required = false,
-                                 default = nil)
-  if valid_611339 != nil:
-    section.add "X-Amz-Security-Token", valid_611339
-  var valid_611340 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611340 = validateParameter(valid_611340, JString, required = false,
-                                 default = nil)
-  if valid_611340 != nil:
-    section.add "X-Amz-Algorithm", valid_611340
-  var valid_611341 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611341 = validateParameter(valid_611341, JString, required = false,
-                                 default = nil)
-  if valid_611341 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611341
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611343: Call_DescribeCommunications_611329; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns communications (and attachments) for one or more support cases. You can use the <code>afterTime</code> and <code>beforeTime</code> parameters to filter by date. You can use the <code>caseId</code> parameter to restrict the results to a particular case.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>You can use the <code>maxResults</code> and <code>nextToken</code> parameters to control the pagination of the result set. Set <code>maxResults</code> to the number of cases you want displayed on each page, and use <code>nextToken</code> to specify the resumption of pagination.</p>
-  ## 
-  let valid = call_611343.validator(path, query, header, formData, body)
-  let scheme = call_611343.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611343.url(scheme.get, call_611343.host, call_611343.base,
-                         call_611343.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611343, url, valid)
-
-proc call*(call_611344: Call_DescribeCommunications_611329; body: JsonNode;
-          nextToken: string = ""; maxResults: string = ""): Recallable =
-  ## describeCommunications
-  ## <p>Returns communications (and attachments) for one or more support cases. You can use the <code>afterTime</code> and <code>beforeTime</code> parameters to filter by date. You can use the <code>caseId</code> parameter to restrict the results to a particular case.</p> <p>Case data is available for 12 months after creation. If a case was created more than 12 months ago, a request for data might cause an error.</p> <p>You can use the <code>maxResults</code> and <code>nextToken</code> parameters to control the pagination of the result set. Set <code>maxResults</code> to the number of cases you want displayed on each page, and use <code>nextToken</code> to specify the resumption of pagination.</p>
-  ##   nextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   maxResults: string
-  ##             : Pagination limit
-  var query_611345 = newJObject()
-  var body_611346 = newJObject()
-  add(query_611345, "nextToken", newJString(nextToken))
-  if body != nil:
-    body_611346 = body
-  add(query_611345, "maxResults", newJString(maxResults))
-  result = call_611344.call(nil, query_611345, nil, nil, body_611346)
-
-var describeCommunications* = Call_DescribeCommunications_611329(
-    name: "describeCommunications", meth: HttpMethod.HttpPost,
-    host: "support.amazonaws.com",
-    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeCommunications",
-    validator: validate_DescribeCommunications_611330, base: "/",
-    url: url_DescribeCommunications_611331, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeServices_611347 = ref object of OpenApiRestCall_610658
-proc url_DescribeServices_611349(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeServices_611348(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## <p>Returns the current list of AWS services and a list of service categories that applies to each one. You then use service names and categories in your <a>CreateCase</a> requests. Each AWS service has its own set of categories.</p> <p>The service codes and category codes correspond to the values that are displayed in the <b>Service</b> and <b>Category</b> drop-down lists on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. The values in those fields, however, do not necessarily match the service codes and categories returned by the <code>DescribeServices</code> request. Always use the service codes and categories obtained programmatically. This practice ensures that you always have the most recent set of service and category codes.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611350 = header.getOrDefault("X-Amz-Target")
-  valid_611350 = validateParameter(valid_611350, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeServices"))
-  if valid_611350 != nil:
-    section.add "X-Amz-Target", valid_611350
-  var valid_611351 = header.getOrDefault("X-Amz-Signature")
-  valid_611351 = validateParameter(valid_611351, JString, required = false,
-                                 default = nil)
-  if valid_611351 != nil:
-    section.add "X-Amz-Signature", valid_611351
-  var valid_611352 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611352 = validateParameter(valid_611352, JString, required = false,
-                                 default = nil)
-  if valid_611352 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611352
-  var valid_611353 = header.getOrDefault("X-Amz-Date")
-  valid_611353 = validateParameter(valid_611353, JString, required = false,
-                                 default = nil)
-  if valid_611353 != nil:
-    section.add "X-Amz-Date", valid_611353
-  var valid_611354 = header.getOrDefault("X-Amz-Credential")
-  valid_611354 = validateParameter(valid_611354, JString, required = false,
-                                 default = nil)
-  if valid_611354 != nil:
-    section.add "X-Amz-Credential", valid_611354
-  var valid_611355 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611355 = validateParameter(valid_611355, JString, required = false,
-                                 default = nil)
-  if valid_611355 != nil:
-    section.add "X-Amz-Security-Token", valid_611355
-  var valid_611356 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611356 = validateParameter(valid_611356, JString, required = false,
-                                 default = nil)
-  if valid_611356 != nil:
-    section.add "X-Amz-Algorithm", valid_611356
-  var valid_611357 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611357 = validateParameter(valid_611357, JString, required = false,
-                                 default = nil)
-  if valid_611357 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611357
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611359: Call_DescribeServices_611347; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns the current list of AWS services and a list of service categories that applies to each one. You then use service names and categories in your <a>CreateCase</a> requests. Each AWS service has its own set of categories.</p> <p>The service codes and category codes correspond to the values that are displayed in the <b>Service</b> and <b>Category</b> drop-down lists on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. The values in those fields, however, do not necessarily match the service codes and categories returned by the <code>DescribeServices</code> request. Always use the service codes and categories obtained programmatically. This practice ensures that you always have the most recent set of service and category codes.</p>
-  ## 
-  let valid = call_611359.validator(path, query, header, formData, body)
-  let scheme = call_611359.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611359.url(scheme.get, call_611359.host, call_611359.base,
-                         call_611359.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611359, url, valid)
-
-proc call*(call_611360: Call_DescribeServices_611347; body: JsonNode): Recallable =
-  ## describeServices
-  ## <p>Returns the current list of AWS services and a list of service categories that applies to each one. You then use service names and categories in your <a>CreateCase</a> requests. Each AWS service has its own set of categories.</p> <p>The service codes and category codes correspond to the values that are displayed in the <b>Service</b> and <b>Category</b> drop-down lists on the AWS Support Center <a href="https://console.aws.amazon.com/support/home#/case/create">Create Case</a> page. The values in those fields, however, do not necessarily match the service codes and categories returned by the <code>DescribeServices</code> request. Always use the service codes and categories obtained programmatically. This practice ensures that you always have the most recent set of service and category codes.</p>
-  ##   body: JObject (required)
-  var body_611361 = newJObject()
-  if body != nil:
-    body_611361 = body
-  result = call_611360.call(nil, nil, nil, nil, body_611361)
-
-var describeServices* = Call_DescribeServices_611347(name: "describeServices",
-    meth: HttpMethod.HttpPost, host: "support.amazonaws.com",
-    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeServices",
-    validator: validate_DescribeServices_611348, base: "/",
-    url: url_DescribeServices_611349, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeSeverityLevels_611362 = ref object of OpenApiRestCall_610658
-proc url_DescribeSeverityLevels_611364(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeSeverityLevels_611363(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Returns the list of severity levels that you can assign to an AWS Support case. The severity level for a case is also a field in the <a>CaseDetails</a> data type included in any <a>CreateCase</a> request.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611365 = header.getOrDefault("X-Amz-Target")
-  valid_611365 = validateParameter(valid_611365, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeSeverityLevels"))
-  if valid_611365 != nil:
-    section.add "X-Amz-Target", valid_611365
-  var valid_611366 = header.getOrDefault("X-Amz-Signature")
-  valid_611366 = validateParameter(valid_611366, JString, required = false,
-                                 default = nil)
-  if valid_611366 != nil:
-    section.add "X-Amz-Signature", valid_611366
-  var valid_611367 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611367 = validateParameter(valid_611367, JString, required = false,
-                                 default = nil)
-  if valid_611367 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611367
-  var valid_611368 = header.getOrDefault("X-Amz-Date")
-  valid_611368 = validateParameter(valid_611368, JString, required = false,
-                                 default = nil)
-  if valid_611368 != nil:
-    section.add "X-Amz-Date", valid_611368
-  var valid_611369 = header.getOrDefault("X-Amz-Credential")
-  valid_611369 = validateParameter(valid_611369, JString, required = false,
-                                 default = nil)
-  if valid_611369 != nil:
-    section.add "X-Amz-Credential", valid_611369
-  var valid_611370 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611370 = validateParameter(valid_611370, JString, required = false,
-                                 default = nil)
-  if valid_611370 != nil:
-    section.add "X-Amz-Security-Token", valid_611370
-  var valid_611371 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611371 = validateParameter(valid_611371, JString, required = false,
-                                 default = nil)
-  if valid_611371 != nil:
-    section.add "X-Amz-Algorithm", valid_611371
-  var valid_611372 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611372 = validateParameter(valid_611372, JString, required = false,
-                                 default = nil)
-  if valid_611372 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611372
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611374: Call_DescribeSeverityLevels_611362; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns the list of severity levels that you can assign to an AWS Support case. The severity level for a case is also a field in the <a>CaseDetails</a> data type included in any <a>CreateCase</a> request.
-  ## 
-  let valid = call_611374.validator(path, query, header, formData, body)
-  let scheme = call_611374.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611374.url(scheme.get, call_611374.host, call_611374.base,
-                         call_611374.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611374, url, valid)
-
-proc call*(call_611375: Call_DescribeSeverityLevels_611362; body: JsonNode): Recallable =
-  ## describeSeverityLevels
-  ## Returns the list of severity levels that you can assign to an AWS Support case. The severity level for a case is also a field in the <a>CaseDetails</a> data type included in any <a>CreateCase</a> request.
-  ##   body: JObject (required)
-  var body_611376 = newJObject()
-  if body != nil:
-    body_611376 = body
-  result = call_611375.call(nil, nil, nil, nil, body_611376)
-
-var describeSeverityLevels* = Call_DescribeSeverityLevels_611362(
-    name: "describeSeverityLevels", meth: HttpMethod.HttpPost,
-    host: "support.amazonaws.com",
-    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeSeverityLevels",
-    validator: validate_DescribeSeverityLevels_611363, base: "/",
-    url: url_DescribeSeverityLevels_611364, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeTrustedAdvisorCheckRefreshStatuses_611377 = ref object of OpenApiRestCall_610658
-proc url_DescribeTrustedAdvisorCheckRefreshStatuses_611379(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeTrustedAdvisorCheckRefreshStatuses_611378(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns the refresh status of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and their refresh statuses cannot be retrieved by using this operation. Use of the <code>DescribeTrustedAdvisorCheckRefreshStatuses</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611380 = header.getOrDefault("X-Amz-Target")
-  valid_611380 = validateParameter(valid_611380, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeTrustedAdvisorCheckRefreshStatuses"))
-  if valid_611380 != nil:
-    section.add "X-Amz-Target", valid_611380
-  var valid_611381 = header.getOrDefault("X-Amz-Signature")
-  valid_611381 = validateParameter(valid_611381, JString, required = false,
-                                 default = nil)
-  if valid_611381 != nil:
-    section.add "X-Amz-Signature", valid_611381
-  var valid_611382 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611382 = validateParameter(valid_611382, JString, required = false,
-                                 default = nil)
-  if valid_611382 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611382
-  var valid_611383 = header.getOrDefault("X-Amz-Date")
-  valid_611383 = validateParameter(valid_611383, JString, required = false,
-                                 default = nil)
-  if valid_611383 != nil:
-    section.add "X-Amz-Date", valid_611383
-  var valid_611384 = header.getOrDefault("X-Amz-Credential")
-  valid_611384 = validateParameter(valid_611384, JString, required = false,
-                                 default = nil)
-  if valid_611384 != nil:
-    section.add "X-Amz-Credential", valid_611384
-  var valid_611385 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611385 = validateParameter(valid_611385, JString, required = false,
-                                 default = nil)
-  if valid_611385 != nil:
-    section.add "X-Amz-Security-Token", valid_611385
-  var valid_611386 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611386 = validateParameter(valid_611386, JString, required = false,
-                                 default = nil)
-  if valid_611386 != nil:
-    section.add "X-Amz-Algorithm", valid_611386
-  var valid_611387 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611387 = validateParameter(valid_611387, JString, required = false,
-                                 default = nil)
-  if valid_611387 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611387
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611389: Call_DescribeTrustedAdvisorCheckRefreshStatuses_611377;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## <p>Returns the refresh status of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and their refresh statuses cannot be retrieved by using this operation. Use of the <code>DescribeTrustedAdvisorCheckRefreshStatuses</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note>
-  ## 
-  let valid = call_611389.validator(path, query, header, formData, body)
-  let scheme = call_611389.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611389.url(scheme.get, call_611389.host, call_611389.base,
-                         call_611389.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611389, url, valid)
-
-proc call*(call_611390: Call_DescribeTrustedAdvisorCheckRefreshStatuses_611377;
-          body: JsonNode): Recallable =
-  ## describeTrustedAdvisorCheckRefreshStatuses
-  ## <p>Returns the refresh status of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and their refresh statuses cannot be retrieved by using this operation. Use of the <code>DescribeTrustedAdvisorCheckRefreshStatuses</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note>
-  ##   body: JObject (required)
-  var body_611391 = newJObject()
-  if body != nil:
-    body_611391 = body
-  result = call_611390.call(nil, nil, nil, nil, body_611391)
-
-var describeTrustedAdvisorCheckRefreshStatuses* = Call_DescribeTrustedAdvisorCheckRefreshStatuses_611377(
-    name: "describeTrustedAdvisorCheckRefreshStatuses", meth: HttpMethod.HttpPost,
-    host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.DescribeTrustedAdvisorCheckRefreshStatuses",
-    validator: validate_DescribeTrustedAdvisorCheckRefreshStatuses_611378,
-    base: "/", url: url_DescribeTrustedAdvisorCheckRefreshStatuses_611379,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeTrustedAdvisorCheckResult_611392 = ref object of OpenApiRestCall_610658
-proc url_DescribeTrustedAdvisorCheckResult_611394(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeTrustedAdvisorCheckResult_611393(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns the results of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains a <a>TrustedAdvisorCheckResult</a> object, which contains these three objects:</p> <ul> <li> <p> <a>TrustedAdvisorCategorySpecificSummary</a> </p> </li> <li> <p> <a>TrustedAdvisorResourceDetail</a> </p> </li> <li> <p> <a>TrustedAdvisorResourcesSummary</a> </p> </li> </ul> <p>In addition, the response contains these fields:</p> <ul> <li> <p> <b>status.</b> The alert status of the check: "ok" (green), "warning" (yellow), "error" (red), or "not_available".</p> </li> <li> <p> <b>timestamp.</b> The time of the last refresh of the check.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611395 = header.getOrDefault("X-Amz-Target")
-  valid_611395 = validateParameter(valid_611395, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeTrustedAdvisorCheckResult"))
-  if valid_611395 != nil:
-    section.add "X-Amz-Target", valid_611395
-  var valid_611396 = header.getOrDefault("X-Amz-Signature")
-  valid_611396 = validateParameter(valid_611396, JString, required = false,
-                                 default = nil)
-  if valid_611396 != nil:
-    section.add "X-Amz-Signature", valid_611396
-  var valid_611397 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611397 = validateParameter(valid_611397, JString, required = false,
-                                 default = nil)
-  if valid_611397 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611397
-  var valid_611398 = header.getOrDefault("X-Amz-Date")
-  valid_611398 = validateParameter(valid_611398, JString, required = false,
-                                 default = nil)
-  if valid_611398 != nil:
-    section.add "X-Amz-Date", valid_611398
-  var valid_611399 = header.getOrDefault("X-Amz-Credential")
-  valid_611399 = validateParameter(valid_611399, JString, required = false,
-                                 default = nil)
-  if valid_611399 != nil:
-    section.add "X-Amz-Credential", valid_611399
-  var valid_611400 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611400 = validateParameter(valid_611400, JString, required = false,
-                                 default = nil)
-  if valid_611400 != nil:
-    section.add "X-Amz-Security-Token", valid_611400
-  var valid_611401 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611401 = validateParameter(valid_611401, JString, required = false,
-                                 default = nil)
-  if valid_611401 != nil:
-    section.add "X-Amz-Algorithm", valid_611401
-  var valid_611402 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611402 = validateParameter(valid_611402, JString, required = false,
-                                 default = nil)
-  if valid_611402 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611402
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611404: Call_DescribeTrustedAdvisorCheckResult_611392;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## <p>Returns the results of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains a <a>TrustedAdvisorCheckResult</a> object, which contains these three objects:</p> <ul> <li> <p> <a>TrustedAdvisorCategorySpecificSummary</a> </p> </li> <li> <p> <a>TrustedAdvisorResourceDetail</a> </p> </li> <li> <p> <a>TrustedAdvisorResourcesSummary</a> </p> </li> </ul> <p>In addition, the response contains these fields:</p> <ul> <li> <p> <b>status.</b> The alert status of the check: "ok" (green), "warning" (yellow), "error" (red), or "not_available".</p> </li> <li> <p> <b>timestamp.</b> The time of the last refresh of the check.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
-  ## 
-  let valid = call_611404.validator(path, query, header, formData, body)
-  let scheme = call_611404.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611404.url(scheme.get, call_611404.host, call_611404.base,
-                         call_611404.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611404, url, valid)
-
-proc call*(call_611405: Call_DescribeTrustedAdvisorCheckResult_611392;
-          body: JsonNode): Recallable =
-  ## describeTrustedAdvisorCheckResult
-  ## <p>Returns the results of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains a <a>TrustedAdvisorCheckResult</a> object, which contains these three objects:</p> <ul> <li> <p> <a>TrustedAdvisorCategorySpecificSummary</a> </p> </li> <li> <p> <a>TrustedAdvisorResourceDetail</a> </p> </li> <li> <p> <a>TrustedAdvisorResourcesSummary</a> </p> </li> </ul> <p>In addition, the response contains these fields:</p> <ul> <li> <p> <b>status.</b> The alert status of the check: "ok" (green), "warning" (yellow), "error" (red), or "not_available".</p> </li> <li> <p> <b>timestamp.</b> The time of the last refresh of the check.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
-  ##   body: JObject (required)
-  var body_611406 = newJObject()
-  if body != nil:
-    body_611406 = body
-  result = call_611405.call(nil, nil, nil, nil, body_611406)
-
-var describeTrustedAdvisorCheckResult* = Call_DescribeTrustedAdvisorCheckResult_611392(
-    name: "describeTrustedAdvisorCheckResult", meth: HttpMethod.HttpPost,
-    host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.DescribeTrustedAdvisorCheckResult",
-    validator: validate_DescribeTrustedAdvisorCheckResult_611393, base: "/",
-    url: url_DescribeTrustedAdvisorCheckResult_611394,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeTrustedAdvisorCheckSummaries_611407 = ref object of OpenApiRestCall_610658
-proc url_DescribeTrustedAdvisorCheckSummaries_611409(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeTrustedAdvisorCheckSummaries_611408(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns the summaries of the results of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains an array of <a>TrustedAdvisorCheckSummary</a> objects.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611410 = header.getOrDefault("X-Amz-Target")
-  valid_611410 = validateParameter(valid_611410, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeTrustedAdvisorCheckSummaries"))
-  if valid_611410 != nil:
-    section.add "X-Amz-Target", valid_611410
-  var valid_611411 = header.getOrDefault("X-Amz-Signature")
-  valid_611411 = validateParameter(valid_611411, JString, required = false,
-                                 default = nil)
-  if valid_611411 != nil:
-    section.add "X-Amz-Signature", valid_611411
-  var valid_611412 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611412 = validateParameter(valid_611412, JString, required = false,
-                                 default = nil)
-  if valid_611412 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611412
-  var valid_611413 = header.getOrDefault("X-Amz-Date")
-  valid_611413 = validateParameter(valid_611413, JString, required = false,
-                                 default = nil)
-  if valid_611413 != nil:
-    section.add "X-Amz-Date", valid_611413
-  var valid_611414 = header.getOrDefault("X-Amz-Credential")
-  valid_611414 = validateParameter(valid_611414, JString, required = false,
-                                 default = nil)
-  if valid_611414 != nil:
-    section.add "X-Amz-Credential", valid_611414
-  var valid_611415 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611415 = validateParameter(valid_611415, JString, required = false,
-                                 default = nil)
-  if valid_611415 != nil:
-    section.add "X-Amz-Security-Token", valid_611415
-  var valid_611416 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611416 = validateParameter(valid_611416, JString, required = false,
-                                 default = nil)
-  if valid_611416 != nil:
-    section.add "X-Amz-Algorithm", valid_611416
-  var valid_611417 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611417 = validateParameter(valid_611417, JString, required = false,
-                                 default = nil)
-  if valid_611417 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611417
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611419: Call_DescribeTrustedAdvisorCheckSummaries_611407;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## <p>Returns the summaries of the results of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains an array of <a>TrustedAdvisorCheckSummary</a> objects.</p>
-  ## 
-  let valid = call_611419.validator(path, query, header, formData, body)
-  let scheme = call_611419.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611419.url(scheme.get, call_611419.host, call_611419.base,
-                         call_611419.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611419, url, valid)
-
-proc call*(call_611420: Call_DescribeTrustedAdvisorCheckSummaries_611407;
-          body: JsonNode): Recallable =
-  ## describeTrustedAdvisorCheckSummaries
-  ## <p>Returns the summaries of the results of the Trusted Advisor checks that have the specified check IDs. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <p>The response contains an array of <a>TrustedAdvisorCheckSummary</a> objects.</p>
-  ##   body: JObject (required)
-  var body_611421 = newJObject()
-  if body != nil:
-    body_611421 = body
-  result = call_611420.call(nil, nil, nil, nil, body_611421)
-
-var describeTrustedAdvisorCheckSummaries* = Call_DescribeTrustedAdvisorCheckSummaries_611407(
-    name: "describeTrustedAdvisorCheckSummaries", meth: HttpMethod.HttpPost,
-    host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.DescribeTrustedAdvisorCheckSummaries",
-    validator: validate_DescribeTrustedAdvisorCheckSummaries_611408, base: "/",
-    url: url_DescribeTrustedAdvisorCheckSummaries_611409,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeTrustedAdvisorChecks_611422 = ref object of OpenApiRestCall_610658
-proc url_DescribeTrustedAdvisorChecks_611424(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeTrustedAdvisorChecks_611423(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Returns information about all available Trusted Advisor checks, including name, ID, category, description, and metadata. You must specify a language code; English ("en") and Japanese ("ja") are currently supported. The response contains a <a>TrustedAdvisorCheckDescription</a> for each check. The region must be set to us-east-1.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611425 = header.getOrDefault("X-Amz-Target")
-  valid_611425 = validateParameter(valid_611425, JString, required = true, default = newJString(
-      "AWSSupport_20130415.DescribeTrustedAdvisorChecks"))
-  if valid_611425 != nil:
-    section.add "X-Amz-Target", valid_611425
-  var valid_611426 = header.getOrDefault("X-Amz-Signature")
-  valid_611426 = validateParameter(valid_611426, JString, required = false,
-                                 default = nil)
-  if valid_611426 != nil:
-    section.add "X-Amz-Signature", valid_611426
-  var valid_611427 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611427 = validateParameter(valid_611427, JString, required = false,
-                                 default = nil)
-  if valid_611427 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611427
-  var valid_611428 = header.getOrDefault("X-Amz-Date")
-  valid_611428 = validateParameter(valid_611428, JString, required = false,
-                                 default = nil)
-  if valid_611428 != nil:
-    section.add "X-Amz-Date", valid_611428
-  var valid_611429 = header.getOrDefault("X-Amz-Credential")
-  valid_611429 = validateParameter(valid_611429, JString, required = false,
-                                 default = nil)
-  if valid_611429 != nil:
-    section.add "X-Amz-Credential", valid_611429
-  var valid_611430 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611430 = validateParameter(valid_611430, JString, required = false,
-                                 default = nil)
-  if valid_611430 != nil:
-    section.add "X-Amz-Security-Token", valid_611430
-  var valid_611431 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611431 = validateParameter(valid_611431, JString, required = false,
-                                 default = nil)
-  if valid_611431 != nil:
-    section.add "X-Amz-Algorithm", valid_611431
-  var valid_611432 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611432 = validateParameter(valid_611432, JString, required = false,
-                                 default = nil)
-  if valid_611432 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611432
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611434: Call_DescribeTrustedAdvisorChecks_611422; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns information about all available Trusted Advisor checks, including name, ID, category, description, and metadata. You must specify a language code; English ("en") and Japanese ("ja") are currently supported. The response contains a <a>TrustedAdvisorCheckDescription</a> for each check. The region must be set to us-east-1.
-  ## 
-  let valid = call_611434.validator(path, query, header, formData, body)
-  let scheme = call_611434.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611434.url(scheme.get, call_611434.host, call_611434.base,
-                         call_611434.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611434, url, valid)
-
-proc call*(call_611435: Call_DescribeTrustedAdvisorChecks_611422; body: JsonNode): Recallable =
-  ## describeTrustedAdvisorChecks
-  ## Returns information about all available Trusted Advisor checks, including name, ID, category, description, and metadata. You must specify a language code; English ("en") and Japanese ("ja") are currently supported. The response contains a <a>TrustedAdvisorCheckDescription</a> for each check. The region must be set to us-east-1.
-  ##   body: JObject (required)
-  var body_611436 = newJObject()
-  if body != nil:
-    body_611436 = body
-  result = call_611435.call(nil, nil, nil, nil, body_611436)
-
-var describeTrustedAdvisorChecks* = Call_DescribeTrustedAdvisorChecks_611422(
-    name: "describeTrustedAdvisorChecks", meth: HttpMethod.HttpPost,
-    host: "support.amazonaws.com",
-    route: "/#X-Amz-Target=AWSSupport_20130415.DescribeTrustedAdvisorChecks",
-    validator: validate_DescribeTrustedAdvisorChecks_611423, base: "/",
-    url: url_DescribeTrustedAdvisorChecks_611424,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_RefreshTrustedAdvisorCheck_611437 = ref object of OpenApiRestCall_610658
-proc url_RefreshTrustedAdvisorCheck_611439(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_RefreshTrustedAdvisorCheck_611438(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Requests a refresh of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and they cannot be refreshed by using this operation. Use of the <code>RefreshTrustedAdvisorCheck</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note> <p>The response contains a <a>TrustedAdvisorCheckRefreshStatus</a> object, which contains these fields:</p> <ul> <li> <p> <b>status.</b> The refresh status of the check: </p> <ul> <li> <p> <code>none:</code> The check is not refreshed or the non-success status exceeds the timeout</p> </li> <li> <p> <code>enqueued:</code> The check refresh requests has entered the refresh queue</p> </li> <li> <p> <code>processing:</code> The check refresh request is picked up by the rule processing engine</p> </li> <li> <p> <code>success:</code> The check is successfully refreshed</p> </li> <li> <p> <code>abandoned:</code> The check refresh has failed</p> </li> </ul> </li> <li> <p> <b>millisUntilNextRefreshable.</b> The amount of time, in milliseconds, until the check is eligible for refresh.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_611440 = header.getOrDefault("X-Amz-Target")
-  valid_611440 = validateParameter(valid_611440, JString, required = true, default = newJString(
-      "AWSSupport_20130415.RefreshTrustedAdvisorCheck"))
-  if valid_611440 != nil:
-    section.add "X-Amz-Target", valid_611440
-  var valid_611441 = header.getOrDefault("X-Amz-Signature")
-  valid_611441 = validateParameter(valid_611441, JString, required = false,
-                                 default = nil)
-  if valid_611441 != nil:
-    section.add "X-Amz-Signature", valid_611441
-  var valid_611442 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611442 = validateParameter(valid_611442, JString, required = false,
-                                 default = nil)
-  if valid_611442 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611442
-  var valid_611443 = header.getOrDefault("X-Amz-Date")
-  valid_611443 = validateParameter(valid_611443, JString, required = false,
-                                 default = nil)
-  if valid_611443 != nil:
-    section.add "X-Amz-Date", valid_611443
-  var valid_611444 = header.getOrDefault("X-Amz-Credential")
-  valid_611444 = validateParameter(valid_611444, JString, required = false,
-                                 default = nil)
-  if valid_611444 != nil:
-    section.add "X-Amz-Credential", valid_611444
-  var valid_611445 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611445 = validateParameter(valid_611445, JString, required = false,
-                                 default = nil)
-  if valid_611445 != nil:
-    section.add "X-Amz-Security-Token", valid_611445
-  var valid_611446 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611446 = validateParameter(valid_611446, JString, required = false,
-                                 default = nil)
-  if valid_611446 != nil:
-    section.add "X-Amz-Algorithm", valid_611446
-  var valid_611447 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611447 = validateParameter(valid_611447, JString, required = false,
-                                 default = nil)
-  if valid_611447 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611447
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_611449: Call_RefreshTrustedAdvisorCheck_611437; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Requests a refresh of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and they cannot be refreshed by using this operation. Use of the <code>RefreshTrustedAdvisorCheck</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note> <p>The response contains a <a>TrustedAdvisorCheckRefreshStatus</a> object, which contains these fields:</p> <ul> <li> <p> <b>status.</b> The refresh status of the check: </p> <ul> <li> <p> <code>none:</code> The check is not refreshed or the non-success status exceeds the timeout</p> </li> <li> <p> <code>enqueued:</code> The check refresh requests has entered the refresh queue</p> </li> <li> <p> <code>processing:</code> The check refresh request is picked up by the rule processing engine</p> </li> <li> <p> <code>success:</code> The check is successfully refreshed</p> </li> <li> <p> <code>abandoned:</code> The check refresh has failed</p> </li> </ul> </li> <li> <p> <b>millisUntilNextRefreshable.</b> The amount of time, in milliseconds, until the check is eligible for refresh.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
-  ## 
-  let valid = call_611449.validator(path, query, header, formData, body)
-  let scheme = call_611449.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611449.url(scheme.get, call_611449.host, call_611449.base,
-                         call_611449.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611449, url, valid)
-
-proc call*(call_611450: Call_RefreshTrustedAdvisorCheck_611437; body: JsonNode): Recallable =
-  ## refreshTrustedAdvisorCheck
-  ## <p>Requests a refresh of the Trusted Advisor check that has the specified check ID. Check IDs can be obtained by calling <a>DescribeTrustedAdvisorChecks</a>.</p> <note> <p>Some checks are refreshed automatically, and they cannot be refreshed by using this operation. Use of the <code>RefreshTrustedAdvisorCheck</code> operation for these checks causes an <code>InvalidParameterValue</code> error.</p> </note> <p>The response contains a <a>TrustedAdvisorCheckRefreshStatus</a> object, which contains these fields:</p> <ul> <li> <p> <b>status.</b> The refresh status of the check: </p> <ul> <li> <p> <code>none:</code> The check is not refreshed or the non-success status exceeds the timeout</p> </li> <li> <p> <code>enqueued:</code> The check refresh requests has entered the refresh queue</p> </li> <li> <p> <code>processing:</code> The check refresh request is picked up by the rule processing engine</p> </li> <li> <p> <code>success:</code> The check is successfully refreshed</p> </li> <li> <p> <code>abandoned:</code> The check refresh has failed</p> </li> </ul> </li> <li> <p> <b>millisUntilNextRefreshable.</b> The amount of time, in milliseconds, until the check is eligible for refresh.</p> </li> <li> <p> <b>checkId.</b> The unique identifier for the check.</p> </li> </ul>
-  ##   body: JObject (required)
-  var body_611451 = newJObject()
-  if body != nil:
-    body_611451 = body
-  result = call_611450.call(nil, nil, nil, nil, body_611451)
-
-var refreshTrustedAdvisorCheck* = Call_RefreshTrustedAdvisorCheck_611437(
-    name: "refreshTrustedAdvisorCheck", meth: HttpMethod.HttpPost,
-    host: "support.amazonaws.com",
-    route: "/#X-Amz-Target=AWSSupport_20130415.RefreshTrustedAdvisorCheck",
-    validator: validate_RefreshTrustedAdvisorCheck_611438, base: "/",
-    url: url_RefreshTrustedAdvisorCheck_611439,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ResolveCase_611452 = ref object of OpenApiRestCall_610658
-proc url_ResolveCase_611454(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ResolveCase_611453(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
+proc validate_ResolveCase_21626220(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## Takes a <code>caseId</code> and returns the initial state of the case along with the state of the case after the call to <a>ResolveCase</a> completed.
   ## 
   var section: JsonNode
@@ -1618,93 +1664,94 @@ proc validate_ResolveCase_611453(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_611455 = header.getOrDefault("X-Amz-Target")
-  valid_611455 = validateParameter(valid_611455, JString, required = true, default = newJString(
+  var valid_21626222 = header.getOrDefault("X-Amz-Date")
+  valid_21626222 = validateParameter(valid_21626222, JString, required = false,
+                                   default = nil)
+  if valid_21626222 != nil:
+    section.add "X-Amz-Date", valid_21626222
+  var valid_21626223 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626223 = validateParameter(valid_21626223, JString, required = false,
+                                   default = nil)
+  if valid_21626223 != nil:
+    section.add "X-Amz-Security-Token", valid_21626223
+  var valid_21626224 = header.getOrDefault("X-Amz-Target")
+  valid_21626224 = validateParameter(valid_21626224, JString, required = true, default = newJString(
       "AWSSupport_20130415.ResolveCase"))
-  if valid_611455 != nil:
-    section.add "X-Amz-Target", valid_611455
-  var valid_611456 = header.getOrDefault("X-Amz-Signature")
-  valid_611456 = validateParameter(valid_611456, JString, required = false,
-                                 default = nil)
-  if valid_611456 != nil:
-    section.add "X-Amz-Signature", valid_611456
-  var valid_611457 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_611457 = validateParameter(valid_611457, JString, required = false,
-                                 default = nil)
-  if valid_611457 != nil:
-    section.add "X-Amz-Content-Sha256", valid_611457
-  var valid_611458 = header.getOrDefault("X-Amz-Date")
-  valid_611458 = validateParameter(valid_611458, JString, required = false,
-                                 default = nil)
-  if valid_611458 != nil:
-    section.add "X-Amz-Date", valid_611458
-  var valid_611459 = header.getOrDefault("X-Amz-Credential")
-  valid_611459 = validateParameter(valid_611459, JString, required = false,
-                                 default = nil)
-  if valid_611459 != nil:
-    section.add "X-Amz-Credential", valid_611459
-  var valid_611460 = header.getOrDefault("X-Amz-Security-Token")
-  valid_611460 = validateParameter(valid_611460, JString, required = false,
-                                 default = nil)
-  if valid_611460 != nil:
-    section.add "X-Amz-Security-Token", valid_611460
-  var valid_611461 = header.getOrDefault("X-Amz-Algorithm")
-  valid_611461 = validateParameter(valid_611461, JString, required = false,
-                                 default = nil)
-  if valid_611461 != nil:
-    section.add "X-Amz-Algorithm", valid_611461
-  var valid_611462 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_611462 = validateParameter(valid_611462, JString, required = false,
-                                 default = nil)
-  if valid_611462 != nil:
-    section.add "X-Amz-SignedHeaders", valid_611462
+  if valid_21626224 != nil:
+    section.add "X-Amz-Target", valid_21626224
+  var valid_21626225 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626225 = validateParameter(valid_21626225, JString, required = false,
+                                   default = nil)
+  if valid_21626225 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626225
+  var valid_21626226 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626226 = validateParameter(valid_21626226, JString, required = false,
+                                   default = nil)
+  if valid_21626226 != nil:
+    section.add "X-Amz-Algorithm", valid_21626226
+  var valid_21626227 = header.getOrDefault("X-Amz-Signature")
+  valid_21626227 = validateParameter(valid_21626227, JString, required = false,
+                                   default = nil)
+  if valid_21626227 != nil:
+    section.add "X-Amz-Signature", valid_21626227
+  var valid_21626228 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626228 = validateParameter(valid_21626228, JString, required = false,
+                                   default = nil)
+  if valid_21626228 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626228
+  var valid_21626229 = header.getOrDefault("X-Amz-Credential")
+  valid_21626229 = validateParameter(valid_21626229, JString, required = false,
+                                   default = nil)
+  if valid_21626229 != nil:
+    section.add "X-Amz-Credential", valid_21626229
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_611464: Call_ResolveCase_611452; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+proc call*(call_21626231: Call_ResolveCase_21626219; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
   ## Takes a <code>caseId</code> and returns the initial state of the case along with the state of the case after the call to <a>ResolveCase</a> completed.
   ## 
-  let valid = call_611464.validator(path, query, header, formData, body)
-  let scheme = call_611464.pickScheme
+  let valid = call_21626231.validator(path, query, header, formData, body, _)
+  let scheme = call_21626231.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_611464.url(scheme.get, call_611464.host, call_611464.base,
-                         call_611464.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_611464, url, valid)
+  let uri = call_21626231.makeUrl(scheme.get, call_21626231.host, call_21626231.base,
+                               call_21626231.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626231, uri, valid, _)
 
-proc call*(call_611465: Call_ResolveCase_611452; body: JsonNode): Recallable =
+proc call*(call_21626232: Call_ResolveCase_21626219; body: JsonNode): Recallable =
   ## resolveCase
   ## Takes a <code>caseId</code> and returns the initial state of the case along with the state of the case after the call to <a>ResolveCase</a> completed.
   ##   body: JObject (required)
-  var body_611466 = newJObject()
+  var body_21626233 = newJObject()
   if body != nil:
-    body_611466 = body
-  result = call_611465.call(nil, nil, nil, nil, body_611466)
+    body_21626233 = body
+  result = call_21626232.call(nil, nil, nil, nil, body_21626233)
 
-var resolveCase* = Call_ResolveCase_611452(name: "resolveCase",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "support.amazonaws.com", route: "/#X-Amz-Target=AWSSupport_20130415.ResolveCase",
-                                        validator: validate_ResolveCase_611453,
-                                        base: "/", url: url_ResolveCase_611454,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var resolveCase* = Call_ResolveCase_21626219(name: "resolveCase",
+    meth: HttpMethod.HttpPost, host: "support.amazonaws.com",
+    route: "/#X-Amz-Target=AWSSupport_20130415.ResolveCase",
+    validator: validate_ResolveCase_21626220, base: "/", makeUrl: url_ResolveCase_21626221,
+    schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -1734,6 +1781,9 @@ sloppyConst FetchFromEnv, AWS_ACCESS_KEY_ID
 sloppyConst FetchFromEnv, AWS_SECRET_ACCESS_KEY
 sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
+type
+  XAmz = enum
+    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
 proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
@@ -1757,8 +1807,8 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
     normal = PathNormal.Default
   recall.headers["Host"] = url.hostname
   recall.headers["X-Amz-Date"] = date
+  recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    algo = SHA256
     scope = credentialScope(region = region, service = awsServiceName, date = date)
     request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
                              normalize = normal, digest = algo)
@@ -1773,25 +1823,24 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers.del "Host"
   recall.url = $url
 
-type
-  XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body = ""): Recallable {.
+    base.} =
   ## the hook is a terrible earworm
-  var headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
-  let
-    body = input.getOrDefault("body")
-    text = if body == nil:
-      "" elif body.kind == JString:
-      body.getStr else:
-      $body
-  if body != nil and body.kind != JString:
+  var
+    headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
+    text = body
+  if text.len == 0 and "body" in input:
+    text = input.getOrDefault("body").getStr
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
+  else:
+    headers["content-md5"] = base64.encode text.toMD5
   if not headers.hasKey($SecurityToken):
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
       headers[$SecurityToken] = session
-  headers[$ContentSha256] = hash(text, SHA256)
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)
+
+when not defined(ssl):
+  {.error: "use ssl".}

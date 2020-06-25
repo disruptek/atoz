@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, httpcore,
-  sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
+  httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon CloudWatch Events
@@ -27,18 +27,18 @@ type
     base*: string
     host*: string
     schemes*: set[Scheme]
-    url*: proc (protocol: Scheme; host: string; base: string; route: string;
-              path: JsonNode; query: JsonNode): Uri
+    makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
+                  path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_616866 = ref object of OpenApiRestCall
+  OpenApiRestCall_21625435 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_616866](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_21625435](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_616866): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -55,8 +55,9 @@ proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
   ## ensure an input is of the correct json type and yield
   ## a suitable default value when appropriate
   if js == nil:
-    if default != nil:
-      return validateParameter(default, kind, required = required)
+    if required:
+      if default != nil:
+        return validateParameter(default, kind, required = required)
   result = js
   if result == nil:
     assert not required, $kind & " expected; received nil"
@@ -109,9 +110,9 @@ const
                            "eu-west-2": "events.eu-west-2.amazonaws.com", "ap-northeast-3": "events.ap-northeast-3.amazonaws.com",
                            "eu-central-1": "events.eu-central-1.amazonaws.com",
                            "us-east-2": "events.us-east-2.amazonaws.com",
-                           "us-east-1": "events.us-east-1.amazonaws.com", "cn-northwest-1": "events.cn-northwest-1.amazonaws.com.cn", "ap-northeast-2": "events.ap-northeast-2.amazonaws.com",
+                           "us-east-1": "events.us-east-1.amazonaws.com", "cn-northwest-1": "events.cn-northwest-1.amazonaws.com.cn",
                            "ap-south-1": "events.ap-south-1.amazonaws.com",
-                           "eu-north-1": "events.eu-north-1.amazonaws.com",
+                           "eu-north-1": "events.eu-north-1.amazonaws.com", "ap-northeast-2": "events.ap-northeast-2.amazonaws.com",
                            "us-west-1": "events.us-west-1.amazonaws.com", "us-gov-east-1": "events.us-gov-east-1.amazonaws.com",
                            "eu-west-3": "events.eu-west-3.amazonaws.com",
                            "cn-north-1": "events.cn-north-1.amazonaws.com.cn",
@@ -127,9 +128,9 @@ const
       "us-east-2": "events.us-east-2.amazonaws.com",
       "us-east-1": "events.us-east-1.amazonaws.com",
       "cn-northwest-1": "events.cn-northwest-1.amazonaws.com.cn",
-      "ap-northeast-2": "events.ap-northeast-2.amazonaws.com",
       "ap-south-1": "events.ap-south-1.amazonaws.com",
       "eu-north-1": "events.eu-north-1.amazonaws.com",
+      "ap-northeast-2": "events.ap-northeast-2.amazonaws.com",
       "us-west-1": "events.us-west-1.amazonaws.com",
       "us-gov-east-1": "events.us-gov-east-1.amazonaws.com",
       "eu-west-3": "events.eu-west-3.amazonaws.com",
@@ -144,343 +145,8 @@ const
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
     base.}
 type
-  Call_ActivateEventSource_617205 = ref object of OpenApiRestCall_616866
-proc url_ActivateEventSource_617207(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ActivateEventSource_617206(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode =
-  ## Activates a partner event source that has been deactivated. Once activated, your matching event bus will start receiving events from the event source.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617319 = header.getOrDefault("X-Amz-Date")
-  valid_617319 = validateParameter(valid_617319, JString, required = false,
-                                 default = nil)
-  if valid_617319 != nil:
-    section.add "X-Amz-Date", valid_617319
-  var valid_617320 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617320 = validateParameter(valid_617320, JString, required = false,
-                                 default = nil)
-  if valid_617320 != nil:
-    section.add "X-Amz-Security-Token", valid_617320
-  var valid_617321 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617321 = validateParameter(valid_617321, JString, required = false,
-                                 default = nil)
-  if valid_617321 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617321
-  var valid_617322 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617322 = validateParameter(valid_617322, JString, required = false,
-                                 default = nil)
-  if valid_617322 != nil:
-    section.add "X-Amz-Algorithm", valid_617322
-  var valid_617323 = header.getOrDefault("X-Amz-Signature")
-  valid_617323 = validateParameter(valid_617323, JString, required = false,
-                                 default = nil)
-  if valid_617323 != nil:
-    section.add "X-Amz-Signature", valid_617323
-  var valid_617324 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617324 = validateParameter(valid_617324, JString, required = false,
-                                 default = nil)
-  if valid_617324 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617324
-  var valid_617338 = header.getOrDefault("X-Amz-Target")
-  valid_617338 = validateParameter(valid_617338, JString, required = true, default = newJString(
-      "AWSEvents.ActivateEventSource"))
-  if valid_617338 != nil:
-    section.add "X-Amz-Target", valid_617338
-  var valid_617339 = header.getOrDefault("X-Amz-Credential")
-  valid_617339 = validateParameter(valid_617339, JString, required = false,
-                                 default = nil)
-  if valid_617339 != nil:
-    section.add "X-Amz-Credential", valid_617339
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617364: Call_ActivateEventSource_617205; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Activates a partner event source that has been deactivated. Once activated, your matching event bus will start receiving events from the event source.
-  ## 
-  let valid = call_617364.validator(path, query, header, formData, body, _)
-  let scheme = call_617364.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617364.url(scheme.get, call_617364.host, call_617364.base,
-                         call_617364.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617364, url, valid, _)
-
-proc call*(call_617435: Call_ActivateEventSource_617205; body: JsonNode): Recallable =
-  ## activateEventSource
-  ## Activates a partner event source that has been deactivated. Once activated, your matching event bus will start receiving events from the event source.
-  ##   body: JObject (required)
-  var body_617436 = newJObject()
-  if body != nil:
-    body_617436 = body
-  result = call_617435.call(nil, nil, nil, nil, body_617436)
-
-var activateEventSource* = Call_ActivateEventSource_617205(
-    name: "activateEventSource", meth: HttpMethod.HttpPost,
-    host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.ActivateEventSource",
-    validator: validate_ActivateEventSource_617206, base: "/",
-    url: url_ActivateEventSource_617207, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_CreateEventBus_617477 = ref object of OpenApiRestCall_616866
-proc url_CreateEventBus_617479(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_CreateEventBus_617478(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode =
-  ## Creates a new event bus within your account. This can be a custom event bus which you can use to receive events from your custom applications and services, or it can be a partner event bus which can be matched to a partner event source.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617480 = header.getOrDefault("X-Amz-Date")
-  valid_617480 = validateParameter(valid_617480, JString, required = false,
-                                 default = nil)
-  if valid_617480 != nil:
-    section.add "X-Amz-Date", valid_617480
-  var valid_617481 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617481 = validateParameter(valid_617481, JString, required = false,
-                                 default = nil)
-  if valid_617481 != nil:
-    section.add "X-Amz-Security-Token", valid_617481
-  var valid_617482 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617482 = validateParameter(valid_617482, JString, required = false,
-                                 default = nil)
-  if valid_617482 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617482
-  var valid_617483 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617483 = validateParameter(valid_617483, JString, required = false,
-                                 default = nil)
-  if valid_617483 != nil:
-    section.add "X-Amz-Algorithm", valid_617483
-  var valid_617484 = header.getOrDefault("X-Amz-Signature")
-  valid_617484 = validateParameter(valid_617484, JString, required = false,
-                                 default = nil)
-  if valid_617484 != nil:
-    section.add "X-Amz-Signature", valid_617484
-  var valid_617485 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617485 = validateParameter(valid_617485, JString, required = false,
-                                 default = nil)
-  if valid_617485 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617485
-  var valid_617486 = header.getOrDefault("X-Amz-Target")
-  valid_617486 = validateParameter(valid_617486, JString, required = true, default = newJString(
-      "AWSEvents.CreateEventBus"))
-  if valid_617486 != nil:
-    section.add "X-Amz-Target", valid_617486
-  var valid_617487 = header.getOrDefault("X-Amz-Credential")
-  valid_617487 = validateParameter(valid_617487, JString, required = false,
-                                 default = nil)
-  if valid_617487 != nil:
-    section.add "X-Amz-Credential", valid_617487
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617489: Call_CreateEventBus_617477; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Creates a new event bus within your account. This can be a custom event bus which you can use to receive events from your custom applications and services, or it can be a partner event bus which can be matched to a partner event source.
-  ## 
-  let valid = call_617489.validator(path, query, header, formData, body, _)
-  let scheme = call_617489.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617489.url(scheme.get, call_617489.host, call_617489.base,
-                         call_617489.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617489, url, valid, _)
-
-proc call*(call_617490: Call_CreateEventBus_617477; body: JsonNode): Recallable =
-  ## createEventBus
-  ## Creates a new event bus within your account. This can be a custom event bus which you can use to receive events from your custom applications and services, or it can be a partner event bus which can be matched to a partner event source.
-  ##   body: JObject (required)
-  var body_617491 = newJObject()
-  if body != nil:
-    body_617491 = body
-  result = call_617490.call(nil, nil, nil, nil, body_617491)
-
-var createEventBus* = Call_CreateEventBus_617477(name: "createEventBus",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.CreateEventBus",
-    validator: validate_CreateEventBus_617478, base: "/", url: url_CreateEventBus_617479,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_CreatePartnerEventSource_617492 = ref object of OpenApiRestCall_616866
-proc url_CreatePartnerEventSource_617494(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_CreatePartnerEventSource_617493(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Called by an SaaS partner to create a partner event source. This operation is not used by AWS customers.</p> <p>Each partner event source can be used by one AWS account to create a matching partner event bus in that AWS account. A SaaS partner must create one partner event source for each AWS account that wants to receive those event types. </p> <p>A partner event source creates events based on resources within the SaaS partner's service or application.</p> <p>An AWS account that creates a partner event bus that matches the partner event source can use that event bus to receive events from the partner, and then process them using AWS Events rules and targets.</p> <p>Partner event source names follow this format:</p> <p> <code> <i>partner_name</i>/<i>event_namespace</i>/<i>event_name</i> </code> </p> <p> <i>partner_name</i> is determined during partner registration and identifies the partner to AWS customers. <i>event_namespace</i> is determined by the partner and is a way for the partner to categorize their events. <i>event_name</i> is determined by the partner, and should uniquely identify an event-generating resource within the partner system. The combination of <i>event_namespace</i> and <i>event_name</i> should help AWS customers decide whether to create an event bus to receive these events.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617495 = header.getOrDefault("X-Amz-Date")
-  valid_617495 = validateParameter(valid_617495, JString, required = false,
-                                 default = nil)
-  if valid_617495 != nil:
-    section.add "X-Amz-Date", valid_617495
-  var valid_617496 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617496 = validateParameter(valid_617496, JString, required = false,
-                                 default = nil)
-  if valid_617496 != nil:
-    section.add "X-Amz-Security-Token", valid_617496
-  var valid_617497 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617497 = validateParameter(valid_617497, JString, required = false,
-                                 default = nil)
-  if valid_617497 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617497
-  var valid_617498 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617498 = validateParameter(valid_617498, JString, required = false,
-                                 default = nil)
-  if valid_617498 != nil:
-    section.add "X-Amz-Algorithm", valid_617498
-  var valid_617499 = header.getOrDefault("X-Amz-Signature")
-  valid_617499 = validateParameter(valid_617499, JString, required = false,
-                                 default = nil)
-  if valid_617499 != nil:
-    section.add "X-Amz-Signature", valid_617499
-  var valid_617500 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617500 = validateParameter(valid_617500, JString, required = false,
-                                 default = nil)
-  if valid_617500 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617500
-  var valid_617501 = header.getOrDefault("X-Amz-Target")
-  valid_617501 = validateParameter(valid_617501, JString, required = true, default = newJString(
-      "AWSEvents.CreatePartnerEventSource"))
-  if valid_617501 != nil:
-    section.add "X-Amz-Target", valid_617501
-  var valid_617502 = header.getOrDefault("X-Amz-Credential")
-  valid_617502 = validateParameter(valid_617502, JString, required = false,
-                                 default = nil)
-  if valid_617502 != nil:
-    section.add "X-Amz-Credential", valid_617502
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617504: Call_CreatePartnerEventSource_617492; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Called by an SaaS partner to create a partner event source. This operation is not used by AWS customers.</p> <p>Each partner event source can be used by one AWS account to create a matching partner event bus in that AWS account. A SaaS partner must create one partner event source for each AWS account that wants to receive those event types. </p> <p>A partner event source creates events based on resources within the SaaS partner's service or application.</p> <p>An AWS account that creates a partner event bus that matches the partner event source can use that event bus to receive events from the partner, and then process them using AWS Events rules and targets.</p> <p>Partner event source names follow this format:</p> <p> <code> <i>partner_name</i>/<i>event_namespace</i>/<i>event_name</i> </code> </p> <p> <i>partner_name</i> is determined during partner registration and identifies the partner to AWS customers. <i>event_namespace</i> is determined by the partner and is a way for the partner to categorize their events. <i>event_name</i> is determined by the partner, and should uniquely identify an event-generating resource within the partner system. The combination of <i>event_namespace</i> and <i>event_name</i> should help AWS customers decide whether to create an event bus to receive these events.</p>
-  ## 
-  let valid = call_617504.validator(path, query, header, formData, body, _)
-  let scheme = call_617504.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617504.url(scheme.get, call_617504.host, call_617504.base,
-                         call_617504.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617504, url, valid, _)
-
-proc call*(call_617505: Call_CreatePartnerEventSource_617492; body: JsonNode): Recallable =
-  ## createPartnerEventSource
-  ## <p>Called by an SaaS partner to create a partner event source. This operation is not used by AWS customers.</p> <p>Each partner event source can be used by one AWS account to create a matching partner event bus in that AWS account. A SaaS partner must create one partner event source for each AWS account that wants to receive those event types. </p> <p>A partner event source creates events based on resources within the SaaS partner's service or application.</p> <p>An AWS account that creates a partner event bus that matches the partner event source can use that event bus to receive events from the partner, and then process them using AWS Events rules and targets.</p> <p>Partner event source names follow this format:</p> <p> <code> <i>partner_name</i>/<i>event_namespace</i>/<i>event_name</i> </code> </p> <p> <i>partner_name</i> is determined during partner registration and identifies the partner to AWS customers. <i>event_namespace</i> is determined by the partner and is a way for the partner to categorize their events. <i>event_name</i> is determined by the partner, and should uniquely identify an event-generating resource within the partner system. The combination of <i>event_namespace</i> and <i>event_name</i> should help AWS customers decide whether to create an event bus to receive these events.</p>
-  ##   body: JObject (required)
-  var body_617506 = newJObject()
-  if body != nil:
-    body_617506 = body
-  result = call_617505.call(nil, nil, nil, nil, body_617506)
-
-var createPartnerEventSource* = Call_CreatePartnerEventSource_617492(
-    name: "createPartnerEventSource", meth: HttpMethod.HttpPost,
-    host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.CreatePartnerEventSource",
-    validator: validate_CreatePartnerEventSource_617493, base: "/",
-    url: url_CreatePartnerEventSource_617494, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DeactivateEventSource_617507 = ref object of OpenApiRestCall_616866
-proc url_DeactivateEventSource_617509(protocol: Scheme; host: string; base: string;
+  Call_ActivateEventSource_21625779 = ref object of OpenApiRestCall_21625435
+proc url_ActivateEventSource_21625781(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -490,9 +156,10 @@ proc url_DeactivateEventSource_617509(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_DeactivateEventSource_617508(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>You can use this operation to temporarily stop receiving events from the specified partner event source. The matching event bus is not deleted. </p> <p>When you deactivate a partner event source, the source goes into PENDING state. If it remains in PENDING state for more than two weeks, it is deleted.</p> <p>To activate a deactivated partner event source, use <a>ActivateEventSource</a>.</p>
+proc validate_ActivateEventSource_21625780(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Activates a partner event source that has been deactivated. Once activated, your matching event bus will start receiving events from the event source.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -503,429 +170,97 @@ proc validate_DeactivateEventSource_617508(path: JsonNode; query: JsonNode;
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617510 = header.getOrDefault("X-Amz-Date")
-  valid_617510 = validateParameter(valid_617510, JString, required = false,
-                                 default = nil)
-  if valid_617510 != nil:
-    section.add "X-Amz-Date", valid_617510
-  var valid_617511 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617511 = validateParameter(valid_617511, JString, required = false,
-                                 default = nil)
-  if valid_617511 != nil:
-    section.add "X-Amz-Security-Token", valid_617511
-  var valid_617512 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617512 = validateParameter(valid_617512, JString, required = false,
-                                 default = nil)
-  if valid_617512 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617512
-  var valid_617513 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617513 = validateParameter(valid_617513, JString, required = false,
-                                 default = nil)
-  if valid_617513 != nil:
-    section.add "X-Amz-Algorithm", valid_617513
-  var valid_617514 = header.getOrDefault("X-Amz-Signature")
-  valid_617514 = validateParameter(valid_617514, JString, required = false,
-                                 default = nil)
-  if valid_617514 != nil:
-    section.add "X-Amz-Signature", valid_617514
-  var valid_617515 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617515 = validateParameter(valid_617515, JString, required = false,
-                                 default = nil)
-  if valid_617515 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617515
-  var valid_617516 = header.getOrDefault("X-Amz-Target")
-  valid_617516 = validateParameter(valid_617516, JString, required = true, default = newJString(
-      "AWSEvents.DeactivateEventSource"))
-  if valid_617516 != nil:
-    section.add "X-Amz-Target", valid_617516
-  var valid_617517 = header.getOrDefault("X-Amz-Credential")
-  valid_617517 = validateParameter(valid_617517, JString, required = false,
-                                 default = nil)
-  if valid_617517 != nil:
-    section.add "X-Amz-Credential", valid_617517
+  var valid_21625882 = header.getOrDefault("X-Amz-Date")
+  valid_21625882 = validateParameter(valid_21625882, JString, required = false,
+                                   default = nil)
+  if valid_21625882 != nil:
+    section.add "X-Amz-Date", valid_21625882
+  var valid_21625883 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21625883 = validateParameter(valid_21625883, JString, required = false,
+                                   default = nil)
+  if valid_21625883 != nil:
+    section.add "X-Amz-Security-Token", valid_21625883
+  var valid_21625898 = header.getOrDefault("X-Amz-Target")
+  valid_21625898 = validateParameter(valid_21625898, JString, required = true, default = newJString(
+      "AWSEvents.ActivateEventSource"))
+  if valid_21625898 != nil:
+    section.add "X-Amz-Target", valid_21625898
+  var valid_21625899 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21625899 = validateParameter(valid_21625899, JString, required = false,
+                                   default = nil)
+  if valid_21625899 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21625899
+  var valid_21625900 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21625900 = validateParameter(valid_21625900, JString, required = false,
+                                   default = nil)
+  if valid_21625900 != nil:
+    section.add "X-Amz-Algorithm", valid_21625900
+  var valid_21625901 = header.getOrDefault("X-Amz-Signature")
+  valid_21625901 = validateParameter(valid_21625901, JString, required = false,
+                                   default = nil)
+  if valid_21625901 != nil:
+    section.add "X-Amz-Signature", valid_21625901
+  var valid_21625902 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21625902 = validateParameter(valid_21625902, JString, required = false,
+                                   default = nil)
+  if valid_21625902 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21625902
+  var valid_21625903 = header.getOrDefault("X-Amz-Credential")
+  valid_21625903 = validateParameter(valid_21625903, JString, required = false,
+                                   default = nil)
+  if valid_21625903 != nil:
+    section.add "X-Amz-Credential", valid_21625903
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617519: Call_DeactivateEventSource_617507; path: JsonNode = nil;
+proc call*(call_21625929: Call_ActivateEventSource_21625779; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>You can use this operation to temporarily stop receiving events from the specified partner event source. The matching event bus is not deleted. </p> <p>When you deactivate a partner event source, the source goes into PENDING state. If it remains in PENDING state for more than two weeks, it is deleted.</p> <p>To activate a deactivated partner event source, use <a>ActivateEventSource</a>.</p>
+  ## Activates a partner event source that has been deactivated. Once activated, your matching event bus will start receiving events from the event source.
   ## 
-  let valid = call_617519.validator(path, query, header, formData, body, _)
-  let scheme = call_617519.pickScheme
+  let valid = call_21625929.validator(path, query, header, formData, body, _)
+  let scheme = call_21625929.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617519.url(scheme.get, call_617519.host, call_617519.base,
-                         call_617519.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617519, url, valid, _)
+  let uri = call_21625929.makeUrl(scheme.get, call_21625929.host, call_21625929.base,
+                               call_21625929.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21625929, uri, valid, _)
 
-proc call*(call_617520: Call_DeactivateEventSource_617507; body: JsonNode): Recallable =
-  ## deactivateEventSource
-  ## <p>You can use this operation to temporarily stop receiving events from the specified partner event source. The matching event bus is not deleted. </p> <p>When you deactivate a partner event source, the source goes into PENDING state. If it remains in PENDING state for more than two weeks, it is deleted.</p> <p>To activate a deactivated partner event source, use <a>ActivateEventSource</a>.</p>
+proc call*(call_21625992: Call_ActivateEventSource_21625779; body: JsonNode): Recallable =
+  ## activateEventSource
+  ## Activates a partner event source that has been deactivated. Once activated, your matching event bus will start receiving events from the event source.
   ##   body: JObject (required)
-  var body_617521 = newJObject()
+  var body_21625993 = newJObject()
   if body != nil:
-    body_617521 = body
-  result = call_617520.call(nil, nil, nil, nil, body_617521)
+    body_21625993 = body
+  result = call_21625992.call(nil, nil, nil, nil, body_21625993)
 
-var deactivateEventSource* = Call_DeactivateEventSource_617507(
-    name: "deactivateEventSource", meth: HttpMethod.HttpPost,
+var activateEventSource* = Call_ActivateEventSource_21625779(
+    name: "activateEventSource", meth: HttpMethod.HttpPost,
     host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.DeactivateEventSource",
-    validator: validate_DeactivateEventSource_617508, base: "/",
-    url: url_DeactivateEventSource_617509, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DeleteEventBus_617522 = ref object of OpenApiRestCall_616866
-proc url_DeleteEventBus_617524(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DeleteEventBus_617523(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode =
-  ## Deletes the specified custom event bus or partner event bus. All rules associated with this event bus need to be deleted. You can't delete your account's default event bus.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617525 = header.getOrDefault("X-Amz-Date")
-  valid_617525 = validateParameter(valid_617525, JString, required = false,
-                                 default = nil)
-  if valid_617525 != nil:
-    section.add "X-Amz-Date", valid_617525
-  var valid_617526 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617526 = validateParameter(valid_617526, JString, required = false,
-                                 default = nil)
-  if valid_617526 != nil:
-    section.add "X-Amz-Security-Token", valid_617526
-  var valid_617527 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617527 = validateParameter(valid_617527, JString, required = false,
-                                 default = nil)
-  if valid_617527 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617527
-  var valid_617528 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617528 = validateParameter(valid_617528, JString, required = false,
-                                 default = nil)
-  if valid_617528 != nil:
-    section.add "X-Amz-Algorithm", valid_617528
-  var valid_617529 = header.getOrDefault("X-Amz-Signature")
-  valid_617529 = validateParameter(valid_617529, JString, required = false,
-                                 default = nil)
-  if valid_617529 != nil:
-    section.add "X-Amz-Signature", valid_617529
-  var valid_617530 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617530 = validateParameter(valid_617530, JString, required = false,
-                                 default = nil)
-  if valid_617530 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617530
-  var valid_617531 = header.getOrDefault("X-Amz-Target")
-  valid_617531 = validateParameter(valid_617531, JString, required = true, default = newJString(
-      "AWSEvents.DeleteEventBus"))
-  if valid_617531 != nil:
-    section.add "X-Amz-Target", valid_617531
-  var valid_617532 = header.getOrDefault("X-Amz-Credential")
-  valid_617532 = validateParameter(valid_617532, JString, required = false,
-                                 default = nil)
-  if valid_617532 != nil:
-    section.add "X-Amz-Credential", valid_617532
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617534: Call_DeleteEventBus_617522; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Deletes the specified custom event bus or partner event bus. All rules associated with this event bus need to be deleted. You can't delete your account's default event bus.
-  ## 
-  let valid = call_617534.validator(path, query, header, formData, body, _)
-  let scheme = call_617534.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617534.url(scheme.get, call_617534.host, call_617534.base,
-                         call_617534.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617534, url, valid, _)
-
-proc call*(call_617535: Call_DeleteEventBus_617522; body: JsonNode): Recallable =
-  ## deleteEventBus
-  ## Deletes the specified custom event bus or partner event bus. All rules associated with this event bus need to be deleted. You can't delete your account's default event bus.
-  ##   body: JObject (required)
-  var body_617536 = newJObject()
-  if body != nil:
-    body_617536 = body
-  result = call_617535.call(nil, nil, nil, nil, body_617536)
-
-var deleteEventBus* = Call_DeleteEventBus_617522(name: "deleteEventBus",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.DeleteEventBus",
-    validator: validate_DeleteEventBus_617523, base: "/", url: url_DeleteEventBus_617524,
+    route: "/#X-Amz-Target=AWSEvents.ActivateEventSource",
+    validator: validate_ActivateEventSource_21625780, base: "/",
+    makeUrl: url_ActivateEventSource_21625781,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeletePartnerEventSource_617537 = ref object of OpenApiRestCall_616866
-proc url_DeletePartnerEventSource_617539(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DeletePartnerEventSource_617538(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>This operation is used by SaaS partners to delete a partner event source. This operation is not used by AWS customers.</p> <p>When you delete an event source, the status of the corresponding partner event bus in the AWS customer account becomes DELETED.</p> <p/>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617540 = header.getOrDefault("X-Amz-Date")
-  valid_617540 = validateParameter(valid_617540, JString, required = false,
-                                 default = nil)
-  if valid_617540 != nil:
-    section.add "X-Amz-Date", valid_617540
-  var valid_617541 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617541 = validateParameter(valid_617541, JString, required = false,
-                                 default = nil)
-  if valid_617541 != nil:
-    section.add "X-Amz-Security-Token", valid_617541
-  var valid_617542 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617542 = validateParameter(valid_617542, JString, required = false,
-                                 default = nil)
-  if valid_617542 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617542
-  var valid_617543 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617543 = validateParameter(valid_617543, JString, required = false,
-                                 default = nil)
-  if valid_617543 != nil:
-    section.add "X-Amz-Algorithm", valid_617543
-  var valid_617544 = header.getOrDefault("X-Amz-Signature")
-  valid_617544 = validateParameter(valid_617544, JString, required = false,
-                                 default = nil)
-  if valid_617544 != nil:
-    section.add "X-Amz-Signature", valid_617544
-  var valid_617545 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617545 = validateParameter(valid_617545, JString, required = false,
-                                 default = nil)
-  if valid_617545 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617545
-  var valid_617546 = header.getOrDefault("X-Amz-Target")
-  valid_617546 = validateParameter(valid_617546, JString, required = true, default = newJString(
-      "AWSEvents.DeletePartnerEventSource"))
-  if valid_617546 != nil:
-    section.add "X-Amz-Target", valid_617546
-  var valid_617547 = header.getOrDefault("X-Amz-Credential")
-  valid_617547 = validateParameter(valid_617547, JString, required = false,
-                                 default = nil)
-  if valid_617547 != nil:
-    section.add "X-Amz-Credential", valid_617547
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617549: Call_DeletePartnerEventSource_617537; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>This operation is used by SaaS partners to delete a partner event source. This operation is not used by AWS customers.</p> <p>When you delete an event source, the status of the corresponding partner event bus in the AWS customer account becomes DELETED.</p> <p/>
-  ## 
-  let valid = call_617549.validator(path, query, header, formData, body, _)
-  let scheme = call_617549.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617549.url(scheme.get, call_617549.host, call_617549.base,
-                         call_617549.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617549, url, valid, _)
-
-proc call*(call_617550: Call_DeletePartnerEventSource_617537; body: JsonNode): Recallable =
-  ## deletePartnerEventSource
-  ## <p>This operation is used by SaaS partners to delete a partner event source. This operation is not used by AWS customers.</p> <p>When you delete an event source, the status of the corresponding partner event bus in the AWS customer account becomes DELETED.</p> <p/>
-  ##   body: JObject (required)
-  var body_617551 = newJObject()
-  if body != nil:
-    body_617551 = body
-  result = call_617550.call(nil, nil, nil, nil, body_617551)
-
-var deletePartnerEventSource* = Call_DeletePartnerEventSource_617537(
-    name: "deletePartnerEventSource", meth: HttpMethod.HttpPost,
-    host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.DeletePartnerEventSource",
-    validator: validate_DeletePartnerEventSource_617538, base: "/",
-    url: url_DeletePartnerEventSource_617539, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DeleteRule_617552 = ref object of OpenApiRestCall_616866
-proc url_DeleteRule_617554(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DeleteRule_617553(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Deletes the specified rule.</p> <p>Before you can delete the rule, you must remove all targets, using <a>RemoveTargets</a>.</p> <p>When you delete a rule, incoming events might continue to match to the deleted rule. Allow a short period of time for changes to take effect.</p> <p>Managed rules are rules created and managed by another AWS service on your behalf. These rules are created by those other AWS services to support functionality in those services. You can delete these rules using the <code>Force</code> option, but you should do so only if you are sure the other service is not still using that rule.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617555 = header.getOrDefault("X-Amz-Date")
-  valid_617555 = validateParameter(valid_617555, JString, required = false,
-                                 default = nil)
-  if valid_617555 != nil:
-    section.add "X-Amz-Date", valid_617555
-  var valid_617556 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617556 = validateParameter(valid_617556, JString, required = false,
-                                 default = nil)
-  if valid_617556 != nil:
-    section.add "X-Amz-Security-Token", valid_617556
-  var valid_617557 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617557 = validateParameter(valid_617557, JString, required = false,
-                                 default = nil)
-  if valid_617557 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617557
-  var valid_617558 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617558 = validateParameter(valid_617558, JString, required = false,
-                                 default = nil)
-  if valid_617558 != nil:
-    section.add "X-Amz-Algorithm", valid_617558
-  var valid_617559 = header.getOrDefault("X-Amz-Signature")
-  valid_617559 = validateParameter(valid_617559, JString, required = false,
-                                 default = nil)
-  if valid_617559 != nil:
-    section.add "X-Amz-Signature", valid_617559
-  var valid_617560 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617560 = validateParameter(valid_617560, JString, required = false,
-                                 default = nil)
-  if valid_617560 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617560
-  var valid_617561 = header.getOrDefault("X-Amz-Target")
-  valid_617561 = validateParameter(valid_617561, JString, required = true,
-                                 default = newJString("AWSEvents.DeleteRule"))
-  if valid_617561 != nil:
-    section.add "X-Amz-Target", valid_617561
-  var valid_617562 = header.getOrDefault("X-Amz-Credential")
-  valid_617562 = validateParameter(valid_617562, JString, required = false,
-                                 default = nil)
-  if valid_617562 != nil:
-    section.add "X-Amz-Credential", valid_617562
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617564: Call_DeleteRule_617552; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Deletes the specified rule.</p> <p>Before you can delete the rule, you must remove all targets, using <a>RemoveTargets</a>.</p> <p>When you delete a rule, incoming events might continue to match to the deleted rule. Allow a short period of time for changes to take effect.</p> <p>Managed rules are rules created and managed by another AWS service on your behalf. These rules are created by those other AWS services to support functionality in those services. You can delete these rules using the <code>Force</code> option, but you should do so only if you are sure the other service is not still using that rule.</p>
-  ## 
-  let valid = call_617564.validator(path, query, header, formData, body, _)
-  let scheme = call_617564.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617564.url(scheme.get, call_617564.host, call_617564.base,
-                         call_617564.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617564, url, valid, _)
-
-proc call*(call_617565: Call_DeleteRule_617552; body: JsonNode): Recallable =
-  ## deleteRule
-  ## <p>Deletes the specified rule.</p> <p>Before you can delete the rule, you must remove all targets, using <a>RemoveTargets</a>.</p> <p>When you delete a rule, incoming events might continue to match to the deleted rule. Allow a short period of time for changes to take effect.</p> <p>Managed rules are rules created and managed by another AWS service on your behalf. These rules are created by those other AWS services to support functionality in those services. You can delete these rules using the <code>Force</code> option, but you should do so only if you are sure the other service is not still using that rule.</p>
-  ##   body: JObject (required)
-  var body_617566 = newJObject()
-  if body != nil:
-    body_617566 = body
-  result = call_617565.call(nil, nil, nil, nil, body_617566)
-
-var deleteRule* = Call_DeleteRule_617552(name: "deleteRule",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.DeleteRule",
-                                      validator: validate_DeleteRule_617553,
-                                      base: "/", url: url_DeleteRule_617554,
-                                      schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeEventBus_617567 = ref object of OpenApiRestCall_616866
-proc url_DescribeEventBus_617569(protocol: Scheme; host: string; base: string;
+  Call_CreateEventBus_21626029 = ref object of OpenApiRestCall_21625435
+proc url_CreateEventBus_21626031(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -935,10 +270,11 @@ proc url_DescribeEventBus_617569(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeEventBus_617568(path: JsonNode; query: JsonNode;
+proc validate_CreateEventBus_21626030(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Displays details about an event bus in your account. This can include the external AWS accounts that are permitted to write events to your default event bus, and the associated policy. For custom event buses and partner event buses, it displays the name, ARN, policy, state, and creation time.</p> <p> To enable your account to receive events from other accounts on its default event bus, use <a>PutPermission</a>.</p> <p>For more information about partner event buses, see <a>CreateEventBus</a>.</p>
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Creates a new event bus within your account. This can be a custom event bus which you can use to receive events from your custom applications and services, or it can be a partner event bus which can be matched to a partner event source.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -949,206 +285,95 @@ proc validate_DescribeEventBus_617568(path: JsonNode; query: JsonNode;
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617570 = header.getOrDefault("X-Amz-Date")
-  valid_617570 = validateParameter(valid_617570, JString, required = false,
-                                 default = nil)
-  if valid_617570 != nil:
-    section.add "X-Amz-Date", valid_617570
-  var valid_617571 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617571 = validateParameter(valid_617571, JString, required = false,
-                                 default = nil)
-  if valid_617571 != nil:
-    section.add "X-Amz-Security-Token", valid_617571
-  var valid_617572 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617572 = validateParameter(valid_617572, JString, required = false,
-                                 default = nil)
-  if valid_617572 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617572
-  var valid_617573 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617573 = validateParameter(valid_617573, JString, required = false,
-                                 default = nil)
-  if valid_617573 != nil:
-    section.add "X-Amz-Algorithm", valid_617573
-  var valid_617574 = header.getOrDefault("X-Amz-Signature")
-  valid_617574 = validateParameter(valid_617574, JString, required = false,
-                                 default = nil)
-  if valid_617574 != nil:
-    section.add "X-Amz-Signature", valid_617574
-  var valid_617575 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617575 = validateParameter(valid_617575, JString, required = false,
-                                 default = nil)
-  if valid_617575 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617575
-  var valid_617576 = header.getOrDefault("X-Amz-Target")
-  valid_617576 = validateParameter(valid_617576, JString, required = true, default = newJString(
-      "AWSEvents.DescribeEventBus"))
-  if valid_617576 != nil:
-    section.add "X-Amz-Target", valid_617576
-  var valid_617577 = header.getOrDefault("X-Amz-Credential")
-  valid_617577 = validateParameter(valid_617577, JString, required = false,
-                                 default = nil)
-  if valid_617577 != nil:
-    section.add "X-Amz-Credential", valid_617577
+  var valid_21626032 = header.getOrDefault("X-Amz-Date")
+  valid_21626032 = validateParameter(valid_21626032, JString, required = false,
+                                   default = nil)
+  if valid_21626032 != nil:
+    section.add "X-Amz-Date", valid_21626032
+  var valid_21626033 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626033 = validateParameter(valid_21626033, JString, required = false,
+                                   default = nil)
+  if valid_21626033 != nil:
+    section.add "X-Amz-Security-Token", valid_21626033
+  var valid_21626034 = header.getOrDefault("X-Amz-Target")
+  valid_21626034 = validateParameter(valid_21626034, JString, required = true, default = newJString(
+      "AWSEvents.CreateEventBus"))
+  if valid_21626034 != nil:
+    section.add "X-Amz-Target", valid_21626034
+  var valid_21626035 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626035 = validateParameter(valid_21626035, JString, required = false,
+                                   default = nil)
+  if valid_21626035 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626035
+  var valid_21626036 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626036 = validateParameter(valid_21626036, JString, required = false,
+                                   default = nil)
+  if valid_21626036 != nil:
+    section.add "X-Amz-Algorithm", valid_21626036
+  var valid_21626037 = header.getOrDefault("X-Amz-Signature")
+  valid_21626037 = validateParameter(valid_21626037, JString, required = false,
+                                   default = nil)
+  if valid_21626037 != nil:
+    section.add "X-Amz-Signature", valid_21626037
+  var valid_21626038 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626038 = validateParameter(valid_21626038, JString, required = false,
+                                   default = nil)
+  if valid_21626038 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626038
+  var valid_21626039 = header.getOrDefault("X-Amz-Credential")
+  valid_21626039 = validateParameter(valid_21626039, JString, required = false,
+                                   default = nil)
+  if valid_21626039 != nil:
+    section.add "X-Amz-Credential", valid_21626039
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617579: Call_DescribeEventBus_617567; path: JsonNode = nil;
+proc call*(call_21626041: Call_CreateEventBus_21626029; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Displays details about an event bus in your account. This can include the external AWS accounts that are permitted to write events to your default event bus, and the associated policy. For custom event buses and partner event buses, it displays the name, ARN, policy, state, and creation time.</p> <p> To enable your account to receive events from other accounts on its default event bus, use <a>PutPermission</a>.</p> <p>For more information about partner event buses, see <a>CreateEventBus</a>.</p>
+  ## Creates a new event bus within your account. This can be a custom event bus which you can use to receive events from your custom applications and services, or it can be a partner event bus which can be matched to a partner event source.
   ## 
-  let valid = call_617579.validator(path, query, header, formData, body, _)
-  let scheme = call_617579.pickScheme
+  let valid = call_21626041.validator(path, query, header, formData, body, _)
+  let scheme = call_21626041.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617579.url(scheme.get, call_617579.host, call_617579.base,
-                         call_617579.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617579, url, valid, _)
+  let uri = call_21626041.makeUrl(scheme.get, call_21626041.host, call_21626041.base,
+                               call_21626041.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626041, uri, valid, _)
 
-proc call*(call_617580: Call_DescribeEventBus_617567; body: JsonNode): Recallable =
-  ## describeEventBus
-  ## <p>Displays details about an event bus in your account. This can include the external AWS accounts that are permitted to write events to your default event bus, and the associated policy. For custom event buses and partner event buses, it displays the name, ARN, policy, state, and creation time.</p> <p> To enable your account to receive events from other accounts on its default event bus, use <a>PutPermission</a>.</p> <p>For more information about partner event buses, see <a>CreateEventBus</a>.</p>
+proc call*(call_21626042: Call_CreateEventBus_21626029; body: JsonNode): Recallable =
+  ## createEventBus
+  ## Creates a new event bus within your account. This can be a custom event bus which you can use to receive events from your custom applications and services, or it can be a partner event bus which can be matched to a partner event source.
   ##   body: JObject (required)
-  var body_617581 = newJObject()
+  var body_21626043 = newJObject()
   if body != nil:
-    body_617581 = body
-  result = call_617580.call(nil, nil, nil, nil, body_617581)
+    body_21626043 = body
+  result = call_21626042.call(nil, nil, nil, nil, body_21626043)
 
-var describeEventBus* = Call_DescribeEventBus_617567(name: "describeEventBus",
+var createEventBus* = Call_CreateEventBus_21626029(name: "createEventBus",
     meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.DescribeEventBus",
-    validator: validate_DescribeEventBus_617568, base: "/",
-    url: url_DescribeEventBus_617569, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=AWSEvents.CreateEventBus",
+    validator: validate_CreateEventBus_21626030, base: "/",
+    makeUrl: url_CreateEventBus_21626031, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEventSource_617582 = ref object of OpenApiRestCall_616866
-proc url_DescribeEventSource_617584(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeEventSource_617583(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode =
-  ## This operation lists details about a partner event source that is shared with your account.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617585 = header.getOrDefault("X-Amz-Date")
-  valid_617585 = validateParameter(valid_617585, JString, required = false,
-                                 default = nil)
-  if valid_617585 != nil:
-    section.add "X-Amz-Date", valid_617585
-  var valid_617586 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617586 = validateParameter(valid_617586, JString, required = false,
-                                 default = nil)
-  if valid_617586 != nil:
-    section.add "X-Amz-Security-Token", valid_617586
-  var valid_617587 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617587 = validateParameter(valid_617587, JString, required = false,
-                                 default = nil)
-  if valid_617587 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617587
-  var valid_617588 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617588 = validateParameter(valid_617588, JString, required = false,
-                                 default = nil)
-  if valid_617588 != nil:
-    section.add "X-Amz-Algorithm", valid_617588
-  var valid_617589 = header.getOrDefault("X-Amz-Signature")
-  valid_617589 = validateParameter(valid_617589, JString, required = false,
-                                 default = nil)
-  if valid_617589 != nil:
-    section.add "X-Amz-Signature", valid_617589
-  var valid_617590 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617590 = validateParameter(valid_617590, JString, required = false,
-                                 default = nil)
-  if valid_617590 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617590
-  var valid_617591 = header.getOrDefault("X-Amz-Target")
-  valid_617591 = validateParameter(valid_617591, JString, required = true, default = newJString(
-      "AWSEvents.DescribeEventSource"))
-  if valid_617591 != nil:
-    section.add "X-Amz-Target", valid_617591
-  var valid_617592 = header.getOrDefault("X-Amz-Credential")
-  valid_617592 = validateParameter(valid_617592, JString, required = false,
-                                 default = nil)
-  if valid_617592 != nil:
-    section.add "X-Amz-Credential", valid_617592
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617594: Call_DescribeEventSource_617582; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## This operation lists details about a partner event source that is shared with your account.
-  ## 
-  let valid = call_617594.validator(path, query, header, formData, body, _)
-  let scheme = call_617594.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617594.url(scheme.get, call_617594.host, call_617594.base,
-                         call_617594.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617594, url, valid, _)
-
-proc call*(call_617595: Call_DescribeEventSource_617582; body: JsonNode): Recallable =
-  ## describeEventSource
-  ## This operation lists details about a partner event source that is shared with your account.
-  ##   body: JObject (required)
-  var body_617596 = newJObject()
-  if body != nil:
-    body_617596 = body
-  result = call_617595.call(nil, nil, nil, nil, body_617596)
-
-var describeEventSource* = Call_DescribeEventSource_617582(
-    name: "describeEventSource", meth: HttpMethod.HttpPost,
-    host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.DescribeEventSource",
-    validator: validate_DescribeEventSource_617583, base: "/",
-    url: url_DescribeEventSource_617584, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribePartnerEventSource_617597 = ref object of OpenApiRestCall_616866
-proc url_DescribePartnerEventSource_617599(protocol: Scheme; host: string;
+  Call_CreatePartnerEventSource_21626044 = ref object of OpenApiRestCall_21625435
+proc url_CreatePartnerEventSource_21626046(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1158,9 +383,10 @@ proc url_DescribePartnerEventSource_617599(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribePartnerEventSource_617598(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## An SaaS partner can use this operation to list details about a partner event source that they have created. AWS customers do not use this operation. Instead, AWS customers can use <a>DescribeEventSource</a> to see details about a partner event source that is shared with them.
+proc validate_CreatePartnerEventSource_21626045(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Called by an SaaS partner to create a partner event source. This operation is not used by AWS customers.</p> <p>Each partner event source can be used by one AWS account to create a matching partner event bus in that AWS account. A SaaS partner must create one partner event source for each AWS account that wants to receive those event types. </p> <p>A partner event source creates events based on resources within the SaaS partner's service or application.</p> <p>An AWS account that creates a partner event bus that matches the partner event source can use that event bus to receive events from the partner, and then process them using AWS Events rules and targets.</p> <p>Partner event source names follow this format:</p> <p> <code> <i>partner_name</i>/<i>event_namespace</i>/<i>event_name</i> </code> </p> <p> <i>partner_name</i> is determined during partner registration and identifies the partner to AWS customers. <i>event_namespace</i> is determined by the partner and is a way for the partner to categorize their events. <i>event_name</i> is determined by the partner, and should uniquely identify an event-generating resource within the partner system. The combination of <i>event_namespace</i> and <i>event_name</i> should help AWS customers decide whether to create an event bus to receive these events.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1171,763 +397,97 @@ proc validate_DescribePartnerEventSource_617598(path: JsonNode; query: JsonNode;
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617600 = header.getOrDefault("X-Amz-Date")
-  valid_617600 = validateParameter(valid_617600, JString, required = false,
-                                 default = nil)
-  if valid_617600 != nil:
-    section.add "X-Amz-Date", valid_617600
-  var valid_617601 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617601 = validateParameter(valid_617601, JString, required = false,
-                                 default = nil)
-  if valid_617601 != nil:
-    section.add "X-Amz-Security-Token", valid_617601
-  var valid_617602 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617602 = validateParameter(valid_617602, JString, required = false,
-                                 default = nil)
-  if valid_617602 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617602
-  var valid_617603 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617603 = validateParameter(valid_617603, JString, required = false,
-                                 default = nil)
-  if valid_617603 != nil:
-    section.add "X-Amz-Algorithm", valid_617603
-  var valid_617604 = header.getOrDefault("X-Amz-Signature")
-  valid_617604 = validateParameter(valid_617604, JString, required = false,
-                                 default = nil)
-  if valid_617604 != nil:
-    section.add "X-Amz-Signature", valid_617604
-  var valid_617605 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617605 = validateParameter(valid_617605, JString, required = false,
-                                 default = nil)
-  if valid_617605 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617605
-  var valid_617606 = header.getOrDefault("X-Amz-Target")
-  valid_617606 = validateParameter(valid_617606, JString, required = true, default = newJString(
-      "AWSEvents.DescribePartnerEventSource"))
-  if valid_617606 != nil:
-    section.add "X-Amz-Target", valid_617606
-  var valid_617607 = header.getOrDefault("X-Amz-Credential")
-  valid_617607 = validateParameter(valid_617607, JString, required = false,
-                                 default = nil)
-  if valid_617607 != nil:
-    section.add "X-Amz-Credential", valid_617607
+  var valid_21626047 = header.getOrDefault("X-Amz-Date")
+  valid_21626047 = validateParameter(valid_21626047, JString, required = false,
+                                   default = nil)
+  if valid_21626047 != nil:
+    section.add "X-Amz-Date", valid_21626047
+  var valid_21626048 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626048 = validateParameter(valid_21626048, JString, required = false,
+                                   default = nil)
+  if valid_21626048 != nil:
+    section.add "X-Amz-Security-Token", valid_21626048
+  var valid_21626049 = header.getOrDefault("X-Amz-Target")
+  valid_21626049 = validateParameter(valid_21626049, JString, required = true, default = newJString(
+      "AWSEvents.CreatePartnerEventSource"))
+  if valid_21626049 != nil:
+    section.add "X-Amz-Target", valid_21626049
+  var valid_21626050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626050 = validateParameter(valid_21626050, JString, required = false,
+                                   default = nil)
+  if valid_21626050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626050
+  var valid_21626051 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626051 = validateParameter(valid_21626051, JString, required = false,
+                                   default = nil)
+  if valid_21626051 != nil:
+    section.add "X-Amz-Algorithm", valid_21626051
+  var valid_21626052 = header.getOrDefault("X-Amz-Signature")
+  valid_21626052 = validateParameter(valid_21626052, JString, required = false,
+                                   default = nil)
+  if valid_21626052 != nil:
+    section.add "X-Amz-Signature", valid_21626052
+  var valid_21626053 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626053 = validateParameter(valid_21626053, JString, required = false,
+                                   default = nil)
+  if valid_21626053 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626053
+  var valid_21626054 = header.getOrDefault("X-Amz-Credential")
+  valid_21626054 = validateParameter(valid_21626054, JString, required = false,
+                                   default = nil)
+  if valid_21626054 != nil:
+    section.add "X-Amz-Credential", valid_21626054
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617609: Call_DescribePartnerEventSource_617597;
+proc call*(call_21626056: Call_CreatePartnerEventSource_21626044;
           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
-  ## An SaaS partner can use this operation to list details about a partner event source that they have created. AWS customers do not use this operation. Instead, AWS customers can use <a>DescribeEventSource</a> to see details about a partner event source that is shared with them.
+  ## <p>Called by an SaaS partner to create a partner event source. This operation is not used by AWS customers.</p> <p>Each partner event source can be used by one AWS account to create a matching partner event bus in that AWS account. A SaaS partner must create one partner event source for each AWS account that wants to receive those event types. </p> <p>A partner event source creates events based on resources within the SaaS partner's service or application.</p> <p>An AWS account that creates a partner event bus that matches the partner event source can use that event bus to receive events from the partner, and then process them using AWS Events rules and targets.</p> <p>Partner event source names follow this format:</p> <p> <code> <i>partner_name</i>/<i>event_namespace</i>/<i>event_name</i> </code> </p> <p> <i>partner_name</i> is determined during partner registration and identifies the partner to AWS customers. <i>event_namespace</i> is determined by the partner and is a way for the partner to categorize their events. <i>event_name</i> is determined by the partner, and should uniquely identify an event-generating resource within the partner system. The combination of <i>event_namespace</i> and <i>event_name</i> should help AWS customers decide whether to create an event bus to receive these events.</p>
   ## 
-  let valid = call_617609.validator(path, query, header, formData, body, _)
-  let scheme = call_617609.pickScheme
+  let valid = call_21626056.validator(path, query, header, formData, body, _)
+  let scheme = call_21626056.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617609.url(scheme.get, call_617609.host, call_617609.base,
-                         call_617609.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617609, url, valid, _)
+  let uri = call_21626056.makeUrl(scheme.get, call_21626056.host, call_21626056.base,
+                               call_21626056.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626056, uri, valid, _)
 
-proc call*(call_617610: Call_DescribePartnerEventSource_617597; body: JsonNode): Recallable =
-  ## describePartnerEventSource
-  ## An SaaS partner can use this operation to list details about a partner event source that they have created. AWS customers do not use this operation. Instead, AWS customers can use <a>DescribeEventSource</a> to see details about a partner event source that is shared with them.
+proc call*(call_21626057: Call_CreatePartnerEventSource_21626044; body: JsonNode): Recallable =
+  ## createPartnerEventSource
+  ## <p>Called by an SaaS partner to create a partner event source. This operation is not used by AWS customers.</p> <p>Each partner event source can be used by one AWS account to create a matching partner event bus in that AWS account. A SaaS partner must create one partner event source for each AWS account that wants to receive those event types. </p> <p>A partner event source creates events based on resources within the SaaS partner's service or application.</p> <p>An AWS account that creates a partner event bus that matches the partner event source can use that event bus to receive events from the partner, and then process them using AWS Events rules and targets.</p> <p>Partner event source names follow this format:</p> <p> <code> <i>partner_name</i>/<i>event_namespace</i>/<i>event_name</i> </code> </p> <p> <i>partner_name</i> is determined during partner registration and identifies the partner to AWS customers. <i>event_namespace</i> is determined by the partner and is a way for the partner to categorize their events. <i>event_name</i> is determined by the partner, and should uniquely identify an event-generating resource within the partner system. The combination of <i>event_namespace</i> and <i>event_name</i> should help AWS customers decide whether to create an event bus to receive these events.</p>
   ##   body: JObject (required)
-  var body_617611 = newJObject()
+  var body_21626058 = newJObject()
   if body != nil:
-    body_617611 = body
-  result = call_617610.call(nil, nil, nil, nil, body_617611)
+    body_21626058 = body
+  result = call_21626057.call(nil, nil, nil, nil, body_21626058)
 
-var describePartnerEventSource* = Call_DescribePartnerEventSource_617597(
-    name: "describePartnerEventSource", meth: HttpMethod.HttpPost,
+var createPartnerEventSource* = Call_CreatePartnerEventSource_21626044(
+    name: "createPartnerEventSource", meth: HttpMethod.HttpPost,
     host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.DescribePartnerEventSource",
-    validator: validate_DescribePartnerEventSource_617598, base: "/",
-    url: url_DescribePartnerEventSource_617599,
+    route: "/#X-Amz-Target=AWSEvents.CreatePartnerEventSource",
+    validator: validate_CreatePartnerEventSource_21626045, base: "/",
+    makeUrl: url_CreatePartnerEventSource_21626046,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeRule_617612 = ref object of OpenApiRestCall_616866
-proc url_DescribeRule_617614(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeRule_617613(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Describes the specified rule.</p> <p>DescribeRule does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617615 = header.getOrDefault("X-Amz-Date")
-  valid_617615 = validateParameter(valid_617615, JString, required = false,
-                                 default = nil)
-  if valid_617615 != nil:
-    section.add "X-Amz-Date", valid_617615
-  var valid_617616 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617616 = validateParameter(valid_617616, JString, required = false,
-                                 default = nil)
-  if valid_617616 != nil:
-    section.add "X-Amz-Security-Token", valid_617616
-  var valid_617617 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617617 = validateParameter(valid_617617, JString, required = false,
-                                 default = nil)
-  if valid_617617 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617617
-  var valid_617618 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617618 = validateParameter(valid_617618, JString, required = false,
-                                 default = nil)
-  if valid_617618 != nil:
-    section.add "X-Amz-Algorithm", valid_617618
-  var valid_617619 = header.getOrDefault("X-Amz-Signature")
-  valid_617619 = validateParameter(valid_617619, JString, required = false,
-                                 default = nil)
-  if valid_617619 != nil:
-    section.add "X-Amz-Signature", valid_617619
-  var valid_617620 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617620 = validateParameter(valid_617620, JString, required = false,
-                                 default = nil)
-  if valid_617620 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617620
-  var valid_617621 = header.getOrDefault("X-Amz-Target")
-  valid_617621 = validateParameter(valid_617621, JString, required = true,
-                                 default = newJString("AWSEvents.DescribeRule"))
-  if valid_617621 != nil:
-    section.add "X-Amz-Target", valid_617621
-  var valid_617622 = header.getOrDefault("X-Amz-Credential")
-  valid_617622 = validateParameter(valid_617622, JString, required = false,
-                                 default = nil)
-  if valid_617622 != nil:
-    section.add "X-Amz-Credential", valid_617622
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617624: Call_DescribeRule_617612; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Describes the specified rule.</p> <p>DescribeRule does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
-  ## 
-  let valid = call_617624.validator(path, query, header, formData, body, _)
-  let scheme = call_617624.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617624.url(scheme.get, call_617624.host, call_617624.base,
-                         call_617624.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617624, url, valid, _)
-
-proc call*(call_617625: Call_DescribeRule_617612; body: JsonNode): Recallable =
-  ## describeRule
-  ## <p>Describes the specified rule.</p> <p>DescribeRule does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
-  ##   body: JObject (required)
-  var body_617626 = newJObject()
-  if body != nil:
-    body_617626 = body
-  result = call_617625.call(nil, nil, nil, nil, body_617626)
-
-var describeRule* = Call_DescribeRule_617612(name: "describeRule",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.DescribeRule",
-    validator: validate_DescribeRule_617613, base: "/", url: url_DescribeRule_617614,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DisableRule_617627 = ref object of OpenApiRestCall_616866
-proc url_DisableRule_617629(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DisableRule_617628(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Disables the specified rule. A disabled rule won't match any events, and won't self-trigger if it has a schedule expression.</p> <p>When you disable a rule, incoming events might continue to match to the disabled rule. Allow a short period of time for changes to take effect.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617630 = header.getOrDefault("X-Amz-Date")
-  valid_617630 = validateParameter(valid_617630, JString, required = false,
-                                 default = nil)
-  if valid_617630 != nil:
-    section.add "X-Amz-Date", valid_617630
-  var valid_617631 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617631 = validateParameter(valid_617631, JString, required = false,
-                                 default = nil)
-  if valid_617631 != nil:
-    section.add "X-Amz-Security-Token", valid_617631
-  var valid_617632 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617632 = validateParameter(valid_617632, JString, required = false,
-                                 default = nil)
-  if valid_617632 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617632
-  var valid_617633 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617633 = validateParameter(valid_617633, JString, required = false,
-                                 default = nil)
-  if valid_617633 != nil:
-    section.add "X-Amz-Algorithm", valid_617633
-  var valid_617634 = header.getOrDefault("X-Amz-Signature")
-  valid_617634 = validateParameter(valid_617634, JString, required = false,
-                                 default = nil)
-  if valid_617634 != nil:
-    section.add "X-Amz-Signature", valid_617634
-  var valid_617635 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617635 = validateParameter(valid_617635, JString, required = false,
-                                 default = nil)
-  if valid_617635 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617635
-  var valid_617636 = header.getOrDefault("X-Amz-Target")
-  valid_617636 = validateParameter(valid_617636, JString, required = true,
-                                 default = newJString("AWSEvents.DisableRule"))
-  if valid_617636 != nil:
-    section.add "X-Amz-Target", valid_617636
-  var valid_617637 = header.getOrDefault("X-Amz-Credential")
-  valid_617637 = validateParameter(valid_617637, JString, required = false,
-                                 default = nil)
-  if valid_617637 != nil:
-    section.add "X-Amz-Credential", valid_617637
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617639: Call_DisableRule_617627; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Disables the specified rule. A disabled rule won't match any events, and won't self-trigger if it has a schedule expression.</p> <p>When you disable a rule, incoming events might continue to match to the disabled rule. Allow a short period of time for changes to take effect.</p>
-  ## 
-  let valid = call_617639.validator(path, query, header, formData, body, _)
-  let scheme = call_617639.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617639.url(scheme.get, call_617639.host, call_617639.base,
-                         call_617639.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617639, url, valid, _)
-
-proc call*(call_617640: Call_DisableRule_617627; body: JsonNode): Recallable =
-  ## disableRule
-  ## <p>Disables the specified rule. A disabled rule won't match any events, and won't self-trigger if it has a schedule expression.</p> <p>When you disable a rule, incoming events might continue to match to the disabled rule. Allow a short period of time for changes to take effect.</p>
-  ##   body: JObject (required)
-  var body_617641 = newJObject()
-  if body != nil:
-    body_617641 = body
-  result = call_617640.call(nil, nil, nil, nil, body_617641)
-
-var disableRule* = Call_DisableRule_617627(name: "disableRule",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.DisableRule",
-                                        validator: validate_DisableRule_617628,
-                                        base: "/", url: url_DisableRule_617629,
-                                        schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_EnableRule_617642 = ref object of OpenApiRestCall_616866
-proc url_EnableRule_617644(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_EnableRule_617643(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Enables the specified rule. If the rule does not exist, the operation fails.</p> <p>When you enable a rule, incoming events might not immediately start matching to a newly enabled rule. Allow a short period of time for changes to take effect.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617645 = header.getOrDefault("X-Amz-Date")
-  valid_617645 = validateParameter(valid_617645, JString, required = false,
-                                 default = nil)
-  if valid_617645 != nil:
-    section.add "X-Amz-Date", valid_617645
-  var valid_617646 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617646 = validateParameter(valid_617646, JString, required = false,
-                                 default = nil)
-  if valid_617646 != nil:
-    section.add "X-Amz-Security-Token", valid_617646
-  var valid_617647 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617647 = validateParameter(valid_617647, JString, required = false,
-                                 default = nil)
-  if valid_617647 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617647
-  var valid_617648 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617648 = validateParameter(valid_617648, JString, required = false,
-                                 default = nil)
-  if valid_617648 != nil:
-    section.add "X-Amz-Algorithm", valid_617648
-  var valid_617649 = header.getOrDefault("X-Amz-Signature")
-  valid_617649 = validateParameter(valid_617649, JString, required = false,
-                                 default = nil)
-  if valid_617649 != nil:
-    section.add "X-Amz-Signature", valid_617649
-  var valid_617650 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617650 = validateParameter(valid_617650, JString, required = false,
-                                 default = nil)
-  if valid_617650 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617650
-  var valid_617651 = header.getOrDefault("X-Amz-Target")
-  valid_617651 = validateParameter(valid_617651, JString, required = true,
-                                 default = newJString("AWSEvents.EnableRule"))
-  if valid_617651 != nil:
-    section.add "X-Amz-Target", valid_617651
-  var valid_617652 = header.getOrDefault("X-Amz-Credential")
-  valid_617652 = validateParameter(valid_617652, JString, required = false,
-                                 default = nil)
-  if valid_617652 != nil:
-    section.add "X-Amz-Credential", valid_617652
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617654: Call_EnableRule_617642; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Enables the specified rule. If the rule does not exist, the operation fails.</p> <p>When you enable a rule, incoming events might not immediately start matching to a newly enabled rule. Allow a short period of time for changes to take effect.</p>
-  ## 
-  let valid = call_617654.validator(path, query, header, formData, body, _)
-  let scheme = call_617654.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617654.url(scheme.get, call_617654.host, call_617654.base,
-                         call_617654.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617654, url, valid, _)
-
-proc call*(call_617655: Call_EnableRule_617642; body: JsonNode): Recallable =
-  ## enableRule
-  ## <p>Enables the specified rule. If the rule does not exist, the operation fails.</p> <p>When you enable a rule, incoming events might not immediately start matching to a newly enabled rule. Allow a short period of time for changes to take effect.</p>
-  ##   body: JObject (required)
-  var body_617656 = newJObject()
-  if body != nil:
-    body_617656 = body
-  result = call_617655.call(nil, nil, nil, nil, body_617656)
-
-var enableRule* = Call_EnableRule_617642(name: "enableRule",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.EnableRule",
-                                      validator: validate_EnableRule_617643,
-                                      base: "/", url: url_EnableRule_617644,
-                                      schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListEventBuses_617657 = ref object of OpenApiRestCall_616866
-proc url_ListEventBuses_617659(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListEventBuses_617658(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode =
-  ## Lists all the event buses in your account, including the default event bus, custom event buses, and partner event buses.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617660 = header.getOrDefault("X-Amz-Date")
-  valid_617660 = validateParameter(valid_617660, JString, required = false,
-                                 default = nil)
-  if valid_617660 != nil:
-    section.add "X-Amz-Date", valid_617660
-  var valid_617661 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617661 = validateParameter(valid_617661, JString, required = false,
-                                 default = nil)
-  if valid_617661 != nil:
-    section.add "X-Amz-Security-Token", valid_617661
-  var valid_617662 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617662 = validateParameter(valid_617662, JString, required = false,
-                                 default = nil)
-  if valid_617662 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617662
-  var valid_617663 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617663 = validateParameter(valid_617663, JString, required = false,
-                                 default = nil)
-  if valid_617663 != nil:
-    section.add "X-Amz-Algorithm", valid_617663
-  var valid_617664 = header.getOrDefault("X-Amz-Signature")
-  valid_617664 = validateParameter(valid_617664, JString, required = false,
-                                 default = nil)
-  if valid_617664 != nil:
-    section.add "X-Amz-Signature", valid_617664
-  var valid_617665 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617665 = validateParameter(valid_617665, JString, required = false,
-                                 default = nil)
-  if valid_617665 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617665
-  var valid_617666 = header.getOrDefault("X-Amz-Target")
-  valid_617666 = validateParameter(valid_617666, JString, required = true, default = newJString(
-      "AWSEvents.ListEventBuses"))
-  if valid_617666 != nil:
-    section.add "X-Amz-Target", valid_617666
-  var valid_617667 = header.getOrDefault("X-Amz-Credential")
-  valid_617667 = validateParameter(valid_617667, JString, required = false,
-                                 default = nil)
-  if valid_617667 != nil:
-    section.add "X-Amz-Credential", valid_617667
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617669: Call_ListEventBuses_617657; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Lists all the event buses in your account, including the default event bus, custom event buses, and partner event buses.
-  ## 
-  let valid = call_617669.validator(path, query, header, formData, body, _)
-  let scheme = call_617669.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617669.url(scheme.get, call_617669.host, call_617669.base,
-                         call_617669.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617669, url, valid, _)
-
-proc call*(call_617670: Call_ListEventBuses_617657; body: JsonNode): Recallable =
-  ## listEventBuses
-  ## Lists all the event buses in your account, including the default event bus, custom event buses, and partner event buses.
-  ##   body: JObject (required)
-  var body_617671 = newJObject()
-  if body != nil:
-    body_617671 = body
-  result = call_617670.call(nil, nil, nil, nil, body_617671)
-
-var listEventBuses* = Call_ListEventBuses_617657(name: "listEventBuses",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.ListEventBuses",
-    validator: validate_ListEventBuses_617658, base: "/", url: url_ListEventBuses_617659,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListEventSources_617672 = ref object of OpenApiRestCall_616866
-proc url_ListEventSources_617674(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListEventSources_617673(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode =
-  ## You can use this to see all the partner event sources that have been shared with your AWS account. For more information about partner event sources, see <a>CreateEventBus</a>.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617675 = header.getOrDefault("X-Amz-Date")
-  valid_617675 = validateParameter(valid_617675, JString, required = false,
-                                 default = nil)
-  if valid_617675 != nil:
-    section.add "X-Amz-Date", valid_617675
-  var valid_617676 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617676 = validateParameter(valid_617676, JString, required = false,
-                                 default = nil)
-  if valid_617676 != nil:
-    section.add "X-Amz-Security-Token", valid_617676
-  var valid_617677 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617677 = validateParameter(valid_617677, JString, required = false,
-                                 default = nil)
-  if valid_617677 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617677
-  var valid_617678 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617678 = validateParameter(valid_617678, JString, required = false,
-                                 default = nil)
-  if valid_617678 != nil:
-    section.add "X-Amz-Algorithm", valid_617678
-  var valid_617679 = header.getOrDefault("X-Amz-Signature")
-  valid_617679 = validateParameter(valid_617679, JString, required = false,
-                                 default = nil)
-  if valid_617679 != nil:
-    section.add "X-Amz-Signature", valid_617679
-  var valid_617680 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617680 = validateParameter(valid_617680, JString, required = false,
-                                 default = nil)
-  if valid_617680 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617680
-  var valid_617681 = header.getOrDefault("X-Amz-Target")
-  valid_617681 = validateParameter(valid_617681, JString, required = true, default = newJString(
-      "AWSEvents.ListEventSources"))
-  if valid_617681 != nil:
-    section.add "X-Amz-Target", valid_617681
-  var valid_617682 = header.getOrDefault("X-Amz-Credential")
-  valid_617682 = validateParameter(valid_617682, JString, required = false,
-                                 default = nil)
-  if valid_617682 != nil:
-    section.add "X-Amz-Credential", valid_617682
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617684: Call_ListEventSources_617672; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## You can use this to see all the partner event sources that have been shared with your AWS account. For more information about partner event sources, see <a>CreateEventBus</a>.
-  ## 
-  let valid = call_617684.validator(path, query, header, formData, body, _)
-  let scheme = call_617684.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617684.url(scheme.get, call_617684.host, call_617684.base,
-                         call_617684.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617684, url, valid, _)
-
-proc call*(call_617685: Call_ListEventSources_617672; body: JsonNode): Recallable =
-  ## listEventSources
-  ## You can use this to see all the partner event sources that have been shared with your AWS account. For more information about partner event sources, see <a>CreateEventBus</a>.
-  ##   body: JObject (required)
-  var body_617686 = newJObject()
-  if body != nil:
-    body_617686 = body
-  result = call_617685.call(nil, nil, nil, nil, body_617686)
-
-var listEventSources* = Call_ListEventSources_617672(name: "listEventSources",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.ListEventSources",
-    validator: validate_ListEventSources_617673, base: "/",
-    url: url_ListEventSources_617674, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListPartnerEventSourceAccounts_617687 = ref object of OpenApiRestCall_616866
-proc url_ListPartnerEventSourceAccounts_617689(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListPartnerEventSourceAccounts_617688(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
-    _: string = ""): JsonNode =
-  ## An SaaS partner can use this operation to display the AWS account ID that a particular partner event source name is associated with. This operation is not used by AWS customers.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617690 = header.getOrDefault("X-Amz-Date")
-  valid_617690 = validateParameter(valid_617690, JString, required = false,
-                                 default = nil)
-  if valid_617690 != nil:
-    section.add "X-Amz-Date", valid_617690
-  var valid_617691 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617691 = validateParameter(valid_617691, JString, required = false,
-                                 default = nil)
-  if valid_617691 != nil:
-    section.add "X-Amz-Security-Token", valid_617691
-  var valid_617692 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617692 = validateParameter(valid_617692, JString, required = false,
-                                 default = nil)
-  if valid_617692 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617692
-  var valid_617693 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617693 = validateParameter(valid_617693, JString, required = false,
-                                 default = nil)
-  if valid_617693 != nil:
-    section.add "X-Amz-Algorithm", valid_617693
-  var valid_617694 = header.getOrDefault("X-Amz-Signature")
-  valid_617694 = validateParameter(valid_617694, JString, required = false,
-                                 default = nil)
-  if valid_617694 != nil:
-    section.add "X-Amz-Signature", valid_617694
-  var valid_617695 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617695 = validateParameter(valid_617695, JString, required = false,
-                                 default = nil)
-  if valid_617695 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617695
-  var valid_617696 = header.getOrDefault("X-Amz-Target")
-  valid_617696 = validateParameter(valid_617696, JString, required = true, default = newJString(
-      "AWSEvents.ListPartnerEventSourceAccounts"))
-  if valid_617696 != nil:
-    section.add "X-Amz-Target", valid_617696
-  var valid_617697 = header.getOrDefault("X-Amz-Credential")
-  valid_617697 = validateParameter(valid_617697, JString, required = false,
-                                 default = nil)
-  if valid_617697 != nil:
-    section.add "X-Amz-Credential", valid_617697
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617699: Call_ListPartnerEventSourceAccounts_617687;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
-  ## An SaaS partner can use this operation to display the AWS account ID that a particular partner event source name is associated with. This operation is not used by AWS customers.
-  ## 
-  let valid = call_617699.validator(path, query, header, formData, body, _)
-  let scheme = call_617699.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617699.url(scheme.get, call_617699.host, call_617699.base,
-                         call_617699.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617699, url, valid, _)
-
-proc call*(call_617700: Call_ListPartnerEventSourceAccounts_617687; body: JsonNode): Recallable =
-  ## listPartnerEventSourceAccounts
-  ## An SaaS partner can use this operation to display the AWS account ID that a particular partner event source name is associated with. This operation is not used by AWS customers.
-  ##   body: JObject (required)
-  var body_617701 = newJObject()
-  if body != nil:
-    body_617701 = body
-  result = call_617700.call(nil, nil, nil, nil, body_617701)
-
-var listPartnerEventSourceAccounts* = Call_ListPartnerEventSourceAccounts_617687(
-    name: "listPartnerEventSourceAccounts", meth: HttpMethod.HttpPost,
-    host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.ListPartnerEventSourceAccounts",
-    validator: validate_ListPartnerEventSourceAccounts_617688, base: "/",
-    url: url_ListPartnerEventSourceAccounts_617689,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListPartnerEventSources_617702 = ref object of OpenApiRestCall_616866
-proc url_ListPartnerEventSources_617704(protocol: Scheme; host: string; base: string;
+  Call_DeactivateEventSource_21626059 = ref object of OpenApiRestCall_21625435
+proc url_DeactivateEventSource_21626061(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1938,9 +498,10 @@ proc url_ListPartnerEventSources_617704(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_ListPartnerEventSources_617703(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## An SaaS partner can use this operation to list all the partner event source names that they have created. This operation is not used by AWS customers.
+proc validate_DeactivateEventSource_21626060(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>You can use this operation to temporarily stop receiving events from the specified partner event source. The matching event bus is not deleted. </p> <p>When you deactivate a partner event source, the source goes into PENDING state. If it remains in PENDING state for more than two weeks, it is deleted.</p> <p>To activate a deactivated partner event source, use <a>ActivateEventSource</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1951,95 +512,550 @@ proc validate_ListPartnerEventSources_617703(path: JsonNode; query: JsonNode;
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617705 = header.getOrDefault("X-Amz-Date")
-  valid_617705 = validateParameter(valid_617705, JString, required = false,
-                                 default = nil)
-  if valid_617705 != nil:
-    section.add "X-Amz-Date", valid_617705
-  var valid_617706 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617706 = validateParameter(valid_617706, JString, required = false,
-                                 default = nil)
-  if valid_617706 != nil:
-    section.add "X-Amz-Security-Token", valid_617706
-  var valid_617707 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617707 = validateParameter(valid_617707, JString, required = false,
-                                 default = nil)
-  if valid_617707 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617707
-  var valid_617708 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617708 = validateParameter(valid_617708, JString, required = false,
-                                 default = nil)
-  if valid_617708 != nil:
-    section.add "X-Amz-Algorithm", valid_617708
-  var valid_617709 = header.getOrDefault("X-Amz-Signature")
-  valid_617709 = validateParameter(valid_617709, JString, required = false,
-                                 default = nil)
-  if valid_617709 != nil:
-    section.add "X-Amz-Signature", valid_617709
-  var valid_617710 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617710 = validateParameter(valid_617710, JString, required = false,
-                                 default = nil)
-  if valid_617710 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617710
-  var valid_617711 = header.getOrDefault("X-Amz-Target")
-  valid_617711 = validateParameter(valid_617711, JString, required = true, default = newJString(
-      "AWSEvents.ListPartnerEventSources"))
-  if valid_617711 != nil:
-    section.add "X-Amz-Target", valid_617711
-  var valid_617712 = header.getOrDefault("X-Amz-Credential")
-  valid_617712 = validateParameter(valid_617712, JString, required = false,
-                                 default = nil)
-  if valid_617712 != nil:
-    section.add "X-Amz-Credential", valid_617712
+  var valid_21626062 = header.getOrDefault("X-Amz-Date")
+  valid_21626062 = validateParameter(valid_21626062, JString, required = false,
+                                   default = nil)
+  if valid_21626062 != nil:
+    section.add "X-Amz-Date", valid_21626062
+  var valid_21626063 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626063 = validateParameter(valid_21626063, JString, required = false,
+                                   default = nil)
+  if valid_21626063 != nil:
+    section.add "X-Amz-Security-Token", valid_21626063
+  var valid_21626064 = header.getOrDefault("X-Amz-Target")
+  valid_21626064 = validateParameter(valid_21626064, JString, required = true, default = newJString(
+      "AWSEvents.DeactivateEventSource"))
+  if valid_21626064 != nil:
+    section.add "X-Amz-Target", valid_21626064
+  var valid_21626065 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626065 = validateParameter(valid_21626065, JString, required = false,
+                                   default = nil)
+  if valid_21626065 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626065
+  var valid_21626066 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626066 = validateParameter(valid_21626066, JString, required = false,
+                                   default = nil)
+  if valid_21626066 != nil:
+    section.add "X-Amz-Algorithm", valid_21626066
+  var valid_21626067 = header.getOrDefault("X-Amz-Signature")
+  valid_21626067 = validateParameter(valid_21626067, JString, required = false,
+                                   default = nil)
+  if valid_21626067 != nil:
+    section.add "X-Amz-Signature", valid_21626067
+  var valid_21626068 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626068 = validateParameter(valid_21626068, JString, required = false,
+                                   default = nil)
+  if valid_21626068 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626068
+  var valid_21626069 = header.getOrDefault("X-Amz-Credential")
+  valid_21626069 = validateParameter(valid_21626069, JString, required = false,
+                                   default = nil)
+  if valid_21626069 != nil:
+    section.add "X-Amz-Credential", valid_21626069
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617714: Call_ListPartnerEventSources_617702; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## An SaaS partner can use this operation to list all the partner event source names that they have created. This operation is not used by AWS customers.
+proc call*(call_21626071: Call_DeactivateEventSource_21626059;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>You can use this operation to temporarily stop receiving events from the specified partner event source. The matching event bus is not deleted. </p> <p>When you deactivate a partner event source, the source goes into PENDING state. If it remains in PENDING state for more than two weeks, it is deleted.</p> <p>To activate a deactivated partner event source, use <a>ActivateEventSource</a>.</p>
   ## 
-  let valid = call_617714.validator(path, query, header, formData, body, _)
-  let scheme = call_617714.pickScheme
+  let valid = call_21626071.validator(path, query, header, formData, body, _)
+  let scheme = call_21626071.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617714.url(scheme.get, call_617714.host, call_617714.base,
-                         call_617714.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617714, url, valid, _)
+  let uri = call_21626071.makeUrl(scheme.get, call_21626071.host, call_21626071.base,
+                               call_21626071.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626071, uri, valid, _)
 
-proc call*(call_617715: Call_ListPartnerEventSources_617702; body: JsonNode): Recallable =
-  ## listPartnerEventSources
-  ## An SaaS partner can use this operation to list all the partner event source names that they have created. This operation is not used by AWS customers.
+proc call*(call_21626072: Call_DeactivateEventSource_21626059; body: JsonNode): Recallable =
+  ## deactivateEventSource
+  ## <p>You can use this operation to temporarily stop receiving events from the specified partner event source. The matching event bus is not deleted. </p> <p>When you deactivate a partner event source, the source goes into PENDING state. If it remains in PENDING state for more than two weeks, it is deleted.</p> <p>To activate a deactivated partner event source, use <a>ActivateEventSource</a>.</p>
   ##   body: JObject (required)
-  var body_617716 = newJObject()
+  var body_21626073 = newJObject()
   if body != nil:
-    body_617716 = body
-  result = call_617715.call(nil, nil, nil, nil, body_617716)
+    body_21626073 = body
+  result = call_21626072.call(nil, nil, nil, nil, body_21626073)
 
-var listPartnerEventSources* = Call_ListPartnerEventSources_617702(
-    name: "listPartnerEventSources", meth: HttpMethod.HttpPost,
+var deactivateEventSource* = Call_DeactivateEventSource_21626059(
+    name: "deactivateEventSource", meth: HttpMethod.HttpPost,
     host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.ListPartnerEventSources",
-    validator: validate_ListPartnerEventSources_617703, base: "/",
-    url: url_ListPartnerEventSources_617704, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=AWSEvents.DeactivateEventSource",
+    validator: validate_DeactivateEventSource_21626060, base: "/",
+    makeUrl: url_DeactivateEventSource_21626061,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRuleNamesByTarget_617717 = ref object of OpenApiRestCall_616866
-proc url_ListRuleNamesByTarget_617719(protocol: Scheme; host: string; base: string;
+  Call_DeleteEventBus_21626074 = ref object of OpenApiRestCall_21625435
+proc url_DeleteEventBus_21626076(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DeleteEventBus_21626075(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Deletes the specified custom event bus or partner event bus. All rules associated with this event bus need to be deleted. You can't delete your account's default event bus.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626077 = header.getOrDefault("X-Amz-Date")
+  valid_21626077 = validateParameter(valid_21626077, JString, required = false,
+                                   default = nil)
+  if valid_21626077 != nil:
+    section.add "X-Amz-Date", valid_21626077
+  var valid_21626078 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626078 = validateParameter(valid_21626078, JString, required = false,
+                                   default = nil)
+  if valid_21626078 != nil:
+    section.add "X-Amz-Security-Token", valid_21626078
+  var valid_21626079 = header.getOrDefault("X-Amz-Target")
+  valid_21626079 = validateParameter(valid_21626079, JString, required = true, default = newJString(
+      "AWSEvents.DeleteEventBus"))
+  if valid_21626079 != nil:
+    section.add "X-Amz-Target", valid_21626079
+  var valid_21626080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626080 = validateParameter(valid_21626080, JString, required = false,
+                                   default = nil)
+  if valid_21626080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626080
+  var valid_21626081 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626081 = validateParameter(valid_21626081, JString, required = false,
+                                   default = nil)
+  if valid_21626081 != nil:
+    section.add "X-Amz-Algorithm", valid_21626081
+  var valid_21626082 = header.getOrDefault("X-Amz-Signature")
+  valid_21626082 = validateParameter(valid_21626082, JString, required = false,
+                                   default = nil)
+  if valid_21626082 != nil:
+    section.add "X-Amz-Signature", valid_21626082
+  var valid_21626083 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626083 = validateParameter(valid_21626083, JString, required = false,
+                                   default = nil)
+  if valid_21626083 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626083
+  var valid_21626084 = header.getOrDefault("X-Amz-Credential")
+  valid_21626084 = validateParameter(valid_21626084, JString, required = false,
+                                   default = nil)
+  if valid_21626084 != nil:
+    section.add "X-Amz-Credential", valid_21626084
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626086: Call_DeleteEventBus_21626074; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Deletes the specified custom event bus or partner event bus. All rules associated with this event bus need to be deleted. You can't delete your account's default event bus.
+  ## 
+  let valid = call_21626086.validator(path, query, header, formData, body, _)
+  let scheme = call_21626086.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626086.makeUrl(scheme.get, call_21626086.host, call_21626086.base,
+                               call_21626086.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626086, uri, valid, _)
+
+proc call*(call_21626087: Call_DeleteEventBus_21626074; body: JsonNode): Recallable =
+  ## deleteEventBus
+  ## Deletes the specified custom event bus or partner event bus. All rules associated with this event bus need to be deleted. You can't delete your account's default event bus.
+  ##   body: JObject (required)
+  var body_21626088 = newJObject()
+  if body != nil:
+    body_21626088 = body
+  result = call_21626087.call(nil, nil, nil, nil, body_21626088)
+
+var deleteEventBus* = Call_DeleteEventBus_21626074(name: "deleteEventBus",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.DeleteEventBus",
+    validator: validate_DeleteEventBus_21626075, base: "/",
+    makeUrl: url_DeleteEventBus_21626076, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DeletePartnerEventSource_21626089 = ref object of OpenApiRestCall_21625435
+proc url_DeletePartnerEventSource_21626091(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DeletePartnerEventSource_21626090(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>This operation is used by SaaS partners to delete a partner event source. This operation is not used by AWS customers.</p> <p>When you delete an event source, the status of the corresponding partner event bus in the AWS customer account becomes DELETED.</p> <p/>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626092 = header.getOrDefault("X-Amz-Date")
+  valid_21626092 = validateParameter(valid_21626092, JString, required = false,
+                                   default = nil)
+  if valid_21626092 != nil:
+    section.add "X-Amz-Date", valid_21626092
+  var valid_21626093 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626093 = validateParameter(valid_21626093, JString, required = false,
+                                   default = nil)
+  if valid_21626093 != nil:
+    section.add "X-Amz-Security-Token", valid_21626093
+  var valid_21626094 = header.getOrDefault("X-Amz-Target")
+  valid_21626094 = validateParameter(valid_21626094, JString, required = true, default = newJString(
+      "AWSEvents.DeletePartnerEventSource"))
+  if valid_21626094 != nil:
+    section.add "X-Amz-Target", valid_21626094
+  var valid_21626095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626095 = validateParameter(valid_21626095, JString, required = false,
+                                   default = nil)
+  if valid_21626095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626095
+  var valid_21626096 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626096 = validateParameter(valid_21626096, JString, required = false,
+                                   default = nil)
+  if valid_21626096 != nil:
+    section.add "X-Amz-Algorithm", valid_21626096
+  var valid_21626097 = header.getOrDefault("X-Amz-Signature")
+  valid_21626097 = validateParameter(valid_21626097, JString, required = false,
+                                   default = nil)
+  if valid_21626097 != nil:
+    section.add "X-Amz-Signature", valid_21626097
+  var valid_21626098 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626098 = validateParameter(valid_21626098, JString, required = false,
+                                   default = nil)
+  if valid_21626098 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626098
+  var valid_21626099 = header.getOrDefault("X-Amz-Credential")
+  valid_21626099 = validateParameter(valid_21626099, JString, required = false,
+                                   default = nil)
+  if valid_21626099 != nil:
+    section.add "X-Amz-Credential", valid_21626099
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626101: Call_DeletePartnerEventSource_21626089;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>This operation is used by SaaS partners to delete a partner event source. This operation is not used by AWS customers.</p> <p>When you delete an event source, the status of the corresponding partner event bus in the AWS customer account becomes DELETED.</p> <p/>
+  ## 
+  let valid = call_21626101.validator(path, query, header, formData, body, _)
+  let scheme = call_21626101.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626101.makeUrl(scheme.get, call_21626101.host, call_21626101.base,
+                               call_21626101.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626101, uri, valid, _)
+
+proc call*(call_21626102: Call_DeletePartnerEventSource_21626089; body: JsonNode): Recallable =
+  ## deletePartnerEventSource
+  ## <p>This operation is used by SaaS partners to delete a partner event source. This operation is not used by AWS customers.</p> <p>When you delete an event source, the status of the corresponding partner event bus in the AWS customer account becomes DELETED.</p> <p/>
+  ##   body: JObject (required)
+  var body_21626103 = newJObject()
+  if body != nil:
+    body_21626103 = body
+  result = call_21626102.call(nil, nil, nil, nil, body_21626103)
+
+var deletePartnerEventSource* = Call_DeletePartnerEventSource_21626089(
+    name: "deletePartnerEventSource", meth: HttpMethod.HttpPost,
+    host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.DeletePartnerEventSource",
+    validator: validate_DeletePartnerEventSource_21626090, base: "/",
+    makeUrl: url_DeletePartnerEventSource_21626091,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DeleteRule_21626104 = ref object of OpenApiRestCall_21625435
+proc url_DeleteRule_21626106(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DeleteRule_21626105(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Deletes the specified rule.</p> <p>Before you can delete the rule, you must remove all targets, using <a>RemoveTargets</a>.</p> <p>When you delete a rule, incoming events might continue to match to the deleted rule. Allow a short period of time for changes to take effect.</p> <p>Managed rules are rules created and managed by another AWS service on your behalf. These rules are created by those other AWS services to support functionality in those services. You can delete these rules using the <code>Force</code> option, but you should do so only if you are sure the other service is not still using that rule.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626107 = header.getOrDefault("X-Amz-Date")
+  valid_21626107 = validateParameter(valid_21626107, JString, required = false,
+                                   default = nil)
+  if valid_21626107 != nil:
+    section.add "X-Amz-Date", valid_21626107
+  var valid_21626108 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626108 = validateParameter(valid_21626108, JString, required = false,
+                                   default = nil)
+  if valid_21626108 != nil:
+    section.add "X-Amz-Security-Token", valid_21626108
+  var valid_21626109 = header.getOrDefault("X-Amz-Target")
+  valid_21626109 = validateParameter(valid_21626109, JString, required = true,
+                                   default = newJString("AWSEvents.DeleteRule"))
+  if valid_21626109 != nil:
+    section.add "X-Amz-Target", valid_21626109
+  var valid_21626110 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626110 = validateParameter(valid_21626110, JString, required = false,
+                                   default = nil)
+  if valid_21626110 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626110
+  var valid_21626111 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626111 = validateParameter(valid_21626111, JString, required = false,
+                                   default = nil)
+  if valid_21626111 != nil:
+    section.add "X-Amz-Algorithm", valid_21626111
+  var valid_21626112 = header.getOrDefault("X-Amz-Signature")
+  valid_21626112 = validateParameter(valid_21626112, JString, required = false,
+                                   default = nil)
+  if valid_21626112 != nil:
+    section.add "X-Amz-Signature", valid_21626112
+  var valid_21626113 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626113 = validateParameter(valid_21626113, JString, required = false,
+                                   default = nil)
+  if valid_21626113 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626113
+  var valid_21626114 = header.getOrDefault("X-Amz-Credential")
+  valid_21626114 = validateParameter(valid_21626114, JString, required = false,
+                                   default = nil)
+  if valid_21626114 != nil:
+    section.add "X-Amz-Credential", valid_21626114
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626116: Call_DeleteRule_21626104; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Deletes the specified rule.</p> <p>Before you can delete the rule, you must remove all targets, using <a>RemoveTargets</a>.</p> <p>When you delete a rule, incoming events might continue to match to the deleted rule. Allow a short period of time for changes to take effect.</p> <p>Managed rules are rules created and managed by another AWS service on your behalf. These rules are created by those other AWS services to support functionality in those services. You can delete these rules using the <code>Force</code> option, but you should do so only if you are sure the other service is not still using that rule.</p>
+  ## 
+  let valid = call_21626116.validator(path, query, header, formData, body, _)
+  let scheme = call_21626116.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626116.makeUrl(scheme.get, call_21626116.host, call_21626116.base,
+                               call_21626116.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626116, uri, valid, _)
+
+proc call*(call_21626117: Call_DeleteRule_21626104; body: JsonNode): Recallable =
+  ## deleteRule
+  ## <p>Deletes the specified rule.</p> <p>Before you can delete the rule, you must remove all targets, using <a>RemoveTargets</a>.</p> <p>When you delete a rule, incoming events might continue to match to the deleted rule. Allow a short period of time for changes to take effect.</p> <p>Managed rules are rules created and managed by another AWS service on your behalf. These rules are created by those other AWS services to support functionality in those services. You can delete these rules using the <code>Force</code> option, but you should do so only if you are sure the other service is not still using that rule.</p>
+  ##   body: JObject (required)
+  var body_21626118 = newJObject()
+  if body != nil:
+    body_21626118 = body
+  result = call_21626117.call(nil, nil, nil, nil, body_21626118)
+
+var deleteRule* = Call_DeleteRule_21626104(name: "deleteRule",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.DeleteRule",
+                                        validator: validate_DeleteRule_21626105,
+                                        base: "/", makeUrl: url_DeleteRule_21626106,
+                                        schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeEventBus_21626119 = ref object of OpenApiRestCall_21625435
+proc url_DescribeEventBus_21626121(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeEventBus_21626120(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Displays details about an event bus in your account. This can include the external AWS accounts that are permitted to write events to your default event bus, and the associated policy. For custom event buses and partner event buses, it displays the name, ARN, policy, state, and creation time.</p> <p> To enable your account to receive events from other accounts on its default event bus, use <a>PutPermission</a>.</p> <p>For more information about partner event buses, see <a>CreateEventBus</a>.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626122 = header.getOrDefault("X-Amz-Date")
+  valid_21626122 = validateParameter(valid_21626122, JString, required = false,
+                                   default = nil)
+  if valid_21626122 != nil:
+    section.add "X-Amz-Date", valid_21626122
+  var valid_21626123 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626123 = validateParameter(valid_21626123, JString, required = false,
+                                   default = nil)
+  if valid_21626123 != nil:
+    section.add "X-Amz-Security-Token", valid_21626123
+  var valid_21626124 = header.getOrDefault("X-Amz-Target")
+  valid_21626124 = validateParameter(valid_21626124, JString, required = true, default = newJString(
+      "AWSEvents.DescribeEventBus"))
+  if valid_21626124 != nil:
+    section.add "X-Amz-Target", valid_21626124
+  var valid_21626125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626125 = validateParameter(valid_21626125, JString, required = false,
+                                   default = nil)
+  if valid_21626125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626125
+  var valid_21626126 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626126 = validateParameter(valid_21626126, JString, required = false,
+                                   default = nil)
+  if valid_21626126 != nil:
+    section.add "X-Amz-Algorithm", valid_21626126
+  var valid_21626127 = header.getOrDefault("X-Amz-Signature")
+  valid_21626127 = validateParameter(valid_21626127, JString, required = false,
+                                   default = nil)
+  if valid_21626127 != nil:
+    section.add "X-Amz-Signature", valid_21626127
+  var valid_21626128 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626128 = validateParameter(valid_21626128, JString, required = false,
+                                   default = nil)
+  if valid_21626128 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626128
+  var valid_21626129 = header.getOrDefault("X-Amz-Credential")
+  valid_21626129 = validateParameter(valid_21626129, JString, required = false,
+                                   default = nil)
+  if valid_21626129 != nil:
+    section.add "X-Amz-Credential", valid_21626129
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626131: Call_DescribeEventBus_21626119; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Displays details about an event bus in your account. This can include the external AWS accounts that are permitted to write events to your default event bus, and the associated policy. For custom event buses and partner event buses, it displays the name, ARN, policy, state, and creation time.</p> <p> To enable your account to receive events from other accounts on its default event bus, use <a>PutPermission</a>.</p> <p>For more information about partner event buses, see <a>CreateEventBus</a>.</p>
+  ## 
+  let valid = call_21626131.validator(path, query, header, formData, body, _)
+  let scheme = call_21626131.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626131.makeUrl(scheme.get, call_21626131.host, call_21626131.base,
+                               call_21626131.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626131, uri, valid, _)
+
+proc call*(call_21626132: Call_DescribeEventBus_21626119; body: JsonNode): Recallable =
+  ## describeEventBus
+  ## <p>Displays details about an event bus in your account. This can include the external AWS accounts that are permitted to write events to your default event bus, and the associated policy. For custom event buses and partner event buses, it displays the name, ARN, policy, state, and creation time.</p> <p> To enable your account to receive events from other accounts on its default event bus, use <a>PutPermission</a>.</p> <p>For more information about partner event buses, see <a>CreateEventBus</a>.</p>
+  ##   body: JObject (required)
+  var body_21626133 = newJObject()
+  if body != nil:
+    body_21626133 = body
+  result = call_21626132.call(nil, nil, nil, nil, body_21626133)
+
+var describeEventBus* = Call_DescribeEventBus_21626119(name: "describeEventBus",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.DescribeEventBus",
+    validator: validate_DescribeEventBus_21626120, base: "/",
+    makeUrl: url_DescribeEventBus_21626121, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeEventSource_21626134 = ref object of OpenApiRestCall_21625435
+proc url_DescribeEventSource_21626136(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2049,8 +1065,1030 @@ proc url_ListRuleNamesByTarget_617719(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListRuleNamesByTarget_617718(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
+proc validate_DescribeEventSource_21626135(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## This operation lists details about a partner event source that is shared with your account.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626137 = header.getOrDefault("X-Amz-Date")
+  valid_21626137 = validateParameter(valid_21626137, JString, required = false,
+                                   default = nil)
+  if valid_21626137 != nil:
+    section.add "X-Amz-Date", valid_21626137
+  var valid_21626138 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626138 = validateParameter(valid_21626138, JString, required = false,
+                                   default = nil)
+  if valid_21626138 != nil:
+    section.add "X-Amz-Security-Token", valid_21626138
+  var valid_21626139 = header.getOrDefault("X-Amz-Target")
+  valid_21626139 = validateParameter(valid_21626139, JString, required = true, default = newJString(
+      "AWSEvents.DescribeEventSource"))
+  if valid_21626139 != nil:
+    section.add "X-Amz-Target", valid_21626139
+  var valid_21626140 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626140 = validateParameter(valid_21626140, JString, required = false,
+                                   default = nil)
+  if valid_21626140 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626140
+  var valid_21626141 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626141 = validateParameter(valid_21626141, JString, required = false,
+                                   default = nil)
+  if valid_21626141 != nil:
+    section.add "X-Amz-Algorithm", valid_21626141
+  var valid_21626142 = header.getOrDefault("X-Amz-Signature")
+  valid_21626142 = validateParameter(valid_21626142, JString, required = false,
+                                   default = nil)
+  if valid_21626142 != nil:
+    section.add "X-Amz-Signature", valid_21626142
+  var valid_21626143 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626143 = validateParameter(valid_21626143, JString, required = false,
+                                   default = nil)
+  if valid_21626143 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626143
+  var valid_21626144 = header.getOrDefault("X-Amz-Credential")
+  valid_21626144 = validateParameter(valid_21626144, JString, required = false,
+                                   default = nil)
+  if valid_21626144 != nil:
+    section.add "X-Amz-Credential", valid_21626144
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626146: Call_DescribeEventSource_21626134; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## This operation lists details about a partner event source that is shared with your account.
+  ## 
+  let valid = call_21626146.validator(path, query, header, formData, body, _)
+  let scheme = call_21626146.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626146.makeUrl(scheme.get, call_21626146.host, call_21626146.base,
+                               call_21626146.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626146, uri, valid, _)
+
+proc call*(call_21626147: Call_DescribeEventSource_21626134; body: JsonNode): Recallable =
+  ## describeEventSource
+  ## This operation lists details about a partner event source that is shared with your account.
+  ##   body: JObject (required)
+  var body_21626148 = newJObject()
+  if body != nil:
+    body_21626148 = body
+  result = call_21626147.call(nil, nil, nil, nil, body_21626148)
+
+var describeEventSource* = Call_DescribeEventSource_21626134(
+    name: "describeEventSource", meth: HttpMethod.HttpPost,
+    host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.DescribeEventSource",
+    validator: validate_DescribeEventSource_21626135, base: "/",
+    makeUrl: url_DescribeEventSource_21626136,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribePartnerEventSource_21626149 = ref object of OpenApiRestCall_21625435
+proc url_DescribePartnerEventSource_21626151(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribePartnerEventSource_21626150(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## An SaaS partner can use this operation to list details about a partner event source that they have created. AWS customers do not use this operation. Instead, AWS customers can use <a>DescribeEventSource</a> to see details about a partner event source that is shared with them.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626152 = header.getOrDefault("X-Amz-Date")
+  valid_21626152 = validateParameter(valid_21626152, JString, required = false,
+                                   default = nil)
+  if valid_21626152 != nil:
+    section.add "X-Amz-Date", valid_21626152
+  var valid_21626153 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626153 = validateParameter(valid_21626153, JString, required = false,
+                                   default = nil)
+  if valid_21626153 != nil:
+    section.add "X-Amz-Security-Token", valid_21626153
+  var valid_21626154 = header.getOrDefault("X-Amz-Target")
+  valid_21626154 = validateParameter(valid_21626154, JString, required = true, default = newJString(
+      "AWSEvents.DescribePartnerEventSource"))
+  if valid_21626154 != nil:
+    section.add "X-Amz-Target", valid_21626154
+  var valid_21626155 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626155 = validateParameter(valid_21626155, JString, required = false,
+                                   default = nil)
+  if valid_21626155 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626155
+  var valid_21626156 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626156 = validateParameter(valid_21626156, JString, required = false,
+                                   default = nil)
+  if valid_21626156 != nil:
+    section.add "X-Amz-Algorithm", valid_21626156
+  var valid_21626157 = header.getOrDefault("X-Amz-Signature")
+  valid_21626157 = validateParameter(valid_21626157, JString, required = false,
+                                   default = nil)
+  if valid_21626157 != nil:
+    section.add "X-Amz-Signature", valid_21626157
+  var valid_21626158 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626158 = validateParameter(valid_21626158, JString, required = false,
+                                   default = nil)
+  if valid_21626158 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626158
+  var valid_21626159 = header.getOrDefault("X-Amz-Credential")
+  valid_21626159 = validateParameter(valid_21626159, JString, required = false,
+                                   default = nil)
+  if valid_21626159 != nil:
+    section.add "X-Amz-Credential", valid_21626159
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626161: Call_DescribePartnerEventSource_21626149;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## An SaaS partner can use this operation to list details about a partner event source that they have created. AWS customers do not use this operation. Instead, AWS customers can use <a>DescribeEventSource</a> to see details about a partner event source that is shared with them.
+  ## 
+  let valid = call_21626161.validator(path, query, header, formData, body, _)
+  let scheme = call_21626161.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626161.makeUrl(scheme.get, call_21626161.host, call_21626161.base,
+                               call_21626161.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626161, uri, valid, _)
+
+proc call*(call_21626162: Call_DescribePartnerEventSource_21626149; body: JsonNode): Recallable =
+  ## describePartnerEventSource
+  ## An SaaS partner can use this operation to list details about a partner event source that they have created. AWS customers do not use this operation. Instead, AWS customers can use <a>DescribeEventSource</a> to see details about a partner event source that is shared with them.
+  ##   body: JObject (required)
+  var body_21626163 = newJObject()
+  if body != nil:
+    body_21626163 = body
+  result = call_21626162.call(nil, nil, nil, nil, body_21626163)
+
+var describePartnerEventSource* = Call_DescribePartnerEventSource_21626149(
+    name: "describePartnerEventSource", meth: HttpMethod.HttpPost,
+    host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.DescribePartnerEventSource",
+    validator: validate_DescribePartnerEventSource_21626150, base: "/",
+    makeUrl: url_DescribePartnerEventSource_21626151,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeRule_21626164 = ref object of OpenApiRestCall_21625435
+proc url_DescribeRule_21626166(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeRule_21626165(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+  ## <p>Describes the specified rule.</p> <p>DescribeRule does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626167 = header.getOrDefault("X-Amz-Date")
+  valid_21626167 = validateParameter(valid_21626167, JString, required = false,
+                                   default = nil)
+  if valid_21626167 != nil:
+    section.add "X-Amz-Date", valid_21626167
+  var valid_21626168 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626168 = validateParameter(valid_21626168, JString, required = false,
+                                   default = nil)
+  if valid_21626168 != nil:
+    section.add "X-Amz-Security-Token", valid_21626168
+  var valid_21626169 = header.getOrDefault("X-Amz-Target")
+  valid_21626169 = validateParameter(valid_21626169, JString, required = true, default = newJString(
+      "AWSEvents.DescribeRule"))
+  if valid_21626169 != nil:
+    section.add "X-Amz-Target", valid_21626169
+  var valid_21626170 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626170 = validateParameter(valid_21626170, JString, required = false,
+                                   default = nil)
+  if valid_21626170 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626170
+  var valid_21626171 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626171 = validateParameter(valid_21626171, JString, required = false,
+                                   default = nil)
+  if valid_21626171 != nil:
+    section.add "X-Amz-Algorithm", valid_21626171
+  var valid_21626172 = header.getOrDefault("X-Amz-Signature")
+  valid_21626172 = validateParameter(valid_21626172, JString, required = false,
+                                   default = nil)
+  if valid_21626172 != nil:
+    section.add "X-Amz-Signature", valid_21626172
+  var valid_21626173 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626173 = validateParameter(valid_21626173, JString, required = false,
+                                   default = nil)
+  if valid_21626173 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626173
+  var valid_21626174 = header.getOrDefault("X-Amz-Credential")
+  valid_21626174 = validateParameter(valid_21626174, JString, required = false,
+                                   default = nil)
+  if valid_21626174 != nil:
+    section.add "X-Amz-Credential", valid_21626174
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626176: Call_DescribeRule_21626164; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Describes the specified rule.</p> <p>DescribeRule does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
+  ## 
+  let valid = call_21626176.validator(path, query, header, formData, body, _)
+  let scheme = call_21626176.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626176.makeUrl(scheme.get, call_21626176.host, call_21626176.base,
+                               call_21626176.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626176, uri, valid, _)
+
+proc call*(call_21626177: Call_DescribeRule_21626164; body: JsonNode): Recallable =
+  ## describeRule
+  ## <p>Describes the specified rule.</p> <p>DescribeRule does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
+  ##   body: JObject (required)
+  var body_21626178 = newJObject()
+  if body != nil:
+    body_21626178 = body
+  result = call_21626177.call(nil, nil, nil, nil, body_21626178)
+
+var describeRule* = Call_DescribeRule_21626164(name: "describeRule",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.DescribeRule",
+    validator: validate_DescribeRule_21626165, base: "/", makeUrl: url_DescribeRule_21626166,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DisableRule_21626179 = ref object of OpenApiRestCall_21625435
+proc url_DisableRule_21626181(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DisableRule_21626180(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Disables the specified rule. A disabled rule won't match any events, and won't self-trigger if it has a schedule expression.</p> <p>When you disable a rule, incoming events might continue to match to the disabled rule. Allow a short period of time for changes to take effect.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626182 = header.getOrDefault("X-Amz-Date")
+  valid_21626182 = validateParameter(valid_21626182, JString, required = false,
+                                   default = nil)
+  if valid_21626182 != nil:
+    section.add "X-Amz-Date", valid_21626182
+  var valid_21626183 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626183 = validateParameter(valid_21626183, JString, required = false,
+                                   default = nil)
+  if valid_21626183 != nil:
+    section.add "X-Amz-Security-Token", valid_21626183
+  var valid_21626184 = header.getOrDefault("X-Amz-Target")
+  valid_21626184 = validateParameter(valid_21626184, JString, required = true, default = newJString(
+      "AWSEvents.DisableRule"))
+  if valid_21626184 != nil:
+    section.add "X-Amz-Target", valid_21626184
+  var valid_21626185 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626185 = validateParameter(valid_21626185, JString, required = false,
+                                   default = nil)
+  if valid_21626185 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626185
+  var valid_21626186 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626186 = validateParameter(valid_21626186, JString, required = false,
+                                   default = nil)
+  if valid_21626186 != nil:
+    section.add "X-Amz-Algorithm", valid_21626186
+  var valid_21626187 = header.getOrDefault("X-Amz-Signature")
+  valid_21626187 = validateParameter(valid_21626187, JString, required = false,
+                                   default = nil)
+  if valid_21626187 != nil:
+    section.add "X-Amz-Signature", valid_21626187
+  var valid_21626188 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626188 = validateParameter(valid_21626188, JString, required = false,
+                                   default = nil)
+  if valid_21626188 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626188
+  var valid_21626189 = header.getOrDefault("X-Amz-Credential")
+  valid_21626189 = validateParameter(valid_21626189, JString, required = false,
+                                   default = nil)
+  if valid_21626189 != nil:
+    section.add "X-Amz-Credential", valid_21626189
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626191: Call_DisableRule_21626179; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Disables the specified rule. A disabled rule won't match any events, and won't self-trigger if it has a schedule expression.</p> <p>When you disable a rule, incoming events might continue to match to the disabled rule. Allow a short period of time for changes to take effect.</p>
+  ## 
+  let valid = call_21626191.validator(path, query, header, formData, body, _)
+  let scheme = call_21626191.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626191.makeUrl(scheme.get, call_21626191.host, call_21626191.base,
+                               call_21626191.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626191, uri, valid, _)
+
+proc call*(call_21626192: Call_DisableRule_21626179; body: JsonNode): Recallable =
+  ## disableRule
+  ## <p>Disables the specified rule. A disabled rule won't match any events, and won't self-trigger if it has a schedule expression.</p> <p>When you disable a rule, incoming events might continue to match to the disabled rule. Allow a short period of time for changes to take effect.</p>
+  ##   body: JObject (required)
+  var body_21626193 = newJObject()
+  if body != nil:
+    body_21626193 = body
+  result = call_21626192.call(nil, nil, nil, nil, body_21626193)
+
+var disableRule* = Call_DisableRule_21626179(name: "disableRule",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.DisableRule",
+    validator: validate_DisableRule_21626180, base: "/", makeUrl: url_DisableRule_21626181,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_EnableRule_21626194 = ref object of OpenApiRestCall_21625435
+proc url_EnableRule_21626196(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_EnableRule_21626195(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Enables the specified rule. If the rule does not exist, the operation fails.</p> <p>When you enable a rule, incoming events might not immediately start matching to a newly enabled rule. Allow a short period of time for changes to take effect.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626197 = header.getOrDefault("X-Amz-Date")
+  valid_21626197 = validateParameter(valid_21626197, JString, required = false,
+                                   default = nil)
+  if valid_21626197 != nil:
+    section.add "X-Amz-Date", valid_21626197
+  var valid_21626198 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626198 = validateParameter(valid_21626198, JString, required = false,
+                                   default = nil)
+  if valid_21626198 != nil:
+    section.add "X-Amz-Security-Token", valid_21626198
+  var valid_21626199 = header.getOrDefault("X-Amz-Target")
+  valid_21626199 = validateParameter(valid_21626199, JString, required = true,
+                                   default = newJString("AWSEvents.EnableRule"))
+  if valid_21626199 != nil:
+    section.add "X-Amz-Target", valid_21626199
+  var valid_21626200 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626200 = validateParameter(valid_21626200, JString, required = false,
+                                   default = nil)
+  if valid_21626200 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626200
+  var valid_21626201 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626201 = validateParameter(valid_21626201, JString, required = false,
+                                   default = nil)
+  if valid_21626201 != nil:
+    section.add "X-Amz-Algorithm", valid_21626201
+  var valid_21626202 = header.getOrDefault("X-Amz-Signature")
+  valid_21626202 = validateParameter(valid_21626202, JString, required = false,
+                                   default = nil)
+  if valid_21626202 != nil:
+    section.add "X-Amz-Signature", valid_21626202
+  var valid_21626203 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626203 = validateParameter(valid_21626203, JString, required = false,
+                                   default = nil)
+  if valid_21626203 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626203
+  var valid_21626204 = header.getOrDefault("X-Amz-Credential")
+  valid_21626204 = validateParameter(valid_21626204, JString, required = false,
+                                   default = nil)
+  if valid_21626204 != nil:
+    section.add "X-Amz-Credential", valid_21626204
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626206: Call_EnableRule_21626194; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Enables the specified rule. If the rule does not exist, the operation fails.</p> <p>When you enable a rule, incoming events might not immediately start matching to a newly enabled rule. Allow a short period of time for changes to take effect.</p>
+  ## 
+  let valid = call_21626206.validator(path, query, header, formData, body, _)
+  let scheme = call_21626206.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626206.makeUrl(scheme.get, call_21626206.host, call_21626206.base,
+                               call_21626206.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626206, uri, valid, _)
+
+proc call*(call_21626207: Call_EnableRule_21626194; body: JsonNode): Recallable =
+  ## enableRule
+  ## <p>Enables the specified rule. If the rule does not exist, the operation fails.</p> <p>When you enable a rule, incoming events might not immediately start matching to a newly enabled rule. Allow a short period of time for changes to take effect.</p>
+  ##   body: JObject (required)
+  var body_21626208 = newJObject()
+  if body != nil:
+    body_21626208 = body
+  result = call_21626207.call(nil, nil, nil, nil, body_21626208)
+
+var enableRule* = Call_EnableRule_21626194(name: "enableRule",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.EnableRule",
+                                        validator: validate_EnableRule_21626195,
+                                        base: "/", makeUrl: url_EnableRule_21626196,
+                                        schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListEventBuses_21626209 = ref object of OpenApiRestCall_21625435
+proc url_ListEventBuses_21626211(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListEventBuses_21626210(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Lists all the event buses in your account, including the default event bus, custom event buses, and partner event buses.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626212 = header.getOrDefault("X-Amz-Date")
+  valid_21626212 = validateParameter(valid_21626212, JString, required = false,
+                                   default = nil)
+  if valid_21626212 != nil:
+    section.add "X-Amz-Date", valid_21626212
+  var valid_21626213 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626213 = validateParameter(valid_21626213, JString, required = false,
+                                   default = nil)
+  if valid_21626213 != nil:
+    section.add "X-Amz-Security-Token", valid_21626213
+  var valid_21626214 = header.getOrDefault("X-Amz-Target")
+  valid_21626214 = validateParameter(valid_21626214, JString, required = true, default = newJString(
+      "AWSEvents.ListEventBuses"))
+  if valid_21626214 != nil:
+    section.add "X-Amz-Target", valid_21626214
+  var valid_21626215 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626215 = validateParameter(valid_21626215, JString, required = false,
+                                   default = nil)
+  if valid_21626215 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626215
+  var valid_21626216 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626216 = validateParameter(valid_21626216, JString, required = false,
+                                   default = nil)
+  if valid_21626216 != nil:
+    section.add "X-Amz-Algorithm", valid_21626216
+  var valid_21626217 = header.getOrDefault("X-Amz-Signature")
+  valid_21626217 = validateParameter(valid_21626217, JString, required = false,
+                                   default = nil)
+  if valid_21626217 != nil:
+    section.add "X-Amz-Signature", valid_21626217
+  var valid_21626218 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626218 = validateParameter(valid_21626218, JString, required = false,
+                                   default = nil)
+  if valid_21626218 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626218
+  var valid_21626219 = header.getOrDefault("X-Amz-Credential")
+  valid_21626219 = validateParameter(valid_21626219, JString, required = false,
+                                   default = nil)
+  if valid_21626219 != nil:
+    section.add "X-Amz-Credential", valid_21626219
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626221: Call_ListEventBuses_21626209; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Lists all the event buses in your account, including the default event bus, custom event buses, and partner event buses.
+  ## 
+  let valid = call_21626221.validator(path, query, header, formData, body, _)
+  let scheme = call_21626221.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626221.makeUrl(scheme.get, call_21626221.host, call_21626221.base,
+                               call_21626221.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626221, uri, valid, _)
+
+proc call*(call_21626222: Call_ListEventBuses_21626209; body: JsonNode): Recallable =
+  ## listEventBuses
+  ## Lists all the event buses in your account, including the default event bus, custom event buses, and partner event buses.
+  ##   body: JObject (required)
+  var body_21626223 = newJObject()
+  if body != nil:
+    body_21626223 = body
+  result = call_21626222.call(nil, nil, nil, nil, body_21626223)
+
+var listEventBuses* = Call_ListEventBuses_21626209(name: "listEventBuses",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.ListEventBuses",
+    validator: validate_ListEventBuses_21626210, base: "/",
+    makeUrl: url_ListEventBuses_21626211, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListEventSources_21626224 = ref object of OpenApiRestCall_21625435
+proc url_ListEventSources_21626226(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListEventSources_21626225(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## You can use this to see all the partner event sources that have been shared with your AWS account. For more information about partner event sources, see <a>CreateEventBus</a>.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626227 = header.getOrDefault("X-Amz-Date")
+  valid_21626227 = validateParameter(valid_21626227, JString, required = false,
+                                   default = nil)
+  if valid_21626227 != nil:
+    section.add "X-Amz-Date", valid_21626227
+  var valid_21626228 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626228 = validateParameter(valid_21626228, JString, required = false,
+                                   default = nil)
+  if valid_21626228 != nil:
+    section.add "X-Amz-Security-Token", valid_21626228
+  var valid_21626229 = header.getOrDefault("X-Amz-Target")
+  valid_21626229 = validateParameter(valid_21626229, JString, required = true, default = newJString(
+      "AWSEvents.ListEventSources"))
+  if valid_21626229 != nil:
+    section.add "X-Amz-Target", valid_21626229
+  var valid_21626230 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626230 = validateParameter(valid_21626230, JString, required = false,
+                                   default = nil)
+  if valid_21626230 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626230
+  var valid_21626231 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626231 = validateParameter(valid_21626231, JString, required = false,
+                                   default = nil)
+  if valid_21626231 != nil:
+    section.add "X-Amz-Algorithm", valid_21626231
+  var valid_21626232 = header.getOrDefault("X-Amz-Signature")
+  valid_21626232 = validateParameter(valid_21626232, JString, required = false,
+                                   default = nil)
+  if valid_21626232 != nil:
+    section.add "X-Amz-Signature", valid_21626232
+  var valid_21626233 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626233 = validateParameter(valid_21626233, JString, required = false,
+                                   default = nil)
+  if valid_21626233 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626233
+  var valid_21626234 = header.getOrDefault("X-Amz-Credential")
+  valid_21626234 = validateParameter(valid_21626234, JString, required = false,
+                                   default = nil)
+  if valid_21626234 != nil:
+    section.add "X-Amz-Credential", valid_21626234
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626236: Call_ListEventSources_21626224; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## You can use this to see all the partner event sources that have been shared with your AWS account. For more information about partner event sources, see <a>CreateEventBus</a>.
+  ## 
+  let valid = call_21626236.validator(path, query, header, formData, body, _)
+  let scheme = call_21626236.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626236.makeUrl(scheme.get, call_21626236.host, call_21626236.base,
+                               call_21626236.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626236, uri, valid, _)
+
+proc call*(call_21626237: Call_ListEventSources_21626224; body: JsonNode): Recallable =
+  ## listEventSources
+  ## You can use this to see all the partner event sources that have been shared with your AWS account. For more information about partner event sources, see <a>CreateEventBus</a>.
+  ##   body: JObject (required)
+  var body_21626238 = newJObject()
+  if body != nil:
+    body_21626238 = body
+  result = call_21626237.call(nil, nil, nil, nil, body_21626238)
+
+var listEventSources* = Call_ListEventSources_21626224(name: "listEventSources",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.ListEventSources",
+    validator: validate_ListEventSources_21626225, base: "/",
+    makeUrl: url_ListEventSources_21626226, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListPartnerEventSourceAccounts_21626239 = ref object of OpenApiRestCall_21625435
+proc url_ListPartnerEventSourceAccounts_21626241(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListPartnerEventSourceAccounts_21626240(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
+  ## An SaaS partner can use this operation to display the AWS account ID that a particular partner event source name is associated with. This operation is not used by AWS customers.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626242 = header.getOrDefault("X-Amz-Date")
+  valid_21626242 = validateParameter(valid_21626242, JString, required = false,
+                                   default = nil)
+  if valid_21626242 != nil:
+    section.add "X-Amz-Date", valid_21626242
+  var valid_21626243 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626243 = validateParameter(valid_21626243, JString, required = false,
+                                   default = nil)
+  if valid_21626243 != nil:
+    section.add "X-Amz-Security-Token", valid_21626243
+  var valid_21626244 = header.getOrDefault("X-Amz-Target")
+  valid_21626244 = validateParameter(valid_21626244, JString, required = true, default = newJString(
+      "AWSEvents.ListPartnerEventSourceAccounts"))
+  if valid_21626244 != nil:
+    section.add "X-Amz-Target", valid_21626244
+  var valid_21626245 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626245 = validateParameter(valid_21626245, JString, required = false,
+                                   default = nil)
+  if valid_21626245 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626245
+  var valid_21626246 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626246 = validateParameter(valid_21626246, JString, required = false,
+                                   default = nil)
+  if valid_21626246 != nil:
+    section.add "X-Amz-Algorithm", valid_21626246
+  var valid_21626247 = header.getOrDefault("X-Amz-Signature")
+  valid_21626247 = validateParameter(valid_21626247, JString, required = false,
+                                   default = nil)
+  if valid_21626247 != nil:
+    section.add "X-Amz-Signature", valid_21626247
+  var valid_21626248 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626248 = validateParameter(valid_21626248, JString, required = false,
+                                   default = nil)
+  if valid_21626248 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626248
+  var valid_21626249 = header.getOrDefault("X-Amz-Credential")
+  valid_21626249 = validateParameter(valid_21626249, JString, required = false,
+                                   default = nil)
+  if valid_21626249 != nil:
+    section.add "X-Amz-Credential", valid_21626249
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626251: Call_ListPartnerEventSourceAccounts_21626239;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## An SaaS partner can use this operation to display the AWS account ID that a particular partner event source name is associated with. This operation is not used by AWS customers.
+  ## 
+  let valid = call_21626251.validator(path, query, header, formData, body, _)
+  let scheme = call_21626251.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626251.makeUrl(scheme.get, call_21626251.host, call_21626251.base,
+                               call_21626251.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626251, uri, valid, _)
+
+proc call*(call_21626252: Call_ListPartnerEventSourceAccounts_21626239;
+          body: JsonNode): Recallable =
+  ## listPartnerEventSourceAccounts
+  ## An SaaS partner can use this operation to display the AWS account ID that a particular partner event source name is associated with. This operation is not used by AWS customers.
+  ##   body: JObject (required)
+  var body_21626253 = newJObject()
+  if body != nil:
+    body_21626253 = body
+  result = call_21626252.call(nil, nil, nil, nil, body_21626253)
+
+var listPartnerEventSourceAccounts* = Call_ListPartnerEventSourceAccounts_21626239(
+    name: "listPartnerEventSourceAccounts", meth: HttpMethod.HttpPost,
+    host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.ListPartnerEventSourceAccounts",
+    validator: validate_ListPartnerEventSourceAccounts_21626240, base: "/",
+    makeUrl: url_ListPartnerEventSourceAccounts_21626241,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListPartnerEventSources_21626254 = ref object of OpenApiRestCall_21625435
+proc url_ListPartnerEventSources_21626256(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListPartnerEventSources_21626255(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## An SaaS partner can use this operation to list all the partner event source names that they have created. This operation is not used by AWS customers.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626257 = header.getOrDefault("X-Amz-Date")
+  valid_21626257 = validateParameter(valid_21626257, JString, required = false,
+                                   default = nil)
+  if valid_21626257 != nil:
+    section.add "X-Amz-Date", valid_21626257
+  var valid_21626258 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626258 = validateParameter(valid_21626258, JString, required = false,
+                                   default = nil)
+  if valid_21626258 != nil:
+    section.add "X-Amz-Security-Token", valid_21626258
+  var valid_21626259 = header.getOrDefault("X-Amz-Target")
+  valid_21626259 = validateParameter(valid_21626259, JString, required = true, default = newJString(
+      "AWSEvents.ListPartnerEventSources"))
+  if valid_21626259 != nil:
+    section.add "X-Amz-Target", valid_21626259
+  var valid_21626260 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626260 = validateParameter(valid_21626260, JString, required = false,
+                                   default = nil)
+  if valid_21626260 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626260
+  var valid_21626261 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626261 = validateParameter(valid_21626261, JString, required = false,
+                                   default = nil)
+  if valid_21626261 != nil:
+    section.add "X-Amz-Algorithm", valid_21626261
+  var valid_21626262 = header.getOrDefault("X-Amz-Signature")
+  valid_21626262 = validateParameter(valid_21626262, JString, required = false,
+                                   default = nil)
+  if valid_21626262 != nil:
+    section.add "X-Amz-Signature", valid_21626262
+  var valid_21626263 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626263 = validateParameter(valid_21626263, JString, required = false,
+                                   default = nil)
+  if valid_21626263 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626263
+  var valid_21626264 = header.getOrDefault("X-Amz-Credential")
+  valid_21626264 = validateParameter(valid_21626264, JString, required = false,
+                                   default = nil)
+  if valid_21626264 != nil:
+    section.add "X-Amz-Credential", valid_21626264
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626266: Call_ListPartnerEventSources_21626254;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## An SaaS partner can use this operation to list all the partner event source names that they have created. This operation is not used by AWS customers.
+  ## 
+  let valid = call_21626266.validator(path, query, header, formData, body, _)
+  let scheme = call_21626266.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626266.makeUrl(scheme.get, call_21626266.host, call_21626266.base,
+                               call_21626266.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626266, uri, valid, _)
+
+proc call*(call_21626267: Call_ListPartnerEventSources_21626254; body: JsonNode): Recallable =
+  ## listPartnerEventSources
+  ## An SaaS partner can use this operation to list all the partner event source names that they have created. This operation is not used by AWS customers.
+  ##   body: JObject (required)
+  var body_21626268 = newJObject()
+  if body != nil:
+    body_21626268 = body
+  result = call_21626267.call(nil, nil, nil, nil, body_21626268)
+
+var listPartnerEventSources* = Call_ListPartnerEventSources_21626254(
+    name: "listPartnerEventSources", meth: HttpMethod.HttpPost,
+    host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.ListPartnerEventSources",
+    validator: validate_ListPartnerEventSources_21626255, base: "/",
+    makeUrl: url_ListPartnerEventSources_21626256,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListRuleNamesByTarget_21626269 = ref object of OpenApiRestCall_21625435
+proc url_ListRuleNamesByTarget_21626271(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListRuleNamesByTarget_21626270(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## Lists the rules for the specified target. You can see which of the rules in Amazon EventBridge can invoke a specific target in your account.
   ## 
   var section: JsonNode
@@ -2062,1202 +2100,97 @@ proc validate_ListRuleNamesByTarget_617718(path: JsonNode; query: JsonNode;
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617720 = header.getOrDefault("X-Amz-Date")
-  valid_617720 = validateParameter(valid_617720, JString, required = false,
-                                 default = nil)
-  if valid_617720 != nil:
-    section.add "X-Amz-Date", valid_617720
-  var valid_617721 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617721 = validateParameter(valid_617721, JString, required = false,
-                                 default = nil)
-  if valid_617721 != nil:
-    section.add "X-Amz-Security-Token", valid_617721
-  var valid_617722 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617722 = validateParameter(valid_617722, JString, required = false,
-                                 default = nil)
-  if valid_617722 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617722
-  var valid_617723 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617723 = validateParameter(valid_617723, JString, required = false,
-                                 default = nil)
-  if valid_617723 != nil:
-    section.add "X-Amz-Algorithm", valid_617723
-  var valid_617724 = header.getOrDefault("X-Amz-Signature")
-  valid_617724 = validateParameter(valid_617724, JString, required = false,
-                                 default = nil)
-  if valid_617724 != nil:
-    section.add "X-Amz-Signature", valid_617724
-  var valid_617725 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617725 = validateParameter(valid_617725, JString, required = false,
-                                 default = nil)
-  if valid_617725 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617725
-  var valid_617726 = header.getOrDefault("X-Amz-Target")
-  valid_617726 = validateParameter(valid_617726, JString, required = true, default = newJString(
+  var valid_21626272 = header.getOrDefault("X-Amz-Date")
+  valid_21626272 = validateParameter(valid_21626272, JString, required = false,
+                                   default = nil)
+  if valid_21626272 != nil:
+    section.add "X-Amz-Date", valid_21626272
+  var valid_21626273 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626273 = validateParameter(valid_21626273, JString, required = false,
+                                   default = nil)
+  if valid_21626273 != nil:
+    section.add "X-Amz-Security-Token", valid_21626273
+  var valid_21626274 = header.getOrDefault("X-Amz-Target")
+  valid_21626274 = validateParameter(valid_21626274, JString, required = true, default = newJString(
       "AWSEvents.ListRuleNamesByTarget"))
-  if valid_617726 != nil:
-    section.add "X-Amz-Target", valid_617726
-  var valid_617727 = header.getOrDefault("X-Amz-Credential")
-  valid_617727 = validateParameter(valid_617727, JString, required = false,
-                                 default = nil)
-  if valid_617727 != nil:
-    section.add "X-Amz-Credential", valid_617727
+  if valid_21626274 != nil:
+    section.add "X-Amz-Target", valid_21626274
+  var valid_21626275 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626275 = validateParameter(valid_21626275, JString, required = false,
+                                   default = nil)
+  if valid_21626275 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626275
+  var valid_21626276 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626276 = validateParameter(valid_21626276, JString, required = false,
+                                   default = nil)
+  if valid_21626276 != nil:
+    section.add "X-Amz-Algorithm", valid_21626276
+  var valid_21626277 = header.getOrDefault("X-Amz-Signature")
+  valid_21626277 = validateParameter(valid_21626277, JString, required = false,
+                                   default = nil)
+  if valid_21626277 != nil:
+    section.add "X-Amz-Signature", valid_21626277
+  var valid_21626278 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626278 = validateParameter(valid_21626278, JString, required = false,
+                                   default = nil)
+  if valid_21626278 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626278
+  var valid_21626279 = header.getOrDefault("X-Amz-Credential")
+  valid_21626279 = validateParameter(valid_21626279, JString, required = false,
+                                   default = nil)
+  if valid_21626279 != nil:
+    section.add "X-Amz-Credential", valid_21626279
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617729: Call_ListRuleNamesByTarget_617717; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_21626281: Call_ListRuleNamesByTarget_21626269;
+          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Lists the rules for the specified target. You can see which of the rules in Amazon EventBridge can invoke a specific target in your account.
   ## 
-  let valid = call_617729.validator(path, query, header, formData, body, _)
-  let scheme = call_617729.pickScheme
+  let valid = call_21626281.validator(path, query, header, formData, body, _)
+  let scheme = call_21626281.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617729.url(scheme.get, call_617729.host, call_617729.base,
-                         call_617729.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617729, url, valid, _)
+  let uri = call_21626281.makeUrl(scheme.get, call_21626281.host, call_21626281.base,
+                               call_21626281.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626281, uri, valid, _)
 
-proc call*(call_617730: Call_ListRuleNamesByTarget_617717; body: JsonNode): Recallable =
+proc call*(call_21626282: Call_ListRuleNamesByTarget_21626269; body: JsonNode): Recallable =
   ## listRuleNamesByTarget
   ## Lists the rules for the specified target. You can see which of the rules in Amazon EventBridge can invoke a specific target in your account.
   ##   body: JObject (required)
-  var body_617731 = newJObject()
+  var body_21626283 = newJObject()
   if body != nil:
-    body_617731 = body
-  result = call_617730.call(nil, nil, nil, nil, body_617731)
+    body_21626283 = body
+  result = call_21626282.call(nil, nil, nil, nil, body_21626283)
 
-var listRuleNamesByTarget* = Call_ListRuleNamesByTarget_617717(
+var listRuleNamesByTarget* = Call_ListRuleNamesByTarget_21626269(
     name: "listRuleNamesByTarget", meth: HttpMethod.HttpPost,
     host: "events.amazonaws.com",
     route: "/#X-Amz-Target=AWSEvents.ListRuleNamesByTarget",
-    validator: validate_ListRuleNamesByTarget_617718, base: "/",
-    url: url_ListRuleNamesByTarget_617719, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListRules_617732 = ref object of OpenApiRestCall_616866
-proc url_ListRules_617734(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListRules_617733(path: JsonNode; query: JsonNode; header: JsonNode;
-                              formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Lists your Amazon EventBridge rules. You can either list all the rules or you can provide a prefix to match to the rule names.</p> <p>ListRules does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617735 = header.getOrDefault("X-Amz-Date")
-  valid_617735 = validateParameter(valid_617735, JString, required = false,
-                                 default = nil)
-  if valid_617735 != nil:
-    section.add "X-Amz-Date", valid_617735
-  var valid_617736 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617736 = validateParameter(valid_617736, JString, required = false,
-                                 default = nil)
-  if valid_617736 != nil:
-    section.add "X-Amz-Security-Token", valid_617736
-  var valid_617737 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617737 = validateParameter(valid_617737, JString, required = false,
-                                 default = nil)
-  if valid_617737 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617737
-  var valid_617738 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617738 = validateParameter(valid_617738, JString, required = false,
-                                 default = nil)
-  if valid_617738 != nil:
-    section.add "X-Amz-Algorithm", valid_617738
-  var valid_617739 = header.getOrDefault("X-Amz-Signature")
-  valid_617739 = validateParameter(valid_617739, JString, required = false,
-                                 default = nil)
-  if valid_617739 != nil:
-    section.add "X-Amz-Signature", valid_617739
-  var valid_617740 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617740 = validateParameter(valid_617740, JString, required = false,
-                                 default = nil)
-  if valid_617740 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617740
-  var valid_617741 = header.getOrDefault("X-Amz-Target")
-  valid_617741 = validateParameter(valid_617741, JString, required = true,
-                                 default = newJString("AWSEvents.ListRules"))
-  if valid_617741 != nil:
-    section.add "X-Amz-Target", valid_617741
-  var valid_617742 = header.getOrDefault("X-Amz-Credential")
-  valid_617742 = validateParameter(valid_617742, JString, required = false,
-                                 default = nil)
-  if valid_617742 != nil:
-    section.add "X-Amz-Credential", valid_617742
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617744: Call_ListRules_617732; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Lists your Amazon EventBridge rules. You can either list all the rules or you can provide a prefix to match to the rule names.</p> <p>ListRules does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
-  ## 
-  let valid = call_617744.validator(path, query, header, formData, body, _)
-  let scheme = call_617744.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617744.url(scheme.get, call_617744.host, call_617744.base,
-                         call_617744.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617744, url, valid, _)
-
-proc call*(call_617745: Call_ListRules_617732; body: JsonNode): Recallable =
-  ## listRules
-  ## <p>Lists your Amazon EventBridge rules. You can either list all the rules or you can provide a prefix to match to the rule names.</p> <p>ListRules does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
-  ##   body: JObject (required)
-  var body_617746 = newJObject()
-  if body != nil:
-    body_617746 = body
-  result = call_617745.call(nil, nil, nil, nil, body_617746)
-
-var listRules* = Call_ListRules_617732(name: "listRules", meth: HttpMethod.HttpPost,
-                                    host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.ListRules",
-                                    validator: validate_ListRules_617733,
-                                    base: "/", url: url_ListRules_617734,
-                                    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListTagsForResource_617747 = ref object of OpenApiRestCall_616866
-proc url_ListTagsForResource_617749(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListTagsForResource_617748(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode =
-  ## Displays the tags associated with an EventBridge resource. In EventBridge, rules and event buses can be tagged.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617750 = header.getOrDefault("X-Amz-Date")
-  valid_617750 = validateParameter(valid_617750, JString, required = false,
-                                 default = nil)
-  if valid_617750 != nil:
-    section.add "X-Amz-Date", valid_617750
-  var valid_617751 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617751 = validateParameter(valid_617751, JString, required = false,
-                                 default = nil)
-  if valid_617751 != nil:
-    section.add "X-Amz-Security-Token", valid_617751
-  var valid_617752 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617752 = validateParameter(valid_617752, JString, required = false,
-                                 default = nil)
-  if valid_617752 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617752
-  var valid_617753 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617753 = validateParameter(valid_617753, JString, required = false,
-                                 default = nil)
-  if valid_617753 != nil:
-    section.add "X-Amz-Algorithm", valid_617753
-  var valid_617754 = header.getOrDefault("X-Amz-Signature")
-  valid_617754 = validateParameter(valid_617754, JString, required = false,
-                                 default = nil)
-  if valid_617754 != nil:
-    section.add "X-Amz-Signature", valid_617754
-  var valid_617755 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617755 = validateParameter(valid_617755, JString, required = false,
-                                 default = nil)
-  if valid_617755 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617755
-  var valid_617756 = header.getOrDefault("X-Amz-Target")
-  valid_617756 = validateParameter(valid_617756, JString, required = true, default = newJString(
-      "AWSEvents.ListTagsForResource"))
-  if valid_617756 != nil:
-    section.add "X-Amz-Target", valid_617756
-  var valid_617757 = header.getOrDefault("X-Amz-Credential")
-  valid_617757 = validateParameter(valid_617757, JString, required = false,
-                                 default = nil)
-  if valid_617757 != nil:
-    section.add "X-Amz-Credential", valid_617757
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617759: Call_ListTagsForResource_617747; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Displays the tags associated with an EventBridge resource. In EventBridge, rules and event buses can be tagged.
-  ## 
-  let valid = call_617759.validator(path, query, header, formData, body, _)
-  let scheme = call_617759.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617759.url(scheme.get, call_617759.host, call_617759.base,
-                         call_617759.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617759, url, valid, _)
-
-proc call*(call_617760: Call_ListTagsForResource_617747; body: JsonNode): Recallable =
-  ## listTagsForResource
-  ## Displays the tags associated with an EventBridge resource. In EventBridge, rules and event buses can be tagged.
-  ##   body: JObject (required)
-  var body_617761 = newJObject()
-  if body != nil:
-    body_617761 = body
-  result = call_617760.call(nil, nil, nil, nil, body_617761)
-
-var listTagsForResource* = Call_ListTagsForResource_617747(
-    name: "listTagsForResource", meth: HttpMethod.HttpPost,
-    host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.ListTagsForResource",
-    validator: validate_ListTagsForResource_617748, base: "/",
-    url: url_ListTagsForResource_617749, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListTargetsByRule_617762 = ref object of OpenApiRestCall_616866
-proc url_ListTargetsByRule_617764(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListTargetsByRule_617763(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode; _: string = ""): JsonNode =
-  ## Lists the targets assigned to the specified rule.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617765 = header.getOrDefault("X-Amz-Date")
-  valid_617765 = validateParameter(valid_617765, JString, required = false,
-                                 default = nil)
-  if valid_617765 != nil:
-    section.add "X-Amz-Date", valid_617765
-  var valid_617766 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617766 = validateParameter(valid_617766, JString, required = false,
-                                 default = nil)
-  if valid_617766 != nil:
-    section.add "X-Amz-Security-Token", valid_617766
-  var valid_617767 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617767 = validateParameter(valid_617767, JString, required = false,
-                                 default = nil)
-  if valid_617767 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617767
-  var valid_617768 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617768 = validateParameter(valid_617768, JString, required = false,
-                                 default = nil)
-  if valid_617768 != nil:
-    section.add "X-Amz-Algorithm", valid_617768
-  var valid_617769 = header.getOrDefault("X-Amz-Signature")
-  valid_617769 = validateParameter(valid_617769, JString, required = false,
-                                 default = nil)
-  if valid_617769 != nil:
-    section.add "X-Amz-Signature", valid_617769
-  var valid_617770 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617770 = validateParameter(valid_617770, JString, required = false,
-                                 default = nil)
-  if valid_617770 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617770
-  var valid_617771 = header.getOrDefault("X-Amz-Target")
-  valid_617771 = validateParameter(valid_617771, JString, required = true, default = newJString(
-      "AWSEvents.ListTargetsByRule"))
-  if valid_617771 != nil:
-    section.add "X-Amz-Target", valid_617771
-  var valid_617772 = header.getOrDefault("X-Amz-Credential")
-  valid_617772 = validateParameter(valid_617772, JString, required = false,
-                                 default = nil)
-  if valid_617772 != nil:
-    section.add "X-Amz-Credential", valid_617772
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617774: Call_ListTargetsByRule_617762; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Lists the targets assigned to the specified rule.
-  ## 
-  let valid = call_617774.validator(path, query, header, formData, body, _)
-  let scheme = call_617774.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617774.url(scheme.get, call_617774.host, call_617774.base,
-                         call_617774.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617774, url, valid, _)
-
-proc call*(call_617775: Call_ListTargetsByRule_617762; body: JsonNode): Recallable =
-  ## listTargetsByRule
-  ## Lists the targets assigned to the specified rule.
-  ##   body: JObject (required)
-  var body_617776 = newJObject()
-  if body != nil:
-    body_617776 = body
-  result = call_617775.call(nil, nil, nil, nil, body_617776)
-
-var listTargetsByRule* = Call_ListTargetsByRule_617762(name: "listTargetsByRule",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.ListTargetsByRule",
-    validator: validate_ListTargetsByRule_617763, base: "/",
-    url: url_ListTargetsByRule_617764, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_PutEvents_617777 = ref object of OpenApiRestCall_616866
-proc url_PutEvents_617779(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_PutEvents_617778(path: JsonNode; query: JsonNode; header: JsonNode;
-                              formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## Sends custom events to Amazon EventBridge so that they can be matched to rules.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617780 = header.getOrDefault("X-Amz-Date")
-  valid_617780 = validateParameter(valid_617780, JString, required = false,
-                                 default = nil)
-  if valid_617780 != nil:
-    section.add "X-Amz-Date", valid_617780
-  var valid_617781 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617781 = validateParameter(valid_617781, JString, required = false,
-                                 default = nil)
-  if valid_617781 != nil:
-    section.add "X-Amz-Security-Token", valid_617781
-  var valid_617782 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617782 = validateParameter(valid_617782, JString, required = false,
-                                 default = nil)
-  if valid_617782 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617782
-  var valid_617783 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617783 = validateParameter(valid_617783, JString, required = false,
-                                 default = nil)
-  if valid_617783 != nil:
-    section.add "X-Amz-Algorithm", valid_617783
-  var valid_617784 = header.getOrDefault("X-Amz-Signature")
-  valid_617784 = validateParameter(valid_617784, JString, required = false,
-                                 default = nil)
-  if valid_617784 != nil:
-    section.add "X-Amz-Signature", valid_617784
-  var valid_617785 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617785 = validateParameter(valid_617785, JString, required = false,
-                                 default = nil)
-  if valid_617785 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617785
-  var valid_617786 = header.getOrDefault("X-Amz-Target")
-  valid_617786 = validateParameter(valid_617786, JString, required = true,
-                                 default = newJString("AWSEvents.PutEvents"))
-  if valid_617786 != nil:
-    section.add "X-Amz-Target", valid_617786
-  var valid_617787 = header.getOrDefault("X-Amz-Credential")
-  valid_617787 = validateParameter(valid_617787, JString, required = false,
-                                 default = nil)
-  if valid_617787 != nil:
-    section.add "X-Amz-Credential", valid_617787
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617789: Call_PutEvents_617777; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Sends custom events to Amazon EventBridge so that they can be matched to rules.
-  ## 
-  let valid = call_617789.validator(path, query, header, formData, body, _)
-  let scheme = call_617789.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617789.url(scheme.get, call_617789.host, call_617789.base,
-                         call_617789.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617789, url, valid, _)
-
-proc call*(call_617790: Call_PutEvents_617777; body: JsonNode): Recallable =
-  ## putEvents
-  ## Sends custom events to Amazon EventBridge so that they can be matched to rules.
-  ##   body: JObject (required)
-  var body_617791 = newJObject()
-  if body != nil:
-    body_617791 = body
-  result = call_617790.call(nil, nil, nil, nil, body_617791)
-
-var putEvents* = Call_PutEvents_617777(name: "putEvents", meth: HttpMethod.HttpPost,
-                                    host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.PutEvents",
-                                    validator: validate_PutEvents_617778,
-                                    base: "/", url: url_PutEvents_617779,
-                                    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_PutPartnerEvents_617792 = ref object of OpenApiRestCall_616866
-proc url_PutPartnerEvents_617794(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_PutPartnerEvents_617793(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode =
-  ## This is used by SaaS partners to write events to a customer's partner event bus. AWS customers do not use this operation.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617795 = header.getOrDefault("X-Amz-Date")
-  valid_617795 = validateParameter(valid_617795, JString, required = false,
-                                 default = nil)
-  if valid_617795 != nil:
-    section.add "X-Amz-Date", valid_617795
-  var valid_617796 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617796 = validateParameter(valid_617796, JString, required = false,
-                                 default = nil)
-  if valid_617796 != nil:
-    section.add "X-Amz-Security-Token", valid_617796
-  var valid_617797 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617797 = validateParameter(valid_617797, JString, required = false,
-                                 default = nil)
-  if valid_617797 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617797
-  var valid_617798 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617798 = validateParameter(valid_617798, JString, required = false,
-                                 default = nil)
-  if valid_617798 != nil:
-    section.add "X-Amz-Algorithm", valid_617798
-  var valid_617799 = header.getOrDefault("X-Amz-Signature")
-  valid_617799 = validateParameter(valid_617799, JString, required = false,
-                                 default = nil)
-  if valid_617799 != nil:
-    section.add "X-Amz-Signature", valid_617799
-  var valid_617800 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617800 = validateParameter(valid_617800, JString, required = false,
-                                 default = nil)
-  if valid_617800 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617800
-  var valid_617801 = header.getOrDefault("X-Amz-Target")
-  valid_617801 = validateParameter(valid_617801, JString, required = true, default = newJString(
-      "AWSEvents.PutPartnerEvents"))
-  if valid_617801 != nil:
-    section.add "X-Amz-Target", valid_617801
-  var valid_617802 = header.getOrDefault("X-Amz-Credential")
-  valid_617802 = validateParameter(valid_617802, JString, required = false,
-                                 default = nil)
-  if valid_617802 != nil:
-    section.add "X-Amz-Credential", valid_617802
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617804: Call_PutPartnerEvents_617792; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## This is used by SaaS partners to write events to a customer's partner event bus. AWS customers do not use this operation.
-  ## 
-  let valid = call_617804.validator(path, query, header, formData, body, _)
-  let scheme = call_617804.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617804.url(scheme.get, call_617804.host, call_617804.base,
-                         call_617804.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617804, url, valid, _)
-
-proc call*(call_617805: Call_PutPartnerEvents_617792; body: JsonNode): Recallable =
-  ## putPartnerEvents
-  ## This is used by SaaS partners to write events to a customer's partner event bus. AWS customers do not use this operation.
-  ##   body: JObject (required)
-  var body_617806 = newJObject()
-  if body != nil:
-    body_617806 = body
-  result = call_617805.call(nil, nil, nil, nil, body_617806)
-
-var putPartnerEvents* = Call_PutPartnerEvents_617792(name: "putPartnerEvents",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.PutPartnerEvents",
-    validator: validate_PutPartnerEvents_617793, base: "/",
-    url: url_PutPartnerEvents_617794, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_PutPermission_617807 = ref object of OpenApiRestCall_616866
-proc url_PutPermission_617809(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_PutPermission_617808(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Running <code>PutPermission</code> permits the specified AWS account or AWS organization to put events to the specified <i>event bus</i>. CloudWatch Events rules in your account are triggered by these events arriving to an event bus in your account. </p> <p>For another account to send events to your account, that external account must have an EventBridge rule with your account's event bus as a target.</p> <p>To enable multiple AWS accounts to put events to your event bus, run <code>PutPermission</code> once for each of these accounts. Or, if all the accounts are members of the same AWS organization, you can run <code>PutPermission</code> once specifying <code>Principal</code> as "*" and specifying the AWS organization ID in <code>Condition</code>, to grant permissions to all accounts in that organization.</p> <p>If you grant permissions using an organization, then accounts in that organization must specify a <code>RoleArn</code> with proper permissions when they use <code>PutTarget</code> to add your account's event bus as a target. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>The permission policy on the default event bus cannot exceed 10 KB in size.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617810 = header.getOrDefault("X-Amz-Date")
-  valid_617810 = validateParameter(valid_617810, JString, required = false,
-                                 default = nil)
-  if valid_617810 != nil:
-    section.add "X-Amz-Date", valid_617810
-  var valid_617811 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617811 = validateParameter(valid_617811, JString, required = false,
-                                 default = nil)
-  if valid_617811 != nil:
-    section.add "X-Amz-Security-Token", valid_617811
-  var valid_617812 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617812 = validateParameter(valid_617812, JString, required = false,
-                                 default = nil)
-  if valid_617812 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617812
-  var valid_617813 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617813 = validateParameter(valid_617813, JString, required = false,
-                                 default = nil)
-  if valid_617813 != nil:
-    section.add "X-Amz-Algorithm", valid_617813
-  var valid_617814 = header.getOrDefault("X-Amz-Signature")
-  valid_617814 = validateParameter(valid_617814, JString, required = false,
-                                 default = nil)
-  if valid_617814 != nil:
-    section.add "X-Amz-Signature", valid_617814
-  var valid_617815 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617815 = validateParameter(valid_617815, JString, required = false,
-                                 default = nil)
-  if valid_617815 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617815
-  var valid_617816 = header.getOrDefault("X-Amz-Target")
-  valid_617816 = validateParameter(valid_617816, JString, required = true, default = newJString(
-      "AWSEvents.PutPermission"))
-  if valid_617816 != nil:
-    section.add "X-Amz-Target", valid_617816
-  var valid_617817 = header.getOrDefault("X-Amz-Credential")
-  valid_617817 = validateParameter(valid_617817, JString, required = false,
-                                 default = nil)
-  if valid_617817 != nil:
-    section.add "X-Amz-Credential", valid_617817
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617819: Call_PutPermission_617807; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Running <code>PutPermission</code> permits the specified AWS account or AWS organization to put events to the specified <i>event bus</i>. CloudWatch Events rules in your account are triggered by these events arriving to an event bus in your account. </p> <p>For another account to send events to your account, that external account must have an EventBridge rule with your account's event bus as a target.</p> <p>To enable multiple AWS accounts to put events to your event bus, run <code>PutPermission</code> once for each of these accounts. Or, if all the accounts are members of the same AWS organization, you can run <code>PutPermission</code> once specifying <code>Principal</code> as "*" and specifying the AWS organization ID in <code>Condition</code>, to grant permissions to all accounts in that organization.</p> <p>If you grant permissions using an organization, then accounts in that organization must specify a <code>RoleArn</code> with proper permissions when they use <code>PutTarget</code> to add your account's event bus as a target. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>The permission policy on the default event bus cannot exceed 10 KB in size.</p>
-  ## 
-  let valid = call_617819.validator(path, query, header, formData, body, _)
-  let scheme = call_617819.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617819.url(scheme.get, call_617819.host, call_617819.base,
-                         call_617819.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617819, url, valid, _)
-
-proc call*(call_617820: Call_PutPermission_617807; body: JsonNode): Recallable =
-  ## putPermission
-  ## <p>Running <code>PutPermission</code> permits the specified AWS account or AWS organization to put events to the specified <i>event bus</i>. CloudWatch Events rules in your account are triggered by these events arriving to an event bus in your account. </p> <p>For another account to send events to your account, that external account must have an EventBridge rule with your account's event bus as a target.</p> <p>To enable multiple AWS accounts to put events to your event bus, run <code>PutPermission</code> once for each of these accounts. Or, if all the accounts are members of the same AWS organization, you can run <code>PutPermission</code> once specifying <code>Principal</code> as "*" and specifying the AWS organization ID in <code>Condition</code>, to grant permissions to all accounts in that organization.</p> <p>If you grant permissions using an organization, then accounts in that organization must specify a <code>RoleArn</code> with proper permissions when they use <code>PutTarget</code> to add your account's event bus as a target. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>The permission policy on the default event bus cannot exceed 10 KB in size.</p>
-  ##   body: JObject (required)
-  var body_617821 = newJObject()
-  if body != nil:
-    body_617821 = body
-  result = call_617820.call(nil, nil, nil, nil, body_617821)
-
-var putPermission* = Call_PutPermission_617807(name: "putPermission",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.PutPermission",
-    validator: validate_PutPermission_617808, base: "/", url: url_PutPermission_617809,
+    validator: validate_ListRuleNamesByTarget_21626270, base: "/",
+    makeUrl: url_ListRuleNamesByTarget_21626271,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutRule_617822 = ref object of OpenApiRestCall_616866
-proc url_PutRule_617824(protocol: Scheme; host: string; base: string; route: string;
-                       path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_PutRule_617823(path: JsonNode; query: JsonNode; header: JsonNode;
-                            formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Creates or updates the specified rule. Rules are enabled by default, or based on value of the state. You can disable a rule using <a>DisableRule</a>.</p> <p>A single rule watches for events from a single event bus. Events generated by AWS services go to your account's default event bus. Events generated by SaaS partner services or applications go to the matching partner event bus. If you have custom applications or services, you can specify whether their events go to your default event bus or a custom event bus that you have created. For more information, see <a>CreateEventBus</a>.</p> <p>If you are updating an existing rule, the rule is replaced with what you specify in this <code>PutRule</code> command. If you omit arguments in <code>PutRule</code>, the old values for those arguments are not kept. Instead, they are replaced with null values.</p> <p>When you create or update a rule, incoming events might not immediately start matching to new or updated rules. Allow a short period of time for changes to take effect.</p> <p>A rule must contain at least an EventPattern or ScheduleExpression. Rules with EventPatterns are triggered when a matching event is observed. Rules with ScheduleExpressions self-trigger based on the given schedule. A rule can have both an EventPattern and a ScheduleExpression, in which case the rule triggers on matching events as well as on a schedule.</p> <p>When you initially create a rule, you can optionally assign one or more tags to the rule. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only rules with certain tag values. To use the <code>PutRule</code> operation and assign tags, you must have both the <code>events:PutRule</code> and <code>events:TagResource</code> permissions.</p> <p>If you are updating an existing rule, any tags you specify in the <code>PutRule</code> operation are ignored. To update the tags of an existing rule, use <a>TagResource</a> and <a>UntagResource</a>.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p> <p>In EventBridge, it is possible to create rules that lead to infinite loops, where a rule is fired repeatedly. For example, a rule might detect that ACLs have changed on an S3 bucket, and trigger software to change them to the desired state. If the rule is not written carefully, the subsequent change to the ACLs fires the rule again, creating an infinite loop.</p> <p>To prevent this, write the rules so that the triggered actions do not re-fire the same rule. For example, your rule could fire only if ACLs are found to be in a bad state, instead of after any change. </p> <p>An infinite loop can quickly cause higher than expected charges. We recommend that you use budgeting, which alerts you when charges exceed your specified limit. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing Your Costs with Budgets</a>.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617825 = header.getOrDefault("X-Amz-Date")
-  valid_617825 = validateParameter(valid_617825, JString, required = false,
-                                 default = nil)
-  if valid_617825 != nil:
-    section.add "X-Amz-Date", valid_617825
-  var valid_617826 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617826 = validateParameter(valid_617826, JString, required = false,
-                                 default = nil)
-  if valid_617826 != nil:
-    section.add "X-Amz-Security-Token", valid_617826
-  var valid_617827 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617827 = validateParameter(valid_617827, JString, required = false,
-                                 default = nil)
-  if valid_617827 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617827
-  var valid_617828 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617828 = validateParameter(valid_617828, JString, required = false,
-                                 default = nil)
-  if valid_617828 != nil:
-    section.add "X-Amz-Algorithm", valid_617828
-  var valid_617829 = header.getOrDefault("X-Amz-Signature")
-  valid_617829 = validateParameter(valid_617829, JString, required = false,
-                                 default = nil)
-  if valid_617829 != nil:
-    section.add "X-Amz-Signature", valid_617829
-  var valid_617830 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617830 = validateParameter(valid_617830, JString, required = false,
-                                 default = nil)
-  if valid_617830 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617830
-  var valid_617831 = header.getOrDefault("X-Amz-Target")
-  valid_617831 = validateParameter(valid_617831, JString, required = true,
-                                 default = newJString("AWSEvents.PutRule"))
-  if valid_617831 != nil:
-    section.add "X-Amz-Target", valid_617831
-  var valid_617832 = header.getOrDefault("X-Amz-Credential")
-  valid_617832 = validateParameter(valid_617832, JString, required = false,
-                                 default = nil)
-  if valid_617832 != nil:
-    section.add "X-Amz-Credential", valid_617832
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617834: Call_PutRule_617822; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Creates or updates the specified rule. Rules are enabled by default, or based on value of the state. You can disable a rule using <a>DisableRule</a>.</p> <p>A single rule watches for events from a single event bus. Events generated by AWS services go to your account's default event bus. Events generated by SaaS partner services or applications go to the matching partner event bus. If you have custom applications or services, you can specify whether their events go to your default event bus or a custom event bus that you have created. For more information, see <a>CreateEventBus</a>.</p> <p>If you are updating an existing rule, the rule is replaced with what you specify in this <code>PutRule</code> command. If you omit arguments in <code>PutRule</code>, the old values for those arguments are not kept. Instead, they are replaced with null values.</p> <p>When you create or update a rule, incoming events might not immediately start matching to new or updated rules. Allow a short period of time for changes to take effect.</p> <p>A rule must contain at least an EventPattern or ScheduleExpression. Rules with EventPatterns are triggered when a matching event is observed. Rules with ScheduleExpressions self-trigger based on the given schedule. A rule can have both an EventPattern and a ScheduleExpression, in which case the rule triggers on matching events as well as on a schedule.</p> <p>When you initially create a rule, you can optionally assign one or more tags to the rule. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only rules with certain tag values. To use the <code>PutRule</code> operation and assign tags, you must have both the <code>events:PutRule</code> and <code>events:TagResource</code> permissions.</p> <p>If you are updating an existing rule, any tags you specify in the <code>PutRule</code> operation are ignored. To update the tags of an existing rule, use <a>TagResource</a> and <a>UntagResource</a>.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p> <p>In EventBridge, it is possible to create rules that lead to infinite loops, where a rule is fired repeatedly. For example, a rule might detect that ACLs have changed on an S3 bucket, and trigger software to change them to the desired state. If the rule is not written carefully, the subsequent change to the ACLs fires the rule again, creating an infinite loop.</p> <p>To prevent this, write the rules so that the triggered actions do not re-fire the same rule. For example, your rule could fire only if ACLs are found to be in a bad state, instead of after any change. </p> <p>An infinite loop can quickly cause higher than expected charges. We recommend that you use budgeting, which alerts you when charges exceed your specified limit. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing Your Costs with Budgets</a>.</p>
-  ## 
-  let valid = call_617834.validator(path, query, header, formData, body, _)
-  let scheme = call_617834.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617834.url(scheme.get, call_617834.host, call_617834.base,
-                         call_617834.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617834, url, valid, _)
-
-proc call*(call_617835: Call_PutRule_617822; body: JsonNode): Recallable =
-  ## putRule
-  ## <p>Creates or updates the specified rule. Rules are enabled by default, or based on value of the state. You can disable a rule using <a>DisableRule</a>.</p> <p>A single rule watches for events from a single event bus. Events generated by AWS services go to your account's default event bus. Events generated by SaaS partner services or applications go to the matching partner event bus. If you have custom applications or services, you can specify whether their events go to your default event bus or a custom event bus that you have created. For more information, see <a>CreateEventBus</a>.</p> <p>If you are updating an existing rule, the rule is replaced with what you specify in this <code>PutRule</code> command. If you omit arguments in <code>PutRule</code>, the old values for those arguments are not kept. Instead, they are replaced with null values.</p> <p>When you create or update a rule, incoming events might not immediately start matching to new or updated rules. Allow a short period of time for changes to take effect.</p> <p>A rule must contain at least an EventPattern or ScheduleExpression. Rules with EventPatterns are triggered when a matching event is observed. Rules with ScheduleExpressions self-trigger based on the given schedule. A rule can have both an EventPattern and a ScheduleExpression, in which case the rule triggers on matching events as well as on a schedule.</p> <p>When you initially create a rule, you can optionally assign one or more tags to the rule. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only rules with certain tag values. To use the <code>PutRule</code> operation and assign tags, you must have both the <code>events:PutRule</code> and <code>events:TagResource</code> permissions.</p> <p>If you are updating an existing rule, any tags you specify in the <code>PutRule</code> operation are ignored. To update the tags of an existing rule, use <a>TagResource</a> and <a>UntagResource</a>.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p> <p>In EventBridge, it is possible to create rules that lead to infinite loops, where a rule is fired repeatedly. For example, a rule might detect that ACLs have changed on an S3 bucket, and trigger software to change them to the desired state. If the rule is not written carefully, the subsequent change to the ACLs fires the rule again, creating an infinite loop.</p> <p>To prevent this, write the rules so that the triggered actions do not re-fire the same rule. For example, your rule could fire only if ACLs are found to be in a bad state, instead of after any change. </p> <p>An infinite loop can quickly cause higher than expected charges. We recommend that you use budgeting, which alerts you when charges exceed your specified limit. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing Your Costs with Budgets</a>.</p>
-  ##   body: JObject (required)
-  var body_617836 = newJObject()
-  if body != nil:
-    body_617836 = body
-  result = call_617835.call(nil, nil, nil, nil, body_617836)
-
-var putRule* = Call_PutRule_617822(name: "putRule", meth: HttpMethod.HttpPost,
-                                host: "events.amazonaws.com",
-                                route: "/#X-Amz-Target=AWSEvents.PutRule",
-                                validator: validate_PutRule_617823, base: "/",
-                                url: url_PutRule_617824,
-                                schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_PutTargets_617837 = ref object of OpenApiRestCall_616866
-proc url_PutTargets_617839(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_PutTargets_617838(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Adds the specified targets to the specified rule, or updates the targets if they are already associated with the rule.</p> <p>Targets are the resources that are invoked when a rule is triggered.</p> <p>You can configure the following as targets for Events:</p> <ul> <li> <p>EC2 instances</p> </li> <li> <p>SSM Run Command</p> </li> <li> <p>SSM Automation</p> </li> <li> <p>AWS Lambda functions</p> </li> <li> <p>Data streams in Amazon Kinesis Data Streams</p> </li> <li> <p>Data delivery streams in Amazon Kinesis Data Firehose</p> </li> <li> <p>Amazon ECS tasks</p> </li> <li> <p>AWS Step Functions state machines</p> </li> <li> <p>AWS Batch jobs</p> </li> <li> <p>AWS CodeBuild projects</p> </li> <li> <p>Pipelines in AWS CodePipeline</p> </li> <li> <p>Amazon Inspector assessment templates</p> </li> <li> <p>Amazon SNS topics</p> </li> <li> <p>Amazon SQS queues, including FIFO queues</p> </li> <li> <p>The default event bus of another AWS account</p> </li> </ul> <p>Creating rules with built-in targets is supported only in the AWS Management Console. The built-in targets are <code>EC2 CreateSnapshot API call</code>, <code>EC2 RebootInstances API call</code>, <code>EC2 StopInstances API call</code>, and <code>EC2 TerminateInstances API call</code>. </p> <p>For some target types, <code>PutTargets</code> provides target-specific parameters. If the target is a Kinesis data stream, you can optionally specify which shard the event goes to by using the <code>KinesisParameters</code> argument. To invoke a command on multiple EC2 instances with one rule, you can use the <code>RunCommandParameters</code> field.</p> <p>To be able to make API calls against the resources that you own, Amazon CloudWatch Events needs the appropriate permissions. For AWS Lambda and Amazon SNS resources, EventBridge relies on resource-based policies. For EC2 instances, Kinesis data streams, and AWS Step Functions state machines, EventBridge relies on IAM roles that you specify in the <code>RoleARN</code> argument in <code>PutTargets</code>. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/auth-and-access-control-eventbridge.html">Authentication and Access Control</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>If another AWS account is in the same region and has granted you permission (using <code>PutPermission</code>), you can send events to that account. Set that account's event bus as a target of the rules in your account. To send the matched events to the other account, specify that account's event bus as the <code>Arn</code> value when you run <code>PutTargets</code>. If your account sends events to another account, your account is charged for each sent event. Each event sent to another account is charged as a custom event. The account receiving the event is not charged. For more information, see <a href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> <note> <p> <code>Input</code>, <code>InputPath</code>, and <code>InputTransformer</code> are not available with <code>PutTarget</code> if the target is an event bus of a different AWS account.</p> </note> <p>If you are setting the event bus of another account as the target, and that account granted permission to your account through an organization instead of directly by the account ID, then you must specify a <code>RoleArn</code> with proper permissions in the <code>Target</code> structure. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>For more information about enabling cross-account events, see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and <b>InputTransformer</b> are mutually exclusive and optional parameters of a target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If none of the following arguments are specified for a target, then the entire event is passed to the target in JSON format (unless the target is Amazon EC2 Run Command or Amazon ECS task, in which case nothing from the event is passed to the target).</p> </li> <li> <p>If <b>Input</b> is specified in the form of valid JSON, then the matched event is overridden with this constant.</p> </li> <li> <p>If <b>InputPath</b> is specified in the form of JSONPath (for example, <code>$.detail</code>), then only the part of the event specified in the path is passed to the target (for example, only the detail part of the event is passed).</p> </li> <li> <p>If <b>InputTransformer</b> is specified, then one or more specified JSONPaths are extracted from the event and used as values in a template that you specify as the input to the target.</p> </li> </ul> <p>When you specify <code>InputPath</code> or <code>InputTransformer</code>, you must use JSON dot notation, not bracket notation.</p> <p>When you add targets to a rule and the associated rule triggers soon after, new or updated targets might not be immediately invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617840 = header.getOrDefault("X-Amz-Date")
-  valid_617840 = validateParameter(valid_617840, JString, required = false,
-                                 default = nil)
-  if valid_617840 != nil:
-    section.add "X-Amz-Date", valid_617840
-  var valid_617841 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617841 = validateParameter(valid_617841, JString, required = false,
-                                 default = nil)
-  if valid_617841 != nil:
-    section.add "X-Amz-Security-Token", valid_617841
-  var valid_617842 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617842 = validateParameter(valid_617842, JString, required = false,
-                                 default = nil)
-  if valid_617842 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617842
-  var valid_617843 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617843 = validateParameter(valid_617843, JString, required = false,
-                                 default = nil)
-  if valid_617843 != nil:
-    section.add "X-Amz-Algorithm", valid_617843
-  var valid_617844 = header.getOrDefault("X-Amz-Signature")
-  valid_617844 = validateParameter(valid_617844, JString, required = false,
-                                 default = nil)
-  if valid_617844 != nil:
-    section.add "X-Amz-Signature", valid_617844
-  var valid_617845 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617845 = validateParameter(valid_617845, JString, required = false,
-                                 default = nil)
-  if valid_617845 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617845
-  var valid_617846 = header.getOrDefault("X-Amz-Target")
-  valid_617846 = validateParameter(valid_617846, JString, required = true,
-                                 default = newJString("AWSEvents.PutTargets"))
-  if valid_617846 != nil:
-    section.add "X-Amz-Target", valid_617846
-  var valid_617847 = header.getOrDefault("X-Amz-Credential")
-  valid_617847 = validateParameter(valid_617847, JString, required = false,
-                                 default = nil)
-  if valid_617847 != nil:
-    section.add "X-Amz-Credential", valid_617847
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617849: Call_PutTargets_617837; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Adds the specified targets to the specified rule, or updates the targets if they are already associated with the rule.</p> <p>Targets are the resources that are invoked when a rule is triggered.</p> <p>You can configure the following as targets for Events:</p> <ul> <li> <p>EC2 instances</p> </li> <li> <p>SSM Run Command</p> </li> <li> <p>SSM Automation</p> </li> <li> <p>AWS Lambda functions</p> </li> <li> <p>Data streams in Amazon Kinesis Data Streams</p> </li> <li> <p>Data delivery streams in Amazon Kinesis Data Firehose</p> </li> <li> <p>Amazon ECS tasks</p> </li> <li> <p>AWS Step Functions state machines</p> </li> <li> <p>AWS Batch jobs</p> </li> <li> <p>AWS CodeBuild projects</p> </li> <li> <p>Pipelines in AWS CodePipeline</p> </li> <li> <p>Amazon Inspector assessment templates</p> </li> <li> <p>Amazon SNS topics</p> </li> <li> <p>Amazon SQS queues, including FIFO queues</p> </li> <li> <p>The default event bus of another AWS account</p> </li> </ul> <p>Creating rules with built-in targets is supported only in the AWS Management Console. The built-in targets are <code>EC2 CreateSnapshot API call</code>, <code>EC2 RebootInstances API call</code>, <code>EC2 StopInstances API call</code>, and <code>EC2 TerminateInstances API call</code>. </p> <p>For some target types, <code>PutTargets</code> provides target-specific parameters. If the target is a Kinesis data stream, you can optionally specify which shard the event goes to by using the <code>KinesisParameters</code> argument. To invoke a command on multiple EC2 instances with one rule, you can use the <code>RunCommandParameters</code> field.</p> <p>To be able to make API calls against the resources that you own, Amazon CloudWatch Events needs the appropriate permissions. For AWS Lambda and Amazon SNS resources, EventBridge relies on resource-based policies. For EC2 instances, Kinesis data streams, and AWS Step Functions state machines, EventBridge relies on IAM roles that you specify in the <code>RoleARN</code> argument in <code>PutTargets</code>. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/auth-and-access-control-eventbridge.html">Authentication and Access Control</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>If another AWS account is in the same region and has granted you permission (using <code>PutPermission</code>), you can send events to that account. Set that account's event bus as a target of the rules in your account. To send the matched events to the other account, specify that account's event bus as the <code>Arn</code> value when you run <code>PutTargets</code>. If your account sends events to another account, your account is charged for each sent event. Each event sent to another account is charged as a custom event. The account receiving the event is not charged. For more information, see <a href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> <note> <p> <code>Input</code>, <code>InputPath</code>, and <code>InputTransformer</code> are not available with <code>PutTarget</code> if the target is an event bus of a different AWS account.</p> </note> <p>If you are setting the event bus of another account as the target, and that account granted permission to your account through an organization instead of directly by the account ID, then you must specify a <code>RoleArn</code> with proper permissions in the <code>Target</code> structure. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>For more information about enabling cross-account events, see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and <b>InputTransformer</b> are mutually exclusive and optional parameters of a target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If none of the following arguments are specified for a target, then the entire event is passed to the target in JSON format (unless the target is Amazon EC2 Run Command or Amazon ECS task, in which case nothing from the event is passed to the target).</p> </li> <li> <p>If <b>Input</b> is specified in the form of valid JSON, then the matched event is overridden with this constant.</p> </li> <li> <p>If <b>InputPath</b> is specified in the form of JSONPath (for example, <code>$.detail</code>), then only the part of the event specified in the path is passed to the target (for example, only the detail part of the event is passed).</p> </li> <li> <p>If <b>InputTransformer</b> is specified, then one or more specified JSONPaths are extracted from the event and used as values in a template that you specify as the input to the target.</p> </li> </ul> <p>When you specify <code>InputPath</code> or <code>InputTransformer</code>, you must use JSON dot notation, not bracket notation.</p> <p>When you add targets to a rule and the associated rule triggers soon after, new or updated targets might not be immediately invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
-  ## 
-  let valid = call_617849.validator(path, query, header, formData, body, _)
-  let scheme = call_617849.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617849.url(scheme.get, call_617849.host, call_617849.base,
-                         call_617849.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617849, url, valid, _)
-
-proc call*(call_617850: Call_PutTargets_617837; body: JsonNode): Recallable =
-  ## putTargets
-  ## <p>Adds the specified targets to the specified rule, or updates the targets if they are already associated with the rule.</p> <p>Targets are the resources that are invoked when a rule is triggered.</p> <p>You can configure the following as targets for Events:</p> <ul> <li> <p>EC2 instances</p> </li> <li> <p>SSM Run Command</p> </li> <li> <p>SSM Automation</p> </li> <li> <p>AWS Lambda functions</p> </li> <li> <p>Data streams in Amazon Kinesis Data Streams</p> </li> <li> <p>Data delivery streams in Amazon Kinesis Data Firehose</p> </li> <li> <p>Amazon ECS tasks</p> </li> <li> <p>AWS Step Functions state machines</p> </li> <li> <p>AWS Batch jobs</p> </li> <li> <p>AWS CodeBuild projects</p> </li> <li> <p>Pipelines in AWS CodePipeline</p> </li> <li> <p>Amazon Inspector assessment templates</p> </li> <li> <p>Amazon SNS topics</p> </li> <li> <p>Amazon SQS queues, including FIFO queues</p> </li> <li> <p>The default event bus of another AWS account</p> </li> </ul> <p>Creating rules with built-in targets is supported only in the AWS Management Console. The built-in targets are <code>EC2 CreateSnapshot API call</code>, <code>EC2 RebootInstances API call</code>, <code>EC2 StopInstances API call</code>, and <code>EC2 TerminateInstances API call</code>. </p> <p>For some target types, <code>PutTargets</code> provides target-specific parameters. If the target is a Kinesis data stream, you can optionally specify which shard the event goes to by using the <code>KinesisParameters</code> argument. To invoke a command on multiple EC2 instances with one rule, you can use the <code>RunCommandParameters</code> field.</p> <p>To be able to make API calls against the resources that you own, Amazon CloudWatch Events needs the appropriate permissions. For AWS Lambda and Amazon SNS resources, EventBridge relies on resource-based policies. For EC2 instances, Kinesis data streams, and AWS Step Functions state machines, EventBridge relies on IAM roles that you specify in the <code>RoleARN</code> argument in <code>PutTargets</code>. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/auth-and-access-control-eventbridge.html">Authentication and Access Control</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>If another AWS account is in the same region and has granted you permission (using <code>PutPermission</code>), you can send events to that account. Set that account's event bus as a target of the rules in your account. To send the matched events to the other account, specify that account's event bus as the <code>Arn</code> value when you run <code>PutTargets</code>. If your account sends events to another account, your account is charged for each sent event. Each event sent to another account is charged as a custom event. The account receiving the event is not charged. For more information, see <a href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> <note> <p> <code>Input</code>, <code>InputPath</code>, and <code>InputTransformer</code> are not available with <code>PutTarget</code> if the target is an event bus of a different AWS account.</p> </note> <p>If you are setting the event bus of another account as the target, and that account granted permission to your account through an organization instead of directly by the account ID, then you must specify a <code>RoleArn</code> with proper permissions in the <code>Target</code> structure. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>For more information about enabling cross-account events, see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and <b>InputTransformer</b> are mutually exclusive and optional parameters of a target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If none of the following arguments are specified for a target, then the entire event is passed to the target in JSON format (unless the target is Amazon EC2 Run Command or Amazon ECS task, in which case nothing from the event is passed to the target).</p> </li> <li> <p>If <b>Input</b> is specified in the form of valid JSON, then the matched event is overridden with this constant.</p> </li> <li> <p>If <b>InputPath</b> is specified in the form of JSONPath (for example, <code>$.detail</code>), then only the part of the event specified in the path is passed to the target (for example, only the detail part of the event is passed).</p> </li> <li> <p>If <b>InputTransformer</b> is specified, then one or more specified JSONPaths are extracted from the event and used as values in a template that you specify as the input to the target.</p> </li> </ul> <p>When you specify <code>InputPath</code> or <code>InputTransformer</code>, you must use JSON dot notation, not bracket notation.</p> <p>When you add targets to a rule and the associated rule triggers soon after, new or updated targets might not be immediately invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
-  ##   body: JObject (required)
-  var body_617851 = newJObject()
-  if body != nil:
-    body_617851 = body
-  result = call_617850.call(nil, nil, nil, nil, body_617851)
-
-var putTargets* = Call_PutTargets_617837(name: "putTargets",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.PutTargets",
-                                      validator: validate_PutTargets_617838,
-                                      base: "/", url: url_PutTargets_617839,
-                                      schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_RemovePermission_617852 = ref object of OpenApiRestCall_616866
-proc url_RemovePermission_617854(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_RemovePermission_617853(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode =
-  ## Revokes the permission of another AWS account to be able to put events to the specified event bus. Specify the account to revoke by the <code>StatementId</code> value that you associated with the account when you granted it permission with <code>PutPermission</code>. You can find the <code>StatementId</code> by using <a>DescribeEventBus</a>.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617855 = header.getOrDefault("X-Amz-Date")
-  valid_617855 = validateParameter(valid_617855, JString, required = false,
-                                 default = nil)
-  if valid_617855 != nil:
-    section.add "X-Amz-Date", valid_617855
-  var valid_617856 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617856 = validateParameter(valid_617856, JString, required = false,
-                                 default = nil)
-  if valid_617856 != nil:
-    section.add "X-Amz-Security-Token", valid_617856
-  var valid_617857 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617857 = validateParameter(valid_617857, JString, required = false,
-                                 default = nil)
-  if valid_617857 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617857
-  var valid_617858 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617858 = validateParameter(valid_617858, JString, required = false,
-                                 default = nil)
-  if valid_617858 != nil:
-    section.add "X-Amz-Algorithm", valid_617858
-  var valid_617859 = header.getOrDefault("X-Amz-Signature")
-  valid_617859 = validateParameter(valid_617859, JString, required = false,
-                                 default = nil)
-  if valid_617859 != nil:
-    section.add "X-Amz-Signature", valid_617859
-  var valid_617860 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617860 = validateParameter(valid_617860, JString, required = false,
-                                 default = nil)
-  if valid_617860 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617860
-  var valid_617861 = header.getOrDefault("X-Amz-Target")
-  valid_617861 = validateParameter(valid_617861, JString, required = true, default = newJString(
-      "AWSEvents.RemovePermission"))
-  if valid_617861 != nil:
-    section.add "X-Amz-Target", valid_617861
-  var valid_617862 = header.getOrDefault("X-Amz-Credential")
-  valid_617862 = validateParameter(valid_617862, JString, required = false,
-                                 default = nil)
-  if valid_617862 != nil:
-    section.add "X-Amz-Credential", valid_617862
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617864: Call_RemovePermission_617852; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Revokes the permission of another AWS account to be able to put events to the specified event bus. Specify the account to revoke by the <code>StatementId</code> value that you associated with the account when you granted it permission with <code>PutPermission</code>. You can find the <code>StatementId</code> by using <a>DescribeEventBus</a>.
-  ## 
-  let valid = call_617864.validator(path, query, header, formData, body, _)
-  let scheme = call_617864.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617864.url(scheme.get, call_617864.host, call_617864.base,
-                         call_617864.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617864, url, valid, _)
-
-proc call*(call_617865: Call_RemovePermission_617852; body: JsonNode): Recallable =
-  ## removePermission
-  ## Revokes the permission of another AWS account to be able to put events to the specified event bus. Specify the account to revoke by the <code>StatementId</code> value that you associated with the account when you granted it permission with <code>PutPermission</code>. You can find the <code>StatementId</code> by using <a>DescribeEventBus</a>.
-  ##   body: JObject (required)
-  var body_617866 = newJObject()
-  if body != nil:
-    body_617866 = body
-  result = call_617865.call(nil, nil, nil, nil, body_617866)
-
-var removePermission* = Call_RemovePermission_617852(name: "removePermission",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.RemovePermission",
-    validator: validate_RemovePermission_617853, base: "/",
-    url: url_RemovePermission_617854, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_RemoveTargets_617867 = ref object of OpenApiRestCall_616866
-proc url_RemoveTargets_617869(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_RemoveTargets_617868(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Removes the specified targets from the specified rule. When the rule is triggered, those targets are no longer be invoked.</p> <p>When you remove a target, when the associated rule triggers, removed targets might continue to be invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_617870 = header.getOrDefault("X-Amz-Date")
-  valid_617870 = validateParameter(valid_617870, JString, required = false,
-                                 default = nil)
-  if valid_617870 != nil:
-    section.add "X-Amz-Date", valid_617870
-  var valid_617871 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617871 = validateParameter(valid_617871, JString, required = false,
-                                 default = nil)
-  if valid_617871 != nil:
-    section.add "X-Amz-Security-Token", valid_617871
-  var valid_617872 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617872 = validateParameter(valid_617872, JString, required = false,
-                                 default = nil)
-  if valid_617872 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617872
-  var valid_617873 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617873 = validateParameter(valid_617873, JString, required = false,
-                                 default = nil)
-  if valid_617873 != nil:
-    section.add "X-Amz-Algorithm", valid_617873
-  var valid_617874 = header.getOrDefault("X-Amz-Signature")
-  valid_617874 = validateParameter(valid_617874, JString, required = false,
-                                 default = nil)
-  if valid_617874 != nil:
-    section.add "X-Amz-Signature", valid_617874
-  var valid_617875 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617875 = validateParameter(valid_617875, JString, required = false,
-                                 default = nil)
-  if valid_617875 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617875
-  var valid_617876 = header.getOrDefault("X-Amz-Target")
-  valid_617876 = validateParameter(valid_617876, JString, required = true, default = newJString(
-      "AWSEvents.RemoveTargets"))
-  if valid_617876 != nil:
-    section.add "X-Amz-Target", valid_617876
-  var valid_617877 = header.getOrDefault("X-Amz-Credential")
-  valid_617877 = validateParameter(valid_617877, JString, required = false,
-                                 default = nil)
-  if valid_617877 != nil:
-    section.add "X-Amz-Credential", valid_617877
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_617879: Call_RemoveTargets_617867; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Removes the specified targets from the specified rule. When the rule is triggered, those targets are no longer be invoked.</p> <p>When you remove a target, when the associated rule triggers, removed targets might continue to be invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
-  ## 
-  let valid = call_617879.validator(path, query, header, formData, body, _)
-  let scheme = call_617879.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617879.url(scheme.get, call_617879.host, call_617879.base,
-                         call_617879.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617879, url, valid, _)
-
-proc call*(call_617880: Call_RemoveTargets_617867; body: JsonNode): Recallable =
-  ## removeTargets
-  ## <p>Removes the specified targets from the specified rule. When the rule is triggered, those targets are no longer be invoked.</p> <p>When you remove a target, when the associated rule triggers, removed targets might continue to be invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
-  ##   body: JObject (required)
-  var body_617881 = newJObject()
-  if body != nil:
-    body_617881 = body
-  result = call_617880.call(nil, nil, nil, nil, body_617881)
-
-var removeTargets* = Call_RemoveTargets_617867(name: "removeTargets",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.RemoveTargets",
-    validator: validate_RemoveTargets_617868, base: "/", url: url_RemoveTargets_617869,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_TagResource_617882 = ref object of OpenApiRestCall_616866
-proc url_TagResource_617884(protocol: Scheme; host: string; base: string;
+  Call_ListRules_21626284 = ref object of OpenApiRestCall_21625435
+proc url_ListRules_21626286(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3267,9 +2200,10 @@ proc url_TagResource_617884(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TagResource_617883(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Assigns one or more tags (key-value pairs) to the specified EventBridge resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions by granting a user permission to access or change only resources with certain tag values. In EventBridge, rules and event buses can be tagged.</p> <p>Tags don't have any semantic meaning to AWS and are interpreted strictly as strings of characters.</p> <p>You can use the <code>TagResource</code> action with a resource that already has tags. If you specify a new tag key, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource.</p>
+proc validate_ListRules_21626285(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Lists your Amazon EventBridge rules. You can either list all the rules or you can provide a prefix to match to the rule names.</p> <p>ListRules does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3280,96 +2214,97 @@ proc validate_TagResource_617883(path: JsonNode; query: JsonNode; header: JsonNo
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617885 = header.getOrDefault("X-Amz-Date")
-  valid_617885 = validateParameter(valid_617885, JString, required = false,
-                                 default = nil)
-  if valid_617885 != nil:
-    section.add "X-Amz-Date", valid_617885
-  var valid_617886 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617886 = validateParameter(valid_617886, JString, required = false,
-                                 default = nil)
-  if valid_617886 != nil:
-    section.add "X-Amz-Security-Token", valid_617886
-  var valid_617887 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617887 = validateParameter(valid_617887, JString, required = false,
-                                 default = nil)
-  if valid_617887 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617887
-  var valid_617888 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617888 = validateParameter(valid_617888, JString, required = false,
-                                 default = nil)
-  if valid_617888 != nil:
-    section.add "X-Amz-Algorithm", valid_617888
-  var valid_617889 = header.getOrDefault("X-Amz-Signature")
-  valid_617889 = validateParameter(valid_617889, JString, required = false,
-                                 default = nil)
-  if valid_617889 != nil:
-    section.add "X-Amz-Signature", valid_617889
-  var valid_617890 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617890 = validateParameter(valid_617890, JString, required = false,
-                                 default = nil)
-  if valid_617890 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617890
-  var valid_617891 = header.getOrDefault("X-Amz-Target")
-  valid_617891 = validateParameter(valid_617891, JString, required = true,
-                                 default = newJString("AWSEvents.TagResource"))
-  if valid_617891 != nil:
-    section.add "X-Amz-Target", valid_617891
-  var valid_617892 = header.getOrDefault("X-Amz-Credential")
-  valid_617892 = validateParameter(valid_617892, JString, required = false,
-                                 default = nil)
-  if valid_617892 != nil:
-    section.add "X-Amz-Credential", valid_617892
+  var valid_21626287 = header.getOrDefault("X-Amz-Date")
+  valid_21626287 = validateParameter(valid_21626287, JString, required = false,
+                                   default = nil)
+  if valid_21626287 != nil:
+    section.add "X-Amz-Date", valid_21626287
+  var valid_21626288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626288 = validateParameter(valid_21626288, JString, required = false,
+                                   default = nil)
+  if valid_21626288 != nil:
+    section.add "X-Amz-Security-Token", valid_21626288
+  var valid_21626289 = header.getOrDefault("X-Amz-Target")
+  valid_21626289 = validateParameter(valid_21626289, JString, required = true,
+                                   default = newJString("AWSEvents.ListRules"))
+  if valid_21626289 != nil:
+    section.add "X-Amz-Target", valid_21626289
+  var valid_21626290 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626290 = validateParameter(valid_21626290, JString, required = false,
+                                   default = nil)
+  if valid_21626290 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626290
+  var valid_21626291 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626291 = validateParameter(valid_21626291, JString, required = false,
+                                   default = nil)
+  if valid_21626291 != nil:
+    section.add "X-Amz-Algorithm", valid_21626291
+  var valid_21626292 = header.getOrDefault("X-Amz-Signature")
+  valid_21626292 = validateParameter(valid_21626292, JString, required = false,
+                                   default = nil)
+  if valid_21626292 != nil:
+    section.add "X-Amz-Signature", valid_21626292
+  var valid_21626293 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626293 = validateParameter(valid_21626293, JString, required = false,
+                                   default = nil)
+  if valid_21626293 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626293
+  var valid_21626294 = header.getOrDefault("X-Amz-Credential")
+  valid_21626294 = validateParameter(valid_21626294, JString, required = false,
+                                   default = nil)
+  if valid_21626294 != nil:
+    section.add "X-Amz-Credential", valid_21626294
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617894: Call_TagResource_617882; path: JsonNode = nil;
+proc call*(call_21626296: Call_ListRules_21626284; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Assigns one or more tags (key-value pairs) to the specified EventBridge resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions by granting a user permission to access or change only resources with certain tag values. In EventBridge, rules and event buses can be tagged.</p> <p>Tags don't have any semantic meaning to AWS and are interpreted strictly as strings of characters.</p> <p>You can use the <code>TagResource</code> action with a resource that already has tags. If you specify a new tag key, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource.</p>
+  ## <p>Lists your Amazon EventBridge rules. You can either list all the rules or you can provide a prefix to match to the rule names.</p> <p>ListRules does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
   ## 
-  let valid = call_617894.validator(path, query, header, formData, body, _)
-  let scheme = call_617894.pickScheme
+  let valid = call_21626296.validator(path, query, header, formData, body, _)
+  let scheme = call_21626296.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617894.url(scheme.get, call_617894.host, call_617894.base,
-                         call_617894.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617894, url, valid, _)
+  let uri = call_21626296.makeUrl(scheme.get, call_21626296.host, call_21626296.base,
+                               call_21626296.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626296, uri, valid, _)
 
-proc call*(call_617895: Call_TagResource_617882; body: JsonNode): Recallable =
-  ## tagResource
-  ## <p>Assigns one or more tags (key-value pairs) to the specified EventBridge resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions by granting a user permission to access or change only resources with certain tag values. In EventBridge, rules and event buses can be tagged.</p> <p>Tags don't have any semantic meaning to AWS and are interpreted strictly as strings of characters.</p> <p>You can use the <code>TagResource</code> action with a resource that already has tags. If you specify a new tag key, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource.</p>
+proc call*(call_21626297: Call_ListRules_21626284; body: JsonNode): Recallable =
+  ## listRules
+  ## <p>Lists your Amazon EventBridge rules. You can either list all the rules or you can provide a prefix to match to the rule names.</p> <p>ListRules does not list the targets of a rule. To see the targets associated with a rule, use <a>ListTargetsByRule</a>.</p>
   ##   body: JObject (required)
-  var body_617896 = newJObject()
+  var body_21626298 = newJObject()
   if body != nil:
-    body_617896 = body
-  result = call_617895.call(nil, nil, nil, nil, body_617896)
+    body_21626298 = body
+  result = call_21626297.call(nil, nil, nil, nil, body_21626298)
 
-var tagResource* = Call_TagResource_617882(name: "tagResource",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.TagResource",
-                                        validator: validate_TagResource_617883,
-                                        base: "/", url: url_TagResource_617884,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var listRules* = Call_ListRules_21626284(name: "listRules",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.ListRules",
+                                      validator: validate_ListRules_21626285,
+                                      base: "/", makeUrl: url_ListRules_21626286,
+                                      schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TestEventPattern_617897 = ref object of OpenApiRestCall_616866
-proc url_TestEventPattern_617899(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListTagsForResource_21626299 = ref object of OpenApiRestCall_21625435
+proc url_ListTagsForResource_21626301(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3378,10 +2313,10 @@ proc url_TestEventPattern_617899(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TestEventPattern_617898(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode =
-  ## <p>Tests whether the specified event pattern matches the provided event.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p>
+proc validate_ListTagsForResource_21626300(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Displays the tags associated with an EventBridge resource. In EventBridge, rules and event buses can be tagged.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3392,94 +2327,999 @@ proc validate_TestEventPattern_617898(path: JsonNode; query: JsonNode;
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617900 = header.getOrDefault("X-Amz-Date")
-  valid_617900 = validateParameter(valid_617900, JString, required = false,
-                                 default = nil)
-  if valid_617900 != nil:
-    section.add "X-Amz-Date", valid_617900
-  var valid_617901 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617901 = validateParameter(valid_617901, JString, required = false,
-                                 default = nil)
-  if valid_617901 != nil:
-    section.add "X-Amz-Security-Token", valid_617901
-  var valid_617902 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617902 = validateParameter(valid_617902, JString, required = false,
-                                 default = nil)
-  if valid_617902 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617902
-  var valid_617903 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617903 = validateParameter(valid_617903, JString, required = false,
-                                 default = nil)
-  if valid_617903 != nil:
-    section.add "X-Amz-Algorithm", valid_617903
-  var valid_617904 = header.getOrDefault("X-Amz-Signature")
-  valid_617904 = validateParameter(valid_617904, JString, required = false,
-                                 default = nil)
-  if valid_617904 != nil:
-    section.add "X-Amz-Signature", valid_617904
-  var valid_617905 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617905 = validateParameter(valid_617905, JString, required = false,
-                                 default = nil)
-  if valid_617905 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617905
-  var valid_617906 = header.getOrDefault("X-Amz-Target")
-  valid_617906 = validateParameter(valid_617906, JString, required = true, default = newJString(
-      "AWSEvents.TestEventPattern"))
-  if valid_617906 != nil:
-    section.add "X-Amz-Target", valid_617906
-  var valid_617907 = header.getOrDefault("X-Amz-Credential")
-  valid_617907 = validateParameter(valid_617907, JString, required = false,
-                                 default = nil)
-  if valid_617907 != nil:
-    section.add "X-Amz-Credential", valid_617907
+  var valid_21626302 = header.getOrDefault("X-Amz-Date")
+  valid_21626302 = validateParameter(valid_21626302, JString, required = false,
+                                   default = nil)
+  if valid_21626302 != nil:
+    section.add "X-Amz-Date", valid_21626302
+  var valid_21626303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626303 = validateParameter(valid_21626303, JString, required = false,
+                                   default = nil)
+  if valid_21626303 != nil:
+    section.add "X-Amz-Security-Token", valid_21626303
+  var valid_21626304 = header.getOrDefault("X-Amz-Target")
+  valid_21626304 = validateParameter(valid_21626304, JString, required = true, default = newJString(
+      "AWSEvents.ListTagsForResource"))
+  if valid_21626304 != nil:
+    section.add "X-Amz-Target", valid_21626304
+  var valid_21626305 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626305 = validateParameter(valid_21626305, JString, required = false,
+                                   default = nil)
+  if valid_21626305 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626305
+  var valid_21626306 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626306 = validateParameter(valid_21626306, JString, required = false,
+                                   default = nil)
+  if valid_21626306 != nil:
+    section.add "X-Amz-Algorithm", valid_21626306
+  var valid_21626307 = header.getOrDefault("X-Amz-Signature")
+  valid_21626307 = validateParameter(valid_21626307, JString, required = false,
+                                   default = nil)
+  if valid_21626307 != nil:
+    section.add "X-Amz-Signature", valid_21626307
+  var valid_21626308 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626308 = validateParameter(valid_21626308, JString, required = false,
+                                   default = nil)
+  if valid_21626308 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626308
+  var valid_21626309 = header.getOrDefault("X-Amz-Credential")
+  valid_21626309 = validateParameter(valid_21626309, JString, required = false,
+                                   default = nil)
+  if valid_21626309 != nil:
+    section.add "X-Amz-Credential", valid_21626309
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617909: Call_TestEventPattern_617897; path: JsonNode = nil;
+proc call*(call_21626311: Call_ListTagsForResource_21626299; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Tests whether the specified event pattern matches the provided event.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p>
+  ## Displays the tags associated with an EventBridge resource. In EventBridge, rules and event buses can be tagged.
   ## 
-  let valid = call_617909.validator(path, query, header, formData, body, _)
-  let scheme = call_617909.pickScheme
+  let valid = call_21626311.validator(path, query, header, formData, body, _)
+  let scheme = call_21626311.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617909.url(scheme.get, call_617909.host, call_617909.base,
-                         call_617909.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617909, url, valid, _)
+  let uri = call_21626311.makeUrl(scheme.get, call_21626311.host, call_21626311.base,
+                               call_21626311.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626311, uri, valid, _)
 
-proc call*(call_617910: Call_TestEventPattern_617897; body: JsonNode): Recallable =
-  ## testEventPattern
-  ## <p>Tests whether the specified event pattern matches the provided event.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p>
+proc call*(call_21626312: Call_ListTagsForResource_21626299; body: JsonNode): Recallable =
+  ## listTagsForResource
+  ## Displays the tags associated with an EventBridge resource. In EventBridge, rules and event buses can be tagged.
   ##   body: JObject (required)
-  var body_617911 = newJObject()
+  var body_21626313 = newJObject()
   if body != nil:
-    body_617911 = body
-  result = call_617910.call(nil, nil, nil, nil, body_617911)
+    body_21626313 = body
+  result = call_21626312.call(nil, nil, nil, nil, body_21626313)
 
-var testEventPattern* = Call_TestEventPattern_617897(name: "testEventPattern",
-    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
-    route: "/#X-Amz-Target=AWSEvents.TestEventPattern",
-    validator: validate_TestEventPattern_617898, base: "/",
-    url: url_TestEventPattern_617899, schemes: {Scheme.Https, Scheme.Http})
+var listTagsForResource* = Call_ListTagsForResource_21626299(
+    name: "listTagsForResource", meth: HttpMethod.HttpPost,
+    host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.ListTagsForResource",
+    validator: validate_ListTagsForResource_21626300, base: "/",
+    makeUrl: url_ListTagsForResource_21626301,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_617912 = ref object of OpenApiRestCall_616866
-proc url_UntagResource_617914(protocol: Scheme; host: string; base: string;
+  Call_ListTargetsByRule_21626314 = ref object of OpenApiRestCall_21625435
+proc url_ListTargetsByRule_21626316(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListTargetsByRule_21626315(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Lists the targets assigned to the specified rule.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626317 = header.getOrDefault("X-Amz-Date")
+  valid_21626317 = validateParameter(valid_21626317, JString, required = false,
+                                   default = nil)
+  if valid_21626317 != nil:
+    section.add "X-Amz-Date", valid_21626317
+  var valid_21626318 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626318 = validateParameter(valid_21626318, JString, required = false,
+                                   default = nil)
+  if valid_21626318 != nil:
+    section.add "X-Amz-Security-Token", valid_21626318
+  var valid_21626319 = header.getOrDefault("X-Amz-Target")
+  valid_21626319 = validateParameter(valid_21626319, JString, required = true, default = newJString(
+      "AWSEvents.ListTargetsByRule"))
+  if valid_21626319 != nil:
+    section.add "X-Amz-Target", valid_21626319
+  var valid_21626320 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626320 = validateParameter(valid_21626320, JString, required = false,
+                                   default = nil)
+  if valid_21626320 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626320
+  var valid_21626321 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626321 = validateParameter(valid_21626321, JString, required = false,
+                                   default = nil)
+  if valid_21626321 != nil:
+    section.add "X-Amz-Algorithm", valid_21626321
+  var valid_21626322 = header.getOrDefault("X-Amz-Signature")
+  valid_21626322 = validateParameter(valid_21626322, JString, required = false,
+                                   default = nil)
+  if valid_21626322 != nil:
+    section.add "X-Amz-Signature", valid_21626322
+  var valid_21626323 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626323 = validateParameter(valid_21626323, JString, required = false,
+                                   default = nil)
+  if valid_21626323 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626323
+  var valid_21626324 = header.getOrDefault("X-Amz-Credential")
+  valid_21626324 = validateParameter(valid_21626324, JString, required = false,
+                                   default = nil)
+  if valid_21626324 != nil:
+    section.add "X-Amz-Credential", valid_21626324
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626326: Call_ListTargetsByRule_21626314; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Lists the targets assigned to the specified rule.
+  ## 
+  let valid = call_21626326.validator(path, query, header, formData, body, _)
+  let scheme = call_21626326.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626326.makeUrl(scheme.get, call_21626326.host, call_21626326.base,
+                               call_21626326.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626326, uri, valid, _)
+
+proc call*(call_21626327: Call_ListTargetsByRule_21626314; body: JsonNode): Recallable =
+  ## listTargetsByRule
+  ## Lists the targets assigned to the specified rule.
+  ##   body: JObject (required)
+  var body_21626328 = newJObject()
+  if body != nil:
+    body_21626328 = body
+  result = call_21626327.call(nil, nil, nil, nil, body_21626328)
+
+var listTargetsByRule* = Call_ListTargetsByRule_21626314(name: "listTargetsByRule",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.ListTargetsByRule",
+    validator: validate_ListTargetsByRule_21626315, base: "/",
+    makeUrl: url_ListTargetsByRule_21626316, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_PutEvents_21626329 = ref object of OpenApiRestCall_21625435
+proc url_PutEvents_21626331(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_PutEvents_21626330(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Sends custom events to Amazon EventBridge so that they can be matched to rules.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626332 = header.getOrDefault("X-Amz-Date")
+  valid_21626332 = validateParameter(valid_21626332, JString, required = false,
+                                   default = nil)
+  if valid_21626332 != nil:
+    section.add "X-Amz-Date", valid_21626332
+  var valid_21626333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626333 = validateParameter(valid_21626333, JString, required = false,
+                                   default = nil)
+  if valid_21626333 != nil:
+    section.add "X-Amz-Security-Token", valid_21626333
+  var valid_21626334 = header.getOrDefault("X-Amz-Target")
+  valid_21626334 = validateParameter(valid_21626334, JString, required = true,
+                                   default = newJString("AWSEvents.PutEvents"))
+  if valid_21626334 != nil:
+    section.add "X-Amz-Target", valid_21626334
+  var valid_21626335 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626335 = validateParameter(valid_21626335, JString, required = false,
+                                   default = nil)
+  if valid_21626335 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626335
+  var valid_21626336 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626336 = validateParameter(valid_21626336, JString, required = false,
+                                   default = nil)
+  if valid_21626336 != nil:
+    section.add "X-Amz-Algorithm", valid_21626336
+  var valid_21626337 = header.getOrDefault("X-Amz-Signature")
+  valid_21626337 = validateParameter(valid_21626337, JString, required = false,
+                                   default = nil)
+  if valid_21626337 != nil:
+    section.add "X-Amz-Signature", valid_21626337
+  var valid_21626338 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626338 = validateParameter(valid_21626338, JString, required = false,
+                                   default = nil)
+  if valid_21626338 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626338
+  var valid_21626339 = header.getOrDefault("X-Amz-Credential")
+  valid_21626339 = validateParameter(valid_21626339, JString, required = false,
+                                   default = nil)
+  if valid_21626339 != nil:
+    section.add "X-Amz-Credential", valid_21626339
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626341: Call_PutEvents_21626329; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Sends custom events to Amazon EventBridge so that they can be matched to rules.
+  ## 
+  let valid = call_21626341.validator(path, query, header, formData, body, _)
+  let scheme = call_21626341.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626341.makeUrl(scheme.get, call_21626341.host, call_21626341.base,
+                               call_21626341.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626341, uri, valid, _)
+
+proc call*(call_21626342: Call_PutEvents_21626329; body: JsonNode): Recallable =
+  ## putEvents
+  ## Sends custom events to Amazon EventBridge so that they can be matched to rules.
+  ##   body: JObject (required)
+  var body_21626343 = newJObject()
+  if body != nil:
+    body_21626343 = body
+  result = call_21626342.call(nil, nil, nil, nil, body_21626343)
+
+var putEvents* = Call_PutEvents_21626329(name: "putEvents",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.PutEvents",
+                                      validator: validate_PutEvents_21626330,
+                                      base: "/", makeUrl: url_PutEvents_21626331,
+                                      schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_PutPartnerEvents_21626344 = ref object of OpenApiRestCall_21625435
+proc url_PutPartnerEvents_21626346(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_PutPartnerEvents_21626345(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## This is used by SaaS partners to write events to a customer's partner event bus. AWS customers do not use this operation.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626347 = header.getOrDefault("X-Amz-Date")
+  valid_21626347 = validateParameter(valid_21626347, JString, required = false,
+                                   default = nil)
+  if valid_21626347 != nil:
+    section.add "X-Amz-Date", valid_21626347
+  var valid_21626348 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626348 = validateParameter(valid_21626348, JString, required = false,
+                                   default = nil)
+  if valid_21626348 != nil:
+    section.add "X-Amz-Security-Token", valid_21626348
+  var valid_21626349 = header.getOrDefault("X-Amz-Target")
+  valid_21626349 = validateParameter(valid_21626349, JString, required = true, default = newJString(
+      "AWSEvents.PutPartnerEvents"))
+  if valid_21626349 != nil:
+    section.add "X-Amz-Target", valid_21626349
+  var valid_21626350 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626350 = validateParameter(valid_21626350, JString, required = false,
+                                   default = nil)
+  if valid_21626350 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626350
+  var valid_21626351 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626351 = validateParameter(valid_21626351, JString, required = false,
+                                   default = nil)
+  if valid_21626351 != nil:
+    section.add "X-Amz-Algorithm", valid_21626351
+  var valid_21626352 = header.getOrDefault("X-Amz-Signature")
+  valid_21626352 = validateParameter(valid_21626352, JString, required = false,
+                                   default = nil)
+  if valid_21626352 != nil:
+    section.add "X-Amz-Signature", valid_21626352
+  var valid_21626353 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626353 = validateParameter(valid_21626353, JString, required = false,
+                                   default = nil)
+  if valid_21626353 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626353
+  var valid_21626354 = header.getOrDefault("X-Amz-Credential")
+  valid_21626354 = validateParameter(valid_21626354, JString, required = false,
+                                   default = nil)
+  if valid_21626354 != nil:
+    section.add "X-Amz-Credential", valid_21626354
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626356: Call_PutPartnerEvents_21626344; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## This is used by SaaS partners to write events to a customer's partner event bus. AWS customers do not use this operation.
+  ## 
+  let valid = call_21626356.validator(path, query, header, formData, body, _)
+  let scheme = call_21626356.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626356.makeUrl(scheme.get, call_21626356.host, call_21626356.base,
+                               call_21626356.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626356, uri, valid, _)
+
+proc call*(call_21626357: Call_PutPartnerEvents_21626344; body: JsonNode): Recallable =
+  ## putPartnerEvents
+  ## This is used by SaaS partners to write events to a customer's partner event bus. AWS customers do not use this operation.
+  ##   body: JObject (required)
+  var body_21626358 = newJObject()
+  if body != nil:
+    body_21626358 = body
+  result = call_21626357.call(nil, nil, nil, nil, body_21626358)
+
+var putPartnerEvents* = Call_PutPartnerEvents_21626344(name: "putPartnerEvents",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.PutPartnerEvents",
+    validator: validate_PutPartnerEvents_21626345, base: "/",
+    makeUrl: url_PutPartnerEvents_21626346, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_PutPermission_21626359 = ref object of OpenApiRestCall_21625435
+proc url_PutPermission_21626361(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_PutPermission_21626360(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+  ## <p>Running <code>PutPermission</code> permits the specified AWS account or AWS organization to put events to the specified <i>event bus</i>. CloudWatch Events rules in your account are triggered by these events arriving to an event bus in your account. </p> <p>For another account to send events to your account, that external account must have an EventBridge rule with your account's event bus as a target.</p> <p>To enable multiple AWS accounts to put events to your event bus, run <code>PutPermission</code> once for each of these accounts. Or, if all the accounts are members of the same AWS organization, you can run <code>PutPermission</code> once specifying <code>Principal</code> as "*" and specifying the AWS organization ID in <code>Condition</code>, to grant permissions to all accounts in that organization.</p> <p>If you grant permissions using an organization, then accounts in that organization must specify a <code>RoleArn</code> with proper permissions when they use <code>PutTarget</code> to add your account's event bus as a target. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>The permission policy on the default event bus cannot exceed 10 KB in size.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626362 = header.getOrDefault("X-Amz-Date")
+  valid_21626362 = validateParameter(valid_21626362, JString, required = false,
+                                   default = nil)
+  if valid_21626362 != nil:
+    section.add "X-Amz-Date", valid_21626362
+  var valid_21626363 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626363 = validateParameter(valid_21626363, JString, required = false,
+                                   default = nil)
+  if valid_21626363 != nil:
+    section.add "X-Amz-Security-Token", valid_21626363
+  var valid_21626364 = header.getOrDefault("X-Amz-Target")
+  valid_21626364 = validateParameter(valid_21626364, JString, required = true, default = newJString(
+      "AWSEvents.PutPermission"))
+  if valid_21626364 != nil:
+    section.add "X-Amz-Target", valid_21626364
+  var valid_21626365 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626365 = validateParameter(valid_21626365, JString, required = false,
+                                   default = nil)
+  if valid_21626365 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626365
+  var valid_21626366 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626366 = validateParameter(valid_21626366, JString, required = false,
+                                   default = nil)
+  if valid_21626366 != nil:
+    section.add "X-Amz-Algorithm", valid_21626366
+  var valid_21626367 = header.getOrDefault("X-Amz-Signature")
+  valid_21626367 = validateParameter(valid_21626367, JString, required = false,
+                                   default = nil)
+  if valid_21626367 != nil:
+    section.add "X-Amz-Signature", valid_21626367
+  var valid_21626368 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626368 = validateParameter(valid_21626368, JString, required = false,
+                                   default = nil)
+  if valid_21626368 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626368
+  var valid_21626369 = header.getOrDefault("X-Amz-Credential")
+  valid_21626369 = validateParameter(valid_21626369, JString, required = false,
+                                   default = nil)
+  if valid_21626369 != nil:
+    section.add "X-Amz-Credential", valid_21626369
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626371: Call_PutPermission_21626359; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Running <code>PutPermission</code> permits the specified AWS account or AWS organization to put events to the specified <i>event bus</i>. CloudWatch Events rules in your account are triggered by these events arriving to an event bus in your account. </p> <p>For another account to send events to your account, that external account must have an EventBridge rule with your account's event bus as a target.</p> <p>To enable multiple AWS accounts to put events to your event bus, run <code>PutPermission</code> once for each of these accounts. Or, if all the accounts are members of the same AWS organization, you can run <code>PutPermission</code> once specifying <code>Principal</code> as "*" and specifying the AWS organization ID in <code>Condition</code>, to grant permissions to all accounts in that organization.</p> <p>If you grant permissions using an organization, then accounts in that organization must specify a <code>RoleArn</code> with proper permissions when they use <code>PutTarget</code> to add your account's event bus as a target. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>The permission policy on the default event bus cannot exceed 10 KB in size.</p>
+  ## 
+  let valid = call_21626371.validator(path, query, header, formData, body, _)
+  let scheme = call_21626371.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626371.makeUrl(scheme.get, call_21626371.host, call_21626371.base,
+                               call_21626371.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626371, uri, valid, _)
+
+proc call*(call_21626372: Call_PutPermission_21626359; body: JsonNode): Recallable =
+  ## putPermission
+  ## <p>Running <code>PutPermission</code> permits the specified AWS account or AWS organization to put events to the specified <i>event bus</i>. CloudWatch Events rules in your account are triggered by these events arriving to an event bus in your account. </p> <p>For another account to send events to your account, that external account must have an EventBridge rule with your account's event bus as a target.</p> <p>To enable multiple AWS accounts to put events to your event bus, run <code>PutPermission</code> once for each of these accounts. Or, if all the accounts are members of the same AWS organization, you can run <code>PutPermission</code> once specifying <code>Principal</code> as "*" and specifying the AWS organization ID in <code>Condition</code>, to grant permissions to all accounts in that organization.</p> <p>If you grant permissions using an organization, then accounts in that organization must specify a <code>RoleArn</code> with proper permissions when they use <code>PutTarget</code> to add your account's event bus as a target. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>The permission policy on the default event bus cannot exceed 10 KB in size.</p>
+  ##   body: JObject (required)
+  var body_21626373 = newJObject()
+  if body != nil:
+    body_21626373 = body
+  result = call_21626372.call(nil, nil, nil, nil, body_21626373)
+
+var putPermission* = Call_PutPermission_21626359(name: "putPermission",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.PutPermission",
+    validator: validate_PutPermission_21626360, base: "/",
+    makeUrl: url_PutPermission_21626361, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_PutRule_21626374 = ref object of OpenApiRestCall_21625435
+proc url_PutRule_21626376(protocol: Scheme; host: string; base: string; route: string;
+                         path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_PutRule_21626375(path: JsonNode; query: JsonNode; header: JsonNode;
+                              formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Creates or updates the specified rule. Rules are enabled by default, or based on value of the state. You can disable a rule using <a>DisableRule</a>.</p> <p>A single rule watches for events from a single event bus. Events generated by AWS services go to your account's default event bus. Events generated by SaaS partner services or applications go to the matching partner event bus. If you have custom applications or services, you can specify whether their events go to your default event bus or a custom event bus that you have created. For more information, see <a>CreateEventBus</a>.</p> <p>If you are updating an existing rule, the rule is replaced with what you specify in this <code>PutRule</code> command. If you omit arguments in <code>PutRule</code>, the old values for those arguments are not kept. Instead, they are replaced with null values.</p> <p>When you create or update a rule, incoming events might not immediately start matching to new or updated rules. Allow a short period of time for changes to take effect.</p> <p>A rule must contain at least an EventPattern or ScheduleExpression. Rules with EventPatterns are triggered when a matching event is observed. Rules with ScheduleExpressions self-trigger based on the given schedule. A rule can have both an EventPattern and a ScheduleExpression, in which case the rule triggers on matching events as well as on a schedule.</p> <p>When you initially create a rule, you can optionally assign one or more tags to the rule. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only rules with certain tag values. To use the <code>PutRule</code> operation and assign tags, you must have both the <code>events:PutRule</code> and <code>events:TagResource</code> permissions.</p> <p>If you are updating an existing rule, any tags you specify in the <code>PutRule</code> operation are ignored. To update the tags of an existing rule, use <a>TagResource</a> and <a>UntagResource</a>.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p> <p>In EventBridge, it is possible to create rules that lead to infinite loops, where a rule is fired repeatedly. For example, a rule might detect that ACLs have changed on an S3 bucket, and trigger software to change them to the desired state. If the rule is not written carefully, the subsequent change to the ACLs fires the rule again, creating an infinite loop.</p> <p>To prevent this, write the rules so that the triggered actions do not re-fire the same rule. For example, your rule could fire only if ACLs are found to be in a bad state, instead of after any change. </p> <p>An infinite loop can quickly cause higher than expected charges. We recommend that you use budgeting, which alerts you when charges exceed your specified limit. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing Your Costs with Budgets</a>.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626377 = header.getOrDefault("X-Amz-Date")
+  valid_21626377 = validateParameter(valid_21626377, JString, required = false,
+                                   default = nil)
+  if valid_21626377 != nil:
+    section.add "X-Amz-Date", valid_21626377
+  var valid_21626378 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626378 = validateParameter(valid_21626378, JString, required = false,
+                                   default = nil)
+  if valid_21626378 != nil:
+    section.add "X-Amz-Security-Token", valid_21626378
+  var valid_21626379 = header.getOrDefault("X-Amz-Target")
+  valid_21626379 = validateParameter(valid_21626379, JString, required = true,
+                                   default = newJString("AWSEvents.PutRule"))
+  if valid_21626379 != nil:
+    section.add "X-Amz-Target", valid_21626379
+  var valid_21626380 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626380 = validateParameter(valid_21626380, JString, required = false,
+                                   default = nil)
+  if valid_21626380 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626380
+  var valid_21626381 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626381 = validateParameter(valid_21626381, JString, required = false,
+                                   default = nil)
+  if valid_21626381 != nil:
+    section.add "X-Amz-Algorithm", valid_21626381
+  var valid_21626382 = header.getOrDefault("X-Amz-Signature")
+  valid_21626382 = validateParameter(valid_21626382, JString, required = false,
+                                   default = nil)
+  if valid_21626382 != nil:
+    section.add "X-Amz-Signature", valid_21626382
+  var valid_21626383 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626383 = validateParameter(valid_21626383, JString, required = false,
+                                   default = nil)
+  if valid_21626383 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626383
+  var valid_21626384 = header.getOrDefault("X-Amz-Credential")
+  valid_21626384 = validateParameter(valid_21626384, JString, required = false,
+                                   default = nil)
+  if valid_21626384 != nil:
+    section.add "X-Amz-Credential", valid_21626384
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626386: Call_PutRule_21626374; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Creates or updates the specified rule. Rules are enabled by default, or based on value of the state. You can disable a rule using <a>DisableRule</a>.</p> <p>A single rule watches for events from a single event bus. Events generated by AWS services go to your account's default event bus. Events generated by SaaS partner services or applications go to the matching partner event bus. If you have custom applications or services, you can specify whether their events go to your default event bus or a custom event bus that you have created. For more information, see <a>CreateEventBus</a>.</p> <p>If you are updating an existing rule, the rule is replaced with what you specify in this <code>PutRule</code> command. If you omit arguments in <code>PutRule</code>, the old values for those arguments are not kept. Instead, they are replaced with null values.</p> <p>When you create or update a rule, incoming events might not immediately start matching to new or updated rules. Allow a short period of time for changes to take effect.</p> <p>A rule must contain at least an EventPattern or ScheduleExpression. Rules with EventPatterns are triggered when a matching event is observed. Rules with ScheduleExpressions self-trigger based on the given schedule. A rule can have both an EventPattern and a ScheduleExpression, in which case the rule triggers on matching events as well as on a schedule.</p> <p>When you initially create a rule, you can optionally assign one or more tags to the rule. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only rules with certain tag values. To use the <code>PutRule</code> operation and assign tags, you must have both the <code>events:PutRule</code> and <code>events:TagResource</code> permissions.</p> <p>If you are updating an existing rule, any tags you specify in the <code>PutRule</code> operation are ignored. To update the tags of an existing rule, use <a>TagResource</a> and <a>UntagResource</a>.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p> <p>In EventBridge, it is possible to create rules that lead to infinite loops, where a rule is fired repeatedly. For example, a rule might detect that ACLs have changed on an S3 bucket, and trigger software to change them to the desired state. If the rule is not written carefully, the subsequent change to the ACLs fires the rule again, creating an infinite loop.</p> <p>To prevent this, write the rules so that the triggered actions do not re-fire the same rule. For example, your rule could fire only if ACLs are found to be in a bad state, instead of after any change. </p> <p>An infinite loop can quickly cause higher than expected charges. We recommend that you use budgeting, which alerts you when charges exceed your specified limit. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing Your Costs with Budgets</a>.</p>
+  ## 
+  let valid = call_21626386.validator(path, query, header, formData, body, _)
+  let scheme = call_21626386.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626386.makeUrl(scheme.get, call_21626386.host, call_21626386.base,
+                               call_21626386.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626386, uri, valid, _)
+
+proc call*(call_21626387: Call_PutRule_21626374; body: JsonNode): Recallable =
+  ## putRule
+  ## <p>Creates or updates the specified rule. Rules are enabled by default, or based on value of the state. You can disable a rule using <a>DisableRule</a>.</p> <p>A single rule watches for events from a single event bus. Events generated by AWS services go to your account's default event bus. Events generated by SaaS partner services or applications go to the matching partner event bus. If you have custom applications or services, you can specify whether their events go to your default event bus or a custom event bus that you have created. For more information, see <a>CreateEventBus</a>.</p> <p>If you are updating an existing rule, the rule is replaced with what you specify in this <code>PutRule</code> command. If you omit arguments in <code>PutRule</code>, the old values for those arguments are not kept. Instead, they are replaced with null values.</p> <p>When you create or update a rule, incoming events might not immediately start matching to new or updated rules. Allow a short period of time for changes to take effect.</p> <p>A rule must contain at least an EventPattern or ScheduleExpression. Rules with EventPatterns are triggered when a matching event is observed. Rules with ScheduleExpressions self-trigger based on the given schedule. A rule can have both an EventPattern and a ScheduleExpression, in which case the rule triggers on matching events as well as on a schedule.</p> <p>When you initially create a rule, you can optionally assign one or more tags to the rule. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only rules with certain tag values. To use the <code>PutRule</code> operation and assign tags, you must have both the <code>events:PutRule</code> and <code>events:TagResource</code> permissions.</p> <p>If you are updating an existing rule, any tags you specify in the <code>PutRule</code> operation are ignored. To update the tags of an existing rule, use <a>TagResource</a> and <a>UntagResource</a>.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p> <p>In EventBridge, it is possible to create rules that lead to infinite loops, where a rule is fired repeatedly. For example, a rule might detect that ACLs have changed on an S3 bucket, and trigger software to change them to the desired state. If the rule is not written carefully, the subsequent change to the ACLs fires the rule again, creating an infinite loop.</p> <p>To prevent this, write the rules so that the triggered actions do not re-fire the same rule. For example, your rule could fire only if ACLs are found to be in a bad state, instead of after any change. </p> <p>An infinite loop can quickly cause higher than expected charges. We recommend that you use budgeting, which alerts you when charges exceed your specified limit. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/budgets-managing-costs.html">Managing Your Costs with Budgets</a>.</p>
+  ##   body: JObject (required)
+  var body_21626388 = newJObject()
+  if body != nil:
+    body_21626388 = body
+  result = call_21626387.call(nil, nil, nil, nil, body_21626388)
+
+var putRule* = Call_PutRule_21626374(name: "putRule", meth: HttpMethod.HttpPost,
+                                  host: "events.amazonaws.com",
+                                  route: "/#X-Amz-Target=AWSEvents.PutRule",
+                                  validator: validate_PutRule_21626375, base: "/",
+                                  makeUrl: url_PutRule_21626376,
+                                  schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_PutTargets_21626389 = ref object of OpenApiRestCall_21625435
+proc url_PutTargets_21626391(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_PutTargets_21626390(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Adds the specified targets to the specified rule, or updates the targets if they are already associated with the rule.</p> <p>Targets are the resources that are invoked when a rule is triggered.</p> <p>You can configure the following as targets for Events:</p> <ul> <li> <p>EC2 instances</p> </li> <li> <p>SSM Run Command</p> </li> <li> <p>SSM Automation</p> </li> <li> <p>AWS Lambda functions</p> </li> <li> <p>Data streams in Amazon Kinesis Data Streams</p> </li> <li> <p>Data delivery streams in Amazon Kinesis Data Firehose</p> </li> <li> <p>Amazon ECS tasks</p> </li> <li> <p>AWS Step Functions state machines</p> </li> <li> <p>AWS Batch jobs</p> </li> <li> <p>AWS CodeBuild projects</p> </li> <li> <p>Pipelines in AWS CodePipeline</p> </li> <li> <p>Amazon Inspector assessment templates</p> </li> <li> <p>Amazon SNS topics</p> </li> <li> <p>Amazon SQS queues, including FIFO queues</p> </li> <li> <p>The default event bus of another AWS account</p> </li> </ul> <p>Creating rules with built-in targets is supported only in the AWS Management Console. The built-in targets are <code>EC2 CreateSnapshot API call</code>, <code>EC2 RebootInstances API call</code>, <code>EC2 StopInstances API call</code>, and <code>EC2 TerminateInstances API call</code>. </p> <p>For some target types, <code>PutTargets</code> provides target-specific parameters. If the target is a Kinesis data stream, you can optionally specify which shard the event goes to by using the <code>KinesisParameters</code> argument. To invoke a command on multiple EC2 instances with one rule, you can use the <code>RunCommandParameters</code> field.</p> <p>To be able to make API calls against the resources that you own, Amazon CloudWatch Events needs the appropriate permissions. For AWS Lambda and Amazon SNS resources, EventBridge relies on resource-based policies. For EC2 instances, Kinesis data streams, and AWS Step Functions state machines, EventBridge relies on IAM roles that you specify in the <code>RoleARN</code> argument in <code>PutTargets</code>. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/auth-and-access-control-eventbridge.html">Authentication and Access Control</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>If another AWS account is in the same region and has granted you permission (using <code>PutPermission</code>), you can send events to that account. Set that account's event bus as a target of the rules in your account. To send the matched events to the other account, specify that account's event bus as the <code>Arn</code> value when you run <code>PutTargets</code>. If your account sends events to another account, your account is charged for each sent event. Each event sent to another account is charged as a custom event. The account receiving the event is not charged. For more information, see <a href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> <note> <p> <code>Input</code>, <code>InputPath</code>, and <code>InputTransformer</code> are not available with <code>PutTarget</code> if the target is an event bus of a different AWS account.</p> </note> <p>If you are setting the event bus of another account as the target, and that account granted permission to your account through an organization instead of directly by the account ID, then you must specify a <code>RoleArn</code> with proper permissions in the <code>Target</code> structure. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>For more information about enabling cross-account events, see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and <b>InputTransformer</b> are mutually exclusive and optional parameters of a target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If none of the following arguments are specified for a target, then the entire event is passed to the target in JSON format (unless the target is Amazon EC2 Run Command or Amazon ECS task, in which case nothing from the event is passed to the target).</p> </li> <li> <p>If <b>Input</b> is specified in the form of valid JSON, then the matched event is overridden with this constant.</p> </li> <li> <p>If <b>InputPath</b> is specified in the form of JSONPath (for example, <code>$.detail</code>), then only the part of the event specified in the path is passed to the target (for example, only the detail part of the event is passed).</p> </li> <li> <p>If <b>InputTransformer</b> is specified, then one or more specified JSONPaths are extracted from the event and used as values in a template that you specify as the input to the target.</p> </li> </ul> <p>When you specify <code>InputPath</code> or <code>InputTransformer</code>, you must use JSON dot notation, not bracket notation.</p> <p>When you add targets to a rule and the associated rule triggers soon after, new or updated targets might not be immediately invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626392 = header.getOrDefault("X-Amz-Date")
+  valid_21626392 = validateParameter(valid_21626392, JString, required = false,
+                                   default = nil)
+  if valid_21626392 != nil:
+    section.add "X-Amz-Date", valid_21626392
+  var valid_21626393 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626393 = validateParameter(valid_21626393, JString, required = false,
+                                   default = nil)
+  if valid_21626393 != nil:
+    section.add "X-Amz-Security-Token", valid_21626393
+  var valid_21626394 = header.getOrDefault("X-Amz-Target")
+  valid_21626394 = validateParameter(valid_21626394, JString, required = true,
+                                   default = newJString("AWSEvents.PutTargets"))
+  if valid_21626394 != nil:
+    section.add "X-Amz-Target", valid_21626394
+  var valid_21626395 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626395 = validateParameter(valid_21626395, JString, required = false,
+                                   default = nil)
+  if valid_21626395 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626395
+  var valid_21626396 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626396 = validateParameter(valid_21626396, JString, required = false,
+                                   default = nil)
+  if valid_21626396 != nil:
+    section.add "X-Amz-Algorithm", valid_21626396
+  var valid_21626397 = header.getOrDefault("X-Amz-Signature")
+  valid_21626397 = validateParameter(valid_21626397, JString, required = false,
+                                   default = nil)
+  if valid_21626397 != nil:
+    section.add "X-Amz-Signature", valid_21626397
+  var valid_21626398 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626398 = validateParameter(valid_21626398, JString, required = false,
+                                   default = nil)
+  if valid_21626398 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626398
+  var valid_21626399 = header.getOrDefault("X-Amz-Credential")
+  valid_21626399 = validateParameter(valid_21626399, JString, required = false,
+                                   default = nil)
+  if valid_21626399 != nil:
+    section.add "X-Amz-Credential", valid_21626399
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626401: Call_PutTargets_21626389; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Adds the specified targets to the specified rule, or updates the targets if they are already associated with the rule.</p> <p>Targets are the resources that are invoked when a rule is triggered.</p> <p>You can configure the following as targets for Events:</p> <ul> <li> <p>EC2 instances</p> </li> <li> <p>SSM Run Command</p> </li> <li> <p>SSM Automation</p> </li> <li> <p>AWS Lambda functions</p> </li> <li> <p>Data streams in Amazon Kinesis Data Streams</p> </li> <li> <p>Data delivery streams in Amazon Kinesis Data Firehose</p> </li> <li> <p>Amazon ECS tasks</p> </li> <li> <p>AWS Step Functions state machines</p> </li> <li> <p>AWS Batch jobs</p> </li> <li> <p>AWS CodeBuild projects</p> </li> <li> <p>Pipelines in AWS CodePipeline</p> </li> <li> <p>Amazon Inspector assessment templates</p> </li> <li> <p>Amazon SNS topics</p> </li> <li> <p>Amazon SQS queues, including FIFO queues</p> </li> <li> <p>The default event bus of another AWS account</p> </li> </ul> <p>Creating rules with built-in targets is supported only in the AWS Management Console. The built-in targets are <code>EC2 CreateSnapshot API call</code>, <code>EC2 RebootInstances API call</code>, <code>EC2 StopInstances API call</code>, and <code>EC2 TerminateInstances API call</code>. </p> <p>For some target types, <code>PutTargets</code> provides target-specific parameters. If the target is a Kinesis data stream, you can optionally specify which shard the event goes to by using the <code>KinesisParameters</code> argument. To invoke a command on multiple EC2 instances with one rule, you can use the <code>RunCommandParameters</code> field.</p> <p>To be able to make API calls against the resources that you own, Amazon CloudWatch Events needs the appropriate permissions. For AWS Lambda and Amazon SNS resources, EventBridge relies on resource-based policies. For EC2 instances, Kinesis data streams, and AWS Step Functions state machines, EventBridge relies on IAM roles that you specify in the <code>RoleARN</code> argument in <code>PutTargets</code>. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/auth-and-access-control-eventbridge.html">Authentication and Access Control</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>If another AWS account is in the same region and has granted you permission (using <code>PutPermission</code>), you can send events to that account. Set that account's event bus as a target of the rules in your account. To send the matched events to the other account, specify that account's event bus as the <code>Arn</code> value when you run <code>PutTargets</code>. If your account sends events to another account, your account is charged for each sent event. Each event sent to another account is charged as a custom event. The account receiving the event is not charged. For more information, see <a href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> <note> <p> <code>Input</code>, <code>InputPath</code>, and <code>InputTransformer</code> are not available with <code>PutTarget</code> if the target is an event bus of a different AWS account.</p> </note> <p>If you are setting the event bus of another account as the target, and that account granted permission to your account through an organization instead of directly by the account ID, then you must specify a <code>RoleArn</code> with proper permissions in the <code>Target</code> structure. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>For more information about enabling cross-account events, see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and <b>InputTransformer</b> are mutually exclusive and optional parameters of a target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If none of the following arguments are specified for a target, then the entire event is passed to the target in JSON format (unless the target is Amazon EC2 Run Command or Amazon ECS task, in which case nothing from the event is passed to the target).</p> </li> <li> <p>If <b>Input</b> is specified in the form of valid JSON, then the matched event is overridden with this constant.</p> </li> <li> <p>If <b>InputPath</b> is specified in the form of JSONPath (for example, <code>$.detail</code>), then only the part of the event specified in the path is passed to the target (for example, only the detail part of the event is passed).</p> </li> <li> <p>If <b>InputTransformer</b> is specified, then one or more specified JSONPaths are extracted from the event and used as values in a template that you specify as the input to the target.</p> </li> </ul> <p>When you specify <code>InputPath</code> or <code>InputTransformer</code>, you must use JSON dot notation, not bracket notation.</p> <p>When you add targets to a rule and the associated rule triggers soon after, new or updated targets might not be immediately invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
+  ## 
+  let valid = call_21626401.validator(path, query, header, formData, body, _)
+  let scheme = call_21626401.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626401.makeUrl(scheme.get, call_21626401.host, call_21626401.base,
+                               call_21626401.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626401, uri, valid, _)
+
+proc call*(call_21626402: Call_PutTargets_21626389; body: JsonNode): Recallable =
+  ## putTargets
+  ## <p>Adds the specified targets to the specified rule, or updates the targets if they are already associated with the rule.</p> <p>Targets are the resources that are invoked when a rule is triggered.</p> <p>You can configure the following as targets for Events:</p> <ul> <li> <p>EC2 instances</p> </li> <li> <p>SSM Run Command</p> </li> <li> <p>SSM Automation</p> </li> <li> <p>AWS Lambda functions</p> </li> <li> <p>Data streams in Amazon Kinesis Data Streams</p> </li> <li> <p>Data delivery streams in Amazon Kinesis Data Firehose</p> </li> <li> <p>Amazon ECS tasks</p> </li> <li> <p>AWS Step Functions state machines</p> </li> <li> <p>AWS Batch jobs</p> </li> <li> <p>AWS CodeBuild projects</p> </li> <li> <p>Pipelines in AWS CodePipeline</p> </li> <li> <p>Amazon Inspector assessment templates</p> </li> <li> <p>Amazon SNS topics</p> </li> <li> <p>Amazon SQS queues, including FIFO queues</p> </li> <li> <p>The default event bus of another AWS account</p> </li> </ul> <p>Creating rules with built-in targets is supported only in the AWS Management Console. The built-in targets are <code>EC2 CreateSnapshot API call</code>, <code>EC2 RebootInstances API call</code>, <code>EC2 StopInstances API call</code>, and <code>EC2 TerminateInstances API call</code>. </p> <p>For some target types, <code>PutTargets</code> provides target-specific parameters. If the target is a Kinesis data stream, you can optionally specify which shard the event goes to by using the <code>KinesisParameters</code> argument. To invoke a command on multiple EC2 instances with one rule, you can use the <code>RunCommandParameters</code> field.</p> <p>To be able to make API calls against the resources that you own, Amazon CloudWatch Events needs the appropriate permissions. For AWS Lambda and Amazon SNS resources, EventBridge relies on resource-based policies. For EC2 instances, Kinesis data streams, and AWS Step Functions state machines, EventBridge relies on IAM roles that you specify in the <code>RoleARN</code> argument in <code>PutTargets</code>. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/auth-and-access-control-eventbridge.html">Authentication and Access Control</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>If another AWS account is in the same region and has granted you permission (using <code>PutPermission</code>), you can send events to that account. Set that account's event bus as a target of the rules in your account. To send the matched events to the other account, specify that account's event bus as the <code>Arn</code> value when you run <code>PutTargets</code>. If your account sends events to another account, your account is charged for each sent event. Each event sent to another account is charged as a custom event. The account receiving the event is not charged. For more information, see <a href="https://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> <note> <p> <code>Input</code>, <code>InputPath</code>, and <code>InputTransformer</code> are not available with <code>PutTarget</code> if the target is an event bus of a different AWS account.</p> </note> <p>If you are setting the event bus of another account as the target, and that account granted permission to your account through an organization instead of directly by the account ID, then you must specify a <code>RoleArn</code> with proper permissions in the <code>Target</code> structure. For more information, see <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-cross-account-event-delivery.html">Sending and Receiving Events Between AWS Accounts</a> in the <i>Amazon EventBridge User Guide</i>.</p> <p>For more information about enabling cross-account events, see <a>PutPermission</a>.</p> <p> <b>Input</b>, <b>InputPath</b>, and <b>InputTransformer</b> are mutually exclusive and optional parameters of a target. When a rule is triggered due to a matched event:</p> <ul> <li> <p>If none of the following arguments are specified for a target, then the entire event is passed to the target in JSON format (unless the target is Amazon EC2 Run Command or Amazon ECS task, in which case nothing from the event is passed to the target).</p> </li> <li> <p>If <b>Input</b> is specified in the form of valid JSON, then the matched event is overridden with this constant.</p> </li> <li> <p>If <b>InputPath</b> is specified in the form of JSONPath (for example, <code>$.detail</code>), then only the part of the event specified in the path is passed to the target (for example, only the detail part of the event is passed).</p> </li> <li> <p>If <b>InputTransformer</b> is specified, then one or more specified JSONPaths are extracted from the event and used as values in a template that you specify as the input to the target.</p> </li> </ul> <p>When you specify <code>InputPath</code> or <code>InputTransformer</code>, you must use JSON dot notation, not bracket notation.</p> <p>When you add targets to a rule and the associated rule triggers soon after, new or updated targets might not be immediately invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
+  ##   body: JObject (required)
+  var body_21626403 = newJObject()
+  if body != nil:
+    body_21626403 = body
+  result = call_21626402.call(nil, nil, nil, nil, body_21626403)
+
+var putTargets* = Call_PutTargets_21626389(name: "putTargets",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "events.amazonaws.com", route: "/#X-Amz-Target=AWSEvents.PutTargets",
+                                        validator: validate_PutTargets_21626390,
+                                        base: "/", makeUrl: url_PutTargets_21626391,
+                                        schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_RemovePermission_21626404 = ref object of OpenApiRestCall_21625435
+proc url_RemovePermission_21626406(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_RemovePermission_21626405(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Revokes the permission of another AWS account to be able to put events to the specified event bus. Specify the account to revoke by the <code>StatementId</code> value that you associated with the account when you granted it permission with <code>PutPermission</code>. You can find the <code>StatementId</code> by using <a>DescribeEventBus</a>.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626407 = header.getOrDefault("X-Amz-Date")
+  valid_21626407 = validateParameter(valid_21626407, JString, required = false,
+                                   default = nil)
+  if valid_21626407 != nil:
+    section.add "X-Amz-Date", valid_21626407
+  var valid_21626408 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626408 = validateParameter(valid_21626408, JString, required = false,
+                                   default = nil)
+  if valid_21626408 != nil:
+    section.add "X-Amz-Security-Token", valid_21626408
+  var valid_21626409 = header.getOrDefault("X-Amz-Target")
+  valid_21626409 = validateParameter(valid_21626409, JString, required = true, default = newJString(
+      "AWSEvents.RemovePermission"))
+  if valid_21626409 != nil:
+    section.add "X-Amz-Target", valid_21626409
+  var valid_21626410 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626410 = validateParameter(valid_21626410, JString, required = false,
+                                   default = nil)
+  if valid_21626410 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626410
+  var valid_21626411 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626411 = validateParameter(valid_21626411, JString, required = false,
+                                   default = nil)
+  if valid_21626411 != nil:
+    section.add "X-Amz-Algorithm", valid_21626411
+  var valid_21626412 = header.getOrDefault("X-Amz-Signature")
+  valid_21626412 = validateParameter(valid_21626412, JString, required = false,
+                                   default = nil)
+  if valid_21626412 != nil:
+    section.add "X-Amz-Signature", valid_21626412
+  var valid_21626413 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626413 = validateParameter(valid_21626413, JString, required = false,
+                                   default = nil)
+  if valid_21626413 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626413
+  var valid_21626414 = header.getOrDefault("X-Amz-Credential")
+  valid_21626414 = validateParameter(valid_21626414, JString, required = false,
+                                   default = nil)
+  if valid_21626414 != nil:
+    section.add "X-Amz-Credential", valid_21626414
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626416: Call_RemovePermission_21626404; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## Revokes the permission of another AWS account to be able to put events to the specified event bus. Specify the account to revoke by the <code>StatementId</code> value that you associated with the account when you granted it permission with <code>PutPermission</code>. You can find the <code>StatementId</code> by using <a>DescribeEventBus</a>.
+  ## 
+  let valid = call_21626416.validator(path, query, header, formData, body, _)
+  let scheme = call_21626416.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626416.makeUrl(scheme.get, call_21626416.host, call_21626416.base,
+                               call_21626416.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626416, uri, valid, _)
+
+proc call*(call_21626417: Call_RemovePermission_21626404; body: JsonNode): Recallable =
+  ## removePermission
+  ## Revokes the permission of another AWS account to be able to put events to the specified event bus. Specify the account to revoke by the <code>StatementId</code> value that you associated with the account when you granted it permission with <code>PutPermission</code>. You can find the <code>StatementId</code> by using <a>DescribeEventBus</a>.
+  ##   body: JObject (required)
+  var body_21626418 = newJObject()
+  if body != nil:
+    body_21626418 = body
+  result = call_21626417.call(nil, nil, nil, nil, body_21626418)
+
+var removePermission* = Call_RemovePermission_21626404(name: "removePermission",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.RemovePermission",
+    validator: validate_RemovePermission_21626405, base: "/",
+    makeUrl: url_RemovePermission_21626406, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_RemoveTargets_21626419 = ref object of OpenApiRestCall_21625435
+proc url_RemoveTargets_21626421(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_RemoveTargets_21626420(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+  ## <p>Removes the specified targets from the specified rule. When the rule is triggered, those targets are no longer be invoked.</p> <p>When you remove a target, when the associated rule triggers, removed targets might continue to be invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626422 = header.getOrDefault("X-Amz-Date")
+  valid_21626422 = validateParameter(valid_21626422, JString, required = false,
+                                   default = nil)
+  if valid_21626422 != nil:
+    section.add "X-Amz-Date", valid_21626422
+  var valid_21626423 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626423 = validateParameter(valid_21626423, JString, required = false,
+                                   default = nil)
+  if valid_21626423 != nil:
+    section.add "X-Amz-Security-Token", valid_21626423
+  var valid_21626424 = header.getOrDefault("X-Amz-Target")
+  valid_21626424 = validateParameter(valid_21626424, JString, required = true, default = newJString(
+      "AWSEvents.RemoveTargets"))
+  if valid_21626424 != nil:
+    section.add "X-Amz-Target", valid_21626424
+  var valid_21626425 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626425 = validateParameter(valid_21626425, JString, required = false,
+                                   default = nil)
+  if valid_21626425 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626425
+  var valid_21626426 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626426 = validateParameter(valid_21626426, JString, required = false,
+                                   default = nil)
+  if valid_21626426 != nil:
+    section.add "X-Amz-Algorithm", valid_21626426
+  var valid_21626427 = header.getOrDefault("X-Amz-Signature")
+  valid_21626427 = validateParameter(valid_21626427, JString, required = false,
+                                   default = nil)
+  if valid_21626427 != nil:
+    section.add "X-Amz-Signature", valid_21626427
+  var valid_21626428 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626428 = validateParameter(valid_21626428, JString, required = false,
+                                   default = nil)
+  if valid_21626428 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626428
+  var valid_21626429 = header.getOrDefault("X-Amz-Credential")
+  valid_21626429 = validateParameter(valid_21626429, JString, required = false,
+                                   default = nil)
+  if valid_21626429 != nil:
+    section.add "X-Amz-Credential", valid_21626429
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626431: Call_RemoveTargets_21626419; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Removes the specified targets from the specified rule. When the rule is triggered, those targets are no longer be invoked.</p> <p>When you remove a target, when the associated rule triggers, removed targets might continue to be invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
+  ## 
+  let valid = call_21626431.validator(path, query, header, formData, body, _)
+  let scheme = call_21626431.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626431.makeUrl(scheme.get, call_21626431.host, call_21626431.base,
+                               call_21626431.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626431, uri, valid, _)
+
+proc call*(call_21626432: Call_RemoveTargets_21626419; body: JsonNode): Recallable =
+  ## removeTargets
+  ## <p>Removes the specified targets from the specified rule. When the rule is triggered, those targets are no longer be invoked.</p> <p>When you remove a target, when the associated rule triggers, removed targets might continue to be invoked. Allow a short period of time for changes to take effect.</p> <p>This action can partially fail if too many requests are made at the same time. If that happens, <code>FailedEntryCount</code> is non-zero in the response and each entry in <code>FailedEntries</code> provides the ID of the failed target and the error code.</p>
+  ##   body: JObject (required)
+  var body_21626433 = newJObject()
+  if body != nil:
+    body_21626433 = body
+  result = call_21626432.call(nil, nil, nil, nil, body_21626433)
+
+var removeTargets* = Call_RemoveTargets_21626419(name: "removeTargets",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.RemoveTargets",
+    validator: validate_RemoveTargets_21626420, base: "/",
+    makeUrl: url_RemoveTargets_21626421, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_TagResource_21626434 = ref object of OpenApiRestCall_21625435
+proc url_TagResource_21626436(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3489,8 +3329,234 @@ proc url_UntagResource_617914(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UntagResource_617913(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode =
+proc validate_TagResource_21626435(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Assigns one or more tags (key-value pairs) to the specified EventBridge resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions by granting a user permission to access or change only resources with certain tag values. In EventBridge, rules and event buses can be tagged.</p> <p>Tags don't have any semantic meaning to AWS and are interpreted strictly as strings of characters.</p> <p>You can use the <code>TagResource</code> action with a resource that already has tags. If you specify a new tag key, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626437 = header.getOrDefault("X-Amz-Date")
+  valid_21626437 = validateParameter(valid_21626437, JString, required = false,
+                                   default = nil)
+  if valid_21626437 != nil:
+    section.add "X-Amz-Date", valid_21626437
+  var valid_21626438 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626438 = validateParameter(valid_21626438, JString, required = false,
+                                   default = nil)
+  if valid_21626438 != nil:
+    section.add "X-Amz-Security-Token", valid_21626438
+  var valid_21626439 = header.getOrDefault("X-Amz-Target")
+  valid_21626439 = validateParameter(valid_21626439, JString, required = true, default = newJString(
+      "AWSEvents.TagResource"))
+  if valid_21626439 != nil:
+    section.add "X-Amz-Target", valid_21626439
+  var valid_21626440 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626440 = validateParameter(valid_21626440, JString, required = false,
+                                   default = nil)
+  if valid_21626440 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626440
+  var valid_21626441 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626441 = validateParameter(valid_21626441, JString, required = false,
+                                   default = nil)
+  if valid_21626441 != nil:
+    section.add "X-Amz-Algorithm", valid_21626441
+  var valid_21626442 = header.getOrDefault("X-Amz-Signature")
+  valid_21626442 = validateParameter(valid_21626442, JString, required = false,
+                                   default = nil)
+  if valid_21626442 != nil:
+    section.add "X-Amz-Signature", valid_21626442
+  var valid_21626443 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626443 = validateParameter(valid_21626443, JString, required = false,
+                                   default = nil)
+  if valid_21626443 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626443
+  var valid_21626444 = header.getOrDefault("X-Amz-Credential")
+  valid_21626444 = validateParameter(valid_21626444, JString, required = false,
+                                   default = nil)
+  if valid_21626444 != nil:
+    section.add "X-Amz-Credential", valid_21626444
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626446: Call_TagResource_21626434; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Assigns one or more tags (key-value pairs) to the specified EventBridge resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions by granting a user permission to access or change only resources with certain tag values. In EventBridge, rules and event buses can be tagged.</p> <p>Tags don't have any semantic meaning to AWS and are interpreted strictly as strings of characters.</p> <p>You can use the <code>TagResource</code> action with a resource that already has tags. If you specify a new tag key, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource.</p>
+  ## 
+  let valid = call_21626446.validator(path, query, header, formData, body, _)
+  let scheme = call_21626446.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626446.makeUrl(scheme.get, call_21626446.host, call_21626446.base,
+                               call_21626446.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626446, uri, valid, _)
+
+proc call*(call_21626447: Call_TagResource_21626434; body: JsonNode): Recallable =
+  ## tagResource
+  ## <p>Assigns one or more tags (key-value pairs) to the specified EventBridge resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions by granting a user permission to access or change only resources with certain tag values. In EventBridge, rules and event buses can be tagged.</p> <p>Tags don't have any semantic meaning to AWS and are interpreted strictly as strings of characters.</p> <p>You can use the <code>TagResource</code> action with a resource that already has tags. If you specify a new tag key, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource.</p>
+  ##   body: JObject (required)
+  var body_21626448 = newJObject()
+  if body != nil:
+    body_21626448 = body
+  result = call_21626447.call(nil, nil, nil, nil, body_21626448)
+
+var tagResource* = Call_TagResource_21626434(name: "tagResource",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.TagResource",
+    validator: validate_TagResource_21626435, base: "/", makeUrl: url_TagResource_21626436,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_TestEventPattern_21626449 = ref object of OpenApiRestCall_21625435
+proc url_TestEventPattern_21626451(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_TestEventPattern_21626450(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Tests whether the specified event pattern matches the provided event.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_21626452 = header.getOrDefault("X-Amz-Date")
+  valid_21626452 = validateParameter(valid_21626452, JString, required = false,
+                                   default = nil)
+  if valid_21626452 != nil:
+    section.add "X-Amz-Date", valid_21626452
+  var valid_21626453 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626453 = validateParameter(valid_21626453, JString, required = false,
+                                   default = nil)
+  if valid_21626453 != nil:
+    section.add "X-Amz-Security-Token", valid_21626453
+  var valid_21626454 = header.getOrDefault("X-Amz-Target")
+  valid_21626454 = validateParameter(valid_21626454, JString, required = true, default = newJString(
+      "AWSEvents.TestEventPattern"))
+  if valid_21626454 != nil:
+    section.add "X-Amz-Target", valid_21626454
+  var valid_21626455 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626455 = validateParameter(valid_21626455, JString, required = false,
+                                   default = nil)
+  if valid_21626455 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626455
+  var valid_21626456 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626456 = validateParameter(valid_21626456, JString, required = false,
+                                   default = nil)
+  if valid_21626456 != nil:
+    section.add "X-Amz-Algorithm", valid_21626456
+  var valid_21626457 = header.getOrDefault("X-Amz-Signature")
+  valid_21626457 = validateParameter(valid_21626457, JString, required = false,
+                                   default = nil)
+  if valid_21626457 != nil:
+    section.add "X-Amz-Signature", valid_21626457
+  var valid_21626458 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626458 = validateParameter(valid_21626458, JString, required = false,
+                                   default = nil)
+  if valid_21626458 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626458
+  var valid_21626459 = header.getOrDefault("X-Amz-Credential")
+  valid_21626459 = validateParameter(valid_21626459, JString, required = false,
+                                   default = nil)
+  if valid_21626459 != nil:
+    section.add "X-Amz-Credential", valid_21626459
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_21626461: Call_TestEventPattern_21626449; path: JsonNode = nil;
+          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
+          body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Tests whether the specified event pattern matches the provided event.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p>
+  ## 
+  let valid = call_21626461.validator(path, query, header, formData, body, _)
+  let scheme = call_21626461.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_21626461.makeUrl(scheme.get, call_21626461.host, call_21626461.base,
+                               call_21626461.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626461, uri, valid, _)
+
+proc call*(call_21626462: Call_TestEventPattern_21626449; body: JsonNode): Recallable =
+  ## testEventPattern
+  ## <p>Tests whether the specified event pattern matches the provided event.</p> <p>Most services in AWS treat : or / as the same character in Amazon Resource Names (ARNs). However, EventBridge uses an exact match in event patterns and rules. Be sure to use the correct ARN characters when creating event patterns so that they match the ARN syntax in the event you want to match.</p>
+  ##   body: JObject (required)
+  var body_21626463 = newJObject()
+  if body != nil:
+    body_21626463 = body
+  result = call_21626462.call(nil, nil, nil, nil, body_21626463)
+
+var testEventPattern* = Call_TestEventPattern_21626449(name: "testEventPattern",
+    meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
+    route: "/#X-Amz-Target=AWSEvents.TestEventPattern",
+    validator: validate_TestEventPattern_21626450, base: "/",
+    makeUrl: url_TestEventPattern_21626451, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UntagResource_21626464 = ref object of OpenApiRestCall_21625435
+proc url_UntagResource_21626466(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UntagResource_21626465(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
   ## Removes one or more tags from the specified EventBridge resource. In CloudWatch Events, rules and event buses can be tagged.
   ## 
   var section: JsonNode
@@ -3502,91 +3568,92 @@ proc validate_UntagResource_617913(path: JsonNode; query: JsonNode; header: Json
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Target: JString (required)
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_617915 = header.getOrDefault("X-Amz-Date")
-  valid_617915 = validateParameter(valid_617915, JString, required = false,
-                                 default = nil)
-  if valid_617915 != nil:
-    section.add "X-Amz-Date", valid_617915
-  var valid_617916 = header.getOrDefault("X-Amz-Security-Token")
-  valid_617916 = validateParameter(valid_617916, JString, required = false,
-                                 default = nil)
-  if valid_617916 != nil:
-    section.add "X-Amz-Security-Token", valid_617916
-  var valid_617917 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_617917 = validateParameter(valid_617917, JString, required = false,
-                                 default = nil)
-  if valid_617917 != nil:
-    section.add "X-Amz-Content-Sha256", valid_617917
-  var valid_617918 = header.getOrDefault("X-Amz-Algorithm")
-  valid_617918 = validateParameter(valid_617918, JString, required = false,
-                                 default = nil)
-  if valid_617918 != nil:
-    section.add "X-Amz-Algorithm", valid_617918
-  var valid_617919 = header.getOrDefault("X-Amz-Signature")
-  valid_617919 = validateParameter(valid_617919, JString, required = false,
-                                 default = nil)
-  if valid_617919 != nil:
-    section.add "X-Amz-Signature", valid_617919
-  var valid_617920 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_617920 = validateParameter(valid_617920, JString, required = false,
-                                 default = nil)
-  if valid_617920 != nil:
-    section.add "X-Amz-SignedHeaders", valid_617920
-  var valid_617921 = header.getOrDefault("X-Amz-Target")
-  valid_617921 = validateParameter(valid_617921, JString, required = true, default = newJString(
+  var valid_21626467 = header.getOrDefault("X-Amz-Date")
+  valid_21626467 = validateParameter(valid_21626467, JString, required = false,
+                                   default = nil)
+  if valid_21626467 != nil:
+    section.add "X-Amz-Date", valid_21626467
+  var valid_21626468 = header.getOrDefault("X-Amz-Security-Token")
+  valid_21626468 = validateParameter(valid_21626468, JString, required = false,
+                                   default = nil)
+  if valid_21626468 != nil:
+    section.add "X-Amz-Security-Token", valid_21626468
+  var valid_21626469 = header.getOrDefault("X-Amz-Target")
+  valid_21626469 = validateParameter(valid_21626469, JString, required = true, default = newJString(
       "AWSEvents.UntagResource"))
-  if valid_617921 != nil:
-    section.add "X-Amz-Target", valid_617921
-  var valid_617922 = header.getOrDefault("X-Amz-Credential")
-  valid_617922 = validateParameter(valid_617922, JString, required = false,
-                                 default = nil)
-  if valid_617922 != nil:
-    section.add "X-Amz-Credential", valid_617922
+  if valid_21626469 != nil:
+    section.add "X-Amz-Target", valid_21626469
+  var valid_21626470 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_21626470 = validateParameter(valid_21626470, JString, required = false,
+                                   default = nil)
+  if valid_21626470 != nil:
+    section.add "X-Amz-Content-Sha256", valid_21626470
+  var valid_21626471 = header.getOrDefault("X-Amz-Algorithm")
+  valid_21626471 = validateParameter(valid_21626471, JString, required = false,
+                                   default = nil)
+  if valid_21626471 != nil:
+    section.add "X-Amz-Algorithm", valid_21626471
+  var valid_21626472 = header.getOrDefault("X-Amz-Signature")
+  valid_21626472 = validateParameter(valid_21626472, JString, required = false,
+                                   default = nil)
+  if valid_21626472 != nil:
+    section.add "X-Amz-Signature", valid_21626472
+  var valid_21626473 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_21626473 = validateParameter(valid_21626473, JString, required = false,
+                                   default = nil)
+  if valid_21626473 != nil:
+    section.add "X-Amz-SignedHeaders", valid_21626473
+  var valid_21626474 = header.getOrDefault("X-Amz-Credential")
+  valid_21626474 = validateParameter(valid_21626474, JString, required = false,
+                                   default = nil)
+  if valid_21626474 != nil:
+    section.add "X-Amz-Credential", valid_21626474
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_617924: Call_UntagResource_617912; path: JsonNode = nil;
+proc call*(call_21626476: Call_UntagResource_21626464; path: JsonNode = nil;
           query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
           body: JsonNode = nil; _: string = ""): Recallable =
   ## Removes one or more tags from the specified EventBridge resource. In CloudWatch Events, rules and event buses can be tagged.
   ## 
-  let valid = call_617924.validator(path, query, header, formData, body, _)
-  let scheme = call_617924.pickScheme
+  let valid = call_21626476.validator(path, query, header, formData, body, _)
+  let scheme = call_21626476.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_617924.url(scheme.get, call_617924.host, call_617924.base,
-                         call_617924.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_617924, url, valid, _)
+  let uri = call_21626476.makeUrl(scheme.get, call_21626476.host, call_21626476.base,
+                               call_21626476.route, valid.getOrDefault("path"),
+                               valid.getOrDefault("query"))
+  result = atozHook(call_21626476, uri, valid, _)
 
-proc call*(call_617925: Call_UntagResource_617912; body: JsonNode): Recallable =
+proc call*(call_21626477: Call_UntagResource_21626464; body: JsonNode): Recallable =
   ## untagResource
   ## Removes one or more tags from the specified EventBridge resource. In CloudWatch Events, rules and event buses can be tagged.
   ##   body: JObject (required)
-  var body_617926 = newJObject()
+  var body_21626478 = newJObject()
   if body != nil:
-    body_617926 = body
-  result = call_617925.call(nil, nil, nil, nil, body_617926)
+    body_21626478 = body
+  result = call_21626477.call(nil, nil, nil, nil, body_21626478)
 
-var untagResource* = Call_UntagResource_617912(name: "untagResource",
+var untagResource* = Call_UntagResource_21626464(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "events.amazonaws.com",
     route: "/#X-Amz-Target=AWSEvents.UntagResource",
-    validator: validate_UntagResource_617913, base: "/", url: url_UntagResource_617914,
-    schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UntagResource_21626465, base: "/",
+    makeUrl: url_UntagResource_21626466, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -3669,10 +3736,13 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body = ""): Re
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
   else:
-    headers["content-md5"] = $text.toMD5
+    headers["content-md5"] = base64.encode text.toMD5
   if not headers.hasKey($SecurityToken):
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
       headers[$SecurityToken] = session
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)
+
+when not defined(ssl):
+  {.error: "use ssl".}
