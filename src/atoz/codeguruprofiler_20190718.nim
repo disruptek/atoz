@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
-  httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5,
+  base64, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon CodeGuru Profiler
@@ -16,11 +16,11 @@ import
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/codeguru-profiler/
 type
-  Scheme {.pure.} = enum
+  Scheme* {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
   ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
-                          header: JsonNode = nil; formData: JsonNode = nil;
-                          body: JsonNode = nil; _: string = ""): JsonNode
+                             header: JsonNode = nil; formData: JsonNode = nil;
+                             body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
@@ -28,17 +28,18 @@ type
     host*: string
     schemes*: set[Scheme]
     makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
-                  path: JsonNode; query: JsonNode): Uri
+                    path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_21625435 = ref object of OpenApiRestCall
+  OpenApiRestCall_402656038 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_21625435](t: T): T {.used.} =
-  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
-           schemes: t.schemes, validator: t.validator, url: t.url)
+proc clone[T: OpenApiRestCall_402656038](t: T): T {.used.} =
+  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base,
+             route: t.route, schemes: t.schemes, validator: t.validator,
+             url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_402656038): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -51,9 +52,9 @@ proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
     return some(scheme)
 
 proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
-                      default: JsonNode = nil): JsonNode =
+                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
-  ## a suitable default value when appropriate
+                                                            ## a suitable default value when appropriate
   if js == nil:
     if required:
       if default != nil:
@@ -79,7 +80,8 @@ proc queryString(query: JsonNode): string {.used.} =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.
+    used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -105,7 +107,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
   result = some(head & remainder.get)
 
 const
-  awsServers = {Scheme.Http: {"ap-northeast-1": "codeguru-profiler.ap-northeast-1.amazonaws.com", "ap-southeast-1": "codeguru-profiler.ap-southeast-1.amazonaws.com", "us-west-2": "codeguru-profiler.us-west-2.amazonaws.com", "eu-west-2": "codeguru-profiler.eu-west-2.amazonaws.com", "ap-northeast-3": "codeguru-profiler.ap-northeast-3.amazonaws.com", "eu-central-1": "codeguru-profiler.eu-central-1.amazonaws.com", "us-east-2": "codeguru-profiler.us-east-2.amazonaws.com", "us-east-1": "codeguru-profiler.us-east-1.amazonaws.com", "cn-northwest-1": "codeguru-profiler.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "codeguru-profiler.ap-south-1.amazonaws.com", "eu-north-1": "codeguru-profiler.eu-north-1.amazonaws.com", "ap-northeast-2": "codeguru-profiler.ap-northeast-2.amazonaws.com", "us-west-1": "codeguru-profiler.us-west-1.amazonaws.com", "us-gov-east-1": "codeguru-profiler.us-gov-east-1.amazonaws.com", "eu-west-3": "codeguru-profiler.eu-west-3.amazonaws.com", "cn-north-1": "codeguru-profiler.cn-north-1.amazonaws.com.cn", "sa-east-1": "codeguru-profiler.sa-east-1.amazonaws.com", "eu-west-1": "codeguru-profiler.eu-west-1.amazonaws.com", "us-gov-west-1": "codeguru-profiler.us-gov-west-1.amazonaws.com", "ap-southeast-2": "codeguru-profiler.ap-southeast-2.amazonaws.com", "ca-central-1": "codeguru-profiler.ca-central-1.amazonaws.com"}.toTable, Scheme.Https: {
+  awsServers = {Scheme.Https: {"ap-northeast-1": "codeguru-profiler.ap-northeast-1.amazonaws.com", "ap-southeast-1": "codeguru-profiler.ap-southeast-1.amazonaws.com", "us-west-2": "codeguru-profiler.us-west-2.amazonaws.com", "eu-west-2": "codeguru-profiler.eu-west-2.amazonaws.com", "ap-northeast-3": "codeguru-profiler.ap-northeast-3.amazonaws.com", "eu-central-1": "codeguru-profiler.eu-central-1.amazonaws.com", "us-east-2": "codeguru-profiler.us-east-2.amazonaws.com", "us-east-1": "codeguru-profiler.us-east-1.amazonaws.com", "cn-northwest-1": "codeguru-profiler.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "codeguru-profiler.ap-south-1.amazonaws.com", "eu-north-1": "codeguru-profiler.eu-north-1.amazonaws.com", "ap-northeast-2": "codeguru-profiler.ap-northeast-2.amazonaws.com", "us-west-1": "codeguru-profiler.us-west-1.amazonaws.com", "us-gov-east-1": "codeguru-profiler.us-gov-east-1.amazonaws.com", "eu-west-3": "codeguru-profiler.eu-west-3.amazonaws.com", "cn-north-1": "codeguru-profiler.cn-north-1.amazonaws.com.cn", "sa-east-1": "codeguru-profiler.sa-east-1.amazonaws.com", "eu-west-1": "codeguru-profiler.eu-west-1.amazonaws.com", "us-gov-west-1": "codeguru-profiler.us-gov-west-1.amazonaws.com", "ap-southeast-2": "codeguru-profiler.ap-southeast-2.amazonaws.com", "ca-central-1": "codeguru-profiler.ca-central-1.amazonaws.com"}.toTable, Scheme.Http: {
       "ap-northeast-1": "codeguru-profiler.ap-northeast-1.amazonaws.com",
       "ap-southeast-1": "codeguru-profiler.ap-southeast-1.amazonaws.com",
       "us-west-2": "codeguru-profiler.us-west-2.amazonaws.com",
@@ -129,22 +131,22 @@ const
       "ca-central-1": "codeguru-profiler.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "codeguruprofiler"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
-    base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode;
+                body: string = ""): Recallable {.base.}
 type
-  Call_ConfigureAgent_21625779 = ref object of OpenApiRestCall_21625435
-proc url_ConfigureAgent_21625781(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ConfigureAgent_402656288 = ref object of OpenApiRestCall_402656038
+proc url_ConfigureAgent_402656290(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "profilingGroupName" in path,
-        "`profilingGroupName` is a required path parameter"
+         "`profilingGroupName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/profilingGroups/"),
-               (kind: VariableSegment, value: "profilingGroupName"),
-               (kind: ConstantSegment, value: "/configureAgent")]
+                 (kind: VariableSegment, value: "profilingGroupName"),
+                 (kind: ConstantSegment, value: "/configureAgent")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -153,72 +155,71 @@ proc url_ConfigureAgent_21625781(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ConfigureAgent_21625780(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ConfigureAgent_402656289(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Provides the configuration to use for an agent of the profiling group.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   profilingGroupName: JString (required)
-  ##                     : The name of the profiling group.
+                                 ##                     : The name of the profiling group.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `profilingGroupName` field"
-  var valid_21625895 = path.getOrDefault("profilingGroupName")
-  valid_21625895 = validateParameter(valid_21625895, JString, required = true,
-                                   default = nil)
-  if valid_21625895 != nil:
-    section.add "profilingGroupName", valid_21625895
+  assert path != nil, "path argument is necessary due to required `profilingGroupName` field"
+  var valid_402656383 = path.getOrDefault("profilingGroupName")
+  valid_402656383 = validateParameter(valid_402656383, JString, required = true,
+                                      default = nil)
+  if valid_402656383 != nil:
+    section.add "profilingGroupName", valid_402656383
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21625896 = header.getOrDefault("X-Amz-Date")
-  valid_21625896 = validateParameter(valid_21625896, JString, required = false,
-                                   default = nil)
-  if valid_21625896 != nil:
-    section.add "X-Amz-Date", valid_21625896
-  var valid_21625897 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21625897 = validateParameter(valid_21625897, JString, required = false,
-                                   default = nil)
-  if valid_21625897 != nil:
-    section.add "X-Amz-Security-Token", valid_21625897
-  var valid_21625898 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21625898 = validateParameter(valid_21625898, JString, required = false,
-                                   default = nil)
-  if valid_21625898 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21625898
-  var valid_21625899 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21625899 = validateParameter(valid_21625899, JString, required = false,
-                                   default = nil)
-  if valid_21625899 != nil:
-    section.add "X-Amz-Algorithm", valid_21625899
-  var valid_21625900 = header.getOrDefault("X-Amz-Signature")
-  valid_21625900 = validateParameter(valid_21625900, JString, required = false,
-                                   default = nil)
-  if valid_21625900 != nil:
-    section.add "X-Amz-Signature", valid_21625900
-  var valid_21625901 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21625901 = validateParameter(valid_21625901, JString, required = false,
-                                   default = nil)
-  if valid_21625901 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21625901
-  var valid_21625902 = header.getOrDefault("X-Amz-Credential")
-  valid_21625902 = validateParameter(valid_21625902, JString, required = false,
-                                   default = nil)
-  if valid_21625902 != nil:
-    section.add "X-Amz-Credential", valid_21625902
+  var valid_402656384 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656384 = validateParameter(valid_402656384, JString,
+                                      required = false, default = nil)
+  if valid_402656384 != nil:
+    section.add "X-Amz-Security-Token", valid_402656384
+  var valid_402656385 = header.getOrDefault("X-Amz-Signature")
+  valid_402656385 = validateParameter(valid_402656385, JString,
+                                      required = false, default = nil)
+  if valid_402656385 != nil:
+    section.add "X-Amz-Signature", valid_402656385
+  var valid_402656386 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656386 = validateParameter(valid_402656386, JString,
+                                      required = false, default = nil)
+  if valid_402656386 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656386
+  var valid_402656387 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656387 = validateParameter(valid_402656387, JString,
+                                      required = false, default = nil)
+  if valid_402656387 != nil:
+    section.add "X-Amz-Algorithm", valid_402656387
+  var valid_402656388 = header.getOrDefault("X-Amz-Date")
+  valid_402656388 = validateParameter(valid_402656388, JString,
+                                      required = false, default = nil)
+  if valid_402656388 != nil:
+    section.add "X-Amz-Date", valid_402656388
+  var valid_402656389 = header.getOrDefault("X-Amz-Credential")
+  valid_402656389 = validateParameter(valid_402656389, JString,
+                                      required = false, default = nil)
+  if valid_402656389 != nil:
+    section.add "X-Amz-Credential", valid_402656389
+  var valid_402656390 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656390 = validateParameter(valid_402656390, JString,
+                                      required = false, default = nil)
+  if valid_402656390 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656390
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -230,43 +231,54 @@ proc validate_ConfigureAgent_21625780(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21625928: Call_ConfigureAgent_21625779; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656405: Call_ConfigureAgent_402656288; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Provides the configuration to use for an agent of the profiling group.
-  ## 
-  let valid = call_21625928.validator(path, query, header, formData, body, _)
-  let scheme = call_21625928.pickScheme
+                                                                                         ## 
+  let valid = call_402656405.validator(path, query, header, formData, body, _)
+  let scheme = call_402656405.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21625928.makeUrl(scheme.get, call_21625928.host, call_21625928.base,
-                               call_21625928.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21625928, uri, valid, _)
+  let uri = call_402656405.makeUrl(scheme.get, call_402656405.host, call_402656405.base,
+                                   call_402656405.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656405, uri, valid, _)
 
-proc call*(call_21625991: Call_ConfigureAgent_21625779; profilingGroupName: string;
-          body: JsonNode): Recallable =
+proc call*(call_402656454: Call_ConfigureAgent_402656288;
+           profilingGroupName: string; body: JsonNode): Recallable =
   ## configureAgent
   ## Provides the configuration to use for an agent of the profiling group.
-  ##   profilingGroupName: string (required)
-  ##                     : The name of the profiling group.
-  ##   body: JObject (required)
-  var path_21625993 = newJObject()
-  var body_21625995 = newJObject()
-  add(path_21625993, "profilingGroupName", newJString(profilingGroupName))
+  ##   
+                                                                           ## profilingGroupName: string (required)
+                                                                           ##                     
+                                                                           ## : 
+                                                                           ## The 
+                                                                           ## name 
+                                                                           ## of 
+                                                                           ## the 
+                                                                           ## profiling 
+                                                                           ## group.
+  ##   
+                                                                                    ## body: JObject (required)
+  var path_402656455 = newJObject()
+  var body_402656457 = newJObject()
+  add(path_402656455, "profilingGroupName", newJString(profilingGroupName))
   if body != nil:
-    body_21625995 = body
-  result = call_21625991.call(path_21625993, nil, nil, nil, body_21625995)
+    body_402656457 = body
+  result = call_402656454.call(path_402656455, nil, nil, nil, body_402656457)
 
-var configureAgent* = Call_ConfigureAgent_21625779(name: "configureAgent",
+var configureAgent* = Call_ConfigureAgent_402656288(name: "configureAgent",
     meth: HttpMethod.HttpPost, host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}/configureAgent",
-    validator: validate_ConfigureAgent_21625780, base: "/",
-    makeUrl: url_ConfigureAgent_21625781, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ConfigureAgent_402656289, base: "/",
+    makeUrl: url_ConfigureAgent_402656290, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateProfilingGroup_21626032 = ref object of OpenApiRestCall_21625435
-proc url_CreateProfilingGroup_21626034(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateProfilingGroup_402656483 = ref object of OpenApiRestCall_402656038
+proc url_CreateProfilingGroup_402656485(protocol: Scheme; host: string;
+                                        base: string; route: string;
+                                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -275,71 +287,71 @@ proc url_CreateProfilingGroup_21626034(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_CreateProfilingGroup_21626033(path: JsonNode; query: JsonNode;
+proc validate_CreateProfilingGroup_402656484(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Create a profiling group.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
   ##   clientToken: JString (required)
-  ##              : Client token for the request.
+                                  ##              : Client token for the request.
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `clientToken` field"
-  var valid_21626035 = query.getOrDefault("clientToken")
-  valid_21626035 = validateParameter(valid_21626035, JString, required = true,
-                                   default = nil)
-  if valid_21626035 != nil:
-    section.add "clientToken", valid_21626035
+         "query argument is necessary due to required `clientToken` field"
+  var valid_402656486 = query.getOrDefault("clientToken")
+  valid_402656486 = validateParameter(valid_402656486, JString, required = true,
+                                      default = nil)
+  if valid_402656486 != nil:
+    section.add "clientToken", valid_402656486
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626036 = header.getOrDefault("X-Amz-Date")
-  valid_21626036 = validateParameter(valid_21626036, JString, required = false,
-                                   default = nil)
-  if valid_21626036 != nil:
-    section.add "X-Amz-Date", valid_21626036
-  var valid_21626037 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626037 = validateParameter(valid_21626037, JString, required = false,
-                                   default = nil)
-  if valid_21626037 != nil:
-    section.add "X-Amz-Security-Token", valid_21626037
-  var valid_21626038 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626038 = validateParameter(valid_21626038, JString, required = false,
-                                   default = nil)
-  if valid_21626038 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626038
-  var valid_21626039 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626039 = validateParameter(valid_21626039, JString, required = false,
-                                   default = nil)
-  if valid_21626039 != nil:
-    section.add "X-Amz-Algorithm", valid_21626039
-  var valid_21626040 = header.getOrDefault("X-Amz-Signature")
-  valid_21626040 = validateParameter(valid_21626040, JString, required = false,
-                                   default = nil)
-  if valid_21626040 != nil:
-    section.add "X-Amz-Signature", valid_21626040
-  var valid_21626041 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626041 = validateParameter(valid_21626041, JString, required = false,
-                                   default = nil)
-  if valid_21626041 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626041
-  var valid_21626042 = header.getOrDefault("X-Amz-Credential")
-  valid_21626042 = validateParameter(valid_21626042, JString, required = false,
-                                   default = nil)
-  if valid_21626042 != nil:
-    section.add "X-Amz-Credential", valid_21626042
+  var valid_402656487 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656487 = validateParameter(valid_402656487, JString,
+                                      required = false, default = nil)
+  if valid_402656487 != nil:
+    section.add "X-Amz-Security-Token", valid_402656487
+  var valid_402656488 = header.getOrDefault("X-Amz-Signature")
+  valid_402656488 = validateParameter(valid_402656488, JString,
+                                      required = false, default = nil)
+  if valid_402656488 != nil:
+    section.add "X-Amz-Signature", valid_402656488
+  var valid_402656489 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656489 = validateParameter(valid_402656489, JString,
+                                      required = false, default = nil)
+  if valid_402656489 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656489
+  var valid_402656490 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656490 = validateParameter(valid_402656490, JString,
+                                      required = false, default = nil)
+  if valid_402656490 != nil:
+    section.add "X-Amz-Algorithm", valid_402656490
+  var valid_402656491 = header.getOrDefault("X-Amz-Date")
+  valid_402656491 = validateParameter(valid_402656491, JString,
+                                      required = false, default = nil)
+  if valid_402656491 != nil:
+    section.add "X-Amz-Date", valid_402656491
+  var valid_402656492 = header.getOrDefault("X-Amz-Credential")
+  valid_402656492 = validateParameter(valid_402656492, JString,
+                                      required = false, default = nil)
+  if valid_402656492 != nil:
+    section.add "X-Amz-Credential", valid_402656492
+  var valid_402656493 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656493 = validateParameter(valid_402656493, JString,
+                                      required = false, default = nil)
+  if valid_402656493 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656493
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -351,54 +363,56 @@ proc validate_CreateProfilingGroup_21626033(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626044: Call_CreateProfilingGroup_21626032; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656495: Call_CreateProfilingGroup_402656483;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Create a profiling group.
-  ## 
-  let valid = call_21626044.validator(path, query, header, formData, body, _)
-  let scheme = call_21626044.pickScheme
+                                                                                         ## 
+  let valid = call_402656495.validator(path, query, header, formData, body, _)
+  let scheme = call_402656495.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626044.makeUrl(scheme.get, call_21626044.host, call_21626044.base,
-                               call_21626044.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626044, uri, valid, _)
+  let uri = call_402656495.makeUrl(scheme.get, call_402656495.host, call_402656495.base,
+                                   call_402656495.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656495, uri, valid, _)
 
-proc call*(call_21626045: Call_CreateProfilingGroup_21626032; clientToken: string;
-          body: JsonNode): Recallable =
+proc call*(call_402656496: Call_CreateProfilingGroup_402656483; body: JsonNode;
+           clientToken: string): Recallable =
   ## createProfilingGroup
   ## Create a profiling group.
-  ##   clientToken: string (required)
-  ##              : Client token for the request.
   ##   body: JObject (required)
-  var query_21626046 = newJObject()
-  var body_21626047 = newJObject()
-  add(query_21626046, "clientToken", newJString(clientToken))
+  ##   clientToken: string (required)
+                               ##              : Client token for the request.
+  var query_402656497 = newJObject()
+  var body_402656498 = newJObject()
   if body != nil:
-    body_21626047 = body
-  result = call_21626045.call(nil, query_21626046, nil, nil, body_21626047)
+    body_402656498 = body
+  add(query_402656497, "clientToken", newJString(clientToken))
+  result = call_402656496.call(nil, query_402656497, nil, nil, body_402656498)
 
-var createProfilingGroup* = Call_CreateProfilingGroup_21626032(
+var createProfilingGroup* = Call_CreateProfilingGroup_402656483(
     name: "createProfilingGroup", meth: HttpMethod.HttpPost,
     host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups#clientToken",
-    validator: validate_CreateProfilingGroup_21626033, base: "/",
-    makeUrl: url_CreateProfilingGroup_21626034,
+    validator: validate_CreateProfilingGroup_402656484, base: "/",
+    makeUrl: url_CreateProfilingGroup_402656485,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateProfilingGroup_21626062 = ref object of OpenApiRestCall_21625435
-proc url_UpdateProfilingGroup_21626064(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateProfilingGroup_402656513 = ref object of OpenApiRestCall_402656038
+proc url_UpdateProfilingGroup_402656515(protocol: Scheme; host: string;
+                                        base: string; route: string;
+                                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "profilingGroupName" in path,
-        "`profilingGroupName` is a required path parameter"
+         "`profilingGroupName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/profilingGroups/"),
-               (kind: VariableSegment, value: "profilingGroupName")]
+                 (kind: VariableSegment, value: "profilingGroupName")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -407,71 +421,70 @@ proc url_UpdateProfilingGroup_21626064(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateProfilingGroup_21626063(path: JsonNode; query: JsonNode;
+proc validate_UpdateProfilingGroup_402656514(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Update a profiling group.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   profilingGroupName: JString (required)
-  ##                     : The name of the profiling group.
+                                 ##                     : The name of the profiling group.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `profilingGroupName` field"
-  var valid_21626065 = path.getOrDefault("profilingGroupName")
-  valid_21626065 = validateParameter(valid_21626065, JString, required = true,
-                                   default = nil)
-  if valid_21626065 != nil:
-    section.add "profilingGroupName", valid_21626065
+  assert path != nil, "path argument is necessary due to required `profilingGroupName` field"
+  var valid_402656516 = path.getOrDefault("profilingGroupName")
+  valid_402656516 = validateParameter(valid_402656516, JString, required = true,
+                                      default = nil)
+  if valid_402656516 != nil:
+    section.add "profilingGroupName", valid_402656516
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626066 = header.getOrDefault("X-Amz-Date")
-  valid_21626066 = validateParameter(valid_21626066, JString, required = false,
-                                   default = nil)
-  if valid_21626066 != nil:
-    section.add "X-Amz-Date", valid_21626066
-  var valid_21626067 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626067 = validateParameter(valid_21626067, JString, required = false,
-                                   default = nil)
-  if valid_21626067 != nil:
-    section.add "X-Amz-Security-Token", valid_21626067
-  var valid_21626068 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626068 = validateParameter(valid_21626068, JString, required = false,
-                                   default = nil)
-  if valid_21626068 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626068
-  var valid_21626069 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626069 = validateParameter(valid_21626069, JString, required = false,
-                                   default = nil)
-  if valid_21626069 != nil:
-    section.add "X-Amz-Algorithm", valid_21626069
-  var valid_21626070 = header.getOrDefault("X-Amz-Signature")
-  valid_21626070 = validateParameter(valid_21626070, JString, required = false,
-                                   default = nil)
-  if valid_21626070 != nil:
-    section.add "X-Amz-Signature", valid_21626070
-  var valid_21626071 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626071 = validateParameter(valid_21626071, JString, required = false,
-                                   default = nil)
-  if valid_21626071 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626071
-  var valid_21626072 = header.getOrDefault("X-Amz-Credential")
-  valid_21626072 = validateParameter(valid_21626072, JString, required = false,
-                                   default = nil)
-  if valid_21626072 != nil:
-    section.add "X-Amz-Credential", valid_21626072
+  var valid_402656517 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656517 = validateParameter(valid_402656517, JString,
+                                      required = false, default = nil)
+  if valid_402656517 != nil:
+    section.add "X-Amz-Security-Token", valid_402656517
+  var valid_402656518 = header.getOrDefault("X-Amz-Signature")
+  valid_402656518 = validateParameter(valid_402656518, JString,
+                                      required = false, default = nil)
+  if valid_402656518 != nil:
+    section.add "X-Amz-Signature", valid_402656518
+  var valid_402656519 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656519 = validateParameter(valid_402656519, JString,
+                                      required = false, default = nil)
+  if valid_402656519 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656519
+  var valid_402656520 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656520 = validateParameter(valid_402656520, JString,
+                                      required = false, default = nil)
+  if valid_402656520 != nil:
+    section.add "X-Amz-Algorithm", valid_402656520
+  var valid_402656521 = header.getOrDefault("X-Amz-Date")
+  valid_402656521 = validateParameter(valid_402656521, JString,
+                                      required = false, default = nil)
+  if valid_402656521 != nil:
+    section.add "X-Amz-Date", valid_402656521
+  var valid_402656522 = header.getOrDefault("X-Amz-Credential")
+  valid_402656522 = validateParameter(valid_402656522, JString,
+                                      required = false, default = nil)
+  if valid_402656522 != nil:
+    section.add "X-Amz-Credential", valid_402656522
+  var valid_402656523 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656523 = validateParameter(valid_402656523, JString,
+                                      required = false, default = nil)
+  if valid_402656523 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656523
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -483,55 +496,56 @@ proc validate_UpdateProfilingGroup_21626063(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626074: Call_UpdateProfilingGroup_21626062; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656525: Call_UpdateProfilingGroup_402656513;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Update a profiling group.
-  ## 
-  let valid = call_21626074.validator(path, query, header, formData, body, _)
-  let scheme = call_21626074.pickScheme
+                                                                                         ## 
+  let valid = call_402656525.validator(path, query, header, formData, body, _)
+  let scheme = call_402656525.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626074.makeUrl(scheme.get, call_21626074.host, call_21626074.base,
-                               call_21626074.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626074, uri, valid, _)
+  let uri = call_402656525.makeUrl(scheme.get, call_402656525.host, call_402656525.base,
+                                   call_402656525.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656525, uri, valid, _)
 
-proc call*(call_21626075: Call_UpdateProfilingGroup_21626062;
-          profilingGroupName: string; body: JsonNode): Recallable =
+proc call*(call_402656526: Call_UpdateProfilingGroup_402656513;
+           profilingGroupName: string; body: JsonNode): Recallable =
   ## updateProfilingGroup
   ## Update a profiling group.
   ##   profilingGroupName: string (required)
-  ##                     : The name of the profiling group.
-  ##   body: JObject (required)
-  var path_21626076 = newJObject()
-  var body_21626077 = newJObject()
-  add(path_21626076, "profilingGroupName", newJString(profilingGroupName))
+                              ##                     : The name of the profiling group.
+  ##   
+                                                                                       ## body: JObject (required)
+  var path_402656527 = newJObject()
+  var body_402656528 = newJObject()
+  add(path_402656527, "profilingGroupName", newJString(profilingGroupName))
   if body != nil:
-    body_21626077 = body
-  result = call_21626075.call(path_21626076, nil, nil, nil, body_21626077)
+    body_402656528 = body
+  result = call_402656526.call(path_402656527, nil, nil, nil, body_402656528)
 
-var updateProfilingGroup* = Call_UpdateProfilingGroup_21626062(
+var updateProfilingGroup* = Call_UpdateProfilingGroup_402656513(
     name: "updateProfilingGroup", meth: HttpMethod.HttpPut,
     host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}",
-    validator: validate_UpdateProfilingGroup_21626063, base: "/",
-    makeUrl: url_UpdateProfilingGroup_21626064,
+    validator: validate_UpdateProfilingGroup_402656514, base: "/",
+    makeUrl: url_UpdateProfilingGroup_402656515,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeProfilingGroup_21626048 = ref object of OpenApiRestCall_21625435
-proc url_DescribeProfilingGroup_21626050(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
+  Call_DescribeProfilingGroup_402656499 = ref object of OpenApiRestCall_402656038
+proc url_DescribeProfilingGroup_402656501(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "profilingGroupName" in path,
-        "`profilingGroupName` is a required path parameter"
+         "`profilingGroupName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/profilingGroups/"),
-               (kind: VariableSegment, value: "profilingGroupName")]
+                 (kind: VariableSegment, value: "profilingGroupName")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -540,121 +554,122 @@ proc url_DescribeProfilingGroup_21626050(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeProfilingGroup_21626049(path: JsonNode; query: JsonNode;
+proc validate_DescribeProfilingGroup_402656500(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Describe a profiling group.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   profilingGroupName: JString (required)
-  ##                     : The name of the profiling group.
+                                 ##                     : The name of the profiling group.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `profilingGroupName` field"
-  var valid_21626051 = path.getOrDefault("profilingGroupName")
-  valid_21626051 = validateParameter(valid_21626051, JString, required = true,
-                                   default = nil)
-  if valid_21626051 != nil:
-    section.add "profilingGroupName", valid_21626051
+  assert path != nil, "path argument is necessary due to required `profilingGroupName` field"
+  var valid_402656502 = path.getOrDefault("profilingGroupName")
+  valid_402656502 = validateParameter(valid_402656502, JString, required = true,
+                                      default = nil)
+  if valid_402656502 != nil:
+    section.add "profilingGroupName", valid_402656502
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626052 = header.getOrDefault("X-Amz-Date")
-  valid_21626052 = validateParameter(valid_21626052, JString, required = false,
-                                   default = nil)
-  if valid_21626052 != nil:
-    section.add "X-Amz-Date", valid_21626052
-  var valid_21626053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626053 = validateParameter(valid_21626053, JString, required = false,
-                                   default = nil)
-  if valid_21626053 != nil:
-    section.add "X-Amz-Security-Token", valid_21626053
-  var valid_21626054 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626054 = validateParameter(valid_21626054, JString, required = false,
-                                   default = nil)
-  if valid_21626054 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626054
-  var valid_21626055 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626055 = validateParameter(valid_21626055, JString, required = false,
-                                   default = nil)
-  if valid_21626055 != nil:
-    section.add "X-Amz-Algorithm", valid_21626055
-  var valid_21626056 = header.getOrDefault("X-Amz-Signature")
-  valid_21626056 = validateParameter(valid_21626056, JString, required = false,
-                                   default = nil)
-  if valid_21626056 != nil:
-    section.add "X-Amz-Signature", valid_21626056
-  var valid_21626057 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626057 = validateParameter(valid_21626057, JString, required = false,
-                                   default = nil)
-  if valid_21626057 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626057
-  var valid_21626058 = header.getOrDefault("X-Amz-Credential")
-  valid_21626058 = validateParameter(valid_21626058, JString, required = false,
-                                   default = nil)
-  if valid_21626058 != nil:
-    section.add "X-Amz-Credential", valid_21626058
+  var valid_402656503 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656503 = validateParameter(valid_402656503, JString,
+                                      required = false, default = nil)
+  if valid_402656503 != nil:
+    section.add "X-Amz-Security-Token", valid_402656503
+  var valid_402656504 = header.getOrDefault("X-Amz-Signature")
+  valid_402656504 = validateParameter(valid_402656504, JString,
+                                      required = false, default = nil)
+  if valid_402656504 != nil:
+    section.add "X-Amz-Signature", valid_402656504
+  var valid_402656505 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656505 = validateParameter(valid_402656505, JString,
+                                      required = false, default = nil)
+  if valid_402656505 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656505
+  var valid_402656506 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656506 = validateParameter(valid_402656506, JString,
+                                      required = false, default = nil)
+  if valid_402656506 != nil:
+    section.add "X-Amz-Algorithm", valid_402656506
+  var valid_402656507 = header.getOrDefault("X-Amz-Date")
+  valid_402656507 = validateParameter(valid_402656507, JString,
+                                      required = false, default = nil)
+  if valid_402656507 != nil:
+    section.add "X-Amz-Date", valid_402656507
+  var valid_402656508 = header.getOrDefault("X-Amz-Credential")
+  valid_402656508 = validateParameter(valid_402656508, JString,
+                                      required = false, default = nil)
+  if valid_402656508 != nil:
+    section.add "X-Amz-Credential", valid_402656508
+  var valid_402656509 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656509 = validateParameter(valid_402656509, JString,
+                                      required = false, default = nil)
+  if valid_402656509 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656509
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626059: Call_DescribeProfilingGroup_21626048;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656510: Call_DescribeProfilingGroup_402656499;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Describe a profiling group.
-  ## 
-  let valid = call_21626059.validator(path, query, header, formData, body, _)
-  let scheme = call_21626059.pickScheme
+                                                                                         ## 
+  let valid = call_402656510.validator(path, query, header, formData, body, _)
+  let scheme = call_402656510.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626059.makeUrl(scheme.get, call_21626059.host, call_21626059.base,
-                               call_21626059.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626059, uri, valid, _)
+  let uri = call_402656510.makeUrl(scheme.get, call_402656510.host, call_402656510.base,
+                                   call_402656510.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656510, uri, valid, _)
 
-proc call*(call_21626060: Call_DescribeProfilingGroup_21626048;
-          profilingGroupName: string): Recallable =
+proc call*(call_402656511: Call_DescribeProfilingGroup_402656499;
+           profilingGroupName: string): Recallable =
   ## describeProfilingGroup
   ## Describe a profiling group.
   ##   profilingGroupName: string (required)
-  ##                     : The name of the profiling group.
-  var path_21626061 = newJObject()
-  add(path_21626061, "profilingGroupName", newJString(profilingGroupName))
-  result = call_21626060.call(path_21626061, nil, nil, nil, nil)
+                                ##                     : The name of the profiling group.
+  var path_402656512 = newJObject()
+  add(path_402656512, "profilingGroupName", newJString(profilingGroupName))
+  result = call_402656511.call(path_402656512, nil, nil, nil, nil)
 
-var describeProfilingGroup* = Call_DescribeProfilingGroup_21626048(
+var describeProfilingGroup* = Call_DescribeProfilingGroup_402656499(
     name: "describeProfilingGroup", meth: HttpMethod.HttpGet,
     host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}",
-    validator: validate_DescribeProfilingGroup_21626049, base: "/",
-    makeUrl: url_DescribeProfilingGroup_21626050,
+    validator: validate_DescribeProfilingGroup_402656500, base: "/",
+    makeUrl: url_DescribeProfilingGroup_402656501,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteProfilingGroup_21626078 = ref object of OpenApiRestCall_21625435
-proc url_DeleteProfilingGroup_21626080(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteProfilingGroup_402656529 = ref object of OpenApiRestCall_402656038
+proc url_DeleteProfilingGroup_402656531(protocol: Scheme; host: string;
+                                        base: string; route: string;
+                                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "profilingGroupName" in path,
-        "`profilingGroupName` is a required path parameter"
+         "`profilingGroupName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/profilingGroups/"),
-               (kind: VariableSegment, value: "profilingGroupName")]
+                 (kind: VariableSegment, value: "profilingGroupName")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -663,122 +678,122 @@ proc url_DeleteProfilingGroup_21626080(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteProfilingGroup_21626079(path: JsonNode; query: JsonNode;
+proc validate_DeleteProfilingGroup_402656530(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Delete a profiling group.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   profilingGroupName: JString (required)
-  ##                     : The name of the profiling group.
+                                 ##                     : The name of the profiling group.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `profilingGroupName` field"
-  var valid_21626081 = path.getOrDefault("profilingGroupName")
-  valid_21626081 = validateParameter(valid_21626081, JString, required = true,
-                                   default = nil)
-  if valid_21626081 != nil:
-    section.add "profilingGroupName", valid_21626081
+  assert path != nil, "path argument is necessary due to required `profilingGroupName` field"
+  var valid_402656532 = path.getOrDefault("profilingGroupName")
+  valid_402656532 = validateParameter(valid_402656532, JString, required = true,
+                                      default = nil)
+  if valid_402656532 != nil:
+    section.add "profilingGroupName", valid_402656532
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626082 = header.getOrDefault("X-Amz-Date")
-  valid_21626082 = validateParameter(valid_21626082, JString, required = false,
-                                   default = nil)
-  if valid_21626082 != nil:
-    section.add "X-Amz-Date", valid_21626082
-  var valid_21626083 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626083 = validateParameter(valid_21626083, JString, required = false,
-                                   default = nil)
-  if valid_21626083 != nil:
-    section.add "X-Amz-Security-Token", valid_21626083
-  var valid_21626084 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626084 = validateParameter(valid_21626084, JString, required = false,
-                                   default = nil)
-  if valid_21626084 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626084
-  var valid_21626085 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626085 = validateParameter(valid_21626085, JString, required = false,
-                                   default = nil)
-  if valid_21626085 != nil:
-    section.add "X-Amz-Algorithm", valid_21626085
-  var valid_21626086 = header.getOrDefault("X-Amz-Signature")
-  valid_21626086 = validateParameter(valid_21626086, JString, required = false,
-                                   default = nil)
-  if valid_21626086 != nil:
-    section.add "X-Amz-Signature", valid_21626086
-  var valid_21626087 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626087 = validateParameter(valid_21626087, JString, required = false,
-                                   default = nil)
-  if valid_21626087 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626087
-  var valid_21626088 = header.getOrDefault("X-Amz-Credential")
-  valid_21626088 = validateParameter(valid_21626088, JString, required = false,
-                                   default = nil)
-  if valid_21626088 != nil:
-    section.add "X-Amz-Credential", valid_21626088
+  var valid_402656533 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656533 = validateParameter(valid_402656533, JString,
+                                      required = false, default = nil)
+  if valid_402656533 != nil:
+    section.add "X-Amz-Security-Token", valid_402656533
+  var valid_402656534 = header.getOrDefault("X-Amz-Signature")
+  valid_402656534 = validateParameter(valid_402656534, JString,
+                                      required = false, default = nil)
+  if valid_402656534 != nil:
+    section.add "X-Amz-Signature", valid_402656534
+  var valid_402656535 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656535 = validateParameter(valid_402656535, JString,
+                                      required = false, default = nil)
+  if valid_402656535 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656535
+  var valid_402656536 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656536 = validateParameter(valid_402656536, JString,
+                                      required = false, default = nil)
+  if valid_402656536 != nil:
+    section.add "X-Amz-Algorithm", valid_402656536
+  var valid_402656537 = header.getOrDefault("X-Amz-Date")
+  valid_402656537 = validateParameter(valid_402656537, JString,
+                                      required = false, default = nil)
+  if valid_402656537 != nil:
+    section.add "X-Amz-Date", valid_402656537
+  var valid_402656538 = header.getOrDefault("X-Amz-Credential")
+  valid_402656538 = validateParameter(valid_402656538, JString,
+                                      required = false, default = nil)
+  if valid_402656538 != nil:
+    section.add "X-Amz-Credential", valid_402656538
+  var valid_402656539 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656539 = validateParameter(valid_402656539, JString,
+                                      required = false, default = nil)
+  if valid_402656539 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656539
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626089: Call_DeleteProfilingGroup_21626078; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656540: Call_DeleteProfilingGroup_402656529;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Delete a profiling group.
-  ## 
-  let valid = call_21626089.validator(path, query, header, formData, body, _)
-  let scheme = call_21626089.pickScheme
+                                                                                         ## 
+  let valid = call_402656540.validator(path, query, header, formData, body, _)
+  let scheme = call_402656540.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626089.makeUrl(scheme.get, call_21626089.host, call_21626089.base,
-                               call_21626089.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626089, uri, valid, _)
+  let uri = call_402656540.makeUrl(scheme.get, call_402656540.host, call_402656540.base,
+                                   call_402656540.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656540, uri, valid, _)
 
-proc call*(call_21626090: Call_DeleteProfilingGroup_21626078;
-          profilingGroupName: string): Recallable =
+proc call*(call_402656541: Call_DeleteProfilingGroup_402656529;
+           profilingGroupName: string): Recallable =
   ## deleteProfilingGroup
   ## Delete a profiling group.
   ##   profilingGroupName: string (required)
-  ##                     : The name of the profiling group.
-  var path_21626091 = newJObject()
-  add(path_21626091, "profilingGroupName", newJString(profilingGroupName))
-  result = call_21626090.call(path_21626091, nil, nil, nil, nil)
+                              ##                     : The name of the profiling group.
+  var path_402656542 = newJObject()
+  add(path_402656542, "profilingGroupName", newJString(profilingGroupName))
+  result = call_402656541.call(path_402656542, nil, nil, nil, nil)
 
-var deleteProfilingGroup* = Call_DeleteProfilingGroup_21626078(
+var deleteProfilingGroup* = Call_DeleteProfilingGroup_402656529(
     name: "deleteProfilingGroup", meth: HttpMethod.HttpDelete,
     host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}",
-    validator: validate_DeleteProfilingGroup_21626079, base: "/",
-    makeUrl: url_DeleteProfilingGroup_21626080,
+    validator: validate_DeleteProfilingGroup_402656530, base: "/",
+    makeUrl: url_DeleteProfilingGroup_402656531,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetProfile_21626092 = ref object of OpenApiRestCall_21625435
-proc url_GetProfile_21626094(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetProfile_402656543 = ref object of OpenApiRestCall_402656038
+proc url_GetProfile_402656545(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "profilingGroupName" in path,
-        "`profilingGroupName` is a required path parameter"
+         "`profilingGroupName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/profilingGroups/"),
-               (kind: VariableSegment, value: "profilingGroupName"),
-               (kind: ConstantSegment, value: "/profile")]
+                 (kind: VariableSegment, value: "profilingGroupName"),
+                 (kind: ConstantSegment, value: "/profile")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -787,169 +802,309 @@ proc url_GetProfile_21626094(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetProfile_21626093(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+proc validate_GetProfile_402656544(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Get the aggregated profile of a profiling group for the specified time range. If the requested time range does not align with the available aggregated profiles, it will be expanded to attain alignment. If aggregated profiles are available only for part of the period requested, the profile is returned from the earliest available to the latest within the requested time range. For instance, if the requested time range is from 00:00 to 00:20 and the available profiles are from 00:15 to 00:25, then the returned profile will be from 00:15 to 00:20.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   profilingGroupName: JString (required)
-  ##                     : The name of the profiling group.
+                                 ##                     : The name of the profiling group.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `profilingGroupName` field"
-  var valid_21626095 = path.getOrDefault("profilingGroupName")
-  valid_21626095 = validateParameter(valid_21626095, JString, required = true,
-                                   default = nil)
-  if valid_21626095 != nil:
-    section.add "profilingGroupName", valid_21626095
+  assert path != nil, "path argument is necessary due to required `profilingGroupName` field"
+  var valid_402656546 = path.getOrDefault("profilingGroupName")
+  valid_402656546 = validateParameter(valid_402656546, JString, required = true,
+                                      default = nil)
+  if valid_402656546 != nil:
+    section.add "profilingGroupName", valid_402656546
   result.add "path", section
   ## parameters in `query` object:
-  ##   endTime: JString
-  ##          : The end time of the profile to get. Either period or endTime must be specified. Must be greater than start and the overall time range to be in the past and not larger than a week.
   ##   maxDepth: JInt
-  ##           : Limit the max depth of the profile.
-  ##   period: JString
-  ##         : Periods of time represented using <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 format</a>.
-  ##   startTime: JString
-  ##            : The start time of the profile to get.
+                                  ##           : Limit the max depth of the profile.
+  ##   
+                                                                                    ## period: JString
+                                                                                    ##         
+                                                                                    ## : 
+                                                                                    ## Periods 
+                                                                                    ## of 
+                                                                                    ## time 
+                                                                                    ## represented 
+                                                                                    ## using 
+                                                                                    ## <a 
+                                                                                    ## href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 
+                                                                                    ## 8601 
+                                                                                    ## format</a>.
+  ##   
+                                                                                                  ## endTime: JString
+                                                                                                  ##          
+                                                                                                  ## : 
+                                                                                                  ## The 
+                                                                                                  ## end 
+                                                                                                  ## time 
+                                                                                                  ## of 
+                                                                                                  ## the 
+                                                                                                  ## profile 
+                                                                                                  ## to 
+                                                                                                  ## get. 
+                                                                                                  ## Either 
+                                                                                                  ## period 
+                                                                                                  ## or 
+                                                                                                  ## endTime 
+                                                                                                  ## must 
+                                                                                                  ## be 
+                                                                                                  ## specified. 
+                                                                                                  ## Must 
+                                                                                                  ## be 
+                                                                                                  ## greater 
+                                                                                                  ## than 
+                                                                                                  ## start 
+                                                                                                  ## and 
+                                                                                                  ## the 
+                                                                                                  ## overall 
+                                                                                                  ## time 
+                                                                                                  ## range 
+                                                                                                  ## to 
+                                                                                                  ## be 
+                                                                                                  ## in 
+                                                                                                  ## the 
+                                                                                                  ## past 
+                                                                                                  ## and 
+                                                                                                  ## not 
+                                                                                                  ## larger 
+                                                                                                  ## than 
+                                                                                                  ## a 
+                                                                                                  ## week.
+  ##   
+                                                                                                          ## startTime: JString
+                                                                                                          ##            
+                                                                                                          ## : 
+                                                                                                          ## The 
+                                                                                                          ## start 
+                                                                                                          ## time 
+                                                                                                          ## of 
+                                                                                                          ## the 
+                                                                                                          ## profile 
+                                                                                                          ## to 
+                                                                                                          ## get.
   section = newJObject()
-  var valid_21626096 = query.getOrDefault("endTime")
-  valid_21626096 = validateParameter(valid_21626096, JString, required = false,
-                                   default = nil)
-  if valid_21626096 != nil:
-    section.add "endTime", valid_21626096
-  var valid_21626097 = query.getOrDefault("maxDepth")
-  valid_21626097 = validateParameter(valid_21626097, JInt, required = false,
-                                   default = nil)
-  if valid_21626097 != nil:
-    section.add "maxDepth", valid_21626097
-  var valid_21626098 = query.getOrDefault("period")
-  valid_21626098 = validateParameter(valid_21626098, JString, required = false,
-                                   default = nil)
-  if valid_21626098 != nil:
-    section.add "period", valid_21626098
-  var valid_21626099 = query.getOrDefault("startTime")
-  valid_21626099 = validateParameter(valid_21626099, JString, required = false,
-                                   default = nil)
-  if valid_21626099 != nil:
-    section.add "startTime", valid_21626099
+  var valid_402656547 = query.getOrDefault("maxDepth")
+  valid_402656547 = validateParameter(valid_402656547, JInt, required = false,
+                                      default = nil)
+  if valid_402656547 != nil:
+    section.add "maxDepth", valid_402656547
+  var valid_402656548 = query.getOrDefault("period")
+  valid_402656548 = validateParameter(valid_402656548, JString,
+                                      required = false, default = nil)
+  if valid_402656548 != nil:
+    section.add "period", valid_402656548
+  var valid_402656549 = query.getOrDefault("endTime")
+  valid_402656549 = validateParameter(valid_402656549, JString,
+                                      required = false, default = nil)
+  if valid_402656549 != nil:
+    section.add "endTime", valid_402656549
+  var valid_402656550 = query.getOrDefault("startTime")
+  valid_402656550 = validateParameter(valid_402656550, JString,
+                                      required = false, default = nil)
+  if valid_402656550 != nil:
+    section.add "startTime", valid_402656550
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
   ##   Accept: JString
-  ##         : The format of the profile to return. Supports application/json or application/x-amzn-ion. Defaults to application/x-amzn-ion.
-  ##   X-Amz-Credential: JString
+                               ##         : The format of the profile to return. Supports application/json or application/x-amzn-ion. Defaults to application/x-amzn-ion.
+  ##   
+                                                                                                                                                                         ## X-Amz-Date: JString
+  ##   
+                                                                                                                                                                                               ## X-Amz-Credential: JString
+  ##   
+                                                                                                                                                                                                                           ## X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626100 = header.getOrDefault("X-Amz-Date")
-  valid_21626100 = validateParameter(valid_21626100, JString, required = false,
-                                   default = nil)
-  if valid_21626100 != nil:
-    section.add "X-Amz-Date", valid_21626100
-  var valid_21626101 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626101 = validateParameter(valid_21626101, JString, required = false,
-                                   default = nil)
-  if valid_21626101 != nil:
-    section.add "X-Amz-Security-Token", valid_21626101
-  var valid_21626102 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626102 = validateParameter(valid_21626102, JString, required = false,
-                                   default = nil)
-  if valid_21626102 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626102
-  var valid_21626103 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626103 = validateParameter(valid_21626103, JString, required = false,
-                                   default = nil)
-  if valid_21626103 != nil:
-    section.add "X-Amz-Algorithm", valid_21626103
-  var valid_21626104 = header.getOrDefault("X-Amz-Signature")
-  valid_21626104 = validateParameter(valid_21626104, JString, required = false,
-                                   default = nil)
-  if valid_21626104 != nil:
-    section.add "X-Amz-Signature", valid_21626104
-  var valid_21626105 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626105 = validateParameter(valid_21626105, JString, required = false,
-                                   default = nil)
-  if valid_21626105 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626105
-  var valid_21626106 = header.getOrDefault("Accept")
-  valid_21626106 = validateParameter(valid_21626106, JString, required = false,
-                                   default = nil)
-  if valid_21626106 != nil:
-    section.add "Accept", valid_21626106
-  var valid_21626107 = header.getOrDefault("X-Amz-Credential")
-  valid_21626107 = validateParameter(valid_21626107, JString, required = false,
-                                   default = nil)
-  if valid_21626107 != nil:
-    section.add "X-Amz-Credential", valid_21626107
+  var valid_402656551 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656551 = validateParameter(valid_402656551, JString,
+                                      required = false, default = nil)
+  if valid_402656551 != nil:
+    section.add "X-Amz-Security-Token", valid_402656551
+  var valid_402656552 = header.getOrDefault("X-Amz-Signature")
+  valid_402656552 = validateParameter(valid_402656552, JString,
+                                      required = false, default = nil)
+  if valid_402656552 != nil:
+    section.add "X-Amz-Signature", valid_402656552
+  var valid_402656553 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656553 = validateParameter(valid_402656553, JString,
+                                      required = false, default = nil)
+  if valid_402656553 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656553
+  var valid_402656554 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656554 = validateParameter(valid_402656554, JString,
+                                      required = false, default = nil)
+  if valid_402656554 != nil:
+    section.add "X-Amz-Algorithm", valid_402656554
+  var valid_402656555 = header.getOrDefault("Accept")
+  valid_402656555 = validateParameter(valid_402656555, JString,
+                                      required = false, default = nil)
+  if valid_402656555 != nil:
+    section.add "Accept", valid_402656555
+  var valid_402656556 = header.getOrDefault("X-Amz-Date")
+  valid_402656556 = validateParameter(valid_402656556, JString,
+                                      required = false, default = nil)
+  if valid_402656556 != nil:
+    section.add "X-Amz-Date", valid_402656556
+  var valid_402656557 = header.getOrDefault("X-Amz-Credential")
+  valid_402656557 = validateParameter(valid_402656557, JString,
+                                      required = false, default = nil)
+  if valid_402656557 != nil:
+    section.add "X-Amz-Credential", valid_402656557
+  var valid_402656558 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656558 = validateParameter(valid_402656558, JString,
+                                      required = false, default = nil)
+  if valid_402656558 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656558
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626108: Call_GetProfile_21626092; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656559: Call_GetProfile_402656543; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Get the aggregated profile of a profiling group for the specified time range. If the requested time range does not align with the available aggregated profiles, it will be expanded to attain alignment. If aggregated profiles are available only for part of the period requested, the profile is returned from the earliest available to the latest within the requested time range. For instance, if the requested time range is from 00:00 to 00:20 and the available profiles are from 00:15 to 00:25, then the returned profile will be from 00:15 to 00:20.
-  ## 
-  let valid = call_21626108.validator(path, query, header, formData, body, _)
-  let scheme = call_21626108.pickScheme
+                                                                                         ## 
+  let valid = call_402656559.validator(path, query, header, formData, body, _)
+  let scheme = call_402656559.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626108.makeUrl(scheme.get, call_21626108.host, call_21626108.base,
-                               call_21626108.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626108, uri, valid, _)
+  let uri = call_402656559.makeUrl(scheme.get, call_402656559.host, call_402656559.base,
+                                   call_402656559.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656559, uri, valid, _)
 
-proc call*(call_21626109: Call_GetProfile_21626092; profilingGroupName: string;
-          endTime: string = ""; maxDepth: int = 0; period: string = "";
-          startTime: string = ""): Recallable =
+proc call*(call_402656560: Call_GetProfile_402656543;
+           profilingGroupName: string; maxDepth: int = 0; period: string = "";
+           endTime: string = ""; startTime: string = ""): Recallable =
   ## getProfile
   ## Get the aggregated profile of a profiling group for the specified time range. If the requested time range does not align with the available aggregated profiles, it will be expanded to attain alignment. If aggregated profiles are available only for part of the period requested, the profile is returned from the earliest available to the latest within the requested time range. For instance, if the requested time range is from 00:00 to 00:20 and the available profiles are from 00:15 to 00:25, then the returned profile will be from 00:15 to 00:20.
-  ##   profilingGroupName: string (required)
-  ##                     : The name of the profiling group.
-  ##   endTime: string
-  ##          : The end time of the profile to get. Either period or endTime must be specified. Must be greater than start and the overall time range to be in the past and not larger than a week.
-  ##   maxDepth: int
-  ##           : Limit the max depth of the profile.
-  ##   period: string
-  ##         : Periods of time represented using <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 format</a>.
-  ##   startTime: string
-  ##            : The start time of the profile to get.
-  var path_21626110 = newJObject()
-  var query_21626111 = newJObject()
-  add(path_21626110, "profilingGroupName", newJString(profilingGroupName))
-  add(query_21626111, "endTime", newJString(endTime))
-  add(query_21626111, "maxDepth", newJInt(maxDepth))
-  add(query_21626111, "period", newJString(period))
-  add(query_21626111, "startTime", newJString(startTime))
-  result = call_21626109.call(path_21626110, query_21626111, nil, nil, nil)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## maxDepth: int
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ##           
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## Limit 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## max 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## depth 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## profile.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## period: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ##         
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## Periods 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## time 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## represented 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## using 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## <a 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## 8601 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## format</a>.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## profilingGroupName: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ##                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## name 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## profiling 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## group.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## endTime: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ##          
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## end 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## time 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## profile 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## get. 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## Either 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## period 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## or 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## endTime 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## must 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## be 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## specified. 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## Must 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## be 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## greater 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## than 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## start 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## and 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## overall 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## time 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## range 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## be 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## in 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## past 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## and 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## not 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## larger 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## than 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## a 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## week.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## startTime: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ##            
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## start 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## time 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## profile 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## get.
+  var path_402656561 = newJObject()
+  var query_402656562 = newJObject()
+  add(query_402656562, "maxDepth", newJInt(maxDepth))
+  add(query_402656562, "period", newJString(period))
+  add(path_402656561, "profilingGroupName", newJString(profilingGroupName))
+  add(query_402656562, "endTime", newJString(endTime))
+  add(query_402656562, "startTime", newJString(startTime))
+  result = call_402656560.call(path_402656561, query_402656562, nil, nil, nil)
 
-var getProfile* = Call_GetProfile_21626092(name: "getProfile",
-                                        meth: HttpMethod.HttpGet, host: "codeguru-profiler.amazonaws.com", route: "/profilingGroups/{profilingGroupName}/profile",
-                                        validator: validate_GetProfile_21626093,
-                                        base: "/", makeUrl: url_GetProfile_21626094,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var getProfile* = Call_GetProfile_402656543(name: "getProfile",
+    meth: HttpMethod.HttpGet, host: "codeguru-profiler.amazonaws.com",
+    route: "/profilingGroups/{profilingGroupName}/profile",
+    validator: validate_GetProfile_402656544, base: "/",
+    makeUrl: url_GetProfile_402656545, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListProfileTimes_21626113 = ref object of OpenApiRestCall_21625435
-proc url_ListProfileTimes_21626115(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListProfileTimes_402656563 = ref object of OpenApiRestCall_402656038
+proc url_ListProfileTimes_402656565(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "profilingGroupName" in path,
-        "`profilingGroupName` is a required path parameter"
+         "`profilingGroupName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/profilingGroups/"),
-               (kind: VariableSegment, value: "profilingGroupName"), (
+                 (kind: VariableSegment, value: "profilingGroupName"), (
         kind: ConstantSegment, value: "/profileTimes#endTime&period&startTime")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
@@ -959,175 +1114,338 @@ proc url_ListProfileTimes_21626115(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListProfileTimes_21626114(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ListProfileTimes_402656564(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## List the start times of the available aggregated profiles of a profiling group for an aggregation period within the specified time range.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   profilingGroupName: JString (required)
-  ##                     : The name of the profiling group.
+                                 ##                     : The name of the profiling group.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `profilingGroupName` field"
-  var valid_21626116 = path.getOrDefault("profilingGroupName")
-  valid_21626116 = validateParameter(valid_21626116, JString, required = true,
-                                   default = nil)
-  if valid_21626116 != nil:
-    section.add "profilingGroupName", valid_21626116
+  assert path != nil, "path argument is necessary due to required `profilingGroupName` field"
+  var valid_402656566 = path.getOrDefault("profilingGroupName")
+  valid_402656566 = validateParameter(valid_402656566, JString, required = true,
+                                      default = nil)
+  if valid_402656566 != nil:
+    section.add "profilingGroupName", valid_402656566
   result.add "path", section
   ## parameters in `query` object:
-  ##   endTime: JString (required)
-  ##          : The end time of the time range to list profiles until.
   ##   period: JString (required)
-  ##         : Periods of time used for aggregation of profiles, represented using ISO 8601 format.
-  ##   maxResults: JInt
-  ##             : Upper bound on the number of results to list in a single call.
-  ##   nextToken: JString
-  ##            : Token for paginating results.
-  ##   orderBy: JString
-  ##          : The order (ascending or descending by start time of the profile) to list the profiles by. Defaults to TIMESTAMP_DESCENDING.
-  ##   startTime: JString (required)
-  ##            : The start time of the time range to list the profiles from.
+                                  ##         : Periods of time used for aggregation of profiles, represented using ISO 8601 format.
+  ##   
+                                                                                                                                   ## maxResults: JInt
+                                                                                                                                   ##             
+                                                                                                                                   ## : 
+                                                                                                                                   ## Upper 
+                                                                                                                                   ## bound 
+                                                                                                                                   ## on 
+                                                                                                                                   ## the 
+                                                                                                                                   ## number 
+                                                                                                                                   ## of 
+                                                                                                                                   ## results 
+                                                                                                                                   ## to 
+                                                                                                                                   ## list 
+                                                                                                                                   ## in 
+                                                                                                                                   ## a 
+                                                                                                                                   ## single 
+                                                                                                                                   ## call.
+  ##   
+                                                                                                                                           ## nextToken: JString
+                                                                                                                                           ##            
+                                                                                                                                           ## : 
+                                                                                                                                           ## Token 
+                                                                                                                                           ## for 
+                                                                                                                                           ## paginating 
+                                                                                                                                           ## results.
+  ##   
+                                                                                                                                                      ## orderBy: JString
+                                                                                                                                                      ##          
+                                                                                                                                                      ## : 
+                                                                                                                                                      ## The 
+                                                                                                                                                      ## order 
+                                                                                                                                                      ## (ascending 
+                                                                                                                                                      ## or 
+                                                                                                                                                      ## descending 
+                                                                                                                                                      ## by 
+                                                                                                                                                      ## start 
+                                                                                                                                                      ## time 
+                                                                                                                                                      ## of 
+                                                                                                                                                      ## the 
+                                                                                                                                                      ## profile) 
+                                                                                                                                                      ## to 
+                                                                                                                                                      ## list 
+                                                                                                                                                      ## the 
+                                                                                                                                                      ## profiles 
+                                                                                                                                                      ## by. 
+                                                                                                                                                      ## Defaults 
+                                                                                                                                                      ## to 
+                                                                                                                                                      ## TIMESTAMP_DESCENDING.
+  ##   
+                                                                                                                                                                              ## endTime: JString (required)
+                                                                                                                                                                              ##          
+                                                                                                                                                                              ## : 
+                                                                                                                                                                              ## The 
+                                                                                                                                                                              ## end 
+                                                                                                                                                                              ## time 
+                                                                                                                                                                              ## of 
+                                                                                                                                                                              ## the 
+                                                                                                                                                                              ## time 
+                                                                                                                                                                              ## range 
+                                                                                                                                                                              ## to 
+                                                                                                                                                                              ## list 
+                                                                                                                                                                              ## profiles 
+                                                                                                                                                                              ## until.
+  ##   
+                                                                                                                                                                                       ## startTime: JString (required)
+                                                                                                                                                                                       ##            
+                                                                                                                                                                                       ## : 
+                                                                                                                                                                                       ## The 
+                                                                                                                                                                                       ## start 
+                                                                                                                                                                                       ## time 
+                                                                                                                                                                                       ## of 
+                                                                                                                                                                                       ## the 
+                                                                                                                                                                                       ## time 
+                                                                                                                                                                                       ## range 
+                                                                                                                                                                                       ## to 
+                                                                                                                                                                                       ## list 
+                                                                                                                                                                                       ## the 
+                                                                                                                                                                                       ## profiles 
+                                                                                                                                                                                       ## from.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `endTime` field"
-  var valid_21626117 = query.getOrDefault("endTime")
-  valid_21626117 = validateParameter(valid_21626117, JString, required = true,
-                                   default = nil)
-  if valid_21626117 != nil:
-    section.add "endTime", valid_21626117
-  var valid_21626132 = query.getOrDefault("period")
-  valid_21626132 = validateParameter(valid_21626132, JString, required = true,
-                                   default = newJString("P1D"))
-  if valid_21626132 != nil:
-    section.add "period", valid_21626132
-  var valid_21626133 = query.getOrDefault("maxResults")
-  valid_21626133 = validateParameter(valid_21626133, JInt, required = false,
-                                   default = nil)
-  if valid_21626133 != nil:
-    section.add "maxResults", valid_21626133
-  var valid_21626134 = query.getOrDefault("nextToken")
-  valid_21626134 = validateParameter(valid_21626134, JString, required = false,
-                                   default = nil)
-  if valid_21626134 != nil:
-    section.add "nextToken", valid_21626134
-  var valid_21626135 = query.getOrDefault("orderBy")
-  valid_21626135 = validateParameter(valid_21626135, JString, required = false,
-                                   default = newJString("TimestampAscending"))
-  if valid_21626135 != nil:
-    section.add "orderBy", valid_21626135
-  var valid_21626136 = query.getOrDefault("startTime")
-  valid_21626136 = validateParameter(valid_21626136, JString, required = true,
-                                   default = nil)
-  if valid_21626136 != nil:
-    section.add "startTime", valid_21626136
+  var valid_402656579 = query.getOrDefault("period")
+  valid_402656579 = validateParameter(valid_402656579, JString, required = true,
+                                      default = newJString("P1D"))
+  if valid_402656579 != nil:
+    section.add "period", valid_402656579
+  var valid_402656580 = query.getOrDefault("maxResults")
+  valid_402656580 = validateParameter(valid_402656580, JInt, required = false,
+                                      default = nil)
+  if valid_402656580 != nil:
+    section.add "maxResults", valid_402656580
+  var valid_402656581 = query.getOrDefault("nextToken")
+  valid_402656581 = validateParameter(valid_402656581, JString,
+                                      required = false, default = nil)
+  if valid_402656581 != nil:
+    section.add "nextToken", valid_402656581
+  var valid_402656582 = query.getOrDefault("orderBy")
+  valid_402656582 = validateParameter(valid_402656582, JString,
+                                      required = false, default = newJString(
+      "TimestampAscending"))
+  if valid_402656582 != nil:
+    section.add "orderBy", valid_402656582
+  var valid_402656583 = query.getOrDefault("endTime")
+  valid_402656583 = validateParameter(valid_402656583, JString, required = true,
+                                      default = nil)
+  if valid_402656583 != nil:
+    section.add "endTime", valid_402656583
+  var valid_402656584 = query.getOrDefault("startTime")
+  valid_402656584 = validateParameter(valid_402656584, JString, required = true,
+                                      default = nil)
+  if valid_402656584 != nil:
+    section.add "startTime", valid_402656584
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626137 = header.getOrDefault("X-Amz-Date")
-  valid_21626137 = validateParameter(valid_21626137, JString, required = false,
-                                   default = nil)
-  if valid_21626137 != nil:
-    section.add "X-Amz-Date", valid_21626137
-  var valid_21626138 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626138 = validateParameter(valid_21626138, JString, required = false,
-                                   default = nil)
-  if valid_21626138 != nil:
-    section.add "X-Amz-Security-Token", valid_21626138
-  var valid_21626139 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626139 = validateParameter(valid_21626139, JString, required = false,
-                                   default = nil)
-  if valid_21626139 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626139
-  var valid_21626140 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626140 = validateParameter(valid_21626140, JString, required = false,
-                                   default = nil)
-  if valid_21626140 != nil:
-    section.add "X-Amz-Algorithm", valid_21626140
-  var valid_21626141 = header.getOrDefault("X-Amz-Signature")
-  valid_21626141 = validateParameter(valid_21626141, JString, required = false,
-                                   default = nil)
-  if valid_21626141 != nil:
-    section.add "X-Amz-Signature", valid_21626141
-  var valid_21626142 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626142 = validateParameter(valid_21626142, JString, required = false,
-                                   default = nil)
-  if valid_21626142 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626142
-  var valid_21626143 = header.getOrDefault("X-Amz-Credential")
-  valid_21626143 = validateParameter(valid_21626143, JString, required = false,
-                                   default = nil)
-  if valid_21626143 != nil:
-    section.add "X-Amz-Credential", valid_21626143
+  var valid_402656585 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656585 = validateParameter(valid_402656585, JString,
+                                      required = false, default = nil)
+  if valid_402656585 != nil:
+    section.add "X-Amz-Security-Token", valid_402656585
+  var valid_402656586 = header.getOrDefault("X-Amz-Signature")
+  valid_402656586 = validateParameter(valid_402656586, JString,
+                                      required = false, default = nil)
+  if valid_402656586 != nil:
+    section.add "X-Amz-Signature", valid_402656586
+  var valid_402656587 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656587 = validateParameter(valid_402656587, JString,
+                                      required = false, default = nil)
+  if valid_402656587 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656587
+  var valid_402656588 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656588 = validateParameter(valid_402656588, JString,
+                                      required = false, default = nil)
+  if valid_402656588 != nil:
+    section.add "X-Amz-Algorithm", valid_402656588
+  var valid_402656589 = header.getOrDefault("X-Amz-Date")
+  valid_402656589 = validateParameter(valid_402656589, JString,
+                                      required = false, default = nil)
+  if valid_402656589 != nil:
+    section.add "X-Amz-Date", valid_402656589
+  var valid_402656590 = header.getOrDefault("X-Amz-Credential")
+  valid_402656590 = validateParameter(valid_402656590, JString,
+                                      required = false, default = nil)
+  if valid_402656590 != nil:
+    section.add "X-Amz-Credential", valid_402656590
+  var valid_402656591 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656591 = validateParameter(valid_402656591, JString,
+                                      required = false, default = nil)
+  if valid_402656591 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656591
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626144: Call_ListProfileTimes_21626113; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656592: Call_ListProfileTimes_402656563;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## List the start times of the available aggregated profiles of a profiling group for an aggregation period within the specified time range.
-  ## 
-  let valid = call_21626144.validator(path, query, header, formData, body, _)
-  let scheme = call_21626144.pickScheme
+                                                                                         ## 
+  let valid = call_402656592.validator(path, query, header, formData, body, _)
+  let scheme = call_402656592.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626144.makeUrl(scheme.get, call_21626144.host, call_21626144.base,
-                               call_21626144.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626144, uri, valid, _)
+  let uri = call_402656592.makeUrl(scheme.get, call_402656592.host, call_402656592.base,
+                                   call_402656592.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656592, uri, valid, _)
 
-proc call*(call_21626145: Call_ListProfileTimes_21626113;
-          profilingGroupName: string; endTime: string; startTime: string;
-          period: string = "P1D"; maxResults: int = 0; nextToken: string = "";
-          orderBy: string = "TimestampAscending"): Recallable =
+proc call*(call_402656593: Call_ListProfileTimes_402656563;
+           profilingGroupName: string; endTime: string; startTime: string;
+           period: string = "P1D"; maxResults: int = 0; nextToken: string = "";
+           orderBy: string = "TimestampAscending"): Recallable =
   ## listProfileTimes
   ## List the start times of the available aggregated profiles of a profiling group for an aggregation period within the specified time range.
-  ##   profilingGroupName: string (required)
-  ##                     : The name of the profiling group.
-  ##   endTime: string (required)
-  ##          : The end time of the time range to list profiles until.
-  ##   period: string (required)
-  ##         : Periods of time used for aggregation of profiles, represented using ISO 8601 format.
-  ##   maxResults: int
-  ##             : Upper bound on the number of results to list in a single call.
-  ##   nextToken: string
-  ##            : Token for paginating results.
-  ##   orderBy: string
-  ##          : The order (ascending or descending by start time of the profile) to list the profiles by. Defaults to TIMESTAMP_DESCENDING.
-  ##   startTime: string (required)
-  ##            : The start time of the time range to list the profiles from.
-  var path_21626146 = newJObject()
-  var query_21626147 = newJObject()
-  add(path_21626146, "profilingGroupName", newJString(profilingGroupName))
-  add(query_21626147, "endTime", newJString(endTime))
-  add(query_21626147, "period", newJString(period))
-  add(query_21626147, "maxResults", newJInt(maxResults))
-  add(query_21626147, "nextToken", newJString(nextToken))
-  add(query_21626147, "orderBy", newJString(orderBy))
-  add(query_21626147, "startTime", newJString(startTime))
-  result = call_21626145.call(path_21626146, query_21626147, nil, nil, nil)
+  ##   
+                                                                                                                                              ## period: string (required)
+                                                                                                                                              ##         
+                                                                                                                                              ## : 
+                                                                                                                                              ## Periods 
+                                                                                                                                              ## of 
+                                                                                                                                              ## time 
+                                                                                                                                              ## used 
+                                                                                                                                              ## for 
+                                                                                                                                              ## aggregation 
+                                                                                                                                              ## of 
+                                                                                                                                              ## profiles, 
+                                                                                                                                              ## represented 
+                                                                                                                                              ## using 
+                                                                                                                                              ## ISO 
+                                                                                                                                              ## 8601 
+                                                                                                                                              ## format.
+  ##   
+                                                                                                                                                        ## profilingGroupName: string (required)
+                                                                                                                                                        ##                     
+                                                                                                                                                        ## : 
+                                                                                                                                                        ## The 
+                                                                                                                                                        ## name 
+                                                                                                                                                        ## of 
+                                                                                                                                                        ## the 
+                                                                                                                                                        ## profiling 
+                                                                                                                                                        ## group.
+  ##   
+                                                                                                                                                                 ## maxResults: int
+                                                                                                                                                                 ##             
+                                                                                                                                                                 ## : 
+                                                                                                                                                                 ## Upper 
+                                                                                                                                                                 ## bound 
+                                                                                                                                                                 ## on 
+                                                                                                                                                                 ## the 
+                                                                                                                                                                 ## number 
+                                                                                                                                                                 ## of 
+                                                                                                                                                                 ## results 
+                                                                                                                                                                 ## to 
+                                                                                                                                                                 ## list 
+                                                                                                                                                                 ## in 
+                                                                                                                                                                 ## a 
+                                                                                                                                                                 ## single 
+                                                                                                                                                                 ## call.
+  ##   
+                                                                                                                                                                         ## nextToken: string
+                                                                                                                                                                         ##            
+                                                                                                                                                                         ## : 
+                                                                                                                                                                         ## Token 
+                                                                                                                                                                         ## for 
+                                                                                                                                                                         ## paginating 
+                                                                                                                                                                         ## results.
+  ##   
+                                                                                                                                                                                    ## orderBy: string
+                                                                                                                                                                                    ##          
+                                                                                                                                                                                    ## : 
+                                                                                                                                                                                    ## The 
+                                                                                                                                                                                    ## order 
+                                                                                                                                                                                    ## (ascending 
+                                                                                                                                                                                    ## or 
+                                                                                                                                                                                    ## descending 
+                                                                                                                                                                                    ## by 
+                                                                                                                                                                                    ## start 
+                                                                                                                                                                                    ## time 
+                                                                                                                                                                                    ## of 
+                                                                                                                                                                                    ## the 
+                                                                                                                                                                                    ## profile) 
+                                                                                                                                                                                    ## to 
+                                                                                                                                                                                    ## list 
+                                                                                                                                                                                    ## the 
+                                                                                                                                                                                    ## profiles 
+                                                                                                                                                                                    ## by. 
+                                                                                                                                                                                    ## Defaults 
+                                                                                                                                                                                    ## to 
+                                                                                                                                                                                    ## TIMESTAMP_DESCENDING.
+  ##   
+                                                                                                                                                                                                            ## endTime: string (required)
+                                                                                                                                                                                                            ##          
+                                                                                                                                                                                                            ## : 
+                                                                                                                                                                                                            ## The 
+                                                                                                                                                                                                            ## end 
+                                                                                                                                                                                                            ## time 
+                                                                                                                                                                                                            ## of 
+                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                            ## time 
+                                                                                                                                                                                                            ## range 
+                                                                                                                                                                                                            ## to 
+                                                                                                                                                                                                            ## list 
+                                                                                                                                                                                                            ## profiles 
+                                                                                                                                                                                                            ## until.
+  ##   
+                                                                                                                                                                                                                     ## startTime: string (required)
+                                                                                                                                                                                                                     ##            
+                                                                                                                                                                                                                     ## : 
+                                                                                                                                                                                                                     ## The 
+                                                                                                                                                                                                                     ## start 
+                                                                                                                                                                                                                     ## time 
+                                                                                                                                                                                                                     ## of 
+                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                     ## time 
+                                                                                                                                                                                                                     ## range 
+                                                                                                                                                                                                                     ## to 
+                                                                                                                                                                                                                     ## list 
+                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                     ## profiles 
+                                                                                                                                                                                                                     ## from.
+  var path_402656594 = newJObject()
+  var query_402656595 = newJObject()
+  add(query_402656595, "period", newJString(period))
+  add(path_402656594, "profilingGroupName", newJString(profilingGroupName))
+  add(query_402656595, "maxResults", newJInt(maxResults))
+  add(query_402656595, "nextToken", newJString(nextToken))
+  add(query_402656595, "orderBy", newJString(orderBy))
+  add(query_402656595, "endTime", newJString(endTime))
+  add(query_402656595, "startTime", newJString(startTime))
+  result = call_402656593.call(path_402656594, query_402656595, nil, nil, nil)
 
-var listProfileTimes* = Call_ListProfileTimes_21626113(name: "listProfileTimes",
-    meth: HttpMethod.HttpGet, host: "codeguru-profiler.amazonaws.com", route: "/profilingGroups/{profilingGroupName}/profileTimes#endTime&period&startTime",
-    validator: validate_ListProfileTimes_21626114, base: "/",
-    makeUrl: url_ListProfileTimes_21626115, schemes: {Scheme.Https, Scheme.Http})
+var listProfileTimes* = Call_ListProfileTimes_402656563(
+    name: "listProfileTimes", meth: HttpMethod.HttpGet,
+    host: "codeguru-profiler.amazonaws.com", route: "/profilingGroups/{profilingGroupName}/profileTimes#endTime&period&startTime",
+    validator: validate_ListProfileTimes_402656564, base: "/",
+    makeUrl: url_ListProfileTimes_402656565,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListProfilingGroups_21626149 = ref object of OpenApiRestCall_21625435
-proc url_ListProfilingGroups_21626151(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListProfilingGroups_402656596 = ref object of OpenApiRestCall_402656038
+proc url_ListProfilingGroups_402656598(protocol: Scheme; host: string;
+                                       base: string; route: string;
+                                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1136,139 +1454,196 @@ proc url_ListProfilingGroups_21626151(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListProfilingGroups_21626150(path: JsonNode; query: JsonNode;
+proc validate_ListProfilingGroups_402656597(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## List profiling groups in the account.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   includeDescription: JBool
-  ##                     : If set to true, returns the full description of the profiling groups instead of the names. Defaults to false.
   ##   maxResults: JInt
-  ##             : Upper bound on the number of results to list in a single call.
-  ##   nextToken: JString
-  ##            : Token for paginating results.
+                                  ##             : Upper bound on the number of results to list in a single call.
+  ##   
+                                                                                                                 ## nextToken: JString
+                                                                                                                 ##            
+                                                                                                                 ## : 
+                                                                                                                 ## Token 
+                                                                                                                 ## for 
+                                                                                                                 ## paginating 
+                                                                                                                 ## results.
+  ##   
+                                                                                                                            ## includeDescription: JBool
+                                                                                                                            ##                     
+                                                                                                                            ## : 
+                                                                                                                            ## If 
+                                                                                                                            ## set 
+                                                                                                                            ## to 
+                                                                                                                            ## true, 
+                                                                                                                            ## returns 
+                                                                                                                            ## the 
+                                                                                                                            ## full 
+                                                                                                                            ## description 
+                                                                                                                            ## of 
+                                                                                                                            ## the 
+                                                                                                                            ## profiling 
+                                                                                                                            ## groups 
+                                                                                                                            ## instead 
+                                                                                                                            ## of 
+                                                                                                                            ## the 
+                                                                                                                            ## names. 
+                                                                                                                            ## Defaults 
+                                                                                                                            ## to 
+                                                                                                                            ## false.
   section = newJObject()
-  var valid_21626152 = query.getOrDefault("includeDescription")
-  valid_21626152 = validateParameter(valid_21626152, JBool, required = false,
-                                   default = nil)
-  if valid_21626152 != nil:
-    section.add "includeDescription", valid_21626152
-  var valid_21626153 = query.getOrDefault("maxResults")
-  valid_21626153 = validateParameter(valid_21626153, JInt, required = false,
-                                   default = nil)
-  if valid_21626153 != nil:
-    section.add "maxResults", valid_21626153
-  var valid_21626154 = query.getOrDefault("nextToken")
-  valid_21626154 = validateParameter(valid_21626154, JString, required = false,
-                                   default = nil)
-  if valid_21626154 != nil:
-    section.add "nextToken", valid_21626154
+  var valid_402656599 = query.getOrDefault("maxResults")
+  valid_402656599 = validateParameter(valid_402656599, JInt, required = false,
+                                      default = nil)
+  if valid_402656599 != nil:
+    section.add "maxResults", valid_402656599
+  var valid_402656600 = query.getOrDefault("nextToken")
+  valid_402656600 = validateParameter(valid_402656600, JString,
+                                      required = false, default = nil)
+  if valid_402656600 != nil:
+    section.add "nextToken", valid_402656600
+  var valid_402656601 = query.getOrDefault("includeDescription")
+  valid_402656601 = validateParameter(valid_402656601, JBool, required = false,
+                                      default = nil)
+  if valid_402656601 != nil:
+    section.add "includeDescription", valid_402656601
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626155 = header.getOrDefault("X-Amz-Date")
-  valid_21626155 = validateParameter(valid_21626155, JString, required = false,
-                                   default = nil)
-  if valid_21626155 != nil:
-    section.add "X-Amz-Date", valid_21626155
-  var valid_21626156 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626156 = validateParameter(valid_21626156, JString, required = false,
-                                   default = nil)
-  if valid_21626156 != nil:
-    section.add "X-Amz-Security-Token", valid_21626156
-  var valid_21626157 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626157 = validateParameter(valid_21626157, JString, required = false,
-                                   default = nil)
-  if valid_21626157 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626157
-  var valid_21626158 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626158 = validateParameter(valid_21626158, JString, required = false,
-                                   default = nil)
-  if valid_21626158 != nil:
-    section.add "X-Amz-Algorithm", valid_21626158
-  var valid_21626159 = header.getOrDefault("X-Amz-Signature")
-  valid_21626159 = validateParameter(valid_21626159, JString, required = false,
-                                   default = nil)
-  if valid_21626159 != nil:
-    section.add "X-Amz-Signature", valid_21626159
-  var valid_21626160 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626160 = validateParameter(valid_21626160, JString, required = false,
-                                   default = nil)
-  if valid_21626160 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626160
-  var valid_21626161 = header.getOrDefault("X-Amz-Credential")
-  valid_21626161 = validateParameter(valid_21626161, JString, required = false,
-                                   default = nil)
-  if valid_21626161 != nil:
-    section.add "X-Amz-Credential", valid_21626161
+  var valid_402656602 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656602 = validateParameter(valid_402656602, JString,
+                                      required = false, default = nil)
+  if valid_402656602 != nil:
+    section.add "X-Amz-Security-Token", valid_402656602
+  var valid_402656603 = header.getOrDefault("X-Amz-Signature")
+  valid_402656603 = validateParameter(valid_402656603, JString,
+                                      required = false, default = nil)
+  if valid_402656603 != nil:
+    section.add "X-Amz-Signature", valid_402656603
+  var valid_402656604 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656604 = validateParameter(valid_402656604, JString,
+                                      required = false, default = nil)
+  if valid_402656604 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656604
+  var valid_402656605 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656605 = validateParameter(valid_402656605, JString,
+                                      required = false, default = nil)
+  if valid_402656605 != nil:
+    section.add "X-Amz-Algorithm", valid_402656605
+  var valid_402656606 = header.getOrDefault("X-Amz-Date")
+  valid_402656606 = validateParameter(valid_402656606, JString,
+                                      required = false, default = nil)
+  if valid_402656606 != nil:
+    section.add "X-Amz-Date", valid_402656606
+  var valid_402656607 = header.getOrDefault("X-Amz-Credential")
+  valid_402656607 = validateParameter(valid_402656607, JString,
+                                      required = false, default = nil)
+  if valid_402656607 != nil:
+    section.add "X-Amz-Credential", valid_402656607
+  var valid_402656608 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656608 = validateParameter(valid_402656608, JString,
+                                      required = false, default = nil)
+  if valid_402656608 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656608
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626162: Call_ListProfilingGroups_21626149; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656609: Call_ListProfilingGroups_402656596;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## List profiling groups in the account.
-  ## 
-  let valid = call_21626162.validator(path, query, header, formData, body, _)
-  let scheme = call_21626162.pickScheme
+                                                                                         ## 
+  let valid = call_402656609.validator(path, query, header, formData, body, _)
+  let scheme = call_402656609.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626162.makeUrl(scheme.get, call_21626162.host, call_21626162.base,
-                               call_21626162.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626162, uri, valid, _)
+  let uri = call_402656609.makeUrl(scheme.get, call_402656609.host, call_402656609.base,
+                                   call_402656609.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656609, uri, valid, _)
 
-proc call*(call_21626163: Call_ListProfilingGroups_21626149;
-          includeDescription: bool = false; maxResults: int = 0; nextToken: string = ""): Recallable =
+proc call*(call_402656610: Call_ListProfilingGroups_402656596;
+           maxResults: int = 0; nextToken: string = "";
+           includeDescription: bool = false): Recallable =
   ## listProfilingGroups
   ## List profiling groups in the account.
-  ##   includeDescription: bool
-  ##                     : If set to true, returns the full description of the profiling groups instead of the names. Defaults to false.
   ##   maxResults: int
-  ##             : Upper bound on the number of results to list in a single call.
-  ##   nextToken: string
-  ##            : Token for paginating results.
-  var query_21626164 = newJObject()
-  add(query_21626164, "includeDescription", newJBool(includeDescription))
-  add(query_21626164, "maxResults", newJInt(maxResults))
-  add(query_21626164, "nextToken", newJString(nextToken))
-  result = call_21626163.call(nil, query_21626164, nil, nil, nil)
+                                          ##             : Upper bound on the number of results to list in a single call.
+  ##   
+                                                                                                                         ## nextToken: string
+                                                                                                                         ##            
+                                                                                                                         ## : 
+                                                                                                                         ## Token 
+                                                                                                                         ## for 
+                                                                                                                         ## paginating 
+                                                                                                                         ## results.
+  ##   
+                                                                                                                                    ## includeDescription: bool
+                                                                                                                                    ##                     
+                                                                                                                                    ## : 
+                                                                                                                                    ## If 
+                                                                                                                                    ## set 
+                                                                                                                                    ## to 
+                                                                                                                                    ## true, 
+                                                                                                                                    ## returns 
+                                                                                                                                    ## the 
+                                                                                                                                    ## full 
+                                                                                                                                    ## description 
+                                                                                                                                    ## of 
+                                                                                                                                    ## the 
+                                                                                                                                    ## profiling 
+                                                                                                                                    ## groups 
+                                                                                                                                    ## instead 
+                                                                                                                                    ## of 
+                                                                                                                                    ## the 
+                                                                                                                                    ## names. 
+                                                                                                                                    ## Defaults 
+                                                                                                                                    ## to 
+                                                                                                                                    ## false.
+  var query_402656611 = newJObject()
+  add(query_402656611, "maxResults", newJInt(maxResults))
+  add(query_402656611, "nextToken", newJString(nextToken))
+  add(query_402656611, "includeDescription", newJBool(includeDescription))
+  result = call_402656610.call(nil, query_402656611, nil, nil, nil)
 
-var listProfilingGroups* = Call_ListProfilingGroups_21626149(
+var listProfilingGroups* = Call_ListProfilingGroups_402656596(
     name: "listProfilingGroups", meth: HttpMethod.HttpGet,
     host: "codeguru-profiler.amazonaws.com", route: "/profilingGroups",
-    validator: validate_ListProfilingGroups_21626150, base: "/",
-    makeUrl: url_ListProfilingGroups_21626151,
+    validator: validate_ListProfilingGroups_402656597, base: "/",
+    makeUrl: url_ListProfilingGroups_402656598,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostAgentProfile_21626165 = ref object of OpenApiRestCall_21625435
-proc url_PostAgentProfile_21626167(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PostAgentProfile_402656612 = ref object of OpenApiRestCall_402656038
+proc url_PostAgentProfile_402656614(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "profilingGroupName" in path,
-        "`profilingGroupName` is a required path parameter"
+         "`profilingGroupName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/profilingGroups/"),
-               (kind: VariableSegment, value: "profilingGroupName"),
-               (kind: ConstantSegment, value: "/agentProfile#Content-Type")]
+                 (kind: VariableSegment, value: "profilingGroupName"),
+                 (kind: ConstantSegment, value: "/agentProfile#Content-Type")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1277,89 +1652,87 @@ proc url_PostAgentProfile_21626167(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_PostAgentProfile_21626166(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
+proc validate_PostAgentProfile_402656613(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Submit profile collected by an agent belonging to a profiling group for aggregation.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   profilingGroupName: JString (required)
-  ##                     : The name of the profiling group.
+                                 ##                     : The name of the profiling group.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `profilingGroupName` field"
-  var valid_21626168 = path.getOrDefault("profilingGroupName")
-  valid_21626168 = validateParameter(valid_21626168, JString, required = true,
-                                   default = nil)
-  if valid_21626168 != nil:
-    section.add "profilingGroupName", valid_21626168
+  assert path != nil, "path argument is necessary due to required `profilingGroupName` field"
+  var valid_402656615 = path.getOrDefault("profilingGroupName")
+  valid_402656615 = validateParameter(valid_402656615, JString, required = true,
+                                      default = nil)
+  if valid_402656615 != nil:
+    section.add "profilingGroupName", valid_402656615
   result.add "path", section
   ## parameters in `query` object:
   ##   profileToken: JString
-  ##               : Client token for the request.
+                                  ##               : Client token for the request.
   section = newJObject()
-  var valid_21626169 = query.getOrDefault("profileToken")
-  valid_21626169 = validateParameter(valid_21626169, JString, required = false,
-                                   default = nil)
-  if valid_21626169 != nil:
-    section.add "profileToken", valid_21626169
+  var valid_402656616 = query.getOrDefault("profileToken")
+  valid_402656616 = validateParameter(valid_402656616, JString,
+                                      required = false, default = nil)
+  if valid_402656616 != nil:
+    section.add "profileToken", valid_402656616
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   Content-Type: JString (required)
-  ##               : The content type of the agent profile in the payload. Recommended to send the profile gzipped with content-type application/octet-stream. Other accepted values are application/x-amzn-ion and application/json for unzipped Ion and JSON respectively.
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   Content-Type: JString (required)
+                                   ##               : The content type of the agent profile in the payload. Recommended to send the profile gzipped with content-type application/octet-stream. Other accepted values are application/x-amzn-ion and application/json for unzipped Ion and JSON respectively.
   section = newJObject()
-  var valid_21626170 = header.getOrDefault("X-Amz-Date")
-  valid_21626170 = validateParameter(valid_21626170, JString, required = false,
-                                   default = nil)
-  if valid_21626170 != nil:
-    section.add "X-Amz-Date", valid_21626170
-  var valid_21626171 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626171 = validateParameter(valid_21626171, JString, required = false,
-                                   default = nil)
-  if valid_21626171 != nil:
-    section.add "X-Amz-Security-Token", valid_21626171
-  var valid_21626172 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626172 = validateParameter(valid_21626172, JString, required = false,
-                                   default = nil)
-  if valid_21626172 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626172
+  var valid_402656617 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656617 = validateParameter(valid_402656617, JString,
+                                      required = false, default = nil)
+  if valid_402656617 != nil:
+    section.add "X-Amz-Security-Token", valid_402656617
+  var valid_402656618 = header.getOrDefault("X-Amz-Signature")
+  valid_402656618 = validateParameter(valid_402656618, JString,
+                                      required = false, default = nil)
+  if valid_402656618 != nil:
+    section.add "X-Amz-Signature", valid_402656618
+  var valid_402656619 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656619 = validateParameter(valid_402656619, JString,
+                                      required = false, default = nil)
+  if valid_402656619 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656619
+  var valid_402656620 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656620 = validateParameter(valid_402656620, JString,
+                                      required = false, default = nil)
+  if valid_402656620 != nil:
+    section.add "X-Amz-Algorithm", valid_402656620
+  var valid_402656621 = header.getOrDefault("X-Amz-Date")
+  valid_402656621 = validateParameter(valid_402656621, JString,
+                                      required = false, default = nil)
+  if valid_402656621 != nil:
+    section.add "X-Amz-Date", valid_402656621
+  var valid_402656622 = header.getOrDefault("X-Amz-Credential")
+  valid_402656622 = validateParameter(valid_402656622, JString,
+                                      required = false, default = nil)
+  if valid_402656622 != nil:
+    section.add "X-Amz-Credential", valid_402656622
+  var valid_402656623 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656623 = validateParameter(valid_402656623, JString,
+                                      required = false, default = nil)
+  if valid_402656623 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656623
   assert header != nil,
-        "header argument is necessary due to required `Content-Type` field"
-  var valid_21626173 = header.getOrDefault("Content-Type")
-  valid_21626173 = validateParameter(valid_21626173, JString, required = true,
-                                   default = nil)
-  if valid_21626173 != nil:
-    section.add "Content-Type", valid_21626173
-  var valid_21626174 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626174 = validateParameter(valid_21626174, JString, required = false,
-                                   default = nil)
-  if valid_21626174 != nil:
-    section.add "X-Amz-Algorithm", valid_21626174
-  var valid_21626175 = header.getOrDefault("X-Amz-Signature")
-  valid_21626175 = validateParameter(valid_21626175, JString, required = false,
-                                   default = nil)
-  if valid_21626175 != nil:
-    section.add "X-Amz-Signature", valid_21626175
-  var valid_21626176 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626176 = validateParameter(valid_21626176, JString, required = false,
-                                   default = nil)
-  if valid_21626176 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626176
-  var valid_21626177 = header.getOrDefault("X-Amz-Credential")
-  valid_21626177 = validateParameter(valid_21626177, JString, required = false,
-                                   default = nil)
-  if valid_21626177 != nil:
-    section.add "X-Amz-Credential", valid_21626177
+         "header argument is necessary due to required `Content-Type` field"
+  var valid_402656624 = header.getOrDefault("Content-Type")
+  valid_402656624 = validateParameter(valid_402656624, JString, required = true,
+                                      default = nil)
+  if valid_402656624 != nil:
+    section.add "Content-Type", valid_402656624
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1371,43 +1744,62 @@ proc validate_PostAgentProfile_21626166(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626179: Call_PostAgentProfile_21626165; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656626: Call_PostAgentProfile_402656612;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Submit profile collected by an agent belonging to a profiling group for aggregation.
-  ## 
-  let valid = call_21626179.validator(path, query, header, formData, body, _)
-  let scheme = call_21626179.pickScheme
+                                                                                         ## 
+  let valid = call_402656626.validator(path, query, header, formData, body, _)
+  let scheme = call_402656626.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626179.makeUrl(scheme.get, call_21626179.host, call_21626179.base,
-                               call_21626179.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626179, uri, valid, _)
+  let uri = call_402656626.makeUrl(scheme.get, call_402656626.host, call_402656626.base,
+                                   call_402656626.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656626, uri, valid, _)
 
-proc call*(call_21626180: Call_PostAgentProfile_21626165;
-          profilingGroupName: string; body: JsonNode; profileToken: string = ""): Recallable =
+proc call*(call_402656627: Call_PostAgentProfile_402656612;
+           profilingGroupName: string; body: JsonNode; profileToken: string = ""): Recallable =
   ## postAgentProfile
   ## Submit profile collected by an agent belonging to a profiling group for aggregation.
-  ##   profilingGroupName: string (required)
-  ##                     : The name of the profiling group.
-  ##   profileToken: string
-  ##               : Client token for the request.
-  ##   body: JObject (required)
-  var path_21626181 = newJObject()
-  var query_21626182 = newJObject()
-  var body_21626183 = newJObject()
-  add(path_21626181, "profilingGroupName", newJString(profilingGroupName))
-  add(query_21626182, "profileToken", newJString(profileToken))
+  ##   
+                                                                                         ## profilingGroupName: string (required)
+                                                                                         ##                     
+                                                                                         ## : 
+                                                                                         ## The 
+                                                                                         ## name 
+                                                                                         ## of 
+                                                                                         ## the 
+                                                                                         ## profiling 
+                                                                                         ## group.
+  ##   
+                                                                                                  ## body: JObject (required)
+  ##   
+                                                                                                                             ## profileToken: string
+                                                                                                                             ##               
+                                                                                                                             ## : 
+                                                                                                                             ## Client 
+                                                                                                                             ## token 
+                                                                                                                             ## for 
+                                                                                                                             ## the 
+                                                                                                                             ## request.
+  var path_402656628 = newJObject()
+  var query_402656629 = newJObject()
+  var body_402656630 = newJObject()
+  add(path_402656628, "profilingGroupName", newJString(profilingGroupName))
   if body != nil:
-    body_21626183 = body
-  result = call_21626180.call(path_21626181, query_21626182, nil, nil, body_21626183)
+    body_402656630 = body
+  add(query_402656629, "profileToken", newJString(profileToken))
+  result = call_402656627.call(path_402656628, query_402656629, nil, nil, body_402656630)
 
-var postAgentProfile* = Call_PostAgentProfile_21626165(name: "postAgentProfile",
-    meth: HttpMethod.HttpPost, host: "codeguru-profiler.amazonaws.com",
+var postAgentProfile* = Call_PostAgentProfile_402656612(
+    name: "postAgentProfile", meth: HttpMethod.HttpPost,
+    host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}/agentProfile#Content-Type",
-    validator: validate_PostAgentProfile_21626166, base: "/",
-    makeUrl: url_PostAgentProfile_21626167, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostAgentProfile_402656613, base: "/",
+    makeUrl: url_PostAgentProfile_402656614,
+    schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -1439,8 +1831,10 @@ sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 type
   XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+    SecurityToken = "X-Amz-Security-Token",
+    ContentSha256 = "X-Amz-Content-Sha256"
+proc atozSign(recall: var Recallable; query: JsonNode;
+              algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
@@ -1465,12 +1859,14 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers["X-Amz-Date"] = date
   recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    scope = credentialScope(region = region, service = awsServiceName, date = date)
-    request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
-                             normalize = normal, digest = algo)
+    scope = credentialScope(region = region, service = awsServiceName,
+                            date = date)
+    request = canonicalRequest(recall.meth, $url, query, recall.headers,
+                               recall.body, normalize = normal, digest = algo)
     sts = stringToSign(request.hash(algo), scope, date = date, digest = algo)
-    signature = calculateSignature(secret = secret, date = date, region = region,
-                                 service = awsServiceName, sts, digest = algo)
+    signature = calculateSignature(secret = secret, date = date,
+                                   region = region, service = awsServiceName,
+                                   sts, digest = algo)
   var auth = $algo & " "
   auth &= "Credential=" & access / scope & ", "
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "

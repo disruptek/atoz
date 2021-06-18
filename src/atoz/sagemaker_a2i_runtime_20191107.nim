@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
-  httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5,
+  base64, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Augmented AI Runtime
@@ -16,11 +16,11 @@ import
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/sagemaker/
 type
-  Scheme {.pure.} = enum
+  Scheme* {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
   ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
-                          header: JsonNode = nil; formData: JsonNode = nil;
-                          body: JsonNode = nil; _: string = ""): JsonNode
+                             header: JsonNode = nil; formData: JsonNode = nil;
+                             body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
@@ -28,17 +28,18 @@ type
     host*: string
     schemes*: set[Scheme]
     makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
-                  path: JsonNode; query: JsonNode): Uri
+                    path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_21625426 = ref object of OpenApiRestCall
+  OpenApiRestCall_402656038 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_21625426](t: T): T {.used.} =
-  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
-           schemes: t.schemes, validator: t.validator, url: t.url)
+proc clone[T: OpenApiRestCall_402656038](t: T): T {.used.} =
+  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base,
+             route: t.route, schemes: t.schemes, validator: t.validator,
+             url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_21625426): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_402656038): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -51,9 +52,9 @@ proc pickScheme(t: OpenApiRestCall_21625426): Option[Scheme] {.used.} =
     return some(scheme)
 
 proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
-                      default: JsonNode = nil): JsonNode =
+                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
-  ## a suitable default value when appropriate
+                                                            ## a suitable default value when appropriate
   if js == nil:
     if required:
       if default != nil:
@@ -79,7 +80,8 @@ proc queryString(query: JsonNode): string {.used.} =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.
+    used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -105,7 +107,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
   result = some(head & remainder.get)
 
 const
-  awsServers = {Scheme.Http: {"ap-northeast-1": "a2i-runtime.sagemaker.ap-northeast-1.amazonaws.com", "ap-southeast-1": "a2i-runtime.sagemaker.ap-southeast-1.amazonaws.com", "us-west-2": "a2i-runtime.sagemaker.us-west-2.amazonaws.com", "eu-west-2": "a2i-runtime.sagemaker.eu-west-2.amazonaws.com", "ap-northeast-3": "a2i-runtime.sagemaker.ap-northeast-3.amazonaws.com", "eu-central-1": "a2i-runtime.sagemaker.eu-central-1.amazonaws.com", "us-east-2": "a2i-runtime.sagemaker.us-east-2.amazonaws.com", "us-east-1": "a2i-runtime.sagemaker.us-east-1.amazonaws.com", "cn-northwest-1": "a2i-runtime.sagemaker.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "a2i-runtime.sagemaker.ap-south-1.amazonaws.com", "eu-north-1": "a2i-runtime.sagemaker.eu-north-1.amazonaws.com", "ap-northeast-2": "a2i-runtime.sagemaker.ap-northeast-2.amazonaws.com", "us-west-1": "a2i-runtime.sagemaker.us-west-1.amazonaws.com", "us-gov-east-1": "a2i-runtime.sagemaker.us-gov-east-1.amazonaws.com", "eu-west-3": "a2i-runtime.sagemaker.eu-west-3.amazonaws.com", "cn-north-1": "a2i-runtime.sagemaker.cn-north-1.amazonaws.com.cn", "sa-east-1": "a2i-runtime.sagemaker.sa-east-1.amazonaws.com", "eu-west-1": "a2i-runtime.sagemaker.eu-west-1.amazonaws.com", "us-gov-west-1": "a2i-runtime.sagemaker.us-gov-west-1.amazonaws.com", "ap-southeast-2": "a2i-runtime.sagemaker.ap-southeast-2.amazonaws.com", "ca-central-1": "a2i-runtime.sagemaker.ca-central-1.amazonaws.com"}.toTable, Scheme.Https: {
+  awsServers = {Scheme.Https: {"ap-northeast-1": "a2i-runtime.sagemaker.ap-northeast-1.amazonaws.com", "ap-southeast-1": "a2i-runtime.sagemaker.ap-southeast-1.amazonaws.com", "us-west-2": "a2i-runtime.sagemaker.us-west-2.amazonaws.com", "eu-west-2": "a2i-runtime.sagemaker.eu-west-2.amazonaws.com", "ap-northeast-3": "a2i-runtime.sagemaker.ap-northeast-3.amazonaws.com", "eu-central-1": "a2i-runtime.sagemaker.eu-central-1.amazonaws.com", "us-east-2": "a2i-runtime.sagemaker.us-east-2.amazonaws.com", "us-east-1": "a2i-runtime.sagemaker.us-east-1.amazonaws.com", "cn-northwest-1": "a2i-runtime.sagemaker.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "a2i-runtime.sagemaker.ap-south-1.amazonaws.com", "eu-north-1": "a2i-runtime.sagemaker.eu-north-1.amazonaws.com", "ap-northeast-2": "a2i-runtime.sagemaker.ap-northeast-2.amazonaws.com", "us-west-1": "a2i-runtime.sagemaker.us-west-1.amazonaws.com", "us-gov-east-1": "a2i-runtime.sagemaker.us-gov-east-1.amazonaws.com", "eu-west-3": "a2i-runtime.sagemaker.eu-west-3.amazonaws.com", "cn-north-1": "a2i-runtime.sagemaker.cn-north-1.amazonaws.com.cn", "sa-east-1": "a2i-runtime.sagemaker.sa-east-1.amazonaws.com", "eu-west-1": "a2i-runtime.sagemaker.eu-west-1.amazonaws.com", "us-gov-west-1": "a2i-runtime.sagemaker.us-gov-west-1.amazonaws.com", "ap-southeast-2": "a2i-runtime.sagemaker.ap-southeast-2.amazonaws.com", "ca-central-1": "a2i-runtime.sagemaker.ca-central-1.amazonaws.com"}.toTable, Scheme.Http: {
       "ap-northeast-1": "a2i-runtime.sagemaker.ap-northeast-1.amazonaws.com",
       "ap-southeast-1": "a2i-runtime.sagemaker.ap-southeast-1.amazonaws.com",
       "us-west-2": "a2i-runtime.sagemaker.us-west-2.amazonaws.com",
@@ -128,12 +130,13 @@ const
       "ca-central-1": "a2i-runtime.sagemaker.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "sagemaker-a2i-runtime"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
-    base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode;
+                body: string = ""): Recallable {.base.}
 type
-  Call_DescribeHumanLoop_21625770 = ref object of OpenApiRestCall_21625426
-proc url_DescribeHumanLoop_21625772(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeHumanLoop_402656288 = ref object of OpenApiRestCall_402656038
+proc url_DescribeHumanLoop_402656290(protocol: Scheme; host: string;
+                                     base: string; route: string;
+                                     path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -141,7 +144,7 @@ proc url_DescribeHumanLoop_21625772(protocol: Scheme; host: string; base: string
   assert "HumanLoopName" in path, "`HumanLoopName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/human-loops/"),
-               (kind: VariableSegment, value: "HumanLoopName")]
+                 (kind: VariableSegment, value: "HumanLoopName")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -150,110 +153,114 @@ proc url_DescribeHumanLoop_21625772(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeHumanLoop_21625771(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode {.
+proc validate_DescribeHumanLoop_402656289(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Returns information about the specified human loop.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   HumanLoopName: JString (required)
-  ##                : The name of the human loop.
+                                 ##                : The name of the human loop.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `HumanLoopName` field"
-  var valid_21625886 = path.getOrDefault("HumanLoopName")
-  valid_21625886 = validateParameter(valid_21625886, JString, required = true,
-                                   default = nil)
-  if valid_21625886 != nil:
-    section.add "HumanLoopName", valid_21625886
+         "path argument is necessary due to required `HumanLoopName` field"
+  var valid_402656380 = path.getOrDefault("HumanLoopName")
+  valid_402656380 = validateParameter(valid_402656380, JString, required = true,
+                                      default = nil)
+  if valid_402656380 != nil:
+    section.add "HumanLoopName", valid_402656380
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21625887 = header.getOrDefault("X-Amz-Date")
-  valid_21625887 = validateParameter(valid_21625887, JString, required = false,
-                                   default = nil)
-  if valid_21625887 != nil:
-    section.add "X-Amz-Date", valid_21625887
-  var valid_21625888 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21625888 = validateParameter(valid_21625888, JString, required = false,
-                                   default = nil)
-  if valid_21625888 != nil:
-    section.add "X-Amz-Security-Token", valid_21625888
-  var valid_21625889 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21625889 = validateParameter(valid_21625889, JString, required = false,
-                                   default = nil)
-  if valid_21625889 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21625889
-  var valid_21625890 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21625890 = validateParameter(valid_21625890, JString, required = false,
-                                   default = nil)
-  if valid_21625890 != nil:
-    section.add "X-Amz-Algorithm", valid_21625890
-  var valid_21625891 = header.getOrDefault("X-Amz-Signature")
-  valid_21625891 = validateParameter(valid_21625891, JString, required = false,
-                                   default = nil)
-  if valid_21625891 != nil:
-    section.add "X-Amz-Signature", valid_21625891
-  var valid_21625892 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21625892 = validateParameter(valid_21625892, JString, required = false,
-                                   default = nil)
-  if valid_21625892 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21625892
-  var valid_21625893 = header.getOrDefault("X-Amz-Credential")
-  valid_21625893 = validateParameter(valid_21625893, JString, required = false,
-                                   default = nil)
-  if valid_21625893 != nil:
-    section.add "X-Amz-Credential", valid_21625893
+  var valid_402656381 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656381 = validateParameter(valid_402656381, JString,
+                                      required = false, default = nil)
+  if valid_402656381 != nil:
+    section.add "X-Amz-Security-Token", valid_402656381
+  var valid_402656382 = header.getOrDefault("X-Amz-Signature")
+  valid_402656382 = validateParameter(valid_402656382, JString,
+                                      required = false, default = nil)
+  if valid_402656382 != nil:
+    section.add "X-Amz-Signature", valid_402656382
+  var valid_402656383 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656383 = validateParameter(valid_402656383, JString,
+                                      required = false, default = nil)
+  if valid_402656383 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656383
+  var valid_402656384 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656384 = validateParameter(valid_402656384, JString,
+                                      required = false, default = nil)
+  if valid_402656384 != nil:
+    section.add "X-Amz-Algorithm", valid_402656384
+  var valid_402656385 = header.getOrDefault("X-Amz-Date")
+  valid_402656385 = validateParameter(valid_402656385, JString,
+                                      required = false, default = nil)
+  if valid_402656385 != nil:
+    section.add "X-Amz-Date", valid_402656385
+  var valid_402656386 = header.getOrDefault("X-Amz-Credential")
+  valid_402656386 = validateParameter(valid_402656386, JString,
+                                      required = false, default = nil)
+  if valid_402656386 != nil:
+    section.add "X-Amz-Credential", valid_402656386
+  var valid_402656387 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656387 = validateParameter(valid_402656387, JString,
+                                      required = false, default = nil)
+  if valid_402656387 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656387
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21625918: Call_DescribeHumanLoop_21625770; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656401: Call_DescribeHumanLoop_402656288;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Returns information about the specified human loop.
-  ## 
-  let valid = call_21625918.validator(path, query, header, formData, body, _)
-  let scheme = call_21625918.pickScheme
+                                                                                         ## 
+  let valid = call_402656401.validator(path, query, header, formData, body, _)
+  let scheme = call_402656401.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21625918.makeUrl(scheme.get, call_21625918.host, call_21625918.base,
-                               call_21625918.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21625918, uri, valid, _)
+  let uri = call_402656401.makeUrl(scheme.get, call_402656401.host, call_402656401.base,
+                                   call_402656401.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656401, uri, valid, _)
 
-proc call*(call_21625981: Call_DescribeHumanLoop_21625770; HumanLoopName: string): Recallable =
+proc call*(call_402656450: Call_DescribeHumanLoop_402656288;
+           HumanLoopName: string): Recallable =
   ## describeHumanLoop
   ## Returns information about the specified human loop.
   ##   HumanLoopName: string (required)
-  ##                : The name of the human loop.
-  var path_21625983 = newJObject()
-  add(path_21625983, "HumanLoopName", newJString(HumanLoopName))
-  result = call_21625981.call(path_21625983, nil, nil, nil, nil)
+                                                        ##                : The name of the human loop.
+  var path_402656451 = newJObject()
+  add(path_402656451, "HumanLoopName", newJString(HumanLoopName))
+  result = call_402656450.call(path_402656451, nil, nil, nil, nil)
 
-var describeHumanLoop* = Call_DescribeHumanLoop_21625770(name: "describeHumanLoop",
-    meth: HttpMethod.HttpGet, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops/{HumanLoopName}", validator: validate_DescribeHumanLoop_21625771,
-    base: "/", makeUrl: url_DescribeHumanLoop_21625772,
+var describeHumanLoop* = Call_DescribeHumanLoop_402656288(
+    name: "describeHumanLoop", meth: HttpMethod.HttpGet,
+    host: "a2i-runtime.sagemaker.amazonaws.com",
+    route: "/human-loops/{HumanLoopName}",
+    validator: validate_DescribeHumanLoop_402656289, base: "/",
+    makeUrl: url_DescribeHumanLoop_402656290,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteHumanLoop_21626021 = ref object of OpenApiRestCall_21625426
-proc url_DeleteHumanLoop_21626023(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteHumanLoop_402656481 = ref object of OpenApiRestCall_402656038
+proc url_DeleteHumanLoop_402656483(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode;
+                                   query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -261,7 +268,7 @@ proc url_DeleteHumanLoop_21626023(protocol: Scheme; host: string; base: string;
   assert "HumanLoopName" in path, "`HumanLoopName` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/human-loops/"),
-               (kind: VariableSegment, value: "HumanLoopName")]
+                 (kind: VariableSegment, value: "HumanLoopName")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -270,110 +277,111 @@ proc url_DeleteHumanLoop_21626023(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteHumanLoop_21626022(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode; _: string = ""): JsonNode {.
+proc validate_DeleteHumanLoop_402656482(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Deletes the specified human loop for a flow definition.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   HumanLoopName: JString (required)
-  ##                : The name of the human loop you want to delete.
+                                 ##                : The name of the human loop you want to delete.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `HumanLoopName` field"
-  var valid_21626024 = path.getOrDefault("HumanLoopName")
-  valid_21626024 = validateParameter(valid_21626024, JString, required = true,
-                                   default = nil)
-  if valid_21626024 != nil:
-    section.add "HumanLoopName", valid_21626024
+         "path argument is necessary due to required `HumanLoopName` field"
+  var valid_402656484 = path.getOrDefault("HumanLoopName")
+  valid_402656484 = validateParameter(valid_402656484, JString, required = true,
+                                      default = nil)
+  if valid_402656484 != nil:
+    section.add "HumanLoopName", valid_402656484
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626025 = header.getOrDefault("X-Amz-Date")
-  valid_21626025 = validateParameter(valid_21626025, JString, required = false,
-                                   default = nil)
-  if valid_21626025 != nil:
-    section.add "X-Amz-Date", valid_21626025
-  var valid_21626026 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626026 = validateParameter(valid_21626026, JString, required = false,
-                                   default = nil)
-  if valid_21626026 != nil:
-    section.add "X-Amz-Security-Token", valid_21626026
-  var valid_21626027 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626027 = validateParameter(valid_21626027, JString, required = false,
-                                   default = nil)
-  if valid_21626027 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626027
-  var valid_21626028 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626028 = validateParameter(valid_21626028, JString, required = false,
-                                   default = nil)
-  if valid_21626028 != nil:
-    section.add "X-Amz-Algorithm", valid_21626028
-  var valid_21626029 = header.getOrDefault("X-Amz-Signature")
-  valid_21626029 = validateParameter(valid_21626029, JString, required = false,
-                                   default = nil)
-  if valid_21626029 != nil:
-    section.add "X-Amz-Signature", valid_21626029
-  var valid_21626030 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626030 = validateParameter(valid_21626030, JString, required = false,
-                                   default = nil)
-  if valid_21626030 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626030
-  var valid_21626031 = header.getOrDefault("X-Amz-Credential")
-  valid_21626031 = validateParameter(valid_21626031, JString, required = false,
-                                   default = nil)
-  if valid_21626031 != nil:
-    section.add "X-Amz-Credential", valid_21626031
+  var valid_402656485 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656485 = validateParameter(valid_402656485, JString,
+                                      required = false, default = nil)
+  if valid_402656485 != nil:
+    section.add "X-Amz-Security-Token", valid_402656485
+  var valid_402656486 = header.getOrDefault("X-Amz-Signature")
+  valid_402656486 = validateParameter(valid_402656486, JString,
+                                      required = false, default = nil)
+  if valid_402656486 != nil:
+    section.add "X-Amz-Signature", valid_402656486
+  var valid_402656487 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656487 = validateParameter(valid_402656487, JString,
+                                      required = false, default = nil)
+  if valid_402656487 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656487
+  var valid_402656488 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656488 = validateParameter(valid_402656488, JString,
+                                      required = false, default = nil)
+  if valid_402656488 != nil:
+    section.add "X-Amz-Algorithm", valid_402656488
+  var valid_402656489 = header.getOrDefault("X-Amz-Date")
+  valid_402656489 = validateParameter(valid_402656489, JString,
+                                      required = false, default = nil)
+  if valid_402656489 != nil:
+    section.add "X-Amz-Date", valid_402656489
+  var valid_402656490 = header.getOrDefault("X-Amz-Credential")
+  valid_402656490 = validateParameter(valid_402656490, JString,
+                                      required = false, default = nil)
+  if valid_402656490 != nil:
+    section.add "X-Amz-Credential", valid_402656490
+  var valid_402656491 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656491 = validateParameter(valid_402656491, JString,
+                                      required = false, default = nil)
+  if valid_402656491 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656491
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626032: Call_DeleteHumanLoop_21626021; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656492: Call_DeleteHumanLoop_402656481; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Deletes the specified human loop for a flow definition.
-  ## 
-  let valid = call_21626032.validator(path, query, header, formData, body, _)
-  let scheme = call_21626032.pickScheme
+                                                                                         ## 
+  let valid = call_402656492.validator(path, query, header, formData, body, _)
+  let scheme = call_402656492.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626032.makeUrl(scheme.get, call_21626032.host, call_21626032.base,
-                               call_21626032.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626032, uri, valid, _)
+  let uri = call_402656492.makeUrl(scheme.get, call_402656492.host, call_402656492.base,
+                                   call_402656492.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656492, uri, valid, _)
 
-proc call*(call_21626033: Call_DeleteHumanLoop_21626021; HumanLoopName: string): Recallable =
+proc call*(call_402656493: Call_DeleteHumanLoop_402656481; HumanLoopName: string): Recallable =
   ## deleteHumanLoop
   ## Deletes the specified human loop for a flow definition.
   ##   HumanLoopName: string (required)
-  ##                : The name of the human loop you want to delete.
-  var path_21626034 = newJObject()
-  add(path_21626034, "HumanLoopName", newJString(HumanLoopName))
-  result = call_21626033.call(path_21626034, nil, nil, nil, nil)
+                                                            ##                : The name of the human loop you want to delete.
+  var path_402656494 = newJObject()
+  add(path_402656494, "HumanLoopName", newJString(HumanLoopName))
+  result = call_402656493.call(path_402656494, nil, nil, nil, nil)
 
-var deleteHumanLoop* = Call_DeleteHumanLoop_21626021(name: "deleteHumanLoop",
+var deleteHumanLoop* = Call_DeleteHumanLoop_402656481(name: "deleteHumanLoop",
     meth: HttpMethod.HttpDelete, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops/{HumanLoopName}", validator: validate_DeleteHumanLoop_21626022,
-    base: "/", makeUrl: url_DeleteHumanLoop_21626023,
+    route: "/human-loops/{HumanLoopName}", validator: validate_DeleteHumanLoop_402656482,
+    base: "/", makeUrl: url_DeleteHumanLoop_402656483,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartHumanLoop_21626069 = ref object of OpenApiRestCall_21625426
-proc url_StartHumanLoop_21626071(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StartHumanLoop_402656525 = ref object of OpenApiRestCall_402656038
+proc url_StartHumanLoop_402656527(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -382,12 +390,12 @@ proc url_StartHumanLoop_21626071(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StartHumanLoop_21626070(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode {.
+proc validate_StartHumanLoop_402656526(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Starts a human loop, provided that at least one activation condition is met.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -395,49 +403,49 @@ proc validate_StartHumanLoop_21626070(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626072 = header.getOrDefault("X-Amz-Date")
-  valid_21626072 = validateParameter(valid_21626072, JString, required = false,
-                                   default = nil)
-  if valid_21626072 != nil:
-    section.add "X-Amz-Date", valid_21626072
-  var valid_21626073 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626073 = validateParameter(valid_21626073, JString, required = false,
-                                   default = nil)
-  if valid_21626073 != nil:
-    section.add "X-Amz-Security-Token", valid_21626073
-  var valid_21626074 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626074 = validateParameter(valid_21626074, JString, required = false,
-                                   default = nil)
-  if valid_21626074 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626074
-  var valid_21626075 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626075 = validateParameter(valid_21626075, JString, required = false,
-                                   default = nil)
-  if valid_21626075 != nil:
-    section.add "X-Amz-Algorithm", valid_21626075
-  var valid_21626076 = header.getOrDefault("X-Amz-Signature")
-  valid_21626076 = validateParameter(valid_21626076, JString, required = false,
-                                   default = nil)
-  if valid_21626076 != nil:
-    section.add "X-Amz-Signature", valid_21626076
-  var valid_21626077 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626077 = validateParameter(valid_21626077, JString, required = false,
-                                   default = nil)
-  if valid_21626077 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626077
-  var valid_21626078 = header.getOrDefault("X-Amz-Credential")
-  valid_21626078 = validateParameter(valid_21626078, JString, required = false,
-                                   default = nil)
-  if valid_21626078 != nil:
-    section.add "X-Amz-Credential", valid_21626078
+  var valid_402656528 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656528 = validateParameter(valid_402656528, JString,
+                                      required = false, default = nil)
+  if valid_402656528 != nil:
+    section.add "X-Amz-Security-Token", valid_402656528
+  var valid_402656529 = header.getOrDefault("X-Amz-Signature")
+  valid_402656529 = validateParameter(valid_402656529, JString,
+                                      required = false, default = nil)
+  if valid_402656529 != nil:
+    section.add "X-Amz-Signature", valid_402656529
+  var valid_402656530 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656530 = validateParameter(valid_402656530, JString,
+                                      required = false, default = nil)
+  if valid_402656530 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656530
+  var valid_402656531 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656531 = validateParameter(valid_402656531, JString,
+                                      required = false, default = nil)
+  if valid_402656531 != nil:
+    section.add "X-Amz-Algorithm", valid_402656531
+  var valid_402656532 = header.getOrDefault("X-Amz-Date")
+  valid_402656532 = validateParameter(valid_402656532, JString,
+                                      required = false, default = nil)
+  if valid_402656532 != nil:
+    section.add "X-Amz-Date", valid_402656532
+  var valid_402656533 = header.getOrDefault("X-Amz-Credential")
+  valid_402656533 = validateParameter(valid_402656533, JString,
+                                      required = false, default = nil)
+  if valid_402656533 != nil:
+    section.add "X-Amz-Credential", valid_402656533
+  var valid_402656534 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656534 = validateParameter(valid_402656534, JString,
+                                      required = false, default = nil)
+  if valid_402656534 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656534
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -449,37 +457,40 @@ proc validate_StartHumanLoop_21626070(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626080: Call_StartHumanLoop_21626069; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656536: Call_StartHumanLoop_402656525; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Starts a human loop, provided that at least one activation condition is met.
-  ## 
-  let valid = call_21626080.validator(path, query, header, formData, body, _)
-  let scheme = call_21626080.pickScheme
+                                                                                         ## 
+  let valid = call_402656536.validator(path, query, header, formData, body, _)
+  let scheme = call_402656536.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626080.makeUrl(scheme.get, call_21626080.host, call_21626080.base,
-                               call_21626080.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626080, uri, valid, _)
+  let uri = call_402656536.makeUrl(scheme.get, call_402656536.host, call_402656536.base,
+                                   call_402656536.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656536, uri, valid, _)
 
-proc call*(call_21626081: Call_StartHumanLoop_21626069; body: JsonNode): Recallable =
+proc call*(call_402656537: Call_StartHumanLoop_402656525; body: JsonNode): Recallable =
   ## startHumanLoop
   ## Starts a human loop, provided that at least one activation condition is met.
-  ##   body: JObject (required)
-  var body_21626082 = newJObject()
+  ##   
+                                                                                 ## body: JObject (required)
+  var body_402656538 = newJObject()
   if body != nil:
-    body_21626082 = body
-  result = call_21626081.call(nil, nil, nil, nil, body_21626082)
+    body_402656538 = body
+  result = call_402656537.call(nil, nil, nil, nil, body_402656538)
 
-var startHumanLoop* = Call_StartHumanLoop_21626069(name: "startHumanLoop",
+var startHumanLoop* = Call_StartHumanLoop_402656525(name: "startHumanLoop",
     meth: HttpMethod.HttpPost, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops", validator: validate_StartHumanLoop_21626070, base: "/",
-    makeUrl: url_StartHumanLoop_21626071, schemes: {Scheme.Https, Scheme.Http})
+    route: "/human-loops", validator: validate_StartHumanLoop_402656526,
+    base: "/", makeUrl: url_StartHumanLoop_402656527,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHumanLoops_21626035 = ref object of OpenApiRestCall_21625426
-proc url_ListHumanLoops_21626037(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListHumanLoops_402656495 = ref object of OpenApiRestCall_402656038
+proc url_ListHumanLoops_402656497(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -488,149 +499,341 @@ proc url_ListHumanLoops_21626037(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListHumanLoops_21626036(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ListHumanLoops_402656496(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Returns information about human loops, given the specified parameters.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SortOrder: JString
-  ##            : An optional value that specifies whether you want the results sorted in <code>Ascending</code> or <code>Descending</code> order.
-  ##   CreationTimeAfter: JString
-  ##                    : (Optional) The timestamp of the date when you want the human loops to begin. For example, <code>1551000000</code>.
-  ##   NextToken: JString
-  ##            : A token to resume pagination.
   ##   CreationTimeBefore: JString
-  ##                     : (Optional) The timestamp of the date before which you want the human loops to begin. For example, <code>1550000000</code>.
-  ##   MaxResults: JInt
-  ##             : The total number of items to return. If the total number of available items is more than the value specified in <code>MaxResults</code>, then a <code>NextToken</code> will be provided in the output that you can use to resume pagination.
+                                  ##                     : (Optional) The timestamp of the date before which you want the human loops to begin. For example, <code>1550000000</code>.
+  ##   
+                                                                                                                                                                                     ## MaxResults: JInt
+                                                                                                                                                                                     ##             
+                                                                                                                                                                                     ## : 
+                                                                                                                                                                                     ## The 
+                                                                                                                                                                                     ## total 
+                                                                                                                                                                                     ## number 
+                                                                                                                                                                                     ## of 
+                                                                                                                                                                                     ## items 
+                                                                                                                                                                                     ## to 
+                                                                                                                                                                                     ## return. 
+                                                                                                                                                                                     ## If 
+                                                                                                                                                                                     ## the 
+                                                                                                                                                                                     ## total 
+                                                                                                                                                                                     ## number 
+                                                                                                                                                                                     ## of 
+                                                                                                                                                                                     ## available 
+                                                                                                                                                                                     ## items 
+                                                                                                                                                                                     ## is 
+                                                                                                                                                                                     ## more 
+                                                                                                                                                                                     ## than 
+                                                                                                                                                                                     ## the 
+                                                                                                                                                                                     ## value 
+                                                                                                                                                                                     ## specified 
+                                                                                                                                                                                     ## in 
+                                                                                                                                                                                     ## <code>MaxResults</code>, 
+                                                                                                                                                                                     ## then 
+                                                                                                                                                                                     ## a 
+                                                                                                                                                                                     ## <code>NextToken</code> 
+                                                                                                                                                                                     ## will 
+                                                                                                                                                                                     ## be 
+                                                                                                                                                                                     ## provided 
+                                                                                                                                                                                     ## in 
+                                                                                                                                                                                     ## the 
+                                                                                                                                                                                     ## output 
+                                                                                                                                                                                     ## that 
+                                                                                                                                                                                     ## you 
+                                                                                                                                                                                     ## can 
+                                                                                                                                                                                     ## use 
+                                                                                                                                                                                     ## to 
+                                                                                                                                                                                     ## resume 
+                                                                                                                                                                                     ## pagination.
+  ##   
+                                                                                                                                                                                                   ## CreationTimeAfter: JString
+                                                                                                                                                                                                   ##                    
+                                                                                                                                                                                                   ## : 
+                                                                                                                                                                                                   ## (Optional) 
+                                                                                                                                                                                                   ## The 
+                                                                                                                                                                                                   ## timestamp 
+                                                                                                                                                                                                   ## of 
+                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                   ## date 
+                                                                                                                                                                                                   ## when 
+                                                                                                                                                                                                   ## you 
+                                                                                                                                                                                                   ## want 
+                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                   ## human 
+                                                                                                                                                                                                   ## loops 
+                                                                                                                                                                                                   ## to 
+                                                                                                                                                                                                   ## begin. 
+                                                                                                                                                                                                   ## For 
+                                                                                                                                                                                                   ## example, 
+                                                                                                                                                                                                   ## <code>1551000000</code>.
+  ##   
+                                                                                                                                                                                                                              ## NextToken: JString
+                                                                                                                                                                                                                              ##            
+                                                                                                                                                                                                                              ## : 
+                                                                                                                                                                                                                              ## A 
+                                                                                                                                                                                                                              ## token 
+                                                                                                                                                                                                                              ## to 
+                                                                                                                                                                                                                              ## resume 
+                                                                                                                                                                                                                              ## pagination.
+  ##   
+                                                                                                                                                                                                                                            ## SortOrder: JString
+                                                                                                                                                                                                                                            ##            
+                                                                                                                                                                                                                                            ## : 
+                                                                                                                                                                                                                                            ## An 
+                                                                                                                                                                                                                                            ## optional 
+                                                                                                                                                                                                                                            ## value 
+                                                                                                                                                                                                                                            ## that 
+                                                                                                                                                                                                                                            ## specifies 
+                                                                                                                                                                                                                                            ## whether 
+                                                                                                                                                                                                                                            ## you 
+                                                                                                                                                                                                                                            ## want 
+                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                            ## results 
+                                                                                                                                                                                                                                            ## sorted 
+                                                                                                                                                                                                                                            ## in 
+                                                                                                                                                                                                                                            ## <code>Ascending</code> 
+                                                                                                                                                                                                                                            ## or 
+                                                                                                                                                                                                                                            ## <code>Descending</code> 
+                                                                                                                                                                                                                                            ## order.
   section = newJObject()
-  var valid_21626052 = query.getOrDefault("SortOrder")
-  valid_21626052 = validateParameter(valid_21626052, JString, required = false,
-                                   default = newJString("Ascending"))
-  if valid_21626052 != nil:
-    section.add "SortOrder", valid_21626052
-  var valid_21626053 = query.getOrDefault("CreationTimeAfter")
-  valid_21626053 = validateParameter(valid_21626053, JString, required = false,
-                                   default = nil)
-  if valid_21626053 != nil:
-    section.add "CreationTimeAfter", valid_21626053
-  var valid_21626054 = query.getOrDefault("NextToken")
-  valid_21626054 = validateParameter(valid_21626054, JString, required = false,
-                                   default = nil)
-  if valid_21626054 != nil:
-    section.add "NextToken", valid_21626054
-  var valid_21626055 = query.getOrDefault("CreationTimeBefore")
-  valid_21626055 = validateParameter(valid_21626055, JString, required = false,
-                                   default = nil)
-  if valid_21626055 != nil:
-    section.add "CreationTimeBefore", valid_21626055
-  var valid_21626056 = query.getOrDefault("MaxResults")
-  valid_21626056 = validateParameter(valid_21626056, JInt, required = false,
-                                   default = nil)
-  if valid_21626056 != nil:
-    section.add "MaxResults", valid_21626056
+  var valid_402656498 = query.getOrDefault("CreationTimeBefore")
+  valid_402656498 = validateParameter(valid_402656498, JString,
+                                      required = false, default = nil)
+  if valid_402656498 != nil:
+    section.add "CreationTimeBefore", valid_402656498
+  var valid_402656499 = query.getOrDefault("MaxResults")
+  valid_402656499 = validateParameter(valid_402656499, JInt, required = false,
+                                      default = nil)
+  if valid_402656499 != nil:
+    section.add "MaxResults", valid_402656499
+  var valid_402656500 = query.getOrDefault("CreationTimeAfter")
+  valid_402656500 = validateParameter(valid_402656500, JString,
+                                      required = false, default = nil)
+  if valid_402656500 != nil:
+    section.add "CreationTimeAfter", valid_402656500
+  var valid_402656501 = query.getOrDefault("NextToken")
+  valid_402656501 = validateParameter(valid_402656501, JString,
+                                      required = false, default = nil)
+  if valid_402656501 != nil:
+    section.add "NextToken", valid_402656501
+  var valid_402656514 = query.getOrDefault("SortOrder")
+  valid_402656514 = validateParameter(valid_402656514, JString,
+                                      required = false,
+                                      default = newJString("Ascending"))
+  if valid_402656514 != nil:
+    section.add "SortOrder", valid_402656514
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626057 = header.getOrDefault("X-Amz-Date")
-  valid_21626057 = validateParameter(valid_21626057, JString, required = false,
-                                   default = nil)
-  if valid_21626057 != nil:
-    section.add "X-Amz-Date", valid_21626057
-  var valid_21626058 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626058 = validateParameter(valid_21626058, JString, required = false,
-                                   default = nil)
-  if valid_21626058 != nil:
-    section.add "X-Amz-Security-Token", valid_21626058
-  var valid_21626059 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626059 = validateParameter(valid_21626059, JString, required = false,
-                                   default = nil)
-  if valid_21626059 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626059
-  var valid_21626060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626060 = validateParameter(valid_21626060, JString, required = false,
-                                   default = nil)
-  if valid_21626060 != nil:
-    section.add "X-Amz-Algorithm", valid_21626060
-  var valid_21626061 = header.getOrDefault("X-Amz-Signature")
-  valid_21626061 = validateParameter(valid_21626061, JString, required = false,
-                                   default = nil)
-  if valid_21626061 != nil:
-    section.add "X-Amz-Signature", valid_21626061
-  var valid_21626062 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626062 = validateParameter(valid_21626062, JString, required = false,
-                                   default = nil)
-  if valid_21626062 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626062
-  var valid_21626063 = header.getOrDefault("X-Amz-Credential")
-  valid_21626063 = validateParameter(valid_21626063, JString, required = false,
-                                   default = nil)
-  if valid_21626063 != nil:
-    section.add "X-Amz-Credential", valid_21626063
+  var valid_402656515 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656515 = validateParameter(valid_402656515, JString,
+                                      required = false, default = nil)
+  if valid_402656515 != nil:
+    section.add "X-Amz-Security-Token", valid_402656515
+  var valid_402656516 = header.getOrDefault("X-Amz-Signature")
+  valid_402656516 = validateParameter(valid_402656516, JString,
+                                      required = false, default = nil)
+  if valid_402656516 != nil:
+    section.add "X-Amz-Signature", valid_402656516
+  var valid_402656517 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656517 = validateParameter(valid_402656517, JString,
+                                      required = false, default = nil)
+  if valid_402656517 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656517
+  var valid_402656518 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656518 = validateParameter(valid_402656518, JString,
+                                      required = false, default = nil)
+  if valid_402656518 != nil:
+    section.add "X-Amz-Algorithm", valid_402656518
+  var valid_402656519 = header.getOrDefault("X-Amz-Date")
+  valid_402656519 = validateParameter(valid_402656519, JString,
+                                      required = false, default = nil)
+  if valid_402656519 != nil:
+    section.add "X-Amz-Date", valid_402656519
+  var valid_402656520 = header.getOrDefault("X-Amz-Credential")
+  valid_402656520 = validateParameter(valid_402656520, JString,
+                                      required = false, default = nil)
+  if valid_402656520 != nil:
+    section.add "X-Amz-Credential", valid_402656520
+  var valid_402656521 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656521 = validateParameter(valid_402656521, JString,
+                                      required = false, default = nil)
+  if valid_402656521 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656521
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626064: Call_ListHumanLoops_21626035; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656522: Call_ListHumanLoops_402656495; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Returns information about human loops, given the specified parameters.
-  ## 
-  let valid = call_21626064.validator(path, query, header, formData, body, _)
-  let scheme = call_21626064.pickScheme
+                                                                                         ## 
+  let valid = call_402656522.validator(path, query, header, formData, body, _)
+  let scheme = call_402656522.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626064.makeUrl(scheme.get, call_21626064.host, call_21626064.base,
-                               call_21626064.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626064, uri, valid, _)
+  let uri = call_402656522.makeUrl(scheme.get, call_402656522.host, call_402656522.base,
+                                   call_402656522.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656522, uri, valid, _)
 
-proc call*(call_21626065: Call_ListHumanLoops_21626035;
-          SortOrder: string = "Ascending"; CreationTimeAfter: string = "";
-          NextToken: string = ""; CreationTimeBefore: string = ""; MaxResults: int = 0): Recallable =
+proc call*(call_402656523: Call_ListHumanLoops_402656495;
+           CreationTimeBefore: string = ""; MaxResults: int = 0;
+           CreationTimeAfter: string = ""; NextToken: string = "";
+           SortOrder: string = "Ascending"): Recallable =
   ## listHumanLoops
   ## Returns information about human loops, given the specified parameters.
-  ##   SortOrder: string
-  ##            : An optional value that specifies whether you want the results sorted in <code>Ascending</code> or <code>Descending</code> order.
-  ##   CreationTimeAfter: string
-  ##                    : (Optional) The timestamp of the date when you want the human loops to begin. For example, <code>1551000000</code>.
-  ##   NextToken: string
-  ##            : A token to resume pagination.
-  ##   CreationTimeBefore: string
-  ##                     : (Optional) The timestamp of the date before which you want the human loops to begin. For example, <code>1550000000</code>.
-  ##   MaxResults: int
-  ##             : The total number of items to return. If the total number of available items is more than the value specified in <code>MaxResults</code>, then a <code>NextToken</code> will be provided in the output that you can use to resume pagination.
-  var query_21626066 = newJObject()
-  add(query_21626066, "SortOrder", newJString(SortOrder))
-  add(query_21626066, "CreationTimeAfter", newJString(CreationTimeAfter))
-  add(query_21626066, "NextToken", newJString(NextToken))
-  add(query_21626066, "CreationTimeBefore", newJString(CreationTimeBefore))
-  add(query_21626066, "MaxResults", newJInt(MaxResults))
-  result = call_21626065.call(nil, query_21626066, nil, nil, nil)
+  ##   
+                                                                           ## CreationTimeBefore: string
+                                                                           ##                     
+                                                                           ## : 
+                                                                           ## (Optional) 
+                                                                           ## The 
+                                                                           ## timestamp 
+                                                                           ## of 
+                                                                           ## the 
+                                                                           ## date 
+                                                                           ## before 
+                                                                           ## which 
+                                                                           ## you 
+                                                                           ## want 
+                                                                           ## the 
+                                                                           ## human 
+                                                                           ## loops 
+                                                                           ## to 
+                                                                           ## begin. 
+                                                                           ## For 
+                                                                           ## example, 
+                                                                           ## <code>1550000000</code>.
+  ##   
+                                                                                                      ## MaxResults: int
+                                                                                                      ##             
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## total 
+                                                                                                      ## number 
+                                                                                                      ## of 
+                                                                                                      ## items 
+                                                                                                      ## to 
+                                                                                                      ## return. 
+                                                                                                      ## If 
+                                                                                                      ## the 
+                                                                                                      ## total 
+                                                                                                      ## number 
+                                                                                                      ## of 
+                                                                                                      ## available 
+                                                                                                      ## items 
+                                                                                                      ## is 
+                                                                                                      ## more 
+                                                                                                      ## than 
+                                                                                                      ## the 
+                                                                                                      ## value 
+                                                                                                      ## specified 
+                                                                                                      ## in 
+                                                                                                      ## <code>MaxResults</code>, 
+                                                                                                      ## then 
+                                                                                                      ## a 
+                                                                                                      ## <code>NextToken</code> 
+                                                                                                      ## will 
+                                                                                                      ## be 
+                                                                                                      ## provided 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## output 
+                                                                                                      ## that 
+                                                                                                      ## you 
+                                                                                                      ## can 
+                                                                                                      ## use 
+                                                                                                      ## to 
+                                                                                                      ## resume 
+                                                                                                      ## pagination.
+  ##   
+                                                                                                                    ## CreationTimeAfter: string
+                                                                                                                    ##                    
+                                                                                                                    ## : 
+                                                                                                                    ## (Optional) 
+                                                                                                                    ## The 
+                                                                                                                    ## timestamp 
+                                                                                                                    ## of 
+                                                                                                                    ## the 
+                                                                                                                    ## date 
+                                                                                                                    ## when 
+                                                                                                                    ## you 
+                                                                                                                    ## want 
+                                                                                                                    ## the 
+                                                                                                                    ## human 
+                                                                                                                    ## loops 
+                                                                                                                    ## to 
+                                                                                                                    ## begin. 
+                                                                                                                    ## For 
+                                                                                                                    ## example, 
+                                                                                                                    ## <code>1551000000</code>.
+  ##   
+                                                                                                                                               ## NextToken: string
+                                                                                                                                               ##            
+                                                                                                                                               ## : 
+                                                                                                                                               ## A 
+                                                                                                                                               ## token 
+                                                                                                                                               ## to 
+                                                                                                                                               ## resume 
+                                                                                                                                               ## pagination.
+  ##   
+                                                                                                                                                             ## SortOrder: string
+                                                                                                                                                             ##            
+                                                                                                                                                             ## : 
+                                                                                                                                                             ## An 
+                                                                                                                                                             ## optional 
+                                                                                                                                                             ## value 
+                                                                                                                                                             ## that 
+                                                                                                                                                             ## specifies 
+                                                                                                                                                             ## whether 
+                                                                                                                                                             ## you 
+                                                                                                                                                             ## want 
+                                                                                                                                                             ## the 
+                                                                                                                                                             ## results 
+                                                                                                                                                             ## sorted 
+                                                                                                                                                             ## in 
+                                                                                                                                                             ## <code>Ascending</code> 
+                                                                                                                                                             ## or 
+                                                                                                                                                             ## <code>Descending</code> 
+                                                                                                                                                             ## order.
+  var query_402656524 = newJObject()
+  add(query_402656524, "CreationTimeBefore", newJString(CreationTimeBefore))
+  add(query_402656524, "MaxResults", newJInt(MaxResults))
+  add(query_402656524, "CreationTimeAfter", newJString(CreationTimeAfter))
+  add(query_402656524, "NextToken", newJString(NextToken))
+  add(query_402656524, "SortOrder", newJString(SortOrder))
+  result = call_402656523.call(nil, query_402656524, nil, nil, nil)
 
-var listHumanLoops* = Call_ListHumanLoops_21626035(name: "listHumanLoops",
+var listHumanLoops* = Call_ListHumanLoops_402656495(name: "listHumanLoops",
     meth: HttpMethod.HttpGet, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops", validator: validate_ListHumanLoops_21626036, base: "/",
-    makeUrl: url_ListHumanLoops_21626037, schemes: {Scheme.Https, Scheme.Http})
+    route: "/human-loops", validator: validate_ListHumanLoops_402656496,
+    base: "/", makeUrl: url_ListHumanLoops_402656497,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopHumanLoop_21626083 = ref object of OpenApiRestCall_21625426
-proc url_StopHumanLoop_21626085(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopHumanLoop_402656539 = ref object of OpenApiRestCall_402656038
+proc url_StopHumanLoop_402656541(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -639,11 +842,12 @@ proc url_StopHumanLoop_21626085(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopHumanLoop_21626084(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_StopHumanLoop_402656540(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## Stops the specified human loop.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -651,49 +855,49 @@ proc validate_StopHumanLoop_21626084(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626086 = header.getOrDefault("X-Amz-Date")
-  valid_21626086 = validateParameter(valid_21626086, JString, required = false,
-                                   default = nil)
-  if valid_21626086 != nil:
-    section.add "X-Amz-Date", valid_21626086
-  var valid_21626087 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626087 = validateParameter(valid_21626087, JString, required = false,
-                                   default = nil)
-  if valid_21626087 != nil:
-    section.add "X-Amz-Security-Token", valid_21626087
-  var valid_21626088 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626088 = validateParameter(valid_21626088, JString, required = false,
-                                   default = nil)
-  if valid_21626088 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626088
-  var valid_21626089 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626089 = validateParameter(valid_21626089, JString, required = false,
-                                   default = nil)
-  if valid_21626089 != nil:
-    section.add "X-Amz-Algorithm", valid_21626089
-  var valid_21626090 = header.getOrDefault("X-Amz-Signature")
-  valid_21626090 = validateParameter(valid_21626090, JString, required = false,
-                                   default = nil)
-  if valid_21626090 != nil:
-    section.add "X-Amz-Signature", valid_21626090
-  var valid_21626091 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626091 = validateParameter(valid_21626091, JString, required = false,
-                                   default = nil)
-  if valid_21626091 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626091
-  var valid_21626092 = header.getOrDefault("X-Amz-Credential")
-  valid_21626092 = validateParameter(valid_21626092, JString, required = false,
-                                   default = nil)
-  if valid_21626092 != nil:
-    section.add "X-Amz-Credential", valid_21626092
+  var valid_402656542 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656542 = validateParameter(valid_402656542, JString,
+                                      required = false, default = nil)
+  if valid_402656542 != nil:
+    section.add "X-Amz-Security-Token", valid_402656542
+  var valid_402656543 = header.getOrDefault("X-Amz-Signature")
+  valid_402656543 = validateParameter(valid_402656543, JString,
+                                      required = false, default = nil)
+  if valid_402656543 != nil:
+    section.add "X-Amz-Signature", valid_402656543
+  var valid_402656544 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656544 = validateParameter(valid_402656544, JString,
+                                      required = false, default = nil)
+  if valid_402656544 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656544
+  var valid_402656545 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656545 = validateParameter(valid_402656545, JString,
+                                      required = false, default = nil)
+  if valid_402656545 != nil:
+    section.add "X-Amz-Algorithm", valid_402656545
+  var valid_402656546 = header.getOrDefault("X-Amz-Date")
+  valid_402656546 = validateParameter(valid_402656546, JString,
+                                      required = false, default = nil)
+  if valid_402656546 != nil:
+    section.add "X-Amz-Date", valid_402656546
+  var valid_402656547 = header.getOrDefault("X-Amz-Credential")
+  valid_402656547 = validateParameter(valid_402656547, JString,
+                                      required = false, default = nil)
+  if valid_402656547 != nil:
+    section.add "X-Amz-Credential", valid_402656547
+  var valid_402656548 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656548 = validateParameter(valid_402656548, JString,
+                                      required = false, default = nil)
+  if valid_402656548 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656548
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -705,33 +909,34 @@ proc validate_StopHumanLoop_21626084(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626094: Call_StopHumanLoop_21626083; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656550: Call_StopHumanLoop_402656539; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Stops the specified human loop.
-  ## 
-  let valid = call_21626094.validator(path, query, header, formData, body, _)
-  let scheme = call_21626094.pickScheme
+                                                                                         ## 
+  let valid = call_402656550.validator(path, query, header, formData, body, _)
+  let scheme = call_402656550.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626094.makeUrl(scheme.get, call_21626094.host, call_21626094.base,
-                               call_21626094.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626094, uri, valid, _)
+  let uri = call_402656550.makeUrl(scheme.get, call_402656550.host, call_402656550.base,
+                                   call_402656550.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656550, uri, valid, _)
 
-proc call*(call_21626095: Call_StopHumanLoop_21626083; body: JsonNode): Recallable =
+proc call*(call_402656551: Call_StopHumanLoop_402656539; body: JsonNode): Recallable =
   ## stopHumanLoop
   ## Stops the specified human loop.
   ##   body: JObject (required)
-  var body_21626096 = newJObject()
+  var body_402656552 = newJObject()
   if body != nil:
-    body_21626096 = body
-  result = call_21626095.call(nil, nil, nil, nil, body_21626096)
+    body_402656552 = body
+  result = call_402656551.call(nil, nil, nil, nil, body_402656552)
 
-var stopHumanLoop* = Call_StopHumanLoop_21626083(name: "stopHumanLoop",
+var stopHumanLoop* = Call_StopHumanLoop_402656539(name: "stopHumanLoop",
     meth: HttpMethod.HttpPost, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops/stop", validator: validate_StopHumanLoop_21626084,
-    base: "/", makeUrl: url_StopHumanLoop_21626085,
+    route: "/human-loops/stop", validator: validate_StopHumanLoop_402656540,
+    base: "/", makeUrl: url_StopHumanLoop_402656541,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -764,8 +969,10 @@ sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 type
   XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+    SecurityToken = "X-Amz-Security-Token",
+    ContentSha256 = "X-Amz-Content-Sha256"
+proc atozSign(recall: var Recallable; query: JsonNode;
+              algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
@@ -790,12 +997,14 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers["X-Amz-Date"] = date
   recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    scope = credentialScope(region = region, service = awsServiceName, date = date)
-    request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
-                             normalize = normal, digest = algo)
+    scope = credentialScope(region = region, service = awsServiceName,
+                            date = date)
+    request = canonicalRequest(recall.meth, $url, query, recall.headers,
+                               recall.body, normalize = normal, digest = algo)
     sts = stringToSign(request.hash(algo), scope, date = date, digest = algo)
-    signature = calculateSignature(secret = secret, date = date, region = region,
-                                 service = awsServiceName, sts, digest = algo)
+    signature = calculateSignature(secret = secret, date = date,
+                                   region = region, service = awsServiceName,
+                                   sts, digest = algo)
   var auth = $algo & " "
   auth &= "Credential=" & access / scope & ", "
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "

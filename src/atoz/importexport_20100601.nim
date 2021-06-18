@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
-  httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5,
+  base64, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS Import/Export
@@ -16,11 +16,11 @@ import
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/importexport/
 type
-  Scheme {.pure.} = enum
+  Scheme* {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
   ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
-                          header: JsonNode = nil; formData: JsonNode = nil;
-                          body: JsonNode = nil; _: string = ""): JsonNode
+                             header: JsonNode = nil; formData: JsonNode = nil;
+                             body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
@@ -28,17 +28,18 @@ type
     host*: string
     schemes*: set[Scheme]
     makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
-                  path: JsonNode; query: JsonNode): Uri
+                    path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_21625418 = ref object of OpenApiRestCall
+  OpenApiRestCall_402656029 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_21625418](t: T): T {.used.} =
-  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
-           schemes: t.schemes, validator: t.validator, url: t.url)
+proc clone[T: OpenApiRestCall_402656029](t: T): T {.used.} =
+  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base,
+             route: t.route, schemes: t.schemes, validator: t.validator,
+             url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_21625418): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_402656029): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -51,9 +52,9 @@ proc pickScheme(t: OpenApiRestCall_21625418): Option[Scheme] {.used.} =
     return some(scheme)
 
 proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
-                      default: JsonNode = nil): JsonNode =
+                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
-  ## a suitable default value when appropriate
+                                                            ## a suitable default value when appropriate
   if js == nil:
     if required:
       if default != nil:
@@ -79,7 +80,8 @@ proc queryString(query: JsonNode): string {.used.} =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.
+    used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -105,17 +107,17 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
   result = some(head & remainder.get)
 
 const
-  awsServers = {Scheme.Http: {"cn-northwest-1": "importexport.cn-northwest-1.amazonaws.com.cn", "cn-north-1": "importexport.cn-north-1.amazonaws.com.cn"}.toTable, Scheme.Https: {
+  awsServers = {Scheme.Https: {"cn-northwest-1": "importexport.cn-northwest-1.amazonaws.com.cn", "cn-north-1": "importexport.cn-north-1.amazonaws.com.cn"}.toTable, Scheme.Http: {
       "cn-northwest-1": "importexport.cn-northwest-1.amazonaws.com.cn",
       "cn-north-1": "importexport.cn-north-1.amazonaws.com.cn"}.toTable}.toTable
 const
   awsServiceName = "importexport"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
-    base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode;
+                body: string = ""): Recallable {.base.}
 type
-  Call_PostCancelJob_21626018 = ref object of OpenApiRestCall_21625418
-proc url_PostCancelJob_21626020(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PostCancelJob_402656475 = ref object of OpenApiRestCall_402656029
+proc url_PostCancelJob_402656477(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -124,148 +126,190 @@ proc url_PostCancelJob_21626020(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostCancelJob_21626019(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_PostCancelJob_402656476(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
   ##   Signature: JString (required)
-  ##   Action: JString (required)
   ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
   ##   AWSAccessKeyId: JString (required)
   ##   Version: JString (required)
+  ##   Action: JString (required)
+  ##   SignatureMethod: JString (required)
+  ##   SignatureVersion: JString (required)
+  ##   Operation: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626021 = query.getOrDefault("SignatureMethod")
-  valid_21626021 = validateParameter(valid_21626021, JString, required = true,
-                                   default = nil)
-  if valid_21626021 != nil:
-    section.add "SignatureMethod", valid_21626021
-  var valid_21626022 = query.getOrDefault("Signature")
-  valid_21626022 = validateParameter(valid_21626022, JString, required = true,
-                                   default = nil)
-  if valid_21626022 != nil:
-    section.add "Signature", valid_21626022
-  var valid_21626023 = query.getOrDefault("Action")
-  valid_21626023 = validateParameter(valid_21626023, JString, required = true,
-                                   default = newJString("CancelJob"))
-  if valid_21626023 != nil:
-    section.add "Action", valid_21626023
-  var valid_21626024 = query.getOrDefault("Timestamp")
-  valid_21626024 = validateParameter(valid_21626024, JString, required = true,
-                                   default = nil)
-  if valid_21626024 != nil:
-    section.add "Timestamp", valid_21626024
-  var valid_21626025 = query.getOrDefault("Operation")
-  valid_21626025 = validateParameter(valid_21626025, JString, required = true,
-                                   default = newJString("CancelJob"))
-  if valid_21626025 != nil:
-    section.add "Operation", valid_21626025
-  var valid_21626026 = query.getOrDefault("SignatureVersion")
-  valid_21626026 = validateParameter(valid_21626026, JString, required = true,
-                                   default = nil)
-  if valid_21626026 != nil:
-    section.add "SignatureVersion", valid_21626026
-  var valid_21626027 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626027 = validateParameter(valid_21626027, JString, required = true,
-                                   default = nil)
-  if valid_21626027 != nil:
-    section.add "AWSAccessKeyId", valid_21626027
-  var valid_21626028 = query.getOrDefault("Version")
-  valid_21626028 = validateParameter(valid_21626028, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626028 != nil:
-    section.add "Version", valid_21626028
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656478 = query.getOrDefault("Signature")
+  valid_402656478 = validateParameter(valid_402656478, JString, required = true,
+                                      default = nil)
+  if valid_402656478 != nil:
+    section.add "Signature", valid_402656478
+  var valid_402656479 = query.getOrDefault("Timestamp")
+  valid_402656479 = validateParameter(valid_402656479, JString, required = true,
+                                      default = nil)
+  if valid_402656479 != nil:
+    section.add "Timestamp", valid_402656479
+  var valid_402656480 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656480 = validateParameter(valid_402656480, JString, required = true,
+                                      default = nil)
+  if valid_402656480 != nil:
+    section.add "AWSAccessKeyId", valid_402656480
+  var valid_402656481 = query.getOrDefault("Version")
+  valid_402656481 = validateParameter(valid_402656481, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656481 != nil:
+    section.add "Version", valid_402656481
+  var valid_402656482 = query.getOrDefault("Action")
+  valid_402656482 = validateParameter(valid_402656482, JString, required = true,
+                                      default = newJString("CancelJob"))
+  if valid_402656482 != nil:
+    section.add "Action", valid_402656482
+  var valid_402656483 = query.getOrDefault("SignatureMethod")
+  valid_402656483 = validateParameter(valid_402656483, JString, required = true,
+                                      default = nil)
+  if valid_402656483 != nil:
+    section.add "SignatureMethod", valid_402656483
+  var valid_402656484 = query.getOrDefault("SignatureVersion")
+  valid_402656484 = validateParameter(valid_402656484, JString, required = true,
+                                      default = nil)
+  if valid_402656484 != nil:
+    section.add "SignatureVersion", valid_402656484
+  var valid_402656485 = query.getOrDefault("Operation")
+  valid_402656485 = validateParameter(valid_402656485, JString, required = true,
+                                      default = newJString("CancelJob"))
+  if valid_402656485 != nil:
+    section.add "Operation", valid_402656485
   result.add "query", section
   section = newJObject()
   result.add "header", section
   ## parameters in `formData` object:
-  ##   JobId: JString (required)
-  ##        : A unique identifier which refers to a particular job.
   ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
+                                     ##             : Specifies the version of the client tool.
+  ##   
+                                                                                               ## JobId: JString (required)
+                                                                                               ##        
+                                                                                               ## : 
+                                                                                               ## A 
+                                                                                               ## unique 
+                                                                                               ## identifier 
+                                                                                               ## which 
+                                                                                               ## refers 
+                                                                                               ## to 
+                                                                                               ## a 
+                                                                                               ## particular 
+                                                                                               ## job.
   section = newJObject()
+  var valid_402656486 = formData.getOrDefault("APIVersion")
+  valid_402656486 = validateParameter(valid_402656486, JString,
+                                      required = false, default = nil)
+  if valid_402656486 != nil:
+    section.add "APIVersion", valid_402656486
   assert formData != nil,
-        "formData argument is necessary due to required `JobId` field"
-  var valid_21626029 = formData.getOrDefault("JobId")
-  valid_21626029 = validateParameter(valid_21626029, JString, required = true,
-                                   default = nil)
-  if valid_21626029 != nil:
-    section.add "JobId", valid_21626029
-  var valid_21626030 = formData.getOrDefault("APIVersion")
-  valid_21626030 = validateParameter(valid_21626030, JString, required = false,
-                                   default = nil)
-  if valid_21626030 != nil:
-    section.add "APIVersion", valid_21626030
+         "formData argument is necessary due to required `JobId` field"
+  var valid_402656487 = formData.getOrDefault("JobId")
+  valid_402656487 = validateParameter(valid_402656487, JString, required = true,
+                                      default = nil)
+  if valid_402656487 != nil:
+    section.add "JobId", valid_402656487
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626031: Call_PostCancelJob_21626018; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656488: Call_PostCancelJob_402656475; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
-  ## 
-  let valid = call_21626031.validator(path, query, header, formData, body, _)
-  let scheme = call_21626031.pickScheme
+                                                                                         ## 
+  let valid = call_402656488.validator(path, query, header, formData, body, _)
+  let scheme = call_402656488.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626031.makeUrl(scheme.get, call_21626031.host, call_21626031.base,
-                               call_21626031.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626031, uri, valid, _)
+  let uri = call_402656488.makeUrl(scheme.get, call_402656488.host, call_402656488.base,
+                                   call_402656488.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656488, uri, valid, _)
 
-proc call*(call_21626032: Call_PostCancelJob_21626018; SignatureMethod: string;
-          Signature: string; Timestamp: string; JobId: string;
-          SignatureVersion: string; AWSAccessKeyId: string;
-          Action: string = "CancelJob"; Operation: string = "CancelJob";
-          Version: string = "2010-06-01"; APIVersion: string = ""): Recallable =
+proc call*(call_402656489: Call_PostCancelJob_402656475; Signature: string;
+           Timestamp: string; AWSAccessKeyId: string; JobId: string;
+           SignatureMethod: string; SignatureVersion: string;
+           Version: string = "2010-06-01"; APIVersion: string = "";
+           Action: string = "CancelJob"; Operation: string = "CancelJob"): Recallable =
   ## postCancelJob
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
-  ##   SignatureMethod: string (required)
-  ##   Signature: string (required)
-  ##   Action: string (required)
-  ##   Timestamp: string (required)
-  ##   JobId: string (required)
-  ##        : A unique identifier which refers to a particular job.
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  var query_21626033 = newJObject()
-  var formData_21626034 = newJObject()
-  add(query_21626033, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626033, "Signature", newJString(Signature))
-  add(query_21626033, "Action", newJString(Action))
-  add(query_21626033, "Timestamp", newJString(Timestamp))
-  add(formData_21626034, "JobId", newJString(JobId))
-  add(query_21626033, "Operation", newJString(Operation))
-  add(query_21626033, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626033, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626033, "Version", newJString(Version))
-  add(formData_21626034, "APIVersion", newJString(APIVersion))
-  result = call_21626032.call(nil, query_21626033, nil, formData_21626034, nil)
+  ##   
+                                                                                                                                                 ## Signature: string (required)
+  ##   
+                                                                                                                                                                                ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                               ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                   ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                ## APIVersion: string
+                                                                                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                                                                ## Specifies 
+                                                                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                                                                ## version 
+                                                                                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                                                                ## client 
+                                                                                                                                                                                                                                                                                ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                        ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                    ## JobId: string (required)
+                                                                                                                                                                                                                                                                                                                    ##        
+                                                                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                                                                    ## A 
+                                                                                                                                                                                                                                                                                                                    ## unique 
+                                                                                                                                                                                                                                                                                                                    ## identifier 
+                                                                                                                                                                                                                                                                                                                    ## which 
+                                                                                                                                                                                                                                                                                                                    ## refers 
+                                                                                                                                                                                                                                                                                                                    ## to 
+                                                                                                                                                                                                                                                                                                                    ## a 
+                                                                                                                                                                                                                                                                                                                    ## particular 
+                                                                                                                                                                                                                                                                                                                    ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                           ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                      ## Operation: string (required)
+  var query_402656490 = newJObject()
+  var formData_402656491 = newJObject()
+  add(query_402656490, "Signature", newJString(Signature))
+  add(query_402656490, "Timestamp", newJString(Timestamp))
+  add(query_402656490, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_402656490, "Version", newJString(Version))
+  add(formData_402656491, "APIVersion", newJString(APIVersion))
+  add(query_402656490, "Action", newJString(Action))
+  add(formData_402656491, "JobId", newJString(JobId))
+  add(query_402656490, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656490, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656490, "Operation", newJString(Operation))
+  result = call_402656489.call(nil, query_402656490, nil, formData_402656491,
+                               nil)
 
-var postCancelJob* = Call_PostCancelJob_21626018(name: "postCancelJob",
+var postCancelJob* = Call_PostCancelJob_402656475(name: "postCancelJob",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=CancelJob&Action=CancelJob",
-    validator: validate_PostCancelJob_21626019, base: "/",
-    makeUrl: url_PostCancelJob_21626020, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostCancelJob_402656476, base: "/",
+    makeUrl: url_PostCancelJob_402656477, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCancelJob_21625762 = ref object of OpenApiRestCall_21625418
-proc url_GetCancelJob_21625764(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetCancelJob_402656282 = ref object of OpenApiRestCall_402656029
+proc url_GetCancelJob_402656284(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -274,81 +318,101 @@ proc url_GetCancelJob_21625764(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetCancelJob_21625763(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_GetCancelJob_402656283(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
-  ##   JobId: JString (required)
-  ##        : A unique identifier which refers to a particular job.
   ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
-  ##   Signature: JString (required)
-  ##   Action: JString (required)
-  ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
-  ##   AWSAccessKeyId: JString (required)
-  ##   Version: JString (required)
+                                  ##             : Specifies the version of the client tool.
+  ##   
+                                                                                            ## Signature: JString (required)
+  ##   
+                                                                                                                            ## Timestamp: JString (required)
+  ##   
+                                                                                                                                                            ## AWSAccessKeyId: JString (required)
+  ##   
+                                                                                                                                                                                                 ## JobId: JString (required)
+                                                                                                                                                                                                 ##        
+                                                                                                                                                                                                 ## : 
+                                                                                                                                                                                                 ## A 
+                                                                                                                                                                                                 ## unique 
+                                                                                                                                                                                                 ## identifier 
+                                                                                                                                                                                                 ## which 
+                                                                                                                                                                                                 ## refers 
+                                                                                                                                                                                                 ## to 
+                                                                                                                                                                                                 ## a 
+                                                                                                                                                                                                 ## particular 
+                                                                                                                                                                                                 ## job.
+  ##   
+                                                                                                                                                                                                        ## Version: JString (required)
+  ##   
+                                                                                                                                                                                                                                      ## Action: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                   ## SignatureMethod: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                         ## SignatureVersion: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                ## Operation: JString (required)
   section = newJObject()
+  var valid_402656363 = query.getOrDefault("APIVersion")
+  valid_402656363 = validateParameter(valid_402656363, JString,
+                                      required = false, default = nil)
+  if valid_402656363 != nil:
+    section.add "APIVersion", valid_402656363
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21625865 = query.getOrDefault("SignatureMethod")
-  valid_21625865 = validateParameter(valid_21625865, JString, required = true,
-                                   default = nil)
-  if valid_21625865 != nil:
-    section.add "SignatureMethod", valid_21625865
-  var valid_21625866 = query.getOrDefault("JobId")
-  valid_21625866 = validateParameter(valid_21625866, JString, required = true,
-                                   default = nil)
-  if valid_21625866 != nil:
-    section.add "JobId", valid_21625866
-  var valid_21625867 = query.getOrDefault("APIVersion")
-  valid_21625867 = validateParameter(valid_21625867, JString, required = false,
-                                   default = nil)
-  if valid_21625867 != nil:
-    section.add "APIVersion", valid_21625867
-  var valid_21625868 = query.getOrDefault("Signature")
-  valid_21625868 = validateParameter(valid_21625868, JString, required = true,
-                                   default = nil)
-  if valid_21625868 != nil:
-    section.add "Signature", valid_21625868
-  var valid_21625883 = query.getOrDefault("Action")
-  valid_21625883 = validateParameter(valid_21625883, JString, required = true,
-                                   default = newJString("CancelJob"))
-  if valid_21625883 != nil:
-    section.add "Action", valid_21625883
-  var valid_21625884 = query.getOrDefault("Timestamp")
-  valid_21625884 = validateParameter(valid_21625884, JString, required = true,
-                                   default = nil)
-  if valid_21625884 != nil:
-    section.add "Timestamp", valid_21625884
-  var valid_21625885 = query.getOrDefault("Operation")
-  valid_21625885 = validateParameter(valid_21625885, JString, required = true,
-                                   default = newJString("CancelJob"))
-  if valid_21625885 != nil:
-    section.add "Operation", valid_21625885
-  var valid_21625886 = query.getOrDefault("SignatureVersion")
-  valid_21625886 = validateParameter(valid_21625886, JString, required = true,
-                                   default = nil)
-  if valid_21625886 != nil:
-    section.add "SignatureVersion", valid_21625886
-  var valid_21625887 = query.getOrDefault("AWSAccessKeyId")
-  valid_21625887 = validateParameter(valid_21625887, JString, required = true,
-                                   default = nil)
-  if valid_21625887 != nil:
-    section.add "AWSAccessKeyId", valid_21625887
-  var valid_21625888 = query.getOrDefault("Version")
-  valid_21625888 = validateParameter(valid_21625888, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21625888 != nil:
-    section.add "Version", valid_21625888
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656364 = query.getOrDefault("Signature")
+  valid_402656364 = validateParameter(valid_402656364, JString, required = true,
+                                      default = nil)
+  if valid_402656364 != nil:
+    section.add "Signature", valid_402656364
+  var valid_402656365 = query.getOrDefault("Timestamp")
+  valid_402656365 = validateParameter(valid_402656365, JString, required = true,
+                                      default = nil)
+  if valid_402656365 != nil:
+    section.add "Timestamp", valid_402656365
+  var valid_402656366 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656366 = validateParameter(valid_402656366, JString, required = true,
+                                      default = nil)
+  if valid_402656366 != nil:
+    section.add "AWSAccessKeyId", valid_402656366
+  var valid_402656367 = query.getOrDefault("JobId")
+  valid_402656367 = validateParameter(valid_402656367, JString, required = true,
+                                      default = nil)
+  if valid_402656367 != nil:
+    section.add "JobId", valid_402656367
+  var valid_402656380 = query.getOrDefault("Version")
+  valid_402656380 = validateParameter(valid_402656380, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656380 != nil:
+    section.add "Version", valid_402656380
+  var valid_402656381 = query.getOrDefault("Action")
+  valid_402656381 = validateParameter(valid_402656381, JString, required = true,
+                                      default = newJString("CancelJob"))
+  if valid_402656381 != nil:
+    section.add "Action", valid_402656381
+  var valid_402656382 = query.getOrDefault("SignatureMethod")
+  valid_402656382 = validateParameter(valid_402656382, JString, required = true,
+                                      default = nil)
+  if valid_402656382 != nil:
+    section.add "SignatureMethod", valid_402656382
+  var valid_402656383 = query.getOrDefault("SignatureVersion")
+  valid_402656383 = validateParameter(valid_402656383, JString, required = true,
+                                      default = nil)
+  if valid_402656383 != nil:
+    section.add "SignatureVersion", valid_402656383
+  var valid_402656384 = query.getOrDefault("Operation")
+  valid_402656384 = validateParameter(valid_402656384, JString, required = true,
+                                      default = newJString("CancelJob"))
+  if valid_402656384 != nil:
+    section.add "Operation", valid_402656384
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -357,61 +421,90 @@ proc validate_GetCancelJob_21625763(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21625913: Call_GetCancelJob_21625762; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656398: Call_GetCancelJob_402656282; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
-  ## 
-  let valid = call_21625913.validator(path, query, header, formData, body, _)
-  let scheme = call_21625913.pickScheme
+                                                                                         ## 
+  let valid = call_402656398.validator(path, query, header, formData, body, _)
+  let scheme = call_402656398.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21625913.makeUrl(scheme.get, call_21625913.host, call_21625913.base,
-                               call_21625913.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21625913, uri, valid, _)
+  let uri = call_402656398.makeUrl(scheme.get, call_402656398.host, call_402656398.base,
+                                   call_402656398.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656398, uri, valid, _)
 
-proc call*(call_21625976: Call_GetCancelJob_21625762; SignatureMethod: string;
-          JobId: string; Signature: string; Timestamp: string;
-          SignatureVersion: string; AWSAccessKeyId: string; APIVersion: string = "";
-          Action: string = "CancelJob"; Operation: string = "CancelJob";
-          Version: string = "2010-06-01"): Recallable =
+proc call*(call_402656447: Call_GetCancelJob_402656282; Signature: string;
+           Timestamp: string; AWSAccessKeyId: string; JobId: string;
+           SignatureMethod: string; SignatureVersion: string;
+           APIVersion: string = ""; Version: string = "2010-06-01";
+           Action: string = "CancelJob"; Operation: string = "CancelJob"): Recallable =
   ## getCancelJob
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
-  ##   SignatureMethod: string (required)
-  ##   JobId: string (required)
-  ##        : A unique identifier which refers to a particular job.
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  ##   Signature: string (required)
-  ##   Action: string (required)
-  ##   Timestamp: string (required)
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  var query_21625978 = newJObject()
-  add(query_21625978, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21625978, "JobId", newJString(JobId))
-  add(query_21625978, "APIVersion", newJString(APIVersion))
-  add(query_21625978, "Signature", newJString(Signature))
-  add(query_21625978, "Action", newJString(Action))
-  add(query_21625978, "Timestamp", newJString(Timestamp))
-  add(query_21625978, "Operation", newJString(Operation))
-  add(query_21625978, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21625978, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21625978, "Version", newJString(Version))
-  result = call_21625976.call(nil, query_21625978, nil, nil, nil)
+  ##   
+                                                                                                                                                 ## APIVersion: string
+                                                                                                                                                 ##             
+                                                                                                                                                 ## : 
+                                                                                                                                                 ## Specifies 
+                                                                                                                                                 ## the 
+                                                                                                                                                 ## version 
+                                                                                                                                                 ## of 
+                                                                                                                                                 ## the 
+                                                                                                                                                 ## client 
+                                                                                                                                                 ## tool.
+  ##   
+                                                                                                                                                         ## Signature: string (required)
+  ##   
+                                                                                                                                                                                        ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                       ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                           ## JobId: string (required)
+                                                                                                                                                                                                                                                           ##        
+                                                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                                                           ## A 
+                                                                                                                                                                                                                                                           ## unique 
+                                                                                                                                                                                                                                                           ## identifier 
+                                                                                                                                                                                                                                                           ## which 
+                                                                                                                                                                                                                                                           ## refers 
+                                                                                                                                                                                                                                                           ## to 
+                                                                                                                                                                                                                                                           ## a 
+                                                                                                                                                                                                                                                           ## particular 
+                                                                                                                                                                                                                                                           ## job.
+  ##   
+                                                                                                                                                                                                                                                                  ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                               ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                           ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                      ## Operation: string (required)
+  var query_402656448 = newJObject()
+  add(query_402656448, "APIVersion", newJString(APIVersion))
+  add(query_402656448, "Signature", newJString(Signature))
+  add(query_402656448, "Timestamp", newJString(Timestamp))
+  add(query_402656448, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_402656448, "JobId", newJString(JobId))
+  add(query_402656448, "Version", newJString(Version))
+  add(query_402656448, "Action", newJString(Action))
+  add(query_402656448, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656448, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656448, "Operation", newJString(Operation))
+  result = call_402656447.call(nil, query_402656448, nil, nil, nil)
 
-var getCancelJob* = Call_GetCancelJob_21625762(name: "getCancelJob",
+var getCancelJob* = Call_GetCancelJob_402656282(name: "getCancelJob",
     meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
     route: "/#Operation=CancelJob&Action=CancelJob",
-    validator: validate_GetCancelJob_21625763, base: "/", makeUrl: url_GetCancelJob_21625764,
-    schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetCancelJob_402656283, base: "/",
+    makeUrl: url_GetCancelJob_402656284, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateJob_21626054 = ref object of OpenApiRestCall_21625418
-proc url_PostCreateJob_21626056(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PostCreateJob_402656511 = ref object of OpenApiRestCall_402656029
+proc url_PostCreateJob_402656513(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -420,179 +513,288 @@ proc url_PostCreateJob_21626056(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostCreateJob_21626055(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_PostCreateJob_402656512(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
   ##   Signature: JString (required)
-  ##   Action: JString (required)
   ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
   ##   AWSAccessKeyId: JString (required)
   ##   Version: JString (required)
+  ##   Action: JString (required)
+  ##   SignatureMethod: JString (required)
+  ##   SignatureVersion: JString (required)
+  ##   Operation: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626057 = query.getOrDefault("SignatureMethod")
-  valid_21626057 = validateParameter(valid_21626057, JString, required = true,
-                                   default = nil)
-  if valid_21626057 != nil:
-    section.add "SignatureMethod", valid_21626057
-  var valid_21626058 = query.getOrDefault("Signature")
-  valid_21626058 = validateParameter(valid_21626058, JString, required = true,
-                                   default = nil)
-  if valid_21626058 != nil:
-    section.add "Signature", valid_21626058
-  var valid_21626059 = query.getOrDefault("Action")
-  valid_21626059 = validateParameter(valid_21626059, JString, required = true,
-                                   default = newJString("CreateJob"))
-  if valid_21626059 != nil:
-    section.add "Action", valid_21626059
-  var valid_21626060 = query.getOrDefault("Timestamp")
-  valid_21626060 = validateParameter(valid_21626060, JString, required = true,
-                                   default = nil)
-  if valid_21626060 != nil:
-    section.add "Timestamp", valid_21626060
-  var valid_21626061 = query.getOrDefault("Operation")
-  valid_21626061 = validateParameter(valid_21626061, JString, required = true,
-                                   default = newJString("CreateJob"))
-  if valid_21626061 != nil:
-    section.add "Operation", valid_21626061
-  var valid_21626062 = query.getOrDefault("SignatureVersion")
-  valid_21626062 = validateParameter(valid_21626062, JString, required = true,
-                                   default = nil)
-  if valid_21626062 != nil:
-    section.add "SignatureVersion", valid_21626062
-  var valid_21626063 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626063 = validateParameter(valid_21626063, JString, required = true,
-                                   default = nil)
-  if valid_21626063 != nil:
-    section.add "AWSAccessKeyId", valid_21626063
-  var valid_21626064 = query.getOrDefault("Version")
-  valid_21626064 = validateParameter(valid_21626064, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626064 != nil:
-    section.add "Version", valid_21626064
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656514 = query.getOrDefault("Signature")
+  valid_402656514 = validateParameter(valid_402656514, JString, required = true,
+                                      default = nil)
+  if valid_402656514 != nil:
+    section.add "Signature", valid_402656514
+  var valid_402656515 = query.getOrDefault("Timestamp")
+  valid_402656515 = validateParameter(valid_402656515, JString, required = true,
+                                      default = nil)
+  if valid_402656515 != nil:
+    section.add "Timestamp", valid_402656515
+  var valid_402656516 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656516 = validateParameter(valid_402656516, JString, required = true,
+                                      default = nil)
+  if valid_402656516 != nil:
+    section.add "AWSAccessKeyId", valid_402656516
+  var valid_402656517 = query.getOrDefault("Version")
+  valid_402656517 = validateParameter(valid_402656517, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656517 != nil:
+    section.add "Version", valid_402656517
+  var valid_402656518 = query.getOrDefault("Action")
+  valid_402656518 = validateParameter(valid_402656518, JString, required = true,
+                                      default = newJString("CreateJob"))
+  if valid_402656518 != nil:
+    section.add "Action", valid_402656518
+  var valid_402656519 = query.getOrDefault("SignatureMethod")
+  valid_402656519 = validateParameter(valid_402656519, JString, required = true,
+                                      default = nil)
+  if valid_402656519 != nil:
+    section.add "SignatureMethod", valid_402656519
+  var valid_402656520 = query.getOrDefault("SignatureVersion")
+  valid_402656520 = validateParameter(valid_402656520, JString, required = true,
+                                      default = nil)
+  if valid_402656520 != nil:
+    section.add "SignatureVersion", valid_402656520
+  var valid_402656521 = query.getOrDefault("Operation")
+  valid_402656521 = validateParameter(valid_402656521, JString, required = true,
+                                      default = newJString("CreateJob"))
+  if valid_402656521 != nil:
+    section.add "Operation", valid_402656521
   result.add "query", section
   section = newJObject()
   result.add "header", section
   ## parameters in `formData` object:
-  ##   ManifestAddendum: JString
-  ##                   : For internal use only.
-  ##   Manifest: JString (required)
-  ##           : The UTF-8 encoded text of the manifest file.
   ##   JobType: JString (required)
-  ##          : Specifies whether the job to initiate is an import or export job.
-  ##   ValidateOnly: JBool (required)
-  ##               : Validate the manifest and parameter values in the request but do not actually create a job.
-  ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
+                                     ##          : Specifies whether the job to initiate is an import or export job.
+  ##   
+                                                                                                                    ## ValidateOnly: JBool (required)
+                                                                                                                    ##               
+                                                                                                                    ## : 
+                                                                                                                    ## Validate 
+                                                                                                                    ## the 
+                                                                                                                    ## manifest 
+                                                                                                                    ## and 
+                                                                                                                    ## parameter 
+                                                                                                                    ## values 
+                                                                                                                    ## in 
+                                                                                                                    ## the 
+                                                                                                                    ## request 
+                                                                                                                    ## but 
+                                                                                                                    ## do 
+                                                                                                                    ## not 
+                                                                                                                    ## actually 
+                                                                                                                    ## create 
+                                                                                                                    ## a 
+                                                                                                                    ## job.
+  ##   
+                                                                                                                           ## Manifest: JString (required)
+                                                                                                                           ##           
+                                                                                                                           ## : 
+                                                                                                                           ## The 
+                                                                                                                           ## UTF-8 
+                                                                                                                           ## encoded 
+                                                                                                                           ## text 
+                                                                                                                           ## of 
+                                                                                                                           ## the 
+                                                                                                                           ## manifest 
+                                                                                                                           ## file.
+  ##   
+                                                                                                                                   ## APIVersion: JString
+                                                                                                                                   ##             
+                                                                                                                                   ## : 
+                                                                                                                                   ## Specifies 
+                                                                                                                                   ## the 
+                                                                                                                                   ## version 
+                                                                                                                                   ## of 
+                                                                                                                                   ## the 
+                                                                                                                                   ## client 
+                                                                                                                                   ## tool.
+  ##   
+                                                                                                                                           ## ManifestAddendum: JString
+                                                                                                                                           ##                   
+                                                                                                                                           ## : 
+                                                                                                                                           ## For 
+                                                                                                                                           ## internal 
+                                                                                                                                           ## use 
+                                                                                                                                           ## only.
   section = newJObject()
-  var valid_21626065 = formData.getOrDefault("ManifestAddendum")
-  valid_21626065 = validateParameter(valid_21626065, JString, required = false,
-                                   default = nil)
-  if valid_21626065 != nil:
-    section.add "ManifestAddendum", valid_21626065
-  assert formData != nil,
-        "formData argument is necessary due to required `Manifest` field"
-  var valid_21626066 = formData.getOrDefault("Manifest")
-  valid_21626066 = validateParameter(valid_21626066, JString, required = true,
-                                   default = nil)
-  if valid_21626066 != nil:
-    section.add "Manifest", valid_21626066
-  var valid_21626067 = formData.getOrDefault("JobType")
-  valid_21626067 = validateParameter(valid_21626067, JString, required = true,
-                                   default = newJString("Import"))
-  if valid_21626067 != nil:
-    section.add "JobType", valid_21626067
-  var valid_21626068 = formData.getOrDefault("ValidateOnly")
-  valid_21626068 = validateParameter(valid_21626068, JBool, required = true,
-                                   default = nil)
-  if valid_21626068 != nil:
-    section.add "ValidateOnly", valid_21626068
-  var valid_21626069 = formData.getOrDefault("APIVersion")
-  valid_21626069 = validateParameter(valid_21626069, JString, required = false,
-                                   default = nil)
-  if valid_21626069 != nil:
-    section.add "APIVersion", valid_21626069
+  var valid_402656522 = formData.getOrDefault("JobType")
+  valid_402656522 = validateParameter(valid_402656522, JString, required = true,
+                                      default = newJString("Import"))
+  if valid_402656522 != nil:
+    section.add "JobType", valid_402656522
+  var valid_402656523 = formData.getOrDefault("ValidateOnly")
+  valid_402656523 = validateParameter(valid_402656523, JBool, required = true,
+                                      default = nil)
+  if valid_402656523 != nil:
+    section.add "ValidateOnly", valid_402656523
+  var valid_402656524 = formData.getOrDefault("Manifest")
+  valid_402656524 = validateParameter(valid_402656524, JString, required = true,
+                                      default = nil)
+  if valid_402656524 != nil:
+    section.add "Manifest", valid_402656524
+  var valid_402656525 = formData.getOrDefault("APIVersion")
+  valid_402656525 = validateParameter(valid_402656525, JString,
+                                      required = false, default = nil)
+  if valid_402656525 != nil:
+    section.add "APIVersion", valid_402656525
+  var valid_402656526 = formData.getOrDefault("ManifestAddendum")
+  valid_402656526 = validateParameter(valid_402656526, JString,
+                                      required = false, default = nil)
+  if valid_402656526 != nil:
+    section.add "ManifestAddendum", valid_402656526
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626070: Call_PostCreateJob_21626054; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656527: Call_PostCreateJob_402656511; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
-  ## 
-  let valid = call_21626070.validator(path, query, header, formData, body, _)
-  let scheme = call_21626070.pickScheme
+                                                                                         ## 
+  let valid = call_402656527.validator(path, query, header, formData, body, _)
+  let scheme = call_402656527.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626070.makeUrl(scheme.get, call_21626070.host, call_21626070.base,
-                               call_21626070.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626070, uri, valid, _)
+  let uri = call_402656527.makeUrl(scheme.get, call_402656527.host, call_402656527.base,
+                                   call_402656527.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656527, uri, valid, _)
 
-proc call*(call_21626071: Call_PostCreateJob_21626054; SignatureMethod: string;
-          Signature: string; Manifest: string; Timestamp: string;
-          SignatureVersion: string; AWSAccessKeyId: string; ValidateOnly: bool;
-          ManifestAddendum: string = ""; JobType: string = "Import";
-          Action: string = "CreateJob"; Operation: string = "CreateJob";
-          Version: string = "2010-06-01"; APIVersion: string = ""): Recallable =
+proc call*(call_402656528: Call_PostCreateJob_402656511; Signature: string;
+           Timestamp: string; ValidateOnly: bool; AWSAccessKeyId: string;
+           Manifest: string; SignatureMethod: string; SignatureVersion: string;
+           JobType: string = "Import"; Version: string = "2010-06-01";
+           APIVersion: string = ""; Action: string = "CreateJob";
+           Operation: string = "CreateJob"; ManifestAddendum: string = ""): Recallable =
   ## postCreateJob
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
-  ##   SignatureMethod: string (required)
-  ##   ManifestAddendum: string
-  ##                   : For internal use only.
-  ##   Signature: string (required)
-  ##   Manifest: string (required)
-  ##           : The UTF-8 encoded text of the manifest file.
-  ##   JobType: string (required)
-  ##          : Specifies whether the job to initiate is an import or export job.
-  ##   Action: string (required)
-  ##   Timestamp: string (required)
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  ##   ValidateOnly: bool (required)
-  ##               : Validate the manifest and parameter values in the request but do not actually create a job.
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  var query_21626072 = newJObject()
-  var formData_21626073 = newJObject()
-  add(query_21626072, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_21626073, "ManifestAddendum", newJString(ManifestAddendum))
-  add(query_21626072, "Signature", newJString(Signature))
-  add(formData_21626073, "Manifest", newJString(Manifest))
-  add(formData_21626073, "JobType", newJString(JobType))
-  add(query_21626072, "Action", newJString(Action))
-  add(query_21626072, "Timestamp", newJString(Timestamp))
-  add(query_21626072, "Operation", newJString(Operation))
-  add(query_21626072, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626072, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626072, "Version", newJString(Version))
-  add(formData_21626073, "ValidateOnly", newJBool(ValidateOnly))
-  add(formData_21626073, "APIVersion", newJString(APIVersion))
-  result = call_21626071.call(nil, query_21626072, nil, formData_21626073, nil)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                        ## JobType: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                        ##          
+                                                                                                                                                                                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                                                                                                                                                                                        ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                        ## whether 
+                                                                                                                                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                                                                                                                                        ## job 
+                                                                                                                                                                                                                                                                                                                                                                                        ## to 
+                                                                                                                                                                                                                                                                                                                                                                                        ## initiate 
+                                                                                                                                                                                                                                                                                                                                                                                        ## is 
+                                                                                                                                                                                                                                                                                                                                                                                        ## an 
+                                                                                                                                                                                                                                                                                                                                                                                        ## import 
+                                                                                                                                                                                                                                                                                                                                                                                        ## or 
+                                                                                                                                                                                                                                                                                                                                                                                        ## export 
+                                                                                                                                                                                                                                                                                                                                                                                        ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                               ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                              ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## ValidateOnly: bool (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ##               
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## Validate 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## manifest 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## and 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## parameter 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## values 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## in 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## request 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## but 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## do 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## not 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## actually 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## create 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## a 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## Manifest: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ##           
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## UTF-8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## encoded 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## text 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## manifest 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## file.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## APIVersion: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ##             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## version 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## client 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## Operation: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## ManifestAddendum: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ##                   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## For 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## internal 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## use 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## only.
+  var query_402656529 = newJObject()
+  var formData_402656530 = newJObject()
+  add(formData_402656530, "JobType", newJString(JobType))
+  add(query_402656529, "Signature", newJString(Signature))
+  add(query_402656529, "Timestamp", newJString(Timestamp))
+  add(formData_402656530, "ValidateOnly", newJBool(ValidateOnly))
+  add(query_402656529, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(formData_402656530, "Manifest", newJString(Manifest))
+  add(query_402656529, "Version", newJString(Version))
+  add(formData_402656530, "APIVersion", newJString(APIVersion))
+  add(query_402656529, "Action", newJString(Action))
+  add(query_402656529, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656529, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656529, "Operation", newJString(Operation))
+  add(formData_402656530, "ManifestAddendum", newJString(ManifestAddendum))
+  result = call_402656528.call(nil, query_402656529, nil, formData_402656530,
+                               nil)
 
-var postCreateJob* = Call_PostCreateJob_21626054(name: "postCreateJob",
+var postCreateJob* = Call_PostCreateJob_402656511(name: "postCreateJob",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=CreateJob&Action=CreateJob",
-    validator: validate_PostCreateJob_21626055, base: "/",
-    makeUrl: url_PostCreateJob_21626056, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostCreateJob_402656512, base: "/",
+    makeUrl: url_PostCreateJob_402656513, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateJob_21626035 = ref object of OpenApiRestCall_21625418
-proc url_GetCreateJob_21626037(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetCreateJob_402656492 = ref object of OpenApiRestCall_402656029
+proc url_GetCreateJob_402656494(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -601,102 +803,159 @@ proc url_GetCreateJob_21626037(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetCreateJob_21626036(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_GetCreateJob_402656493(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
-  ##   Manifest: JString (required)
-  ##           : The UTF-8 encoded text of the manifest file.
   ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
-  ##   Signature: JString (required)
-  ##   Action: JString (required)
-  ##   JobType: JString (required)
-  ##          : Specifies whether the job to initiate is an import or export job.
-  ##   ValidateOnly: JBool (required)
-  ##               : Validate the manifest and parameter values in the request but do not actually create a job.
-  ##   Timestamp: JString (required)
-  ##   ManifestAddendum: JString
-  ##                   : For internal use only.
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
-  ##   AWSAccessKeyId: JString (required)
-  ##   Version: JString (required)
+                                  ##             : Specifies the version of the client tool.
+  ##   
+                                                                                            ## Signature: JString (required)
+  ##   
+                                                                                                                            ## Timestamp: JString (required)
+  ##   
+                                                                                                                                                            ## ValidateOnly: JBool (required)
+                                                                                                                                                            ##               
+                                                                                                                                                            ## : 
+                                                                                                                                                            ## Validate 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## manifest 
+                                                                                                                                                            ## and 
+                                                                                                                                                            ## parameter 
+                                                                                                                                                            ## values 
+                                                                                                                                                            ## in 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## request 
+                                                                                                                                                            ## but 
+                                                                                                                                                            ## do 
+                                                                                                                                                            ## not 
+                                                                                                                                                            ## actually 
+                                                                                                                                                            ## create 
+                                                                                                                                                            ## a 
+                                                                                                                                                            ## job.
+  ##   
+                                                                                                                                                                   ## AWSAccessKeyId: JString (required)
+  ##   
+                                                                                                                                                                                                        ## Manifest: JString (required)
+                                                                                                                                                                                                        ##           
+                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                        ## The 
+                                                                                                                                                                                                        ## UTF-8 
+                                                                                                                                                                                                        ## encoded 
+                                                                                                                                                                                                        ## text 
+                                                                                                                                                                                                        ## of 
+                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                        ## manifest 
+                                                                                                                                                                                                        ## file.
+  ##   
+                                                                                                                                                                                                                ## Version: JString (required)
+  ##   
+                                                                                                                                                                                                                                              ## ManifestAddendum: JString
+                                                                                                                                                                                                                                              ##                   
+                                                                                                                                                                                                                                              ## : 
+                                                                                                                                                                                                                                              ## For 
+                                                                                                                                                                                                                                              ## internal 
+                                                                                                                                                                                                                                              ## use 
+                                                                                                                                                                                                                                              ## only.
+  ##   
+                                                                                                                                                                                                                                                      ## Action: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                   ## JobType: JString (required)
+                                                                                                                                                                                                                                                                                   ##          
+                                                                                                                                                                                                                                                                                   ## : 
+                                                                                                                                                                                                                                                                                   ## Specifies 
+                                                                                                                                                                                                                                                                                   ## whether 
+                                                                                                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                                                                                                   ## job 
+                                                                                                                                                                                                                                                                                   ## to 
+                                                                                                                                                                                                                                                                                   ## initiate 
+                                                                                                                                                                                                                                                                                   ## is 
+                                                                                                                                                                                                                                                                                   ## an 
+                                                                                                                                                                                                                                                                                   ## import 
+                                                                                                                                                                                                                                                                                   ## or 
+                                                                                                                                                                                                                                                                                   ## export 
+                                                                                                                                                                                                                                                                                   ## job.
+  ##   
+                                                                                                                                                                                                                                                                                          ## SignatureMethod: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                ## SignatureVersion: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                       ## Operation: JString (required)
   section = newJObject()
+  var valid_402656495 = query.getOrDefault("APIVersion")
+  valid_402656495 = validateParameter(valid_402656495, JString,
+                                      required = false, default = nil)
+  if valid_402656495 != nil:
+    section.add "APIVersion", valid_402656495
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626038 = query.getOrDefault("SignatureMethod")
-  valid_21626038 = validateParameter(valid_21626038, JString, required = true,
-                                   default = nil)
-  if valid_21626038 != nil:
-    section.add "SignatureMethod", valid_21626038
-  var valid_21626039 = query.getOrDefault("Manifest")
-  valid_21626039 = validateParameter(valid_21626039, JString, required = true,
-                                   default = nil)
-  if valid_21626039 != nil:
-    section.add "Manifest", valid_21626039
-  var valid_21626040 = query.getOrDefault("APIVersion")
-  valid_21626040 = validateParameter(valid_21626040, JString, required = false,
-                                   default = nil)
-  if valid_21626040 != nil:
-    section.add "APIVersion", valid_21626040
-  var valid_21626041 = query.getOrDefault("Signature")
-  valid_21626041 = validateParameter(valid_21626041, JString, required = true,
-                                   default = nil)
-  if valid_21626041 != nil:
-    section.add "Signature", valid_21626041
-  var valid_21626042 = query.getOrDefault("Action")
-  valid_21626042 = validateParameter(valid_21626042, JString, required = true,
-                                   default = newJString("CreateJob"))
-  if valid_21626042 != nil:
-    section.add "Action", valid_21626042
-  var valid_21626043 = query.getOrDefault("JobType")
-  valid_21626043 = validateParameter(valid_21626043, JString, required = true,
-                                   default = newJString("Import"))
-  if valid_21626043 != nil:
-    section.add "JobType", valid_21626043
-  var valid_21626044 = query.getOrDefault("ValidateOnly")
-  valid_21626044 = validateParameter(valid_21626044, JBool, required = true,
-                                   default = nil)
-  if valid_21626044 != nil:
-    section.add "ValidateOnly", valid_21626044
-  var valid_21626045 = query.getOrDefault("Timestamp")
-  valid_21626045 = validateParameter(valid_21626045, JString, required = true,
-                                   default = nil)
-  if valid_21626045 != nil:
-    section.add "Timestamp", valid_21626045
-  var valid_21626046 = query.getOrDefault("ManifestAddendum")
-  valid_21626046 = validateParameter(valid_21626046, JString, required = false,
-                                   default = nil)
-  if valid_21626046 != nil:
-    section.add "ManifestAddendum", valid_21626046
-  var valid_21626047 = query.getOrDefault("Operation")
-  valid_21626047 = validateParameter(valid_21626047, JString, required = true,
-                                   default = newJString("CreateJob"))
-  if valid_21626047 != nil:
-    section.add "Operation", valid_21626047
-  var valid_21626048 = query.getOrDefault("SignatureVersion")
-  valid_21626048 = validateParameter(valid_21626048, JString, required = true,
-                                   default = nil)
-  if valid_21626048 != nil:
-    section.add "SignatureVersion", valid_21626048
-  var valid_21626049 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626049 = validateParameter(valid_21626049, JString, required = true,
-                                   default = nil)
-  if valid_21626049 != nil:
-    section.add "AWSAccessKeyId", valid_21626049
-  var valid_21626050 = query.getOrDefault("Version")
-  valid_21626050 = validateParameter(valid_21626050, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626050 != nil:
-    section.add "Version", valid_21626050
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656496 = query.getOrDefault("Signature")
+  valid_402656496 = validateParameter(valid_402656496, JString, required = true,
+                                      default = nil)
+  if valid_402656496 != nil:
+    section.add "Signature", valid_402656496
+  var valid_402656497 = query.getOrDefault("Timestamp")
+  valid_402656497 = validateParameter(valid_402656497, JString, required = true,
+                                      default = nil)
+  if valid_402656497 != nil:
+    section.add "Timestamp", valid_402656497
+  var valid_402656498 = query.getOrDefault("ValidateOnly")
+  valid_402656498 = validateParameter(valid_402656498, JBool, required = true,
+                                      default = nil)
+  if valid_402656498 != nil:
+    section.add "ValidateOnly", valid_402656498
+  var valid_402656499 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656499 = validateParameter(valid_402656499, JString, required = true,
+                                      default = nil)
+  if valid_402656499 != nil:
+    section.add "AWSAccessKeyId", valid_402656499
+  var valid_402656500 = query.getOrDefault("Manifest")
+  valid_402656500 = validateParameter(valid_402656500, JString, required = true,
+                                      default = nil)
+  if valid_402656500 != nil:
+    section.add "Manifest", valid_402656500
+  var valid_402656501 = query.getOrDefault("Version")
+  valid_402656501 = validateParameter(valid_402656501, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656501 != nil:
+    section.add "Version", valid_402656501
+  var valid_402656502 = query.getOrDefault("ManifestAddendum")
+  valid_402656502 = validateParameter(valid_402656502, JString,
+                                      required = false, default = nil)
+  if valid_402656502 != nil:
+    section.add "ManifestAddendum", valid_402656502
+  var valid_402656503 = query.getOrDefault("Action")
+  valid_402656503 = validateParameter(valid_402656503, JString, required = true,
+                                      default = newJString("CreateJob"))
+  if valid_402656503 != nil:
+    section.add "Action", valid_402656503
+  var valid_402656504 = query.getOrDefault("JobType")
+  valid_402656504 = validateParameter(valid_402656504, JString, required = true,
+                                      default = newJString("Import"))
+  if valid_402656504 != nil:
+    section.add "JobType", valid_402656504
+  var valid_402656505 = query.getOrDefault("SignatureMethod")
+  valid_402656505 = validateParameter(valid_402656505, JString, required = true,
+                                      default = nil)
+  if valid_402656505 != nil:
+    section.add "SignatureMethod", valid_402656505
+  var valid_402656506 = query.getOrDefault("SignatureVersion")
+  valid_402656506 = validateParameter(valid_402656506, JString, required = true,
+                                      default = nil)
+  if valid_402656506 != nil:
+    section.add "SignatureVersion", valid_402656506
+  var valid_402656507 = query.getOrDefault("Operation")
+  valid_402656507 = validateParameter(valid_402656507, JString, required = true,
+                                      default = newJString("CreateJob"))
+  if valid_402656507 != nil:
+    section.add "Operation", valid_402656507
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -705,71 +964,138 @@ proc validate_GetCreateJob_21626036(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626051: Call_GetCreateJob_21626035; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656508: Call_GetCreateJob_402656492; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
-  ## 
-  let valid = call_21626051.validator(path, query, header, formData, body, _)
-  let scheme = call_21626051.pickScheme
+                                                                                         ## 
+  let valid = call_402656508.validator(path, query, header, formData, body, _)
+  let scheme = call_402656508.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626051.makeUrl(scheme.get, call_21626051.host, call_21626051.base,
-                               call_21626051.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626051, uri, valid, _)
+  let uri = call_402656508.makeUrl(scheme.get, call_402656508.host, call_402656508.base,
+                                   call_402656508.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656508, uri, valid, _)
 
-proc call*(call_21626052: Call_GetCreateJob_21626035; SignatureMethod: string;
-          Manifest: string; Signature: string; ValidateOnly: bool; Timestamp: string;
-          SignatureVersion: string; AWSAccessKeyId: string; APIVersion: string = "";
-          Action: string = "CreateJob"; JobType: string = "Import";
-          ManifestAddendum: string = ""; Operation: string = "CreateJob";
-          Version: string = "2010-06-01"): Recallable =
+proc call*(call_402656509: Call_GetCreateJob_402656492; Signature: string;
+           Timestamp: string; ValidateOnly: bool; AWSAccessKeyId: string;
+           Manifest: string; SignatureMethod: string; SignatureVersion: string;
+           APIVersion: string = ""; Version: string = "2010-06-01";
+           ManifestAddendum: string = ""; Action: string = "CreateJob";
+           JobType: string = "Import"; Operation: string = "CreateJob"): Recallable =
   ## getCreateJob
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
-  ##   SignatureMethod: string (required)
-  ##   Manifest: string (required)
-  ##           : The UTF-8 encoded text of the manifest file.
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  ##   Signature: string (required)
-  ##   Action: string (required)
-  ##   JobType: string (required)
-  ##          : Specifies whether the job to initiate is an import or export job.
-  ##   ValidateOnly: bool (required)
-  ##               : Validate the manifest and parameter values in the request but do not actually create a job.
-  ##   Timestamp: string (required)
-  ##   ManifestAddendum: string
-  ##                   : For internal use only.
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  var query_21626053 = newJObject()
-  add(query_21626053, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626053, "Manifest", newJString(Manifest))
-  add(query_21626053, "APIVersion", newJString(APIVersion))
-  add(query_21626053, "Signature", newJString(Signature))
-  add(query_21626053, "Action", newJString(Action))
-  add(query_21626053, "JobType", newJString(JobType))
-  add(query_21626053, "ValidateOnly", newJBool(ValidateOnly))
-  add(query_21626053, "Timestamp", newJString(Timestamp))
-  add(query_21626053, "ManifestAddendum", newJString(ManifestAddendum))
-  add(query_21626053, "Operation", newJString(Operation))
-  add(query_21626053, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626053, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626053, "Version", newJString(Version))
-  result = call_21626052.call(nil, query_21626053, nil, nil, nil)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                        ## APIVersion: string
+                                                                                                                                                                                                                                                                                                                                                                                        ##             
+                                                                                                                                                                                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                                                                                                                                                                                        ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                                                                                                                                        ## version 
+                                                                                                                                                                                                                                                                                                                                                                                        ## of 
+                                                                                                                                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                                                                                                                                        ## client 
+                                                                                                                                                                                                                                                                                                                                                                                        ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                               ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## ValidateOnly: bool (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ##               
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## Validate 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## manifest 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## and 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## parameter 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## values 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## in 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## request 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## but 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## do 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## not 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## actually 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## create 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## a 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## Manifest: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ##           
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## UTF-8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## encoded 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## text 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## manifest 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## file.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## ManifestAddendum: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ##                   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## For 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## internal 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## use 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## only.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## JobType: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ##          
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## whether 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## job 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## initiate 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## is 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## an 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## import 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## or 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## export 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## Operation: string (required)
+  var query_402656510 = newJObject()
+  add(query_402656510, "APIVersion", newJString(APIVersion))
+  add(query_402656510, "Signature", newJString(Signature))
+  add(query_402656510, "Timestamp", newJString(Timestamp))
+  add(query_402656510, "ValidateOnly", newJBool(ValidateOnly))
+  add(query_402656510, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_402656510, "Manifest", newJString(Manifest))
+  add(query_402656510, "Version", newJString(Version))
+  add(query_402656510, "ManifestAddendum", newJString(ManifestAddendum))
+  add(query_402656510, "Action", newJString(Action))
+  add(query_402656510, "JobType", newJString(JobType))
+  add(query_402656510, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656510, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656510, "Operation", newJString(Operation))
+  result = call_402656509.call(nil, query_402656510, nil, nil, nil)
 
-var getCreateJob* = Call_GetCreateJob_21626035(name: "getCreateJob",
+var getCreateJob* = Call_GetCreateJob_402656492(name: "getCreateJob",
     meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
     route: "/#Operation=CreateJob&Action=CreateJob",
-    validator: validate_GetCreateJob_21626036, base: "/", makeUrl: url_GetCreateJob_21626037,
-    schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetCreateJob_402656493, base: "/",
+    makeUrl: url_GetCreateJob_402656494, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostGetShippingLabel_21626100 = ref object of OpenApiRestCall_21625418
-proc url_PostGetShippingLabel_21626102(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PostGetShippingLabel_402656557 = ref object of OpenApiRestCall_402656029
+proc url_PostGetShippingLabel_402656559(protocol: Scheme; host: string;
+                                        base: string; route: string;
+                                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -778,253 +1104,559 @@ proc url_PostGetShippingLabel_21626102(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_PostGetShippingLabel_21626101(path: JsonNode; query: JsonNode;
+proc validate_PostGetShippingLabel_402656558(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
   ##   Signature: JString (required)
-  ##   Action: JString (required)
   ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
   ##   AWSAccessKeyId: JString (required)
   ##   Version: JString (required)
+  ##   Action: JString (required)
+  ##   SignatureMethod: JString (required)
+  ##   SignatureVersion: JString (required)
+  ##   Operation: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626103 = query.getOrDefault("SignatureMethod")
-  valid_21626103 = validateParameter(valid_21626103, JString, required = true,
-                                   default = nil)
-  if valid_21626103 != nil:
-    section.add "SignatureMethod", valid_21626103
-  var valid_21626104 = query.getOrDefault("Signature")
-  valid_21626104 = validateParameter(valid_21626104, JString, required = true,
-                                   default = nil)
-  if valid_21626104 != nil:
-    section.add "Signature", valid_21626104
-  var valid_21626105 = query.getOrDefault("Action")
-  valid_21626105 = validateParameter(valid_21626105, JString, required = true,
-                                   default = newJString("GetShippingLabel"))
-  if valid_21626105 != nil:
-    section.add "Action", valid_21626105
-  var valid_21626106 = query.getOrDefault("Timestamp")
-  valid_21626106 = validateParameter(valid_21626106, JString, required = true,
-                                   default = nil)
-  if valid_21626106 != nil:
-    section.add "Timestamp", valid_21626106
-  var valid_21626107 = query.getOrDefault("Operation")
-  valid_21626107 = validateParameter(valid_21626107, JString, required = true,
-                                   default = newJString("GetShippingLabel"))
-  if valid_21626107 != nil:
-    section.add "Operation", valid_21626107
-  var valid_21626108 = query.getOrDefault("SignatureVersion")
-  valid_21626108 = validateParameter(valid_21626108, JString, required = true,
-                                   default = nil)
-  if valid_21626108 != nil:
-    section.add "SignatureVersion", valid_21626108
-  var valid_21626109 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626109 = validateParameter(valid_21626109, JString, required = true,
-                                   default = nil)
-  if valid_21626109 != nil:
-    section.add "AWSAccessKeyId", valid_21626109
-  var valid_21626110 = query.getOrDefault("Version")
-  valid_21626110 = validateParameter(valid_21626110, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626110 != nil:
-    section.add "Version", valid_21626110
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656560 = query.getOrDefault("Signature")
+  valid_402656560 = validateParameter(valid_402656560, JString, required = true,
+                                      default = nil)
+  if valid_402656560 != nil:
+    section.add "Signature", valid_402656560
+  var valid_402656561 = query.getOrDefault("Timestamp")
+  valid_402656561 = validateParameter(valid_402656561, JString, required = true,
+                                      default = nil)
+  if valid_402656561 != nil:
+    section.add "Timestamp", valid_402656561
+  var valid_402656562 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656562 = validateParameter(valid_402656562, JString, required = true,
+                                      default = nil)
+  if valid_402656562 != nil:
+    section.add "AWSAccessKeyId", valid_402656562
+  var valid_402656563 = query.getOrDefault("Version")
+  valid_402656563 = validateParameter(valid_402656563, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656563 != nil:
+    section.add "Version", valid_402656563
+  var valid_402656564 = query.getOrDefault("Action")
+  valid_402656564 = validateParameter(valid_402656564, JString, required = true,
+                                      default = newJString("GetShippingLabel"))
+  if valid_402656564 != nil:
+    section.add "Action", valid_402656564
+  var valid_402656565 = query.getOrDefault("SignatureMethod")
+  valid_402656565 = validateParameter(valid_402656565, JString, required = true,
+                                      default = nil)
+  if valid_402656565 != nil:
+    section.add "SignatureMethod", valid_402656565
+  var valid_402656566 = query.getOrDefault("SignatureVersion")
+  valid_402656566 = validateParameter(valid_402656566, JString, required = true,
+                                      default = nil)
+  if valid_402656566 != nil:
+    section.add "SignatureVersion", valid_402656566
+  var valid_402656567 = query.getOrDefault("Operation")
+  valid_402656567 = validateParameter(valid_402656567, JString, required = true,
+                                      default = newJString("GetShippingLabel"))
+  if valid_402656567 != nil:
+    section.add "Operation", valid_402656567
   result.add "query", section
   section = newJObject()
   result.add "header", section
   ## parameters in `formData` object:
-  ##   company: JString
-  ##          : Specifies the name of the company that will ship this package.
-  ##   stateOrProvince: JString
-  ##                  : Specifies the name of your state or your province for the return address.
-  ##   street1: JString
-  ##          : Specifies the first part of the street address for the return address, for example 1234 Main Street.
-  ##   name: JString
-  ##       : Specifies the name of the person responsible for shipping this package.
   ##   street3: JString
-  ##          : Specifies the optional third part of the street address for the return address, for example c/o Jane Doe.
-  ##   city: JString
-  ##       : Specifies the name of your city for the return address.
-  ##   postalCode: JString
-  ##             : Specifies the postal code for the return address.
-  ##   phoneNumber: JString
-  ##              : Specifies the phone number of the person responsible for shipping this package.
-  ##   street2: JString
-  ##          : Specifies the optional second part of the street address for the return address, for example Suite 100.
-  ##   country: JString
-  ##          : Specifies the name of your country for the return address.
-  ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
-  ##   jobIds: JArray (required)
+                                     ##          : Specifies the optional third part of the street address for the return address, for example c/o Jane Doe.
+  ##   
+                                                                                                                                                            ## stateOrProvince: JString
+                                                                                                                                                            ##                  
+                                                                                                                                                            ## : 
+                                                                                                                                                            ## Specifies 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## name 
+                                                                                                                                                            ## of 
+                                                                                                                                                            ## your 
+                                                                                                                                                            ## state 
+                                                                                                                                                            ## or 
+                                                                                                                                                            ## your 
+                                                                                                                                                            ## province 
+                                                                                                                                                            ## for 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## return 
+                                                                                                                                                            ## address.
+  ##   
+                                                                                                                                                                       ## jobIds: JArray (required)
+  ##   
+                                                                                                                                                                                                   ## street2: JString
+                                                                                                                                                                                                   ##          
+                                                                                                                                                                                                   ## : 
+                                                                                                                                                                                                   ## Specifies 
+                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                   ## optional 
+                                                                                                                                                                                                   ## second 
+                                                                                                                                                                                                   ## part 
+                                                                                                                                                                                                   ## of 
+                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                   ## street 
+                                                                                                                                                                                                   ## address 
+                                                                                                                                                                                                   ## for 
+                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                   ## return 
+                                                                                                                                                                                                   ## address, 
+                                                                                                                                                                                                   ## for 
+                                                                                                                                                                                                   ## example 
+                                                                                                                                                                                                   ## Suite 
+                                                                                                                                                                                                   ## 100.
+  ##   
+                                                                                                                                                                                                          ## company: JString
+                                                                                                                                                                                                          ##          
+                                                                                                                                                                                                          ## : 
+                                                                                                                                                                                                          ## Specifies 
+                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                          ## name 
+                                                                                                                                                                                                          ## of 
+                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                          ## company 
+                                                                                                                                                                                                          ## that 
+                                                                                                                                                                                                          ## will 
+                                                                                                                                                                                                          ## ship 
+                                                                                                                                                                                                          ## this 
+                                                                                                                                                                                                          ## package.
+  ##   
+                                                                                                                                                                                                                     ## phoneNumber: JString
+                                                                                                                                                                                                                     ##              
+                                                                                                                                                                                                                     ## : 
+                                                                                                                                                                                                                     ## Specifies 
+                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                     ## phone 
+                                                                                                                                                                                                                     ## number 
+                                                                                                                                                                                                                     ## of 
+                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                     ## person 
+                                                                                                                                                                                                                     ## responsible 
+                                                                                                                                                                                                                     ## for 
+                                                                                                                                                                                                                     ## shipping 
+                                                                                                                                                                                                                     ## this 
+                                                                                                                                                                                                                     ## package.
+  ##   
+                                                                                                                                                                                                                                ## postalCode: JString
+                                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                ## Specifies 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## postal 
+                                                                                                                                                                                                                                ## code 
+                                                                                                                                                                                                                                ## for 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## return 
+                                                                                                                                                                                                                                ## address.
+  ##   
+                                                                                                                                                                                                                                           ## city: JString
+                                                                                                                                                                                                                                           ##       
+                                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                                           ## Specifies 
+                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                           ## name 
+                                                                                                                                                                                                                                           ## of 
+                                                                                                                                                                                                                                           ## your 
+                                                                                                                                                                                                                                           ## city 
+                                                                                                                                                                                                                                           ## for 
+                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                           ## return 
+                                                                                                                                                                                                                                           ## address.
+  ##   
+                                                                                                                                                                                                                                                      ## street1: JString
+                                                                                                                                                                                                                                                      ##          
+                                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                                      ## Specifies 
+                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                      ## first 
+                                                                                                                                                                                                                                                      ## part 
+                                                                                                                                                                                                                                                      ## of 
+                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                      ## street 
+                                                                                                                                                                                                                                                      ## address 
+                                                                                                                                                                                                                                                      ## for 
+                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                      ## return 
+                                                                                                                                                                                                                                                      ## address, 
+                                                                                                                                                                                                                                                      ## for 
+                                                                                                                                                                                                                                                      ## example 
+                                                                                                                                                                                                                                                      ## 1234 
+                                                                                                                                                                                                                                                      ## Main 
+                                                                                                                                                                                                                                                      ## Street.
+  ##   
+                                                                                                                                                                                                                                                                ## APIVersion: JString
+                                                                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                                                ## Specifies 
+                                                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                                                ## version 
+                                                                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                                                ## client 
+                                                                                                                                                                                                                                                                ## tool.
+  ##   
+                                                                                                                                                                                                                                                                        ## country: JString
+                                                                                                                                                                                                                                                                        ##          
+                                                                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                                                                        ## Specifies 
+                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                        ## name 
+                                                                                                                                                                                                                                                                        ## of 
+                                                                                                                                                                                                                                                                        ## your 
+                                                                                                                                                                                                                                                                        ## country 
+                                                                                                                                                                                                                                                                        ## for 
+                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                        ## return 
+                                                                                                                                                                                                                                                                        ## address.
+  ##   
+                                                                                                                                                                                                                                                                                   ## name: JString
+                                                                                                                                                                                                                                                                                   ##       
+                                                                                                                                                                                                                                                                                   ## : 
+                                                                                                                                                                                                                                                                                   ## Specifies 
+                                                                                                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                                                                                                   ## name 
+                                                                                                                                                                                                                                                                                   ## of 
+                                                                                                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                                                                                                   ## person 
+                                                                                                                                                                                                                                                                                   ## responsible 
+                                                                                                                                                                                                                                                                                   ## for 
+                                                                                                                                                                                                                                                                                   ## shipping 
+                                                                                                                                                                                                                                                                                   ## this 
+                                                                                                                                                                                                                                                                                   ## package.
   section = newJObject()
-  var valid_21626111 = formData.getOrDefault("company")
-  valid_21626111 = validateParameter(valid_21626111, JString, required = false,
-                                   default = nil)
-  if valid_21626111 != nil:
-    section.add "company", valid_21626111
-  var valid_21626112 = formData.getOrDefault("stateOrProvince")
-  valid_21626112 = validateParameter(valid_21626112, JString, required = false,
-                                   default = nil)
-  if valid_21626112 != nil:
-    section.add "stateOrProvince", valid_21626112
-  var valid_21626113 = formData.getOrDefault("street1")
-  valid_21626113 = validateParameter(valid_21626113, JString, required = false,
-                                   default = nil)
-  if valid_21626113 != nil:
-    section.add "street1", valid_21626113
-  var valid_21626114 = formData.getOrDefault("name")
-  valid_21626114 = validateParameter(valid_21626114, JString, required = false,
-                                   default = nil)
-  if valid_21626114 != nil:
-    section.add "name", valid_21626114
-  var valid_21626115 = formData.getOrDefault("street3")
-  valid_21626115 = validateParameter(valid_21626115, JString, required = false,
-                                   default = nil)
-  if valid_21626115 != nil:
-    section.add "street3", valid_21626115
-  var valid_21626116 = formData.getOrDefault("city")
-  valid_21626116 = validateParameter(valid_21626116, JString, required = false,
-                                   default = nil)
-  if valid_21626116 != nil:
-    section.add "city", valid_21626116
-  var valid_21626117 = formData.getOrDefault("postalCode")
-  valid_21626117 = validateParameter(valid_21626117, JString, required = false,
-                                   default = nil)
-  if valid_21626117 != nil:
-    section.add "postalCode", valid_21626117
-  var valid_21626118 = formData.getOrDefault("phoneNumber")
-  valid_21626118 = validateParameter(valid_21626118, JString, required = false,
-                                   default = nil)
-  if valid_21626118 != nil:
-    section.add "phoneNumber", valid_21626118
-  var valid_21626119 = formData.getOrDefault("street2")
-  valid_21626119 = validateParameter(valid_21626119, JString, required = false,
-                                   default = nil)
-  if valid_21626119 != nil:
-    section.add "street2", valid_21626119
-  var valid_21626120 = formData.getOrDefault("country")
-  valid_21626120 = validateParameter(valid_21626120, JString, required = false,
-                                   default = nil)
-  if valid_21626120 != nil:
-    section.add "country", valid_21626120
-  var valid_21626121 = formData.getOrDefault("APIVersion")
-  valid_21626121 = validateParameter(valid_21626121, JString, required = false,
-                                   default = nil)
-  if valid_21626121 != nil:
-    section.add "APIVersion", valid_21626121
+  var valid_402656568 = formData.getOrDefault("street3")
+  valid_402656568 = validateParameter(valid_402656568, JString,
+                                      required = false, default = nil)
+  if valid_402656568 != nil:
+    section.add "street3", valid_402656568
+  var valid_402656569 = formData.getOrDefault("stateOrProvince")
+  valid_402656569 = validateParameter(valid_402656569, JString,
+                                      required = false, default = nil)
+  if valid_402656569 != nil:
+    section.add "stateOrProvince", valid_402656569
   assert formData != nil,
-        "formData argument is necessary due to required `jobIds` field"
-  var valid_21626122 = formData.getOrDefault("jobIds")
-  valid_21626122 = validateParameter(valid_21626122, JArray, required = true,
-                                   default = nil)
-  if valid_21626122 != nil:
-    section.add "jobIds", valid_21626122
+         "formData argument is necessary due to required `jobIds` field"
+  var valid_402656570 = formData.getOrDefault("jobIds")
+  valid_402656570 = validateParameter(valid_402656570, JArray, required = true,
+                                      default = nil)
+  if valid_402656570 != nil:
+    section.add "jobIds", valid_402656570
+  var valid_402656571 = formData.getOrDefault("street2")
+  valid_402656571 = validateParameter(valid_402656571, JString,
+                                      required = false, default = nil)
+  if valid_402656571 != nil:
+    section.add "street2", valid_402656571
+  var valid_402656572 = formData.getOrDefault("company")
+  valid_402656572 = validateParameter(valid_402656572, JString,
+                                      required = false, default = nil)
+  if valid_402656572 != nil:
+    section.add "company", valid_402656572
+  var valid_402656573 = formData.getOrDefault("phoneNumber")
+  valid_402656573 = validateParameter(valid_402656573, JString,
+                                      required = false, default = nil)
+  if valid_402656573 != nil:
+    section.add "phoneNumber", valid_402656573
+  var valid_402656574 = formData.getOrDefault("postalCode")
+  valid_402656574 = validateParameter(valid_402656574, JString,
+                                      required = false, default = nil)
+  if valid_402656574 != nil:
+    section.add "postalCode", valid_402656574
+  var valid_402656575 = formData.getOrDefault("city")
+  valid_402656575 = validateParameter(valid_402656575, JString,
+                                      required = false, default = nil)
+  if valid_402656575 != nil:
+    section.add "city", valid_402656575
+  var valid_402656576 = formData.getOrDefault("street1")
+  valid_402656576 = validateParameter(valid_402656576, JString,
+                                      required = false, default = nil)
+  if valid_402656576 != nil:
+    section.add "street1", valid_402656576
+  var valid_402656577 = formData.getOrDefault("APIVersion")
+  valid_402656577 = validateParameter(valid_402656577, JString,
+                                      required = false, default = nil)
+  if valid_402656577 != nil:
+    section.add "APIVersion", valid_402656577
+  var valid_402656578 = formData.getOrDefault("country")
+  valid_402656578 = validateParameter(valid_402656578, JString,
+                                      required = false, default = nil)
+  if valid_402656578 != nil:
+    section.add "country", valid_402656578
+  var valid_402656579 = formData.getOrDefault("name")
+  valid_402656579 = validateParameter(valid_402656579, JString,
+                                      required = false, default = nil)
+  if valid_402656579 != nil:
+    section.add "name", valid_402656579
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626123: Call_PostGetShippingLabel_21626100; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656580: Call_PostGetShippingLabel_402656557;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
-  ## 
-  let valid = call_21626123.validator(path, query, header, formData, body, _)
-  let scheme = call_21626123.pickScheme
+                                                                                         ## 
+  let valid = call_402656580.validator(path, query, header, formData, body, _)
+  let scheme = call_402656580.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626123.makeUrl(scheme.get, call_21626123.host, call_21626123.base,
-                               call_21626123.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626123, uri, valid, _)
+  let uri = call_402656580.makeUrl(scheme.get, call_402656580.host, call_402656580.base,
+                                   call_402656580.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656580, uri, valid, _)
 
-proc call*(call_21626124: Call_PostGetShippingLabel_21626100;
-          SignatureMethod: string; Signature: string; Timestamp: string;
-          SignatureVersion: string; AWSAccessKeyId: string; jobIds: JsonNode;
-          company: string = ""; stateOrProvince: string = ""; street1: string = "";
-          name: string = ""; street3: string = ""; Action: string = "GetShippingLabel";
-          city: string = ""; postalCode: string = "";
-          Operation: string = "GetShippingLabel"; phoneNumber: string = "";
-          street2: string = ""; Version: string = "2010-06-01"; country: string = "";
-          APIVersion: string = ""): Recallable =
+proc call*(call_402656581: Call_PostGetShippingLabel_402656557;
+           Signature: string; Timestamp: string; jobIds: JsonNode;
+           AWSAccessKeyId: string; SignatureMethod: string;
+           SignatureVersion: string; street3: string = "";
+           stateOrProvince: string = ""; street2: string = "";
+           company: string = ""; phoneNumber: string = "";
+           postalCode: string = ""; Version: string = "2010-06-01";
+           city: string = ""; street1: string = ""; APIVersion: string = "";
+           Action: string = "GetShippingLabel"; country: string = "";
+           Operation: string = "GetShippingLabel"; name: string = ""): Recallable =
   ## postGetShippingLabel
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
-  ##   company: string
-  ##          : Specifies the name of the company that will ship this package.
-  ##   SignatureMethod: string (required)
-  ##   stateOrProvince: string
-  ##                  : Specifies the name of your state or your province for the return address.
-  ##   Signature: string (required)
-  ##   street1: string
-  ##          : Specifies the first part of the street address for the return address, for example 1234 Main Street.
-  ##   name: string
-  ##       : Specifies the name of the person responsible for shipping this package.
-  ##   street3: string
-  ##          : Specifies the optional third part of the street address for the return address, for example c/o Jane Doe.
-  ##   Action: string (required)
-  ##   city: string
-  ##       : Specifies the name of your city for the return address.
-  ##   Timestamp: string (required)
-  ##   postalCode: string
-  ##             : Specifies the postal code for the return address.
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   phoneNumber: string
-  ##              : Specifies the phone number of the person responsible for shipping this package.
-  ##   AWSAccessKeyId: string (required)
-  ##   street2: string
-  ##          : Specifies the optional second part of the street address for the return address, for example Suite 100.
-  ##   Version: string (required)
-  ##   country: string
-  ##          : Specifies the name of your country for the return address.
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  ##   jobIds: JArray (required)
-  var query_21626125 = newJObject()
-  var formData_21626126 = newJObject()
-  add(formData_21626126, "company", newJString(company))
-  add(query_21626125, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_21626126, "stateOrProvince", newJString(stateOrProvince))
-  add(query_21626125, "Signature", newJString(Signature))
-  add(formData_21626126, "street1", newJString(street1))
-  add(formData_21626126, "name", newJString(name))
-  add(formData_21626126, "street3", newJString(street3))
-  add(query_21626125, "Action", newJString(Action))
-  add(formData_21626126, "city", newJString(city))
-  add(query_21626125, "Timestamp", newJString(Timestamp))
-  add(formData_21626126, "postalCode", newJString(postalCode))
-  add(query_21626125, "Operation", newJString(Operation))
-  add(query_21626125, "SignatureVersion", newJString(SignatureVersion))
-  add(formData_21626126, "phoneNumber", newJString(phoneNumber))
-  add(query_21626125, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(formData_21626126, "street2", newJString(street2))
-  add(query_21626125, "Version", newJString(Version))
-  add(formData_21626126, "country", newJString(country))
-  add(formData_21626126, "APIVersion", newJString(APIVersion))
+  ##   
+                                                                                                                        ## street3: string
+                                                                                                                        ##          
+                                                                                                                        ## : 
+                                                                                                                        ## Specifies 
+                                                                                                                        ## the 
+                                                                                                                        ## optional 
+                                                                                                                        ## third 
+                                                                                                                        ## part 
+                                                                                                                        ## of 
+                                                                                                                        ## the 
+                                                                                                                        ## street 
+                                                                                                                        ## address 
+                                                                                                                        ## for 
+                                                                                                                        ## the 
+                                                                                                                        ## return 
+                                                                                                                        ## address, 
+                                                                                                                        ## for 
+                                                                                                                        ## example 
+                                                                                                                        ## c/o 
+                                                                                                                        ## Jane 
+                                                                                                                        ## Doe.
+  ##   
+                                                                                                                               ## Signature: string (required)
+  ##   
+                                                                                                                                                              ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                             ## stateOrProvince: string
+                                                                                                                                                                                             ##                  
+                                                                                                                                                                                             ## : 
+                                                                                                                                                                                             ## Specifies 
+                                                                                                                                                                                             ## the 
+                                                                                                                                                                                             ## name 
+                                                                                                                                                                                             ## of 
+                                                                                                                                                                                             ## your 
+                                                                                                                                                                                             ## state 
+                                                                                                                                                                                             ## or 
+                                                                                                                                                                                             ## your 
+                                                                                                                                                                                             ## province 
+                                                                                                                                                                                             ## for 
+                                                                                                                                                                                             ## the 
+                                                                                                                                                                                             ## return 
+                                                                                                                                                                                             ## address.
+  ##   
+                                                                                                                                                                                                        ## jobIds: JArray (required)
+  ##   
+                                                                                                                                                                                                                                    ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                        ## street2: string
+                                                                                                                                                                                                                                                                        ##          
+                                                                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                                                                        ## Specifies 
+                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                        ## optional 
+                                                                                                                                                                                                                                                                        ## second 
+                                                                                                                                                                                                                                                                        ## part 
+                                                                                                                                                                                                                                                                        ## of 
+                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                        ## street 
+                                                                                                                                                                                                                                                                        ## address 
+                                                                                                                                                                                                                                                                        ## for 
+                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                        ## return 
+                                                                                                                                                                                                                                                                        ## address, 
+                                                                                                                                                                                                                                                                        ## for 
+                                                                                                                                                                                                                                                                        ## example 
+                                                                                                                                                                                                                                                                        ## Suite 
+                                                                                                                                                                                                                                                                        ## 100.
+  ##   
+                                                                                                                                                                                                                                                                               ## company: string
+                                                                                                                                                                                                                                                                               ##          
+                                                                                                                                                                                                                                                                               ## : 
+                                                                                                                                                                                                                                                                               ## Specifies 
+                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                               ## name 
+                                                                                                                                                                                                                                                                               ## of 
+                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                               ## company 
+                                                                                                                                                                                                                                                                               ## that 
+                                                                                                                                                                                                                                                                               ## will 
+                                                                                                                                                                                                                                                                               ## ship 
+                                                                                                                                                                                                                                                                               ## this 
+                                                                                                                                                                                                                                                                               ## package.
+  ##   
+                                                                                                                                                                                                                                                                                          ## phoneNumber: string
+                                                                                                                                                                                                                                                                                          ##              
+                                                                                                                                                                                                                                                                                          ## : 
+                                                                                                                                                                                                                                                                                          ## Specifies 
+                                                                                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                                                                                          ## phone 
+                                                                                                                                                                                                                                                                                          ## number 
+                                                                                                                                                                                                                                                                                          ## of 
+                                                                                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                                                                                          ## person 
+                                                                                                                                                                                                                                                                                          ## responsible 
+                                                                                                                                                                                                                                                                                          ## for 
+                                                                                                                                                                                                                                                                                          ## shipping 
+                                                                                                                                                                                                                                                                                          ## this 
+                                                                                                                                                                                                                                                                                          ## package.
+  ##   
+                                                                                                                                                                                                                                                                                                     ## postalCode: string
+                                                                                                                                                                                                                                                                                                     ##             
+                                                                                                                                                                                                                                                                                                     ## : 
+                                                                                                                                                                                                                                                                                                     ## Specifies 
+                                                                                                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                                                                                                     ## postal 
+                                                                                                                                                                                                                                                                                                     ## code 
+                                                                                                                                                                                                                                                                                                     ## for 
+                                                                                                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                                                                                                     ## return 
+                                                                                                                                                                                                                                                                                                     ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                                ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                             ## city: string
+                                                                                                                                                                                                                                                                                                                                             ##       
+                                                                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                                                                             ## Specifies 
+                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                             ## name 
+                                                                                                                                                                                                                                                                                                                                             ## of 
+                                                                                                                                                                                                                                                                                                                                             ## your 
+                                                                                                                                                                                                                                                                                                                                             ## city 
+                                                                                                                                                                                                                                                                                                                                             ## for 
+                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                             ## return 
+                                                                                                                                                                                                                                                                                                                                             ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                        ## street1: string
+                                                                                                                                                                                                                                                                                                                                                        ##          
+                                                                                                                                                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                                                                                                                                                        ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                                                                                                        ## first 
+                                                                                                                                                                                                                                                                                                                                                        ## part 
+                                                                                                                                                                                                                                                                                                                                                        ## of 
+                                                                                                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                                                                                                        ## street 
+                                                                                                                                                                                                                                                                                                                                                        ## address 
+                                                                                                                                                                                                                                                                                                                                                        ## for 
+                                                                                                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                                                                                                        ## return 
+                                                                                                                                                                                                                                                                                                                                                        ## address, 
+                                                                                                                                                                                                                                                                                                                                                        ## for 
+                                                                                                                                                                                                                                                                                                                                                        ## example 
+                                                                                                                                                                                                                                                                                                                                                        ## 1234 
+                                                                                                                                                                                                                                                                                                                                                        ## Main 
+                                                                                                                                                                                                                                                                                                                                                        ## Street.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                  ## APIVersion: string
+                                                                                                                                                                                                                                                                                                                                                                  ##             
+                                                                                                                                                                                                                                                                                                                                                                  ## : 
+                                                                                                                                                                                                                                                                                                                                                                  ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                  ## the 
+                                                                                                                                                                                                                                                                                                                                                                  ## version 
+                                                                                                                                                                                                                                                                                                                                                                  ## of 
+                                                                                                                                                                                                                                                                                                                                                                  ## the 
+                                                                                                                                                                                                                                                                                                                                                                  ## client 
+                                                                                                                                                                                                                                                                                                                                                                  ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                          ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                      ## country: string
+                                                                                                                                                                                                                                                                                                                                                                                                      ##          
+                                                                                                                                                                                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## name 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## your 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## country 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## for 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## return 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                 ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## Operation: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## name: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ##       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## name 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## person 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## responsible 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## for 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## shipping 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## this 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## package.
+  var query_402656582 = newJObject()
+  var formData_402656583 = newJObject()
+  add(formData_402656583, "street3", newJString(street3))
+  add(query_402656582, "Signature", newJString(Signature))
+  add(query_402656582, "Timestamp", newJString(Timestamp))
+  add(formData_402656583, "stateOrProvince", newJString(stateOrProvince))
   if jobIds != nil:
-    formData_21626126.add "jobIds", jobIds
-  result = call_21626124.call(nil, query_21626125, nil, formData_21626126, nil)
+    formData_402656583.add "jobIds", jobIds
+  add(query_402656582, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(formData_402656583, "street2", newJString(street2))
+  add(formData_402656583, "company", newJString(company))
+  add(formData_402656583, "phoneNumber", newJString(phoneNumber))
+  add(formData_402656583, "postalCode", newJString(postalCode))
+  add(query_402656582, "Version", newJString(Version))
+  add(formData_402656583, "city", newJString(city))
+  add(formData_402656583, "street1", newJString(street1))
+  add(formData_402656583, "APIVersion", newJString(APIVersion))
+  add(query_402656582, "Action", newJString(Action))
+  add(formData_402656583, "country", newJString(country))
+  add(query_402656582, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656582, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656582, "Operation", newJString(Operation))
+  add(formData_402656583, "name", newJString(name))
+  result = call_402656581.call(nil, query_402656582, nil, formData_402656583,
+                               nil)
 
-var postGetShippingLabel* = Call_PostGetShippingLabel_21626100(
+var postGetShippingLabel* = Call_PostGetShippingLabel_402656557(
     name: "postGetShippingLabel", meth: HttpMethod.HttpPost,
     host: "importexport.amazonaws.com",
     route: "/#Operation=GetShippingLabel&Action=GetShippingLabel",
-    validator: validate_PostGetShippingLabel_21626101, base: "/",
-    makeUrl: url_PostGetShippingLabel_21626102,
+    validator: validate_PostGetShippingLabel_402656558, base: "/",
+    makeUrl: url_PostGetShippingLabel_402656559,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGetShippingLabel_21626074 = ref object of OpenApiRestCall_21625418
-proc url_GetGetShippingLabel_21626076(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetGetShippingLabel_402656531 = ref object of OpenApiRestCall_402656029
+proc url_GetGetShippingLabel_402656533(protocol: Scheme; host: string;
+                                       base: string; route: string;
+                                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1033,150 +1665,295 @@ proc url_GetGetShippingLabel_21626076(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_GetGetShippingLabel_21626075(path: JsonNode; query: JsonNode;
+proc validate_GetGetShippingLabel_402656532(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
-  ##   city: JString
-  ##       : Specifies the name of your city for the return address.
-  ##   country: JString
-  ##          : Specifies the name of your country for the return address.
-  ##   stateOrProvince: JString
-  ##                  : Specifies the name of your state or your province for the return address.
-  ##   company: JString
-  ##          : Specifies the name of the company that will ship this package.
-  ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
-  ##   phoneNumber: JString
-  ##              : Specifies the phone number of the person responsible for shipping this package.
-  ##   street1: JString
-  ##          : Specifies the first part of the street address for the return address, for example 1234 Main Street.
-  ##   Signature: JString (required)
   ##   street3: JString
-  ##          : Specifies the optional third part of the street address for the return address, for example c/o Jane Doe.
-  ##   Action: JString (required)
-  ##   name: JString
-  ##       : Specifies the name of the person responsible for shipping this package.
-  ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
-  ##   jobIds: JArray (required)
-  ##   AWSAccessKeyId: JString (required)
-  ##   street2: JString
-  ##          : Specifies the optional second part of the street address for the return address, for example Suite 100.
-  ##   postalCode: JString
-  ##             : Specifies the postal code for the return address.
-  ##   Version: JString (required)
+                                  ##          : Specifies the optional third part of the street address for the return address, for example c/o Jane Doe.
+  ##   
+                                                                                                                                                         ## APIVersion: JString
+                                                                                                                                                         ##             
+                                                                                                                                                         ## : 
+                                                                                                                                                         ## Specifies 
+                                                                                                                                                         ## the 
+                                                                                                                                                         ## version 
+                                                                                                                                                         ## of 
+                                                                                                                                                         ## the 
+                                                                                                                                                         ## client 
+                                                                                                                                                         ## tool.
+  ##   
+                                                                                                                                                                 ## jobIds: JArray (required)
+  ##   
+                                                                                                                                                                                             ## Signature: JString (required)
+  ##   
+                                                                                                                                                                                                                             ## Timestamp: JString (required)
+  ##   
+                                                                                                                                                                                                                                                             ## street2: JString
+                                                                                                                                                                                                                                                             ##          
+                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                             ## Specifies 
+                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                             ## optional 
+                                                                                                                                                                                                                                                             ## second 
+                                                                                                                                                                                                                                                             ## part 
+                                                                                                                                                                                                                                                             ## of 
+                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                             ## street 
+                                                                                                                                                                                                                                                             ## address 
+                                                                                                                                                                                                                                                             ## for 
+                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                             ## return 
+                                                                                                                                                                                                                                                             ## address, 
+                                                                                                                                                                                                                                                             ## for 
+                                                                                                                                                                                                                                                             ## example 
+                                                                                                                                                                                                                                                             ## Suite 
+                                                                                                                                                                                                                                                             ## 100.
+  ##   
+                                                                                                                                                                                                                                                                    ## postalCode: JString
+                                                                                                                                                                                                                                                                    ##             
+                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                    ## Specifies 
+                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                    ## postal 
+                                                                                                                                                                                                                                                                    ## code 
+                                                                                                                                                                                                                                                                    ## for 
+                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                    ## return 
+                                                                                                                                                                                                                                                                    ## address.
+  ##   
+                                                                                                                                                                                                                                                                               ## AWSAccessKeyId: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                    ## country: JString
+                                                                                                                                                                                                                                                                                                                    ##          
+                                                                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                                                                    ## Specifies 
+                                                                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                                                                    ## name 
+                                                                                                                                                                                                                                                                                                                    ## of 
+                                                                                                                                                                                                                                                                                                                    ## your 
+                                                                                                                                                                                                                                                                                                                    ## country 
+                                                                                                                                                                                                                                                                                                                    ## for 
+                                                                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                                                                    ## return 
+                                                                                                                                                                                                                                                                                                                    ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                                               ## Version: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                             ## street1: JString
+                                                                                                                                                                                                                                                                                                                                                             ##          
+                                                                                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                                                                                             ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                             ## first 
+                                                                                                                                                                                                                                                                                                                                                             ## part 
+                                                                                                                                                                                                                                                                                                                                                             ## of 
+                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                             ## street 
+                                                                                                                                                                                                                                                                                                                                                             ## address 
+                                                                                                                                                                                                                                                                                                                                                             ## for 
+                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                             ## return 
+                                                                                                                                                                                                                                                                                                                                                             ## address, 
+                                                                                                                                                                                                                                                                                                                                                             ## for 
+                                                                                                                                                                                                                                                                                                                                                             ## example 
+                                                                                                                                                                                                                                                                                                                                                             ## 1234 
+                                                                                                                                                                                                                                                                                                                                                             ## Main 
+                                                                                                                                                                                                                                                                                                                                                             ## Street.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                       ## name: JString
+                                                                                                                                                                                                                                                                                                                                                                       ##       
+                                                                                                                                                                                                                                                                                                                                                                       ## : 
+                                                                                                                                                                                                                                                                                                                                                                       ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                       ## the 
+                                                                                                                                                                                                                                                                                                                                                                       ## name 
+                                                                                                                                                                                                                                                                                                                                                                       ## of 
+                                                                                                                                                                                                                                                                                                                                                                       ## the 
+                                                                                                                                                                                                                                                                                                                                                                       ## person 
+                                                                                                                                                                                                                                                                                                                                                                       ## responsible 
+                                                                                                                                                                                                                                                                                                                                                                       ## for 
+                                                                                                                                                                                                                                                                                                                                                                       ## shipping 
+                                                                                                                                                                                                                                                                                                                                                                       ## this 
+                                                                                                                                                                                                                                                                                                                                                                       ## package.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                  ## phoneNumber: JString
+                                                                                                                                                                                                                                                                                                                                                                                  ##              
+                                                                                                                                                                                                                                                                                                                                                                                  ## : 
+                                                                                                                                                                                                                                                                                                                                                                                  ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                  ## the 
+                                                                                                                                                                                                                                                                                                                                                                                  ## phone 
+                                                                                                                                                                                                                                                                                                                                                                                  ## number 
+                                                                                                                                                                                                                                                                                                                                                                                  ## of 
+                                                                                                                                                                                                                                                                                                                                                                                  ## the 
+                                                                                                                                                                                                                                                                                                                                                                                  ## person 
+                                                                                                                                                                                                                                                                                                                                                                                  ## responsible 
+                                                                                                                                                                                                                                                                                                                                                                                  ## for 
+                                                                                                                                                                                                                                                                                                                                                                                  ## shipping 
+                                                                                                                                                                                                                                                                                                                                                                                  ## this 
+                                                                                                                                                                                                                                                                                                                                                                                  ## package.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                             ## Action: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## stateOrProvince: JString
+                                                                                                                                                                                                                                                                                                                                                                                                                          ##                  
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## name 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## your 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## state 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## or 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## your 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## province 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## for 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## return 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## company: JString
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ##          
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## name 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## company 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## that 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## will 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## ship 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## this 
+                                                                                                                                                                                                                                                                                                                                                                                                                                     ## package.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                ## SignatureMethod: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## city: JString
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ##       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## name 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## your 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## city 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## for 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## return 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ## SignatureVersion: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ## Operation: JString (required)
   section = newJObject()
+  var valid_402656534 = query.getOrDefault("street3")
+  valid_402656534 = validateParameter(valid_402656534, JString,
+                                      required = false, default = nil)
+  if valid_402656534 != nil:
+    section.add "street3", valid_402656534
+  var valid_402656535 = query.getOrDefault("APIVersion")
+  valid_402656535 = validateParameter(valid_402656535, JString,
+                                      required = false, default = nil)
+  if valid_402656535 != nil:
+    section.add "APIVersion", valid_402656535
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626077 = query.getOrDefault("SignatureMethod")
-  valid_21626077 = validateParameter(valid_21626077, JString, required = true,
-                                   default = nil)
-  if valid_21626077 != nil:
-    section.add "SignatureMethod", valid_21626077
-  var valid_21626078 = query.getOrDefault("city")
-  valid_21626078 = validateParameter(valid_21626078, JString, required = false,
-                                   default = nil)
-  if valid_21626078 != nil:
-    section.add "city", valid_21626078
-  var valid_21626079 = query.getOrDefault("country")
-  valid_21626079 = validateParameter(valid_21626079, JString, required = false,
-                                   default = nil)
-  if valid_21626079 != nil:
-    section.add "country", valid_21626079
-  var valid_21626080 = query.getOrDefault("stateOrProvince")
-  valid_21626080 = validateParameter(valid_21626080, JString, required = false,
-                                   default = nil)
-  if valid_21626080 != nil:
-    section.add "stateOrProvince", valid_21626080
-  var valid_21626081 = query.getOrDefault("company")
-  valid_21626081 = validateParameter(valid_21626081, JString, required = false,
-                                   default = nil)
-  if valid_21626081 != nil:
-    section.add "company", valid_21626081
-  var valid_21626082 = query.getOrDefault("APIVersion")
-  valid_21626082 = validateParameter(valid_21626082, JString, required = false,
-                                   default = nil)
-  if valid_21626082 != nil:
-    section.add "APIVersion", valid_21626082
-  var valid_21626083 = query.getOrDefault("phoneNumber")
-  valid_21626083 = validateParameter(valid_21626083, JString, required = false,
-                                   default = nil)
-  if valid_21626083 != nil:
-    section.add "phoneNumber", valid_21626083
-  var valid_21626084 = query.getOrDefault("street1")
-  valid_21626084 = validateParameter(valid_21626084, JString, required = false,
-                                   default = nil)
-  if valid_21626084 != nil:
-    section.add "street1", valid_21626084
-  var valid_21626085 = query.getOrDefault("Signature")
-  valid_21626085 = validateParameter(valid_21626085, JString, required = true,
-                                   default = nil)
-  if valid_21626085 != nil:
-    section.add "Signature", valid_21626085
-  var valid_21626086 = query.getOrDefault("street3")
-  valid_21626086 = validateParameter(valid_21626086, JString, required = false,
-                                   default = nil)
-  if valid_21626086 != nil:
-    section.add "street3", valid_21626086
-  var valid_21626087 = query.getOrDefault("Action")
-  valid_21626087 = validateParameter(valid_21626087, JString, required = true,
-                                   default = newJString("GetShippingLabel"))
-  if valid_21626087 != nil:
-    section.add "Action", valid_21626087
-  var valid_21626088 = query.getOrDefault("name")
-  valid_21626088 = validateParameter(valid_21626088, JString, required = false,
-                                   default = nil)
-  if valid_21626088 != nil:
-    section.add "name", valid_21626088
-  var valid_21626089 = query.getOrDefault("Timestamp")
-  valid_21626089 = validateParameter(valid_21626089, JString, required = true,
-                                   default = nil)
-  if valid_21626089 != nil:
-    section.add "Timestamp", valid_21626089
-  var valid_21626090 = query.getOrDefault("Operation")
-  valid_21626090 = validateParameter(valid_21626090, JString, required = true,
-                                   default = newJString("GetShippingLabel"))
-  if valid_21626090 != nil:
-    section.add "Operation", valid_21626090
-  var valid_21626091 = query.getOrDefault("SignatureVersion")
-  valid_21626091 = validateParameter(valid_21626091, JString, required = true,
-                                   default = nil)
-  if valid_21626091 != nil:
-    section.add "SignatureVersion", valid_21626091
-  var valid_21626092 = query.getOrDefault("jobIds")
-  valid_21626092 = validateParameter(valid_21626092, JArray, required = true,
-                                   default = nil)
-  if valid_21626092 != nil:
-    section.add "jobIds", valid_21626092
-  var valid_21626093 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626093 = validateParameter(valid_21626093, JString, required = true,
-                                   default = nil)
-  if valid_21626093 != nil:
-    section.add "AWSAccessKeyId", valid_21626093
-  var valid_21626094 = query.getOrDefault("street2")
-  valid_21626094 = validateParameter(valid_21626094, JString, required = false,
-                                   default = nil)
-  if valid_21626094 != nil:
-    section.add "street2", valid_21626094
-  var valid_21626095 = query.getOrDefault("postalCode")
-  valid_21626095 = validateParameter(valid_21626095, JString, required = false,
-                                   default = nil)
-  if valid_21626095 != nil:
-    section.add "postalCode", valid_21626095
-  var valid_21626096 = query.getOrDefault("Version")
-  valid_21626096 = validateParameter(valid_21626096, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626096 != nil:
-    section.add "Version", valid_21626096
+         "query argument is necessary due to required `jobIds` field"
+  var valid_402656536 = query.getOrDefault("jobIds")
+  valid_402656536 = validateParameter(valid_402656536, JArray, required = true,
+                                      default = nil)
+  if valid_402656536 != nil:
+    section.add "jobIds", valid_402656536
+  var valid_402656537 = query.getOrDefault("Signature")
+  valid_402656537 = validateParameter(valid_402656537, JString, required = true,
+                                      default = nil)
+  if valid_402656537 != nil:
+    section.add "Signature", valid_402656537
+  var valid_402656538 = query.getOrDefault("Timestamp")
+  valid_402656538 = validateParameter(valid_402656538, JString, required = true,
+                                      default = nil)
+  if valid_402656538 != nil:
+    section.add "Timestamp", valid_402656538
+  var valid_402656539 = query.getOrDefault("street2")
+  valid_402656539 = validateParameter(valid_402656539, JString,
+                                      required = false, default = nil)
+  if valid_402656539 != nil:
+    section.add "street2", valid_402656539
+  var valid_402656540 = query.getOrDefault("postalCode")
+  valid_402656540 = validateParameter(valid_402656540, JString,
+                                      required = false, default = nil)
+  if valid_402656540 != nil:
+    section.add "postalCode", valid_402656540
+  var valid_402656541 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656541 = validateParameter(valid_402656541, JString, required = true,
+                                      default = nil)
+  if valid_402656541 != nil:
+    section.add "AWSAccessKeyId", valid_402656541
+  var valid_402656542 = query.getOrDefault("country")
+  valid_402656542 = validateParameter(valid_402656542, JString,
+                                      required = false, default = nil)
+  if valid_402656542 != nil:
+    section.add "country", valid_402656542
+  var valid_402656543 = query.getOrDefault("Version")
+  valid_402656543 = validateParameter(valid_402656543, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656543 != nil:
+    section.add "Version", valid_402656543
+  var valid_402656544 = query.getOrDefault("street1")
+  valid_402656544 = validateParameter(valid_402656544, JString,
+                                      required = false, default = nil)
+  if valid_402656544 != nil:
+    section.add "street1", valid_402656544
+  var valid_402656545 = query.getOrDefault("name")
+  valid_402656545 = validateParameter(valid_402656545, JString,
+                                      required = false, default = nil)
+  if valid_402656545 != nil:
+    section.add "name", valid_402656545
+  var valid_402656546 = query.getOrDefault("phoneNumber")
+  valid_402656546 = validateParameter(valid_402656546, JString,
+                                      required = false, default = nil)
+  if valid_402656546 != nil:
+    section.add "phoneNumber", valid_402656546
+  var valid_402656547 = query.getOrDefault("Action")
+  valid_402656547 = validateParameter(valid_402656547, JString, required = true,
+                                      default = newJString("GetShippingLabel"))
+  if valid_402656547 != nil:
+    section.add "Action", valid_402656547
+  var valid_402656548 = query.getOrDefault("stateOrProvince")
+  valid_402656548 = validateParameter(valid_402656548, JString,
+                                      required = false, default = nil)
+  if valid_402656548 != nil:
+    section.add "stateOrProvince", valid_402656548
+  var valid_402656549 = query.getOrDefault("company")
+  valid_402656549 = validateParameter(valid_402656549, JString,
+                                      required = false, default = nil)
+  if valid_402656549 != nil:
+    section.add "company", valid_402656549
+  var valid_402656550 = query.getOrDefault("SignatureMethod")
+  valid_402656550 = validateParameter(valid_402656550, JString, required = true,
+                                      default = nil)
+  if valid_402656550 != nil:
+    section.add "SignatureMethod", valid_402656550
+  var valid_402656551 = query.getOrDefault("city")
+  valid_402656551 = validateParameter(valid_402656551, JString,
+                                      required = false, default = nil)
+  if valid_402656551 != nil:
+    section.add "city", valid_402656551
+  var valid_402656552 = query.getOrDefault("SignatureVersion")
+  valid_402656552 = validateParameter(valid_402656552, JString, required = true,
+                                      default = nil)
+  if valid_402656552 != nil:
+    section.add "SignatureVersion", valid_402656552
+  var valid_402656553 = query.getOrDefault("Operation")
+  valid_402656553 = validateParameter(valid_402656553, JString, required = true,
+                                      default = newJString("GetShippingLabel"))
+  if valid_402656553 != nil:
+    section.add "Operation", valid_402656553
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1185,97 +1962,264 @@ proc validate_GetGetShippingLabel_21626075(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626097: Call_GetGetShippingLabel_21626074; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656554: Call_GetGetShippingLabel_402656531;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
-  ## 
-  let valid = call_21626097.validator(path, query, header, formData, body, _)
-  let scheme = call_21626097.pickScheme
+                                                                                         ## 
+  let valid = call_402656554.validator(path, query, header, formData, body, _)
+  let scheme = call_402656554.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626097.makeUrl(scheme.get, call_21626097.host, call_21626097.base,
-                               call_21626097.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626097, uri, valid, _)
+  let uri = call_402656554.makeUrl(scheme.get, call_402656554.host, call_402656554.base,
+                                   call_402656554.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656554, uri, valid, _)
 
-proc call*(call_21626098: Call_GetGetShippingLabel_21626074;
-          SignatureMethod: string; Signature: string; Timestamp: string;
-          SignatureVersion: string; jobIds: JsonNode; AWSAccessKeyId: string;
-          city: string = ""; country: string = ""; stateOrProvince: string = "";
-          company: string = ""; APIVersion: string = ""; phoneNumber: string = "";
-          street1: string = ""; street3: string = "";
-          Action: string = "GetShippingLabel"; name: string = "";
-          Operation: string = "GetShippingLabel"; street2: string = "";
-          postalCode: string = ""; Version: string = "2010-06-01"): Recallable =
+proc call*(call_402656555: Call_GetGetShippingLabel_402656531; jobIds: JsonNode;
+           Signature: string; Timestamp: string; AWSAccessKeyId: string;
+           SignatureMethod: string; SignatureVersion: string;
+           street3: string = ""; APIVersion: string = ""; street2: string = "";
+           postalCode: string = ""; country: string = "";
+           Version: string = "2010-06-01"; street1: string = "";
+           name: string = ""; phoneNumber: string = "";
+           Action: string = "GetShippingLabel"; stateOrProvince: string = "";
+           company: string = ""; city: string = "";
+           Operation: string = "GetShippingLabel"): Recallable =
   ## getGetShippingLabel
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
-  ##   SignatureMethod: string (required)
-  ##   city: string
-  ##       : Specifies the name of your city for the return address.
-  ##   country: string
-  ##          : Specifies the name of your country for the return address.
-  ##   stateOrProvince: string
-  ##                  : Specifies the name of your state or your province for the return address.
-  ##   company: string
-  ##          : Specifies the name of the company that will ship this package.
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  ##   phoneNumber: string
-  ##              : Specifies the phone number of the person responsible for shipping this package.
-  ##   street1: string
-  ##          : Specifies the first part of the street address for the return address, for example 1234 Main Street.
-  ##   Signature: string (required)
-  ##   street3: string
-  ##          : Specifies the optional third part of the street address for the return address, for example c/o Jane Doe.
-  ##   Action: string (required)
-  ##   name: string
-  ##       : Specifies the name of the person responsible for shipping this package.
-  ##   Timestamp: string (required)
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   jobIds: JArray (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   street2: string
-  ##          : Specifies the optional second part of the street address for the return address, for example Suite 100.
-  ##   postalCode: string
-  ##             : Specifies the postal code for the return address.
-  ##   Version: string (required)
-  var query_21626099 = newJObject()
-  add(query_21626099, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626099, "city", newJString(city))
-  add(query_21626099, "country", newJString(country))
-  add(query_21626099, "stateOrProvince", newJString(stateOrProvince))
-  add(query_21626099, "company", newJString(company))
-  add(query_21626099, "APIVersion", newJString(APIVersion))
-  add(query_21626099, "phoneNumber", newJString(phoneNumber))
-  add(query_21626099, "street1", newJString(street1))
-  add(query_21626099, "Signature", newJString(Signature))
-  add(query_21626099, "street3", newJString(street3))
-  add(query_21626099, "Action", newJString(Action))
-  add(query_21626099, "name", newJString(name))
-  add(query_21626099, "Timestamp", newJString(Timestamp))
-  add(query_21626099, "Operation", newJString(Operation))
-  add(query_21626099, "SignatureVersion", newJString(SignatureVersion))
+  ##   
+                                                                                                                        ## street3: string
+                                                                                                                        ##          
+                                                                                                                        ## : 
+                                                                                                                        ## Specifies 
+                                                                                                                        ## the 
+                                                                                                                        ## optional 
+                                                                                                                        ## third 
+                                                                                                                        ## part 
+                                                                                                                        ## of 
+                                                                                                                        ## the 
+                                                                                                                        ## street 
+                                                                                                                        ## address 
+                                                                                                                        ## for 
+                                                                                                                        ## the 
+                                                                                                                        ## return 
+                                                                                                                        ## address, 
+                                                                                                                        ## for 
+                                                                                                                        ## example 
+                                                                                                                        ## c/o 
+                                                                                                                        ## Jane 
+                                                                                                                        ## Doe.
+  ##   
+                                                                                                                               ## APIVersion: string
+                                                                                                                               ##             
+                                                                                                                               ## : 
+                                                                                                                               ## Specifies 
+                                                                                                                               ## the 
+                                                                                                                               ## version 
+                                                                                                                               ## of 
+                                                                                                                               ## the 
+                                                                                                                               ## client 
+                                                                                                                               ## tool.
+  ##   
+                                                                                                                                       ## jobIds: JArray (required)
+  ##   
+                                                                                                                                                                   ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                  ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                 ## street2: string
+                                                                                                                                                                                                                                 ##          
+                                                                                                                                                                                                                                 ## : 
+                                                                                                                                                                                                                                 ## Specifies 
+                                                                                                                                                                                                                                 ## the 
+                                                                                                                                                                                                                                 ## optional 
+                                                                                                                                                                                                                                 ## second 
+                                                                                                                                                                                                                                 ## part 
+                                                                                                                                                                                                                                 ## of 
+                                                                                                                                                                                                                                 ## the 
+                                                                                                                                                                                                                                 ## street 
+                                                                                                                                                                                                                                 ## address 
+                                                                                                                                                                                                                                 ## for 
+                                                                                                                                                                                                                                 ## the 
+                                                                                                                                                                                                                                 ## return 
+                                                                                                                                                                                                                                 ## address, 
+                                                                                                                                                                                                                                 ## for 
+                                                                                                                                                                                                                                 ## example 
+                                                                                                                                                                                                                                 ## Suite 
+                                                                                                                                                                                                                                 ## 100.
+  ##   
+                                                                                                                                                                                                                                        ## postalCode: string
+                                                                                                                                                                                                                                        ##             
+                                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                                        ## Specifies 
+                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                        ## postal 
+                                                                                                                                                                                                                                        ## code 
+                                                                                                                                                                                                                                        ## for 
+                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                        ## return 
+                                                                                                                                                                                                                                        ## address.
+  ##   
+                                                                                                                                                                                                                                                   ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                       ## country: string
+                                                                                                                                                                                                                                                                                       ##          
+                                                                                                                                                                                                                                                                                       ## : 
+                                                                                                                                                                                                                                                                                       ## Specifies 
+                                                                                                                                                                                                                                                                                       ## the 
+                                                                                                                                                                                                                                                                                       ## name 
+                                                                                                                                                                                                                                                                                       ## of 
+                                                                                                                                                                                                                                                                                       ## your 
+                                                                                                                                                                                                                                                                                       ## country 
+                                                                                                                                                                                                                                                                                       ## for 
+                                                                                                                                                                                                                                                                                       ## the 
+                                                                                                                                                                                                                                                                                       ## return 
+                                                                                                                                                                                                                                                                                       ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                  ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                               ## street1: string
+                                                                                                                                                                                                                                                                                                                               ##          
+                                                                                                                                                                                                                                                                                                                               ## : 
+                                                                                                                                                                                                                                                                                                                               ## Specifies 
+                                                                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                                                                               ## first 
+                                                                                                                                                                                                                                                                                                                               ## part 
+                                                                                                                                                                                                                                                                                                                               ## of 
+                                                                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                                                                               ## street 
+                                                                                                                                                                                                                                                                                                                               ## address 
+                                                                                                                                                                                                                                                                                                                               ## for 
+                                                                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                                                                               ## return 
+                                                                                                                                                                                                                                                                                                                               ## address, 
+                                                                                                                                                                                                                                                                                                                               ## for 
+                                                                                                                                                                                                                                                                                                                               ## example 
+                                                                                                                                                                                                                                                                                                                               ## 1234 
+                                                                                                                                                                                                                                                                                                                               ## Main 
+                                                                                                                                                                                                                                                                                                                               ## Street.
+  ##   
+                                                                                                                                                                                                                                                                                                                                         ## name: string
+                                                                                                                                                                                                                                                                                                                                         ##       
+                                                                                                                                                                                                                                                                                                                                         ## : 
+                                                                                                                                                                                                                                                                                                                                         ## Specifies 
+                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                         ## name 
+                                                                                                                                                                                                                                                                                                                                         ## of 
+                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                         ## person 
+                                                                                                                                                                                                                                                                                                                                         ## responsible 
+                                                                                                                                                                                                                                                                                                                                         ## for 
+                                                                                                                                                                                                                                                                                                                                         ## shipping 
+                                                                                                                                                                                                                                                                                                                                         ## this 
+                                                                                                                                                                                                                                                                                                                                         ## package.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                    ## phoneNumber: string
+                                                                                                                                                                                                                                                                                                                                                    ##              
+                                                                                                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                                                                                                    ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                                                                                                    ## phone 
+                                                                                                                                                                                                                                                                                                                                                    ## number 
+                                                                                                                                                                                                                                                                                                                                                    ## of 
+                                                                                                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                                                                                                    ## person 
+                                                                                                                                                                                                                                                                                                                                                    ## responsible 
+                                                                                                                                                                                                                                                                                                                                                    ## for 
+                                                                                                                                                                                                                                                                                                                                                    ## shipping 
+                                                                                                                                                                                                                                                                                                                                                    ## this 
+                                                                                                                                                                                                                                                                                                                                                    ## package.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                               ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                           ## stateOrProvince: string
+                                                                                                                                                                                                                                                                                                                                                                                           ##                  
+                                                                                                                                                                                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                                                                                                                                                                                           ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                                                                                                                                                                           ## name 
+                                                                                                                                                                                                                                                                                                                                                                                           ## of 
+                                                                                                                                                                                                                                                                                                                                                                                           ## your 
+                                                                                                                                                                                                                                                                                                                                                                                           ## state 
+                                                                                                                                                                                                                                                                                                                                                                                           ## or 
+                                                                                                                                                                                                                                                                                                                                                                                           ## your 
+                                                                                                                                                                                                                                                                                                                                                                                           ## province 
+                                                                                                                                                                                                                                                                                                                                                                                           ## for 
+                                                                                                                                                                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                                                                                                                                                                           ## return 
+                                                                                                                                                                                                                                                                                                                                                                                           ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                      ## company: string
+                                                                                                                                                                                                                                                                                                                                                                                                      ##          
+                                                                                                                                                                                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## name 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## company 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## that 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## will 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## ship 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## this 
+                                                                                                                                                                                                                                                                                                                                                                                                      ## package.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                 ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## city: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ##       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## name 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## your 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## city 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## for 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## return 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## address.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ## Operation: string (required)
+  var query_402656556 = newJObject()
+  add(query_402656556, "street3", newJString(street3))
+  add(query_402656556, "APIVersion", newJString(APIVersion))
   if jobIds != nil:
-    query_21626099.add "jobIds", jobIds
-  add(query_21626099, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626099, "street2", newJString(street2))
-  add(query_21626099, "postalCode", newJString(postalCode))
-  add(query_21626099, "Version", newJString(Version))
-  result = call_21626098.call(nil, query_21626099, nil, nil, nil)
+    query_402656556.add "jobIds", jobIds
+  add(query_402656556, "Signature", newJString(Signature))
+  add(query_402656556, "Timestamp", newJString(Timestamp))
+  add(query_402656556, "street2", newJString(street2))
+  add(query_402656556, "postalCode", newJString(postalCode))
+  add(query_402656556, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_402656556, "country", newJString(country))
+  add(query_402656556, "Version", newJString(Version))
+  add(query_402656556, "street1", newJString(street1))
+  add(query_402656556, "name", newJString(name))
+  add(query_402656556, "phoneNumber", newJString(phoneNumber))
+  add(query_402656556, "Action", newJString(Action))
+  add(query_402656556, "stateOrProvince", newJString(stateOrProvince))
+  add(query_402656556, "company", newJString(company))
+  add(query_402656556, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656556, "city", newJString(city))
+  add(query_402656556, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656556, "Operation", newJString(Operation))
+  result = call_402656555.call(nil, query_402656556, nil, nil, nil)
 
-var getGetShippingLabel* = Call_GetGetShippingLabel_21626074(
+var getGetShippingLabel* = Call_GetGetShippingLabel_402656531(
     name: "getGetShippingLabel", meth: HttpMethod.HttpGet,
     host: "importexport.amazonaws.com",
     route: "/#Operation=GetShippingLabel&Action=GetShippingLabel",
-    validator: validate_GetGetShippingLabel_21626075, base: "/",
-    makeUrl: url_GetGetShippingLabel_21626076,
+    validator: validate_GetGetShippingLabel_402656532, base: "/",
+    makeUrl: url_GetGetShippingLabel_402656533,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostGetStatus_21626143 = ref object of OpenApiRestCall_21625418
-proc url_PostGetStatus_21626145(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PostGetStatus_402656600 = ref object of OpenApiRestCall_402656029
+proc url_PostGetStatus_402656602(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1284,148 +2228,190 @@ proc url_PostGetStatus_21626145(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostGetStatus_21626144(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_PostGetStatus_402656601(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
   ##   Signature: JString (required)
-  ##   Action: JString (required)
   ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
   ##   AWSAccessKeyId: JString (required)
   ##   Version: JString (required)
+  ##   Action: JString (required)
+  ##   SignatureMethod: JString (required)
+  ##   SignatureVersion: JString (required)
+  ##   Operation: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626146 = query.getOrDefault("SignatureMethod")
-  valid_21626146 = validateParameter(valid_21626146, JString, required = true,
-                                   default = nil)
-  if valid_21626146 != nil:
-    section.add "SignatureMethod", valid_21626146
-  var valid_21626147 = query.getOrDefault("Signature")
-  valid_21626147 = validateParameter(valid_21626147, JString, required = true,
-                                   default = nil)
-  if valid_21626147 != nil:
-    section.add "Signature", valid_21626147
-  var valid_21626148 = query.getOrDefault("Action")
-  valid_21626148 = validateParameter(valid_21626148, JString, required = true,
-                                   default = newJString("GetStatus"))
-  if valid_21626148 != nil:
-    section.add "Action", valid_21626148
-  var valid_21626149 = query.getOrDefault("Timestamp")
-  valid_21626149 = validateParameter(valid_21626149, JString, required = true,
-                                   default = nil)
-  if valid_21626149 != nil:
-    section.add "Timestamp", valid_21626149
-  var valid_21626150 = query.getOrDefault("Operation")
-  valid_21626150 = validateParameter(valid_21626150, JString, required = true,
-                                   default = newJString("GetStatus"))
-  if valid_21626150 != nil:
-    section.add "Operation", valid_21626150
-  var valid_21626151 = query.getOrDefault("SignatureVersion")
-  valid_21626151 = validateParameter(valid_21626151, JString, required = true,
-                                   default = nil)
-  if valid_21626151 != nil:
-    section.add "SignatureVersion", valid_21626151
-  var valid_21626152 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626152 = validateParameter(valid_21626152, JString, required = true,
-                                   default = nil)
-  if valid_21626152 != nil:
-    section.add "AWSAccessKeyId", valid_21626152
-  var valid_21626153 = query.getOrDefault("Version")
-  valid_21626153 = validateParameter(valid_21626153, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626153 != nil:
-    section.add "Version", valid_21626153
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656603 = query.getOrDefault("Signature")
+  valid_402656603 = validateParameter(valid_402656603, JString, required = true,
+                                      default = nil)
+  if valid_402656603 != nil:
+    section.add "Signature", valid_402656603
+  var valid_402656604 = query.getOrDefault("Timestamp")
+  valid_402656604 = validateParameter(valid_402656604, JString, required = true,
+                                      default = nil)
+  if valid_402656604 != nil:
+    section.add "Timestamp", valid_402656604
+  var valid_402656605 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656605 = validateParameter(valid_402656605, JString, required = true,
+                                      default = nil)
+  if valid_402656605 != nil:
+    section.add "AWSAccessKeyId", valid_402656605
+  var valid_402656606 = query.getOrDefault("Version")
+  valid_402656606 = validateParameter(valid_402656606, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656606 != nil:
+    section.add "Version", valid_402656606
+  var valid_402656607 = query.getOrDefault("Action")
+  valid_402656607 = validateParameter(valid_402656607, JString, required = true,
+                                      default = newJString("GetStatus"))
+  if valid_402656607 != nil:
+    section.add "Action", valid_402656607
+  var valid_402656608 = query.getOrDefault("SignatureMethod")
+  valid_402656608 = validateParameter(valid_402656608, JString, required = true,
+                                      default = nil)
+  if valid_402656608 != nil:
+    section.add "SignatureMethod", valid_402656608
+  var valid_402656609 = query.getOrDefault("SignatureVersion")
+  valid_402656609 = validateParameter(valid_402656609, JString, required = true,
+                                      default = nil)
+  if valid_402656609 != nil:
+    section.add "SignatureVersion", valid_402656609
+  var valid_402656610 = query.getOrDefault("Operation")
+  valid_402656610 = validateParameter(valid_402656610, JString, required = true,
+                                      default = newJString("GetStatus"))
+  if valid_402656610 != nil:
+    section.add "Operation", valid_402656610
   result.add "query", section
   section = newJObject()
   result.add "header", section
   ## parameters in `formData` object:
-  ##   JobId: JString (required)
-  ##        : A unique identifier which refers to a particular job.
   ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
+                                     ##             : Specifies the version of the client tool.
+  ##   
+                                                                                               ## JobId: JString (required)
+                                                                                               ##        
+                                                                                               ## : 
+                                                                                               ## A 
+                                                                                               ## unique 
+                                                                                               ## identifier 
+                                                                                               ## which 
+                                                                                               ## refers 
+                                                                                               ## to 
+                                                                                               ## a 
+                                                                                               ## particular 
+                                                                                               ## job.
   section = newJObject()
+  var valid_402656611 = formData.getOrDefault("APIVersion")
+  valid_402656611 = validateParameter(valid_402656611, JString,
+                                      required = false, default = nil)
+  if valid_402656611 != nil:
+    section.add "APIVersion", valid_402656611
   assert formData != nil,
-        "formData argument is necessary due to required `JobId` field"
-  var valid_21626154 = formData.getOrDefault("JobId")
-  valid_21626154 = validateParameter(valid_21626154, JString, required = true,
-                                   default = nil)
-  if valid_21626154 != nil:
-    section.add "JobId", valid_21626154
-  var valid_21626155 = formData.getOrDefault("APIVersion")
-  valid_21626155 = validateParameter(valid_21626155, JString, required = false,
-                                   default = nil)
-  if valid_21626155 != nil:
-    section.add "APIVersion", valid_21626155
+         "formData argument is necessary due to required `JobId` field"
+  var valid_402656612 = formData.getOrDefault("JobId")
+  valid_402656612 = validateParameter(valid_402656612, JString, required = true,
+                                      default = nil)
+  if valid_402656612 != nil:
+    section.add "JobId", valid_402656612
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626156: Call_PostGetStatus_21626143; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656613: Call_PostGetStatus_402656600; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
-  ## 
-  let valid = call_21626156.validator(path, query, header, formData, body, _)
-  let scheme = call_21626156.pickScheme
+                                                                                         ## 
+  let valid = call_402656613.validator(path, query, header, formData, body, _)
+  let scheme = call_402656613.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626156.makeUrl(scheme.get, call_21626156.host, call_21626156.base,
-                               call_21626156.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626156, uri, valid, _)
+  let uri = call_402656613.makeUrl(scheme.get, call_402656613.host, call_402656613.base,
+                                   call_402656613.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656613, uri, valid, _)
 
-proc call*(call_21626157: Call_PostGetStatus_21626143; SignatureMethod: string;
-          Signature: string; Timestamp: string; JobId: string;
-          SignatureVersion: string; AWSAccessKeyId: string;
-          Action: string = "GetStatus"; Operation: string = "GetStatus";
-          Version: string = "2010-06-01"; APIVersion: string = ""): Recallable =
+proc call*(call_402656614: Call_PostGetStatus_402656600; Signature: string;
+           Timestamp: string; AWSAccessKeyId: string; JobId: string;
+           SignatureMethod: string; SignatureVersion: string;
+           Version: string = "2010-06-01"; APIVersion: string = "";
+           Action: string = "GetStatus"; Operation: string = "GetStatus"): Recallable =
   ## postGetStatus
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
-  ##   SignatureMethod: string (required)
-  ##   Signature: string (required)
-  ##   Action: string (required)
-  ##   Timestamp: string (required)
-  ##   JobId: string (required)
-  ##        : A unique identifier which refers to a particular job.
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  var query_21626158 = newJObject()
-  var formData_21626159 = newJObject()
-  add(query_21626158, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626158, "Signature", newJString(Signature))
-  add(query_21626158, "Action", newJString(Action))
-  add(query_21626158, "Timestamp", newJString(Timestamp))
-  add(formData_21626159, "JobId", newJString(JobId))
-  add(query_21626158, "Operation", newJString(Operation))
-  add(query_21626158, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626158, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626158, "Version", newJString(Version))
-  add(formData_21626159, "APIVersion", newJString(APIVersion))
-  result = call_21626157.call(nil, query_21626158, nil, formData_21626159, nil)
+  ##   
+                                                                                                                                                                                                                                           ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                                                                                          ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                         ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                             ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                          ## APIVersion: string
+                                                                                                                                                                                                                                                                                                                                                                          ##             
+                                                                                                                                                                                                                                                                                                                                                                          ## : 
+                                                                                                                                                                                                                                                                                                                                                                          ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                                                                                                                                                                          ## version 
+                                                                                                                                                                                                                                                                                                                                                                          ## of 
+                                                                                                                                                                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                                                                                                                                                                          ## client 
+                                                                                                                                                                                                                                                                                                                                                                          ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                  ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                              ## JobId: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                              ##        
+                                                                                                                                                                                                                                                                                                                                                                                                              ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## A 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## unique 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## identifier 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## which 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## refers 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## a 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## particular 
+                                                                                                                                                                                                                                                                                                                                                                                                              ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                     ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ## Operation: string (required)
+  var query_402656615 = newJObject()
+  var formData_402656616 = newJObject()
+  add(query_402656615, "Signature", newJString(Signature))
+  add(query_402656615, "Timestamp", newJString(Timestamp))
+  add(query_402656615, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_402656615, "Version", newJString(Version))
+  add(formData_402656616, "APIVersion", newJString(APIVersion))
+  add(query_402656615, "Action", newJString(Action))
+  add(formData_402656616, "JobId", newJString(JobId))
+  add(query_402656615, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656615, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656615, "Operation", newJString(Operation))
+  result = call_402656614.call(nil, query_402656615, nil, formData_402656616,
+                               nil)
 
-var postGetStatus* = Call_PostGetStatus_21626143(name: "postGetStatus",
+var postGetStatus* = Call_PostGetStatus_402656600(name: "postGetStatus",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=GetStatus&Action=GetStatus",
-    validator: validate_PostGetStatus_21626144, base: "/",
-    makeUrl: url_PostGetStatus_21626145, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostGetStatus_402656601, base: "/",
+    makeUrl: url_PostGetStatus_402656602, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGetStatus_21626127 = ref object of OpenApiRestCall_21625418
-proc url_GetGetStatus_21626129(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetGetStatus_402656584 = ref object of OpenApiRestCall_402656029
+proc url_GetGetStatus_402656586(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1434,81 +2420,101 @@ proc url_GetGetStatus_21626129(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetGetStatus_21626128(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_GetGetStatus_402656585(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
-  ##   JobId: JString (required)
-  ##        : A unique identifier which refers to a particular job.
   ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
-  ##   Signature: JString (required)
-  ##   Action: JString (required)
-  ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
-  ##   AWSAccessKeyId: JString (required)
-  ##   Version: JString (required)
+                                  ##             : Specifies the version of the client tool.
+  ##   
+                                                                                            ## Signature: JString (required)
+  ##   
+                                                                                                                            ## Timestamp: JString (required)
+  ##   
+                                                                                                                                                            ## AWSAccessKeyId: JString (required)
+  ##   
+                                                                                                                                                                                                 ## JobId: JString (required)
+                                                                                                                                                                                                 ##        
+                                                                                                                                                                                                 ## : 
+                                                                                                                                                                                                 ## A 
+                                                                                                                                                                                                 ## unique 
+                                                                                                                                                                                                 ## identifier 
+                                                                                                                                                                                                 ## which 
+                                                                                                                                                                                                 ## refers 
+                                                                                                                                                                                                 ## to 
+                                                                                                                                                                                                 ## a 
+                                                                                                                                                                                                 ## particular 
+                                                                                                                                                                                                 ## job.
+  ##   
+                                                                                                                                                                                                        ## Version: JString (required)
+  ##   
+                                                                                                                                                                                                                                      ## Action: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                   ## SignatureMethod: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                         ## SignatureVersion: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                ## Operation: JString (required)
   section = newJObject()
+  var valid_402656587 = query.getOrDefault("APIVersion")
+  valid_402656587 = validateParameter(valid_402656587, JString,
+                                      required = false, default = nil)
+  if valid_402656587 != nil:
+    section.add "APIVersion", valid_402656587
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626130 = query.getOrDefault("SignatureMethod")
-  valid_21626130 = validateParameter(valid_21626130, JString, required = true,
-                                   default = nil)
-  if valid_21626130 != nil:
-    section.add "SignatureMethod", valid_21626130
-  var valid_21626131 = query.getOrDefault("JobId")
-  valid_21626131 = validateParameter(valid_21626131, JString, required = true,
-                                   default = nil)
-  if valid_21626131 != nil:
-    section.add "JobId", valid_21626131
-  var valid_21626132 = query.getOrDefault("APIVersion")
-  valid_21626132 = validateParameter(valid_21626132, JString, required = false,
-                                   default = nil)
-  if valid_21626132 != nil:
-    section.add "APIVersion", valid_21626132
-  var valid_21626133 = query.getOrDefault("Signature")
-  valid_21626133 = validateParameter(valid_21626133, JString, required = true,
-                                   default = nil)
-  if valid_21626133 != nil:
-    section.add "Signature", valid_21626133
-  var valid_21626134 = query.getOrDefault("Action")
-  valid_21626134 = validateParameter(valid_21626134, JString, required = true,
-                                   default = newJString("GetStatus"))
-  if valid_21626134 != nil:
-    section.add "Action", valid_21626134
-  var valid_21626135 = query.getOrDefault("Timestamp")
-  valid_21626135 = validateParameter(valid_21626135, JString, required = true,
-                                   default = nil)
-  if valid_21626135 != nil:
-    section.add "Timestamp", valid_21626135
-  var valid_21626136 = query.getOrDefault("Operation")
-  valid_21626136 = validateParameter(valid_21626136, JString, required = true,
-                                   default = newJString("GetStatus"))
-  if valid_21626136 != nil:
-    section.add "Operation", valid_21626136
-  var valid_21626137 = query.getOrDefault("SignatureVersion")
-  valid_21626137 = validateParameter(valid_21626137, JString, required = true,
-                                   default = nil)
-  if valid_21626137 != nil:
-    section.add "SignatureVersion", valid_21626137
-  var valid_21626138 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626138 = validateParameter(valid_21626138, JString, required = true,
-                                   default = nil)
-  if valid_21626138 != nil:
-    section.add "AWSAccessKeyId", valid_21626138
-  var valid_21626139 = query.getOrDefault("Version")
-  valid_21626139 = validateParameter(valid_21626139, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626139 != nil:
-    section.add "Version", valid_21626139
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656588 = query.getOrDefault("Signature")
+  valid_402656588 = validateParameter(valid_402656588, JString, required = true,
+                                      default = nil)
+  if valid_402656588 != nil:
+    section.add "Signature", valid_402656588
+  var valid_402656589 = query.getOrDefault("Timestamp")
+  valid_402656589 = validateParameter(valid_402656589, JString, required = true,
+                                      default = nil)
+  if valid_402656589 != nil:
+    section.add "Timestamp", valid_402656589
+  var valid_402656590 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656590 = validateParameter(valid_402656590, JString, required = true,
+                                      default = nil)
+  if valid_402656590 != nil:
+    section.add "AWSAccessKeyId", valid_402656590
+  var valid_402656591 = query.getOrDefault("JobId")
+  valid_402656591 = validateParameter(valid_402656591, JString, required = true,
+                                      default = nil)
+  if valid_402656591 != nil:
+    section.add "JobId", valid_402656591
+  var valid_402656592 = query.getOrDefault("Version")
+  valid_402656592 = validateParameter(valid_402656592, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656592 != nil:
+    section.add "Version", valid_402656592
+  var valid_402656593 = query.getOrDefault("Action")
+  valid_402656593 = validateParameter(valid_402656593, JString, required = true,
+                                      default = newJString("GetStatus"))
+  if valid_402656593 != nil:
+    section.add "Action", valid_402656593
+  var valid_402656594 = query.getOrDefault("SignatureMethod")
+  valid_402656594 = validateParameter(valid_402656594, JString, required = true,
+                                      default = nil)
+  if valid_402656594 != nil:
+    section.add "SignatureMethod", valid_402656594
+  var valid_402656595 = query.getOrDefault("SignatureVersion")
+  valid_402656595 = validateParameter(valid_402656595, JString, required = true,
+                                      default = nil)
+  if valid_402656595 != nil:
+    section.add "SignatureVersion", valid_402656595
+  var valid_402656596 = query.getOrDefault("Operation")
+  valid_402656596 = validateParameter(valid_402656596, JString, required = true,
+                                      default = newJString("GetStatus"))
+  if valid_402656596 != nil:
+    section.add "Operation", valid_402656596
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1517,61 +2523,90 @@ proc validate_GetGetStatus_21626128(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626140: Call_GetGetStatus_21626127; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656597: Call_GetGetStatus_402656584; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
-  ## 
-  let valid = call_21626140.validator(path, query, header, formData, body, _)
-  let scheme = call_21626140.pickScheme
+                                                                                         ## 
+  let valid = call_402656597.validator(path, query, header, formData, body, _)
+  let scheme = call_402656597.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626140.makeUrl(scheme.get, call_21626140.host, call_21626140.base,
-                               call_21626140.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626140, uri, valid, _)
+  let uri = call_402656597.makeUrl(scheme.get, call_402656597.host, call_402656597.base,
+                                   call_402656597.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656597, uri, valid, _)
 
-proc call*(call_21626141: Call_GetGetStatus_21626127; SignatureMethod: string;
-          JobId: string; Signature: string; Timestamp: string;
-          SignatureVersion: string; AWSAccessKeyId: string; APIVersion: string = "";
-          Action: string = "GetStatus"; Operation: string = "GetStatus";
-          Version: string = "2010-06-01"): Recallable =
+proc call*(call_402656598: Call_GetGetStatus_402656584; Signature: string;
+           Timestamp: string; AWSAccessKeyId: string; JobId: string;
+           SignatureMethod: string; SignatureVersion: string;
+           APIVersion: string = ""; Version: string = "2010-06-01";
+           Action: string = "GetStatus"; Operation: string = "GetStatus"): Recallable =
   ## getGetStatus
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
-  ##   SignatureMethod: string (required)
-  ##   JobId: string (required)
-  ##        : A unique identifier which refers to a particular job.
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  ##   Signature: string (required)
-  ##   Action: string (required)
-  ##   Timestamp: string (required)
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  var query_21626142 = newJObject()
-  add(query_21626142, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626142, "JobId", newJString(JobId))
-  add(query_21626142, "APIVersion", newJString(APIVersion))
-  add(query_21626142, "Signature", newJString(Signature))
-  add(query_21626142, "Action", newJString(Action))
-  add(query_21626142, "Timestamp", newJString(Timestamp))
-  add(query_21626142, "Operation", newJString(Operation))
-  add(query_21626142, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626142, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626142, "Version", newJString(Version))
-  result = call_21626141.call(nil, query_21626142, nil, nil, nil)
+  ##   
+                                                                                                                                                                                                                                           ## APIVersion: string
+                                                                                                                                                                                                                                           ##             
+                                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                                           ## Specifies 
+                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                           ## version 
+                                                                                                                                                                                                                                           ## of 
+                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                           ## client 
+                                                                                                                                                                                                                                           ## tool.
+  ##   
+                                                                                                                                                                                                                                                   ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                  ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                 ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                     ## JobId: string (required)
+                                                                                                                                                                                                                                                                                                                                                     ##        
+                                                                                                                                                                                                                                                                                                                                                     ## : 
+                                                                                                                                                                                                                                                                                                                                                     ## A 
+                                                                                                                                                                                                                                                                                                                                                     ## unique 
+                                                                                                                                                                                                                                                                                                                                                     ## identifier 
+                                                                                                                                                                                                                                                                                                                                                     ## which 
+                                                                                                                                                                                                                                                                                                                                                     ## refers 
+                                                                                                                                                                                                                                                                                                                                                     ## to 
+                                                                                                                                                                                                                                                                                                                                                     ## a 
+                                                                                                                                                                                                                                                                                                                                                     ## particular 
+                                                                                                                                                                                                                                                                                                                                                     ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                            ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                         ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                     ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ## Operation: string (required)
+  var query_402656599 = newJObject()
+  add(query_402656599, "APIVersion", newJString(APIVersion))
+  add(query_402656599, "Signature", newJString(Signature))
+  add(query_402656599, "Timestamp", newJString(Timestamp))
+  add(query_402656599, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_402656599, "JobId", newJString(JobId))
+  add(query_402656599, "Version", newJString(Version))
+  add(query_402656599, "Action", newJString(Action))
+  add(query_402656599, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656599, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656599, "Operation", newJString(Operation))
+  result = call_402656598.call(nil, query_402656599, nil, nil, nil)
 
-var getGetStatus* = Call_GetGetStatus_21626127(name: "getGetStatus",
+var getGetStatus* = Call_GetGetStatus_402656584(name: "getGetStatus",
     meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
     route: "/#Operation=GetStatus&Action=GetStatus",
-    validator: validate_GetGetStatus_21626128, base: "/", makeUrl: url_GetGetStatus_21626129,
-    schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetGetStatus_402656585, base: "/",
+    makeUrl: url_GetGetStatus_402656586, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostListJobs_21626177 = ref object of OpenApiRestCall_21625418
-proc url_PostListJobs_21626179(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PostListJobs_402656634 = ref object of OpenApiRestCall_402656029
+proc url_PostListJobs_402656636(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1580,311 +2615,283 @@ proc url_PostListJobs_21626179(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostListJobs_21626178(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_PostListJobs_402656635(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
   ##   Signature: JString (required)
-  ##   Action: JString (required)
   ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
   ##   AWSAccessKeyId: JString (required)
   ##   Version: JString (required)
+  ##   Action: JString (required)
+  ##   SignatureMethod: JString (required)
+  ##   SignatureVersion: JString (required)
+  ##   Operation: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626180 = query.getOrDefault("SignatureMethod")
-  valid_21626180 = validateParameter(valid_21626180, JString, required = true,
-                                   default = nil)
-  if valid_21626180 != nil:
-    section.add "SignatureMethod", valid_21626180
-  var valid_21626181 = query.getOrDefault("Signature")
-  valid_21626181 = validateParameter(valid_21626181, JString, required = true,
-                                   default = nil)
-  if valid_21626181 != nil:
-    section.add "Signature", valid_21626181
-  var valid_21626182 = query.getOrDefault("Action")
-  valid_21626182 = validateParameter(valid_21626182, JString, required = true,
-                                   default = newJString("ListJobs"))
-  if valid_21626182 != nil:
-    section.add "Action", valid_21626182
-  var valid_21626183 = query.getOrDefault("Timestamp")
-  valid_21626183 = validateParameter(valid_21626183, JString, required = true,
-                                   default = nil)
-  if valid_21626183 != nil:
-    section.add "Timestamp", valid_21626183
-  var valid_21626184 = query.getOrDefault("Operation")
-  valid_21626184 = validateParameter(valid_21626184, JString, required = true,
-                                   default = newJString("ListJobs"))
-  if valid_21626184 != nil:
-    section.add "Operation", valid_21626184
-  var valid_21626185 = query.getOrDefault("SignatureVersion")
-  valid_21626185 = validateParameter(valid_21626185, JString, required = true,
-                                   default = nil)
-  if valid_21626185 != nil:
-    section.add "SignatureVersion", valid_21626185
-  var valid_21626186 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626186 = validateParameter(valid_21626186, JString, required = true,
-                                   default = nil)
-  if valid_21626186 != nil:
-    section.add "AWSAccessKeyId", valid_21626186
-  var valid_21626187 = query.getOrDefault("Version")
-  valid_21626187 = validateParameter(valid_21626187, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626187 != nil:
-    section.add "Version", valid_21626187
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656637 = query.getOrDefault("Signature")
+  valid_402656637 = validateParameter(valid_402656637, JString, required = true,
+                                      default = nil)
+  if valid_402656637 != nil:
+    section.add "Signature", valid_402656637
+  var valid_402656638 = query.getOrDefault("Timestamp")
+  valid_402656638 = validateParameter(valid_402656638, JString, required = true,
+                                      default = nil)
+  if valid_402656638 != nil:
+    section.add "Timestamp", valid_402656638
+  var valid_402656639 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656639 = validateParameter(valid_402656639, JString, required = true,
+                                      default = nil)
+  if valid_402656639 != nil:
+    section.add "AWSAccessKeyId", valid_402656639
+  var valid_402656640 = query.getOrDefault("Version")
+  valid_402656640 = validateParameter(valid_402656640, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656640 != nil:
+    section.add "Version", valid_402656640
+  var valid_402656641 = query.getOrDefault("Action")
+  valid_402656641 = validateParameter(valid_402656641, JString, required = true,
+                                      default = newJString("ListJobs"))
+  if valid_402656641 != nil:
+    section.add "Action", valid_402656641
+  var valid_402656642 = query.getOrDefault("SignatureMethod")
+  valid_402656642 = validateParameter(valid_402656642, JString, required = true,
+                                      default = nil)
+  if valid_402656642 != nil:
+    section.add "SignatureMethod", valid_402656642
+  var valid_402656643 = query.getOrDefault("SignatureVersion")
+  valid_402656643 = validateParameter(valid_402656643, JString, required = true,
+                                      default = nil)
+  if valid_402656643 != nil:
+    section.add "SignatureVersion", valid_402656643
+  var valid_402656644 = query.getOrDefault("Operation")
+  valid_402656644 = validateParameter(valid_402656644, JString, required = true,
+                                      default = newJString("ListJobs"))
+  if valid_402656644 != nil:
+    section.add "Operation", valid_402656644
   result.add "query", section
   section = newJObject()
   result.add "header", section
   ## parameters in `formData` object:
   ##   Marker: JString
-  ##         : Specifies the JOBID to start after when listing the jobs created with your account. AWS Import/Export lists your jobs in reverse chronological order. See MaxJobs.
-  ##   MaxJobs: JInt
-  ##          : Sets the maximum number of jobs returned in the response. If there are additional jobs that were not returned because MaxJobs was exceeded, the response contains &lt;IsTruncated&gt;true&lt;/IsTruncated&gt;. To return the additional jobs, see Marker.
-  ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
+                                     ##         : Specifies the JOBID to start after when listing the jobs created with your account. AWS Import/Export lists your jobs in reverse chronological order. See MaxJobs.
+  ##   
+                                                                                                                                                                                                                    ## MaxJobs: JInt
+                                                                                                                                                                                                                    ##          
+                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                    ## Sets 
+                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                    ## maximum 
+                                                                                                                                                                                                                    ## number 
+                                                                                                                                                                                                                    ## of 
+                                                                                                                                                                                                                    ## jobs 
+                                                                                                                                                                                                                    ## returned 
+                                                                                                                                                                                                                    ## in 
+                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                    ## response. 
+                                                                                                                                                                                                                    ## If 
+                                                                                                                                                                                                                    ## there 
+                                                                                                                                                                                                                    ## are 
+                                                                                                                                                                                                                    ## additional 
+                                                                                                                                                                                                                    ## jobs 
+                                                                                                                                                                                                                    ## that 
+                                                                                                                                                                                                                    ## were 
+                                                                                                                                                                                                                    ## not 
+                                                                                                                                                                                                                    ## returned 
+                                                                                                                                                                                                                    ## because 
+                                                                                                                                                                                                                    ## MaxJobs 
+                                                                                                                                                                                                                    ## was 
+                                                                                                                                                                                                                    ## exceeded, 
+                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                    ## response 
+                                                                                                                                                                                                                    ## contains 
+                                                                                                                                                                                                                    ## &lt;IsTruncated&gt;true&lt;/IsTruncated&gt;. 
+                                                                                                                                                                                                                    ## To 
+                                                                                                                                                                                                                    ## return 
+                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                    ## additional 
+                                                                                                                                                                                                                    ## jobs, 
+                                                                                                                                                                                                                    ## see 
+                                                                                                                                                                                                                    ## Marker.
+  ##   
+                                                                                                                                                                                                                              ## APIVersion: JString
+                                                                                                                                                                                                                              ##             
+                                                                                                                                                                                                                              ## : 
+                                                                                                                                                                                                                              ## Specifies 
+                                                                                                                                                                                                                              ## the 
+                                                                                                                                                                                                                              ## version 
+                                                                                                                                                                                                                              ## of 
+                                                                                                                                                                                                                              ## the 
+                                                                                                                                                                                                                              ## client 
+                                                                                                                                                                                                                              ## tool.
   section = newJObject()
-  var valid_21626188 = formData.getOrDefault("Marker")
-  valid_21626188 = validateParameter(valid_21626188, JString, required = false,
-                                   default = nil)
-  if valid_21626188 != nil:
-    section.add "Marker", valid_21626188
-  var valid_21626189 = formData.getOrDefault("MaxJobs")
-  valid_21626189 = validateParameter(valid_21626189, JInt, required = false,
-                                   default = nil)
-  if valid_21626189 != nil:
-    section.add "MaxJobs", valid_21626189
-  var valid_21626190 = formData.getOrDefault("APIVersion")
-  valid_21626190 = validateParameter(valid_21626190, JString, required = false,
-                                   default = nil)
-  if valid_21626190 != nil:
-    section.add "APIVersion", valid_21626190
+  var valid_402656645 = formData.getOrDefault("Marker")
+  valid_402656645 = validateParameter(valid_402656645, JString,
+                                      required = false, default = nil)
+  if valid_402656645 != nil:
+    section.add "Marker", valid_402656645
+  var valid_402656646 = formData.getOrDefault("MaxJobs")
+  valid_402656646 = validateParameter(valid_402656646, JInt, required = false,
+                                      default = nil)
+  if valid_402656646 != nil:
+    section.add "MaxJobs", valid_402656646
+  var valid_402656647 = formData.getOrDefault("APIVersion")
+  valid_402656647 = validateParameter(valid_402656647, JString,
+                                      required = false, default = nil)
+  if valid_402656647 != nil:
+    section.add "APIVersion", valid_402656647
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626191: Call_PostListJobs_21626177; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656648: Call_PostListJobs_402656634; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
-  ## 
-  let valid = call_21626191.validator(path, query, header, formData, body, _)
-  let scheme = call_21626191.pickScheme
+                                                                                         ## 
+  let valid = call_402656648.validator(path, query, header, formData, body, _)
+  let scheme = call_402656648.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626191.makeUrl(scheme.get, call_21626191.host, call_21626191.base,
-                               call_21626191.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626191, uri, valid, _)
+  let uri = call_402656648.makeUrl(scheme.get, call_402656648.host, call_402656648.base,
+                                   call_402656648.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656648, uri, valid, _)
 
-proc call*(call_21626192: Call_PostListJobs_21626177; SignatureMethod: string;
-          Signature: string; Timestamp: string; SignatureVersion: string;
-          AWSAccessKeyId: string; Marker: string = ""; Action: string = "ListJobs";
-          MaxJobs: int = 0; Operation: string = "ListJobs";
-          Version: string = "2010-06-01"; APIVersion: string = ""): Recallable =
+proc call*(call_402656649: Call_PostListJobs_402656634; Signature: string;
+           Timestamp: string; AWSAccessKeyId: string; SignatureMethod: string;
+           SignatureVersion: string; Marker: string = ""; MaxJobs: int = 0;
+           Version: string = "2010-06-01"; APIVersion: string = "";
+           Action: string = "ListJobs"; Operation: string = "ListJobs"): Recallable =
   ## postListJobs
   ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
-  ##   SignatureMethod: string (required)
-  ##   Signature: string (required)
-  ##   Marker: string
-  ##         : Specifies the JOBID to start after when listing the jobs created with your account. AWS Import/Export lists your jobs in reverse chronological order. See MaxJobs.
-  ##   Action: string (required)
-  ##   MaxJobs: int
-  ##          : Sets the maximum number of jobs returned in the response. If there are additional jobs that were not returned because MaxJobs was exceeded, the response contains &lt;IsTruncated&gt;true&lt;/IsTruncated&gt;. To return the additional jobs, see Marker.
-  ##   Timestamp: string (required)
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  var query_21626193 = newJObject()
-  var formData_21626194 = newJObject()
-  add(query_21626193, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626193, "Signature", newJString(Signature))
-  add(formData_21626194, "Marker", newJString(Marker))
-  add(query_21626193, "Action", newJString(Action))
-  add(formData_21626194, "MaxJobs", newJInt(MaxJobs))
-  add(query_21626193, "Timestamp", newJString(Timestamp))
-  add(query_21626193, "Operation", newJString(Operation))
-  add(query_21626193, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626193, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626193, "Version", newJString(Version))
-  add(formData_21626194, "APIVersion", newJString(APIVersion))
-  result = call_21626192.call(nil, query_21626193, nil, formData_21626194, nil)
+  ##   
+                                                                                                                                                                                                                                                                                                               ## Marker: string
+                                                                                                                                                                                                                                                                                                               ##         
+                                                                                                                                                                                                                                                                                                               ## : 
+                                                                                                                                                                                                                                                                                                               ## Specifies 
+                                                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                                                               ## JOBID 
+                                                                                                                                                                                                                                                                                                               ## to 
+                                                                                                                                                                                                                                                                                                               ## start 
+                                                                                                                                                                                                                                                                                                               ## after 
+                                                                                                                                                                                                                                                                                                               ## when 
+                                                                                                                                                                                                                                                                                                               ## listing 
+                                                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                                                               ## jobs 
+                                                                                                                                                                                                                                                                                                               ## created 
+                                                                                                                                                                                                                                                                                                               ## with 
+                                                                                                                                                                                                                                                                                                               ## your 
+                                                                                                                                                                                                                                                                                                               ## account. 
+                                                                                                                                                                                                                                                                                                               ## AWS 
+                                                                                                                                                                                                                                                                                                               ## Import/Export 
+                                                                                                                                                                                                                                                                                                               ## lists 
+                                                                                                                                                                                                                                                                                                               ## your 
+                                                                                                                                                                                                                                                                                                               ## jobs 
+                                                                                                                                                                                                                                                                                                               ## in 
+                                                                                                                                                                                                                                                                                                               ## reverse 
+                                                                                                                                                                                                                                                                                                               ## chronological 
+                                                                                                                                                                                                                                                                                                               ## order. 
+                                                                                                                                                                                                                                                                                                               ## See 
+                                                                                                                                                                                                                                                                                                               ## MaxJobs.
+  ##   
+                                                                                                                                                                                                                                                                                                                          ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                         ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                        ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## MaxJobs: int
+                                                                                                                                                                                                                                                                                                                                                                                                                            ##          
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## Sets 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## maximum 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## number 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## jobs 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## returned 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## in 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## response. 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## If 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## there 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## are 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## additional 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## jobs 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## that 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## were 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## not 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## returned 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## because 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## MaxJobs 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## was 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## exceeded, 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## response 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## contains 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## &lt;IsTruncated&gt;true&lt;/IsTruncated&gt;. 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## To 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## return 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## additional 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## jobs, 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## see 
+                                                                                                                                                                                                                                                                                                                                                                                                                            ## Marker.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                      ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## APIVersion: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ##             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## version 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## client 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## Operation: string (required)
+  var query_402656650 = newJObject()
+  var formData_402656651 = newJObject()
+  add(formData_402656651, "Marker", newJString(Marker))
+  add(query_402656650, "Signature", newJString(Signature))
+  add(query_402656650, "Timestamp", newJString(Timestamp))
+  add(query_402656650, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(formData_402656651, "MaxJobs", newJInt(MaxJobs))
+  add(query_402656650, "Version", newJString(Version))
+  add(formData_402656651, "APIVersion", newJString(APIVersion))
+  add(query_402656650, "Action", newJString(Action))
+  add(query_402656650, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656650, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656650, "Operation", newJString(Operation))
+  result = call_402656649.call(nil, query_402656650, nil, formData_402656651,
+                               nil)
 
-var postListJobs* = Call_PostListJobs_21626177(name: "postListJobs",
+var postListJobs* = Call_PostListJobs_402656634(name: "postListJobs",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=ListJobs&Action=ListJobs",
-    validator: validate_PostListJobs_21626178, base: "/", makeUrl: url_PostListJobs_21626179,
-    schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostListJobs_402656635, base: "/",
+    makeUrl: url_PostListJobs_402656636, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetListJobs_21626160 = ref object of OpenApiRestCall_21625418
-proc url_GetListJobs_21626162(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_GetListJobs_21626161(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
-  ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
-  ##   Signature: JString (required)
-  ##   MaxJobs: JInt
-  ##          : Sets the maximum number of jobs returned in the response. If there are additional jobs that were not returned because MaxJobs was exceeded, the response contains &lt;IsTruncated&gt;true&lt;/IsTruncated&gt;. To return the additional jobs, see Marker.
-  ##   Action: JString (required)
-  ##   Marker: JString
-  ##         : Specifies the JOBID to start after when listing the jobs created with your account. AWS Import/Export lists your jobs in reverse chronological order. See MaxJobs.
-  ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
-  ##   AWSAccessKeyId: JString (required)
-  ##   Version: JString (required)
-  section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626163 = query.getOrDefault("SignatureMethod")
-  valid_21626163 = validateParameter(valid_21626163, JString, required = true,
-                                   default = nil)
-  if valid_21626163 != nil:
-    section.add "SignatureMethod", valid_21626163
-  var valid_21626164 = query.getOrDefault("APIVersion")
-  valid_21626164 = validateParameter(valid_21626164, JString, required = false,
-                                   default = nil)
-  if valid_21626164 != nil:
-    section.add "APIVersion", valid_21626164
-  var valid_21626165 = query.getOrDefault("Signature")
-  valid_21626165 = validateParameter(valid_21626165, JString, required = true,
-                                   default = nil)
-  if valid_21626165 != nil:
-    section.add "Signature", valid_21626165
-  var valid_21626166 = query.getOrDefault("MaxJobs")
-  valid_21626166 = validateParameter(valid_21626166, JInt, required = false,
-                                   default = nil)
-  if valid_21626166 != nil:
-    section.add "MaxJobs", valid_21626166
-  var valid_21626167 = query.getOrDefault("Action")
-  valid_21626167 = validateParameter(valid_21626167, JString, required = true,
-                                   default = newJString("ListJobs"))
-  if valid_21626167 != nil:
-    section.add "Action", valid_21626167
-  var valid_21626168 = query.getOrDefault("Marker")
-  valid_21626168 = validateParameter(valid_21626168, JString, required = false,
-                                   default = nil)
-  if valid_21626168 != nil:
-    section.add "Marker", valid_21626168
-  var valid_21626169 = query.getOrDefault("Timestamp")
-  valid_21626169 = validateParameter(valid_21626169, JString, required = true,
-                                   default = nil)
-  if valid_21626169 != nil:
-    section.add "Timestamp", valid_21626169
-  var valid_21626170 = query.getOrDefault("Operation")
-  valid_21626170 = validateParameter(valid_21626170, JString, required = true,
-                                   default = newJString("ListJobs"))
-  if valid_21626170 != nil:
-    section.add "Operation", valid_21626170
-  var valid_21626171 = query.getOrDefault("SignatureVersion")
-  valid_21626171 = validateParameter(valid_21626171, JString, required = true,
-                                   default = nil)
-  if valid_21626171 != nil:
-    section.add "SignatureVersion", valid_21626171
-  var valid_21626172 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626172 = validateParameter(valid_21626172, JString, required = true,
-                                   default = nil)
-  if valid_21626172 != nil:
-    section.add "AWSAccessKeyId", valid_21626172
-  var valid_21626173 = query.getOrDefault("Version")
-  valid_21626173 = validateParameter(valid_21626173, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626173 != nil:
-    section.add "Version", valid_21626173
-  result.add "query", section
-  section = newJObject()
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626174: Call_GetListJobs_21626160; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
-  ## 
-  let valid = call_21626174.validator(path, query, header, formData, body, _)
-  let scheme = call_21626174.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626174.makeUrl(scheme.get, call_21626174.host, call_21626174.base,
-                               call_21626174.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626174, uri, valid, _)
-
-proc call*(call_21626175: Call_GetListJobs_21626160; SignatureMethod: string;
-          Signature: string; Timestamp: string; SignatureVersion: string;
-          AWSAccessKeyId: string; APIVersion: string = ""; MaxJobs: int = 0;
-          Action: string = "ListJobs"; Marker: string = "";
-          Operation: string = "ListJobs"; Version: string = "2010-06-01"): Recallable =
-  ## getListJobs
-  ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
-  ##   SignatureMethod: string (required)
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  ##   Signature: string (required)
-  ##   MaxJobs: int
-  ##          : Sets the maximum number of jobs returned in the response. If there are additional jobs that were not returned because MaxJobs was exceeded, the response contains &lt;IsTruncated&gt;true&lt;/IsTruncated&gt;. To return the additional jobs, see Marker.
-  ##   Action: string (required)
-  ##   Marker: string
-  ##         : Specifies the JOBID to start after when listing the jobs created with your account. AWS Import/Export lists your jobs in reverse chronological order. See MaxJobs.
-  ##   Timestamp: string (required)
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  var query_21626176 = newJObject()
-  add(query_21626176, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626176, "APIVersion", newJString(APIVersion))
-  add(query_21626176, "Signature", newJString(Signature))
-  add(query_21626176, "MaxJobs", newJInt(MaxJobs))
-  add(query_21626176, "Action", newJString(Action))
-  add(query_21626176, "Marker", newJString(Marker))
-  add(query_21626176, "Timestamp", newJString(Timestamp))
-  add(query_21626176, "Operation", newJString(Operation))
-  add(query_21626176, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626176, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626176, "Version", newJString(Version))
-  result = call_21626175.call(nil, query_21626176, nil, nil, nil)
-
-var getListJobs* = Call_GetListJobs_21626160(name: "getListJobs",
-    meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
-    route: "/#Operation=ListJobs&Action=ListJobs",
-    validator: validate_GetListJobs_21626161, base: "/", makeUrl: url_GetListJobs_21626162,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_PostUpdateJob_21626214 = ref object of OpenApiRestCall_21625418
-proc url_PostUpdateJob_21626216(protocol: Scheme; host: string; base: string;
+  Call_GetListJobs_402656617 = ref object of OpenApiRestCall_402656029
+proc url_GetListJobs_402656619(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1894,179 +2901,307 @@ proc url_PostUpdateJob_21626216(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostUpdateJob_21626215(path: JsonNode; query: JsonNode;
+proc validate_GetListJobs_402656618(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
-  ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
-  ## 
+                                    body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
-  ##   Signature: JString (required)
-  ##   Action: JString (required)
-  ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
-  ##   AWSAccessKeyId: JString (required)
-  ##   Version: JString (required)
+  ##   APIVersion: JString
+                                  ##             : Specifies the version of the client tool.
+  ##   
+                                                                                            ## Signature: JString (required)
+  ##   
+                                                                                                                            ## Timestamp: JString (required)
+  ##   
+                                                                                                                                                            ## MaxJobs: JInt
+                                                                                                                                                            ##          
+                                                                                                                                                            ## : 
+                                                                                                                                                            ## Sets 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## maximum 
+                                                                                                                                                            ## number 
+                                                                                                                                                            ## of 
+                                                                                                                                                            ## jobs 
+                                                                                                                                                            ## returned 
+                                                                                                                                                            ## in 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## response. 
+                                                                                                                                                            ## If 
+                                                                                                                                                            ## there 
+                                                                                                                                                            ## are 
+                                                                                                                                                            ## additional 
+                                                                                                                                                            ## jobs 
+                                                                                                                                                            ## that 
+                                                                                                                                                            ## were 
+                                                                                                                                                            ## not 
+                                                                                                                                                            ## returned 
+                                                                                                                                                            ## because 
+                                                                                                                                                            ## MaxJobs 
+                                                                                                                                                            ## was 
+                                                                                                                                                            ## exceeded, 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## response 
+                                                                                                                                                            ## contains 
+                                                                                                                                                            ## &lt;IsTruncated&gt;true&lt;/IsTruncated&gt;. 
+                                                                                                                                                            ## To 
+                                                                                                                                                            ## return 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## additional 
+                                                                                                                                                            ## jobs, 
+                                                                                                                                                            ## see 
+                                                                                                                                                            ## Marker.
+  ##   
+                                                                                                                                                                      ## AWSAccessKeyId: JString (required)
+  ##   
+                                                                                                                                                                                                           ## Marker: JString
+                                                                                                                                                                                                           ##         
+                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                           ## Specifies 
+                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                           ## JOBID 
+                                                                                                                                                                                                           ## to 
+                                                                                                                                                                                                           ## start 
+                                                                                                                                                                                                           ## after 
+                                                                                                                                                                                                           ## when 
+                                                                                                                                                                                                           ## listing 
+                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                           ## jobs 
+                                                                                                                                                                                                           ## created 
+                                                                                                                                                                                                           ## with 
+                                                                                                                                                                                                           ## your 
+                                                                                                                                                                                                           ## account. 
+                                                                                                                                                                                                           ## AWS 
+                                                                                                                                                                                                           ## Import/Export 
+                                                                                                                                                                                                           ## lists 
+                                                                                                                                                                                                           ## your 
+                                                                                                                                                                                                           ## jobs 
+                                                                                                                                                                                                           ## in 
+                                                                                                                                                                                                           ## reverse 
+                                                                                                                                                                                                           ## chronological 
+                                                                                                                                                                                                           ## order. 
+                                                                                                                                                                                                           ## See 
+                                                                                                                                                                                                           ## MaxJobs.
+  ##   
+                                                                                                                                                                                                                      ## Version: JString (required)
+  ##   
+                                                                                                                                                                                                                                                    ## Action: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                 ## SignatureMethod: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                       ## SignatureVersion: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                              ## Operation: JString (required)
   section = newJObject()
+  var valid_402656620 = query.getOrDefault("APIVersion")
+  valid_402656620 = validateParameter(valid_402656620, JString,
+                                      required = false, default = nil)
+  if valid_402656620 != nil:
+    section.add "APIVersion", valid_402656620
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626217 = query.getOrDefault("SignatureMethod")
-  valid_21626217 = validateParameter(valid_21626217, JString, required = true,
-                                   default = nil)
-  if valid_21626217 != nil:
-    section.add "SignatureMethod", valid_21626217
-  var valid_21626218 = query.getOrDefault("Signature")
-  valid_21626218 = validateParameter(valid_21626218, JString, required = true,
-                                   default = nil)
-  if valid_21626218 != nil:
-    section.add "Signature", valid_21626218
-  var valid_21626219 = query.getOrDefault("Action")
-  valid_21626219 = validateParameter(valid_21626219, JString, required = true,
-                                   default = newJString("UpdateJob"))
-  if valid_21626219 != nil:
-    section.add "Action", valid_21626219
-  var valid_21626220 = query.getOrDefault("Timestamp")
-  valid_21626220 = validateParameter(valid_21626220, JString, required = true,
-                                   default = nil)
-  if valid_21626220 != nil:
-    section.add "Timestamp", valid_21626220
-  var valid_21626221 = query.getOrDefault("Operation")
-  valid_21626221 = validateParameter(valid_21626221, JString, required = true,
-                                   default = newJString("UpdateJob"))
-  if valid_21626221 != nil:
-    section.add "Operation", valid_21626221
-  var valid_21626222 = query.getOrDefault("SignatureVersion")
-  valid_21626222 = validateParameter(valid_21626222, JString, required = true,
-                                   default = nil)
-  if valid_21626222 != nil:
-    section.add "SignatureVersion", valid_21626222
-  var valid_21626223 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626223 = validateParameter(valid_21626223, JString, required = true,
-                                   default = nil)
-  if valid_21626223 != nil:
-    section.add "AWSAccessKeyId", valid_21626223
-  var valid_21626224 = query.getOrDefault("Version")
-  valid_21626224 = validateParameter(valid_21626224, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626224 != nil:
-    section.add "Version", valid_21626224
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656621 = query.getOrDefault("Signature")
+  valid_402656621 = validateParameter(valid_402656621, JString, required = true,
+                                      default = nil)
+  if valid_402656621 != nil:
+    section.add "Signature", valid_402656621
+  var valid_402656622 = query.getOrDefault("Timestamp")
+  valid_402656622 = validateParameter(valid_402656622, JString, required = true,
+                                      default = nil)
+  if valid_402656622 != nil:
+    section.add "Timestamp", valid_402656622
+  var valid_402656623 = query.getOrDefault("MaxJobs")
+  valid_402656623 = validateParameter(valid_402656623, JInt, required = false,
+                                      default = nil)
+  if valid_402656623 != nil:
+    section.add "MaxJobs", valid_402656623
+  var valid_402656624 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656624 = validateParameter(valid_402656624, JString, required = true,
+                                      default = nil)
+  if valid_402656624 != nil:
+    section.add "AWSAccessKeyId", valid_402656624
+  var valid_402656625 = query.getOrDefault("Marker")
+  valid_402656625 = validateParameter(valid_402656625, JString,
+                                      required = false, default = nil)
+  if valid_402656625 != nil:
+    section.add "Marker", valid_402656625
+  var valid_402656626 = query.getOrDefault("Version")
+  valid_402656626 = validateParameter(valid_402656626, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656626 != nil:
+    section.add "Version", valid_402656626
+  var valid_402656627 = query.getOrDefault("Action")
+  valid_402656627 = validateParameter(valid_402656627, JString, required = true,
+                                      default = newJString("ListJobs"))
+  if valid_402656627 != nil:
+    section.add "Action", valid_402656627
+  var valid_402656628 = query.getOrDefault("SignatureMethod")
+  valid_402656628 = validateParameter(valid_402656628, JString, required = true,
+                                      default = nil)
+  if valid_402656628 != nil:
+    section.add "SignatureMethod", valid_402656628
+  var valid_402656629 = query.getOrDefault("SignatureVersion")
+  valid_402656629 = validateParameter(valid_402656629, JString, required = true,
+                                      default = nil)
+  if valid_402656629 != nil:
+    section.add "SignatureVersion", valid_402656629
+  var valid_402656630 = query.getOrDefault("Operation")
+  valid_402656630 = validateParameter(valid_402656630, JString, required = true,
+                                      default = newJString("ListJobs"))
+  if valid_402656630 != nil:
+    section.add "Operation", valid_402656630
   result.add "query", section
   section = newJObject()
   result.add "header", section
-  ## parameters in `formData` object:
-  ##   Manifest: JString (required)
-  ##           : The UTF-8 encoded text of the manifest file.
-  ##   JobType: JString (required)
-  ##          : Specifies whether the job to initiate is an import or export job.
-  ##   JobId: JString (required)
-  ##        : A unique identifier which refers to a particular job.
-  ##   ValidateOnly: JBool (required)
-  ##               : Validate the manifest and parameter values in the request but do not actually create a job.
-  ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
   section = newJObject()
-  assert formData != nil,
-        "formData argument is necessary due to required `Manifest` field"
-  var valid_21626225 = formData.getOrDefault("Manifest")
-  valid_21626225 = validateParameter(valid_21626225, JString, required = true,
-                                   default = nil)
-  if valid_21626225 != nil:
-    section.add "Manifest", valid_21626225
-  var valid_21626226 = formData.getOrDefault("JobType")
-  valid_21626226 = validateParameter(valid_21626226, JString, required = true,
-                                   default = newJString("Import"))
-  if valid_21626226 != nil:
-    section.add "JobType", valid_21626226
-  var valid_21626227 = formData.getOrDefault("JobId")
-  valid_21626227 = validateParameter(valid_21626227, JString, required = true,
-                                   default = nil)
-  if valid_21626227 != nil:
-    section.add "JobId", valid_21626227
-  var valid_21626228 = formData.getOrDefault("ValidateOnly")
-  valid_21626228 = validateParameter(valid_21626228, JBool, required = true,
-                                   default = nil)
-  if valid_21626228 != nil:
-    section.add "ValidateOnly", valid_21626228
-  var valid_21626229 = formData.getOrDefault("APIVersion")
-  valid_21626229 = validateParameter(valid_21626229, JString, required = false,
-                                   default = nil)
-  if valid_21626229 != nil:
-    section.add "APIVersion", valid_21626229
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626230: Call_PostUpdateJob_21626214; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
-  ## 
-  let valid = call_21626230.validator(path, query, header, formData, body, _)
-  let scheme = call_21626230.pickScheme
+proc call*(call_402656631: Call_GetListJobs_402656617; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
+                                                                                         ## 
+  let valid = call_402656631.validator(path, query, header, formData, body, _)
+  let scheme = call_402656631.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626230.makeUrl(scheme.get, call_21626230.host, call_21626230.base,
-                               call_21626230.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626230, uri, valid, _)
+  let uri = call_402656631.makeUrl(scheme.get, call_402656631.host, call_402656631.base,
+                                   call_402656631.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656631, uri, valid, _)
 
-proc call*(call_21626231: Call_PostUpdateJob_21626214; SignatureMethod: string;
-          Signature: string; Manifest: string; Timestamp: string; JobId: string;
-          SignatureVersion: string; AWSAccessKeyId: string; ValidateOnly: bool;
-          JobType: string = "Import"; Action: string = "UpdateJob";
-          Operation: string = "UpdateJob"; Version: string = "2010-06-01";
-          APIVersion: string = ""): Recallable =
-  ## postUpdateJob
-  ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
-  ##   SignatureMethod: string (required)
-  ##   Signature: string (required)
-  ##   Manifest: string (required)
-  ##           : The UTF-8 encoded text of the manifest file.
-  ##   JobType: string (required)
-  ##          : Specifies whether the job to initiate is an import or export job.
-  ##   Action: string (required)
-  ##   Timestamp: string (required)
-  ##   JobId: string (required)
-  ##        : A unique identifier which refers to a particular job.
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  ##   ValidateOnly: bool (required)
-  ##               : Validate the manifest and parameter values in the request but do not actually create a job.
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  var query_21626232 = newJObject()
-  var formData_21626233 = newJObject()
-  add(query_21626232, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626232, "Signature", newJString(Signature))
-  add(formData_21626233, "Manifest", newJString(Manifest))
-  add(formData_21626233, "JobType", newJString(JobType))
-  add(query_21626232, "Action", newJString(Action))
-  add(query_21626232, "Timestamp", newJString(Timestamp))
-  add(formData_21626233, "JobId", newJString(JobId))
-  add(query_21626232, "Operation", newJString(Operation))
-  add(query_21626232, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626232, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626232, "Version", newJString(Version))
-  add(formData_21626233, "ValidateOnly", newJBool(ValidateOnly))
-  add(formData_21626233, "APIVersion", newJString(APIVersion))
-  result = call_21626231.call(nil, query_21626232, nil, formData_21626233, nil)
+proc call*(call_402656632: Call_GetListJobs_402656617; Signature: string;
+           Timestamp: string; AWSAccessKeyId: string; SignatureMethod: string;
+           SignatureVersion: string; APIVersion: string = ""; MaxJobs: int = 0;
+           Marker: string = ""; Version: string = "2010-06-01";
+           Action: string = "ListJobs"; Operation: string = "ListJobs"): Recallable =
+  ## getListJobs
+  ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
+  ##   
+                                                                                                                                                                                                                                                                                                               ## APIVersion: string
+                                                                                                                                                                                                                                                                                                               ##             
+                                                                                                                                                                                                                                                                                                               ## : 
+                                                                                                                                                                                                                                                                                                               ## Specifies 
+                                                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                                                               ## version 
+                                                                                                                                                                                                                                                                                                               ## of 
+                                                                                                                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                                                                                                                               ## client 
+                                                                                                                                                                                                                                                                                                               ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                                                       ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                      ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                     ## MaxJobs: int
+                                                                                                                                                                                                                                                                                                                                                                                     ##          
+                                                                                                                                                                                                                                                                                                                                                                                     ## : 
+                                                                                                                                                                                                                                                                                                                                                                                     ## Sets 
+                                                                                                                                                                                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                                                                                                                                                                                     ## maximum 
+                                                                                                                                                                                                                                                                                                                                                                                     ## number 
+                                                                                                                                                                                                                                                                                                                                                                                     ## of 
+                                                                                                                                                                                                                                                                                                                                                                                     ## jobs 
+                                                                                                                                                                                                                                                                                                                                                                                     ## returned 
+                                                                                                                                                                                                                                                                                                                                                                                     ## in 
+                                                                                                                                                                                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                                                                                                                                                                                     ## response. 
+                                                                                                                                                                                                                                                                                                                                                                                     ## If 
+                                                                                                                                                                                                                                                                                                                                                                                     ## there 
+                                                                                                                                                                                                                                                                                                                                                                                     ## are 
+                                                                                                                                                                                                                                                                                                                                                                                     ## additional 
+                                                                                                                                                                                                                                                                                                                                                                                     ## jobs 
+                                                                                                                                                                                                                                                                                                                                                                                     ## that 
+                                                                                                                                                                                                                                                                                                                                                                                     ## were 
+                                                                                                                                                                                                                                                                                                                                                                                     ## not 
+                                                                                                                                                                                                                                                                                                                                                                                     ## returned 
+                                                                                                                                                                                                                                                                                                                                                                                     ## because 
+                                                                                                                                                                                                                                                                                                                                                                                     ## MaxJobs 
+                                                                                                                                                                                                                                                                                                                                                                                     ## was 
+                                                                                                                                                                                                                                                                                                                                                                                     ## exceeded, 
+                                                                                                                                                                                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                                                                                                                                                                                     ## response 
+                                                                                                                                                                                                                                                                                                                                                                                     ## contains 
+                                                                                                                                                                                                                                                                                                                                                                                     ## &lt;IsTruncated&gt;true&lt;/IsTruncated&gt;. 
+                                                                                                                                                                                                                                                                                                                                                                                     ## To 
+                                                                                                                                                                                                                                                                                                                                                                                     ## return 
+                                                                                                                                                                                                                                                                                                                                                                                     ## the 
+                                                                                                                                                                                                                                                                                                                                                                                     ## additional 
+                                                                                                                                                                                                                                                                                                                                                                                     ## jobs, 
+                                                                                                                                                                                                                                                                                                                                                                                     ## see 
+                                                                                                                                                                                                                                                                                                                                                                                     ## Marker.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                               ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## Marker: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ##         
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## JOBID 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## start 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## after 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## when 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## listing 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## jobs 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## created 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## with 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## your 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## account. 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## AWS 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## Import/Export 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## lists 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## your 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## jobs 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## in 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## reverse 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## chronological 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## order. 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## See 
+                                                                                                                                                                                                                                                                                                                                                                                                                                   ## MaxJobs.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                              ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ## Operation: string (required)
+  var query_402656633 = newJObject()
+  add(query_402656633, "APIVersion", newJString(APIVersion))
+  add(query_402656633, "Signature", newJString(Signature))
+  add(query_402656633, "Timestamp", newJString(Timestamp))
+  add(query_402656633, "MaxJobs", newJInt(MaxJobs))
+  add(query_402656633, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_402656633, "Marker", newJString(Marker))
+  add(query_402656633, "Version", newJString(Version))
+  add(query_402656633, "Action", newJString(Action))
+  add(query_402656633, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656633, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656633, "Operation", newJString(Operation))
+  result = call_402656632.call(nil, query_402656633, nil, nil, nil)
 
-var postUpdateJob* = Call_PostUpdateJob_21626214(name: "postUpdateJob",
-    meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
-    route: "/#Operation=UpdateJob&Action=UpdateJob",
-    validator: validate_PostUpdateJob_21626215, base: "/",
-    makeUrl: url_PostUpdateJob_21626216, schemes: {Scheme.Https, Scheme.Http})
+var getListJobs* = Call_GetListJobs_402656617(name: "getListJobs",
+    meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
+    route: "/#Operation=ListJobs&Action=ListJobs",
+    validator: validate_GetListJobs_402656618, base: "/",
+    makeUrl: url_GetListJobs_402656619, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetUpdateJob_21626195 = ref object of OpenApiRestCall_21625418
-proc url_GetUpdateJob_21626197(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PostUpdateJob_402656671 = ref object of OpenApiRestCall_402656029
+proc url_PostUpdateJob_402656673(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2075,102 +3210,464 @@ proc url_GetUpdateJob_21626197(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetUpdateJob_21626196(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_PostUpdateJob_402656672(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   SignatureMethod: JString (required)
-  ##   Manifest: JString (required)
-  ##           : The UTF-8 encoded text of the manifest file.
-  ##   JobId: JString (required)
-  ##        : A unique identifier which refers to a particular job.
-  ##   APIVersion: JString
-  ##             : Specifies the version of the client tool.
   ##   Signature: JString (required)
-  ##   Action: JString (required)
-  ##   JobType: JString (required)
-  ##          : Specifies whether the job to initiate is an import or export job.
-  ##   ValidateOnly: JBool (required)
-  ##               : Validate the manifest and parameter values in the request but do not actually create a job.
   ##   Timestamp: JString (required)
-  ##   Operation: JString (required)
-  ##   SignatureVersion: JString (required)
   ##   AWSAccessKeyId: JString (required)
   ##   Version: JString (required)
+  ##   Action: JString (required)
+  ##   SignatureMethod: JString (required)
+  ##   SignatureVersion: JString (required)
+  ##   Operation: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `SignatureMethod` field"
-  var valid_21626198 = query.getOrDefault("SignatureMethod")
-  valid_21626198 = validateParameter(valid_21626198, JString, required = true,
-                                   default = nil)
-  if valid_21626198 != nil:
-    section.add "SignatureMethod", valid_21626198
-  var valid_21626199 = query.getOrDefault("Manifest")
-  valid_21626199 = validateParameter(valid_21626199, JString, required = true,
-                                   default = nil)
-  if valid_21626199 != nil:
-    section.add "Manifest", valid_21626199
-  var valid_21626200 = query.getOrDefault("JobId")
-  valid_21626200 = validateParameter(valid_21626200, JString, required = true,
-                                   default = nil)
-  if valid_21626200 != nil:
-    section.add "JobId", valid_21626200
-  var valid_21626201 = query.getOrDefault("APIVersion")
-  valid_21626201 = validateParameter(valid_21626201, JString, required = false,
-                                   default = nil)
-  if valid_21626201 != nil:
-    section.add "APIVersion", valid_21626201
-  var valid_21626202 = query.getOrDefault("Signature")
-  valid_21626202 = validateParameter(valid_21626202, JString, required = true,
-                                   default = nil)
-  if valid_21626202 != nil:
-    section.add "Signature", valid_21626202
-  var valid_21626203 = query.getOrDefault("Action")
-  valid_21626203 = validateParameter(valid_21626203, JString, required = true,
-                                   default = newJString("UpdateJob"))
-  if valid_21626203 != nil:
-    section.add "Action", valid_21626203
-  var valid_21626204 = query.getOrDefault("JobType")
-  valid_21626204 = validateParameter(valid_21626204, JString, required = true,
-                                   default = newJString("Import"))
-  if valid_21626204 != nil:
-    section.add "JobType", valid_21626204
-  var valid_21626205 = query.getOrDefault("ValidateOnly")
-  valid_21626205 = validateParameter(valid_21626205, JBool, required = true,
-                                   default = nil)
-  if valid_21626205 != nil:
-    section.add "ValidateOnly", valid_21626205
-  var valid_21626206 = query.getOrDefault("Timestamp")
-  valid_21626206 = validateParameter(valid_21626206, JString, required = true,
-                                   default = nil)
-  if valid_21626206 != nil:
-    section.add "Timestamp", valid_21626206
-  var valid_21626207 = query.getOrDefault("Operation")
-  valid_21626207 = validateParameter(valid_21626207, JString, required = true,
-                                   default = newJString("UpdateJob"))
-  if valid_21626207 != nil:
-    section.add "Operation", valid_21626207
-  var valid_21626208 = query.getOrDefault("SignatureVersion")
-  valid_21626208 = validateParameter(valid_21626208, JString, required = true,
-                                   default = nil)
-  if valid_21626208 != nil:
-    section.add "SignatureVersion", valid_21626208
-  var valid_21626209 = query.getOrDefault("AWSAccessKeyId")
-  valid_21626209 = validateParameter(valid_21626209, JString, required = true,
-                                   default = nil)
-  if valid_21626209 != nil:
-    section.add "AWSAccessKeyId", valid_21626209
-  var valid_21626210 = query.getOrDefault("Version")
-  valid_21626210 = validateParameter(valid_21626210, JString, required = true,
-                                   default = newJString("2010-06-01"))
-  if valid_21626210 != nil:
-    section.add "Version", valid_21626210
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656674 = query.getOrDefault("Signature")
+  valid_402656674 = validateParameter(valid_402656674, JString, required = true,
+                                      default = nil)
+  if valid_402656674 != nil:
+    section.add "Signature", valid_402656674
+  var valid_402656675 = query.getOrDefault("Timestamp")
+  valid_402656675 = validateParameter(valid_402656675, JString, required = true,
+                                      default = nil)
+  if valid_402656675 != nil:
+    section.add "Timestamp", valid_402656675
+  var valid_402656676 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656676 = validateParameter(valid_402656676, JString, required = true,
+                                      default = nil)
+  if valid_402656676 != nil:
+    section.add "AWSAccessKeyId", valid_402656676
+  var valid_402656677 = query.getOrDefault("Version")
+  valid_402656677 = validateParameter(valid_402656677, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656677 != nil:
+    section.add "Version", valid_402656677
+  var valid_402656678 = query.getOrDefault("Action")
+  valid_402656678 = validateParameter(valid_402656678, JString, required = true,
+                                      default = newJString("UpdateJob"))
+  if valid_402656678 != nil:
+    section.add "Action", valid_402656678
+  var valid_402656679 = query.getOrDefault("SignatureMethod")
+  valid_402656679 = validateParameter(valid_402656679, JString, required = true,
+                                      default = nil)
+  if valid_402656679 != nil:
+    section.add "SignatureMethod", valid_402656679
+  var valid_402656680 = query.getOrDefault("SignatureVersion")
+  valid_402656680 = validateParameter(valid_402656680, JString, required = true,
+                                      default = nil)
+  if valid_402656680 != nil:
+    section.add "SignatureVersion", valid_402656680
+  var valid_402656681 = query.getOrDefault("Operation")
+  valid_402656681 = validateParameter(valid_402656681, JString, required = true,
+                                      default = newJString("UpdateJob"))
+  if valid_402656681 != nil:
+    section.add "Operation", valid_402656681
+  result.add "query", section
+  section = newJObject()
+  result.add "header", section
+  ## parameters in `formData` object:
+  ##   JobType: JString (required)
+                                     ##          : Specifies whether the job to initiate is an import or export job.
+  ##   
+                                                                                                                    ## ValidateOnly: JBool (required)
+                                                                                                                    ##               
+                                                                                                                    ## : 
+                                                                                                                    ## Validate 
+                                                                                                                    ## the 
+                                                                                                                    ## manifest 
+                                                                                                                    ## and 
+                                                                                                                    ## parameter 
+                                                                                                                    ## values 
+                                                                                                                    ## in 
+                                                                                                                    ## the 
+                                                                                                                    ## request 
+                                                                                                                    ## but 
+                                                                                                                    ## do 
+                                                                                                                    ## not 
+                                                                                                                    ## actually 
+                                                                                                                    ## create 
+                                                                                                                    ## a 
+                                                                                                                    ## job.
+  ##   
+                                                                                                                           ## Manifest: JString (required)
+                                                                                                                           ##           
+                                                                                                                           ## : 
+                                                                                                                           ## The 
+                                                                                                                           ## UTF-8 
+                                                                                                                           ## encoded 
+                                                                                                                           ## text 
+                                                                                                                           ## of 
+                                                                                                                           ## the 
+                                                                                                                           ## manifest 
+                                                                                                                           ## file.
+  ##   
+                                                                                                                                   ## APIVersion: JString
+                                                                                                                                   ##             
+                                                                                                                                   ## : 
+                                                                                                                                   ## Specifies 
+                                                                                                                                   ## the 
+                                                                                                                                   ## version 
+                                                                                                                                   ## of 
+                                                                                                                                   ## the 
+                                                                                                                                   ## client 
+                                                                                                                                   ## tool.
+  ##   
+                                                                                                                                           ## JobId: JString (required)
+                                                                                                                                           ##        
+                                                                                                                                           ## : 
+                                                                                                                                           ## A 
+                                                                                                                                           ## unique 
+                                                                                                                                           ## identifier 
+                                                                                                                                           ## which 
+                                                                                                                                           ## refers 
+                                                                                                                                           ## to 
+                                                                                                                                           ## a 
+                                                                                                                                           ## particular 
+                                                                                                                                           ## job.
+  section = newJObject()
+  var valid_402656682 = formData.getOrDefault("JobType")
+  valid_402656682 = validateParameter(valid_402656682, JString, required = true,
+                                      default = newJString("Import"))
+  if valid_402656682 != nil:
+    section.add "JobType", valid_402656682
+  var valid_402656683 = formData.getOrDefault("ValidateOnly")
+  valid_402656683 = validateParameter(valid_402656683, JBool, required = true,
+                                      default = nil)
+  if valid_402656683 != nil:
+    section.add "ValidateOnly", valid_402656683
+  var valid_402656684 = formData.getOrDefault("Manifest")
+  valid_402656684 = validateParameter(valid_402656684, JString, required = true,
+                                      default = nil)
+  if valid_402656684 != nil:
+    section.add "Manifest", valid_402656684
+  var valid_402656685 = formData.getOrDefault("APIVersion")
+  valid_402656685 = validateParameter(valid_402656685, JString,
+                                      required = false, default = nil)
+  if valid_402656685 != nil:
+    section.add "APIVersion", valid_402656685
+  var valid_402656686 = formData.getOrDefault("JobId")
+  valid_402656686 = validateParameter(valid_402656686, JString, required = true,
+                                      default = nil)
+  if valid_402656686 != nil:
+    section.add "JobId", valid_402656686
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656687: Call_PostUpdateJob_402656671; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
+                                                                                         ## 
+  let valid = call_402656687.validator(path, query, header, formData, body, _)
+  let scheme = call_402656687.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656687.makeUrl(scheme.get, call_402656687.host, call_402656687.base,
+                                   call_402656687.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656687, uri, valid, _)
+
+proc call*(call_402656688: Call_PostUpdateJob_402656671; Signature: string;
+           Timestamp: string; ValidateOnly: bool; AWSAccessKeyId: string;
+           Manifest: string; JobId: string; SignatureMethod: string;
+           SignatureVersion: string; JobType: string = "Import";
+           Version: string = "2010-06-01"; APIVersion: string = "";
+           Action: string = "UpdateJob"; Operation: string = "UpdateJob"): Recallable =
+  ## postUpdateJob
+  ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                    ## JobType: string (required)
+                                                                                                                                                                                                                                                                                                                                                    ##          
+                                                                                                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                                                                                                    ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                    ## whether 
+                                                                                                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                                                                                                    ## job 
+                                                                                                                                                                                                                                                                                                                                                    ## to 
+                                                                                                                                                                                                                                                                                                                                                    ## initiate 
+                                                                                                                                                                                                                                                                                                                                                    ## is 
+                                                                                                                                                                                                                                                                                                                                                    ## an 
+                                                                                                                                                                                                                                                                                                                                                    ## import 
+                                                                                                                                                                                                                                                                                                                                                    ## or 
+                                                                                                                                                                                                                                                                                                                                                    ## export 
+                                                                                                                                                                                                                                                                                                                                                    ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                           ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                          ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## ValidateOnly: bool (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                         ##               
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## Validate 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## manifest 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## and 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## parameter 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## values 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## in 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## request 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## but 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## do 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## not 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## actually 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## create 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## a 
+                                                                                                                                                                                                                                                                                                                                                                                                                         ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## Manifest: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ##           
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## UTF-8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## encoded 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## text 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## manifest 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## file.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## APIVersion: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ##             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## version 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## client 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## JobId: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ##        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## A 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## unique 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## identifier 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## which 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## refers 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## a 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## particular 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ## Operation: string (required)
+  var query_402656689 = newJObject()
+  var formData_402656690 = newJObject()
+  add(formData_402656690, "JobType", newJString(JobType))
+  add(query_402656689, "Signature", newJString(Signature))
+  add(query_402656689, "Timestamp", newJString(Timestamp))
+  add(formData_402656690, "ValidateOnly", newJBool(ValidateOnly))
+  add(query_402656689, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(formData_402656690, "Manifest", newJString(Manifest))
+  add(query_402656689, "Version", newJString(Version))
+  add(formData_402656690, "APIVersion", newJString(APIVersion))
+  add(query_402656689, "Action", newJString(Action))
+  add(formData_402656690, "JobId", newJString(JobId))
+  add(query_402656689, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656689, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656689, "Operation", newJString(Operation))
+  result = call_402656688.call(nil, query_402656689, nil, formData_402656690,
+                               nil)
+
+var postUpdateJob* = Call_PostUpdateJob_402656671(name: "postUpdateJob",
+    meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
+    route: "/#Operation=UpdateJob&Action=UpdateJob",
+    validator: validate_PostUpdateJob_402656672, base: "/",
+    makeUrl: url_PostUpdateJob_402656673, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetUpdateJob_402656652 = ref object of OpenApiRestCall_402656029
+proc url_GetUpdateJob_402656654(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetUpdateJob_402656653(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   APIVersion: JString
+                                  ##             : Specifies the version of the client tool.
+  ##   
+                                                                                            ## Signature: JString (required)
+  ##   
+                                                                                                                            ## Timestamp: JString (required)
+  ##   
+                                                                                                                                                            ## ValidateOnly: JBool (required)
+                                                                                                                                                            ##               
+                                                                                                                                                            ## : 
+                                                                                                                                                            ## Validate 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## manifest 
+                                                                                                                                                            ## and 
+                                                                                                                                                            ## parameter 
+                                                                                                                                                            ## values 
+                                                                                                                                                            ## in 
+                                                                                                                                                            ## the 
+                                                                                                                                                            ## request 
+                                                                                                                                                            ## but 
+                                                                                                                                                            ## do 
+                                                                                                                                                            ## not 
+                                                                                                                                                            ## actually 
+                                                                                                                                                            ## create 
+                                                                                                                                                            ## a 
+                                                                                                                                                            ## job.
+  ##   
+                                                                                                                                                                   ## AWSAccessKeyId: JString (required)
+  ##   
+                                                                                                                                                                                                        ## JobId: JString (required)
+                                                                                                                                                                                                        ##        
+                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                        ## A 
+                                                                                                                                                                                                        ## unique 
+                                                                                                                                                                                                        ## identifier 
+                                                                                                                                                                                                        ## which 
+                                                                                                                                                                                                        ## refers 
+                                                                                                                                                                                                        ## to 
+                                                                                                                                                                                                        ## a 
+                                                                                                                                                                                                        ## particular 
+                                                                                                                                                                                                        ## job.
+  ##   
+                                                                                                                                                                                                               ## Manifest: JString (required)
+                                                                                                                                                                                                               ##           
+                                                                                                                                                                                                               ## : 
+                                                                                                                                                                                                               ## The 
+                                                                                                                                                                                                               ## UTF-8 
+                                                                                                                                                                                                               ## encoded 
+                                                                                                                                                                                                               ## text 
+                                                                                                                                                                                                               ## of 
+                                                                                                                                                                                                               ## the 
+                                                                                                                                                                                                               ## manifest 
+                                                                                                                                                                                                               ## file.
+  ##   
+                                                                                                                                                                                                                       ## Version: JString (required)
+  ##   
+                                                                                                                                                                                                                                                     ## Action: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                  ## JobType: JString (required)
+                                                                                                                                                                                                                                                                                  ##          
+                                                                                                                                                                                                                                                                                  ## : 
+                                                                                                                                                                                                                                                                                  ## Specifies 
+                                                                                                                                                                                                                                                                                  ## whether 
+                                                                                                                                                                                                                                                                                  ## the 
+                                                                                                                                                                                                                                                                                  ## job 
+                                                                                                                                                                                                                                                                                  ## to 
+                                                                                                                                                                                                                                                                                  ## initiate 
+                                                                                                                                                                                                                                                                                  ## is 
+                                                                                                                                                                                                                                                                                  ## an 
+                                                                                                                                                                                                                                                                                  ## import 
+                                                                                                                                                                                                                                                                                  ## or 
+                                                                                                                                                                                                                                                                                  ## export 
+                                                                                                                                                                                                                                                                                  ## job.
+  ##   
+                                                                                                                                                                                                                                                                                         ## SignatureMethod: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                               ## SignatureVersion: JString (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                      ## Operation: JString (required)
+  section = newJObject()
+  var valid_402656655 = query.getOrDefault("APIVersion")
+  valid_402656655 = validateParameter(valid_402656655, JString,
+                                      required = false, default = nil)
+  if valid_402656655 != nil:
+    section.add "APIVersion", valid_402656655
+  assert query != nil,
+         "query argument is necessary due to required `Signature` field"
+  var valid_402656656 = query.getOrDefault("Signature")
+  valid_402656656 = validateParameter(valid_402656656, JString, required = true,
+                                      default = nil)
+  if valid_402656656 != nil:
+    section.add "Signature", valid_402656656
+  var valid_402656657 = query.getOrDefault("Timestamp")
+  valid_402656657 = validateParameter(valid_402656657, JString, required = true,
+                                      default = nil)
+  if valid_402656657 != nil:
+    section.add "Timestamp", valid_402656657
+  var valid_402656658 = query.getOrDefault("ValidateOnly")
+  valid_402656658 = validateParameter(valid_402656658, JBool, required = true,
+                                      default = nil)
+  if valid_402656658 != nil:
+    section.add "ValidateOnly", valid_402656658
+  var valid_402656659 = query.getOrDefault("AWSAccessKeyId")
+  valid_402656659 = validateParameter(valid_402656659, JString, required = true,
+                                      default = nil)
+  if valid_402656659 != nil:
+    section.add "AWSAccessKeyId", valid_402656659
+  var valid_402656660 = query.getOrDefault("JobId")
+  valid_402656660 = validateParameter(valid_402656660, JString, required = true,
+                                      default = nil)
+  if valid_402656660 != nil:
+    section.add "JobId", valid_402656660
+  var valid_402656661 = query.getOrDefault("Manifest")
+  valid_402656661 = validateParameter(valid_402656661, JString, required = true,
+                                      default = nil)
+  if valid_402656661 != nil:
+    section.add "Manifest", valid_402656661
+  var valid_402656662 = query.getOrDefault("Version")
+  valid_402656662 = validateParameter(valid_402656662, JString, required = true,
+                                      default = newJString("2010-06-01"))
+  if valid_402656662 != nil:
+    section.add "Version", valid_402656662
+  var valid_402656663 = query.getOrDefault("Action")
+  valid_402656663 = validateParameter(valid_402656663, JString, required = true,
+                                      default = newJString("UpdateJob"))
+  if valid_402656663 != nil:
+    section.add "Action", valid_402656663
+  var valid_402656664 = query.getOrDefault("JobType")
+  valid_402656664 = validateParameter(valid_402656664, JString, required = true,
+                                      default = newJString("Import"))
+  if valid_402656664 != nil:
+    section.add "JobType", valid_402656664
+  var valid_402656665 = query.getOrDefault("SignatureMethod")
+  valid_402656665 = validateParameter(valid_402656665, JString, required = true,
+                                      default = nil)
+  if valid_402656665 != nil:
+    section.add "SignatureMethod", valid_402656665
+  var valid_402656666 = query.getOrDefault("SignatureVersion")
+  valid_402656666 = validateParameter(valid_402656666, JString, required = true,
+                                      default = nil)
+  if valid_402656666 != nil:
+    section.add "SignatureVersion", valid_402656666
+  var valid_402656667 = query.getOrDefault("Operation")
+  valid_402656667 = validateParameter(valid_402656667, JString, required = true,
+                                      default = newJString("UpdateJob"))
+  if valid_402656667 != nil:
+    section.add "Operation", valid_402656667
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -2179,67 +3676,138 @@ proc validate_GetUpdateJob_21626196(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626211: Call_GetUpdateJob_21626195; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656668: Call_GetUpdateJob_402656652; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
-  ## 
-  let valid = call_21626211.validator(path, query, header, formData, body, _)
-  let scheme = call_21626211.pickScheme
+                                                                                         ## 
+  let valid = call_402656668.validator(path, query, header, formData, body, _)
+  let scheme = call_402656668.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626211.makeUrl(scheme.get, call_21626211.host, call_21626211.base,
-                               call_21626211.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626211, uri, valid, _)
+  let uri = call_402656668.makeUrl(scheme.get, call_402656668.host, call_402656668.base,
+                                   call_402656668.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656668, uri, valid, _)
 
-proc call*(call_21626212: Call_GetUpdateJob_21626195; SignatureMethod: string;
-          Manifest: string; JobId: string; Signature: string; ValidateOnly: bool;
-          Timestamp: string; SignatureVersion: string; AWSAccessKeyId: string;
-          APIVersion: string = ""; Action: string = "UpdateJob";
-          JobType: string = "Import"; Operation: string = "UpdateJob";
-          Version: string = "2010-06-01"): Recallable =
+proc call*(call_402656669: Call_GetUpdateJob_402656652; Signature: string;
+           Timestamp: string; ValidateOnly: bool; AWSAccessKeyId: string;
+           JobId: string; Manifest: string; SignatureMethod: string;
+           SignatureVersion: string; APIVersion: string = "";
+           Version: string = "2010-06-01"; Action: string = "UpdateJob";
+           JobType: string = "Import"; Operation: string = "UpdateJob"): Recallable =
   ## getUpdateJob
   ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
-  ##   SignatureMethod: string (required)
-  ##   Manifest: string (required)
-  ##           : The UTF-8 encoded text of the manifest file.
-  ##   JobId: string (required)
-  ##        : A unique identifier which refers to a particular job.
-  ##   APIVersion: string
-  ##             : Specifies the version of the client tool.
-  ##   Signature: string (required)
-  ##   Action: string (required)
-  ##   JobType: string (required)
-  ##          : Specifies whether the job to initiate is an import or export job.
-  ##   ValidateOnly: bool (required)
-  ##               : Validate the manifest and parameter values in the request but do not actually create a job.
-  ##   Timestamp: string (required)
-  ##   Operation: string (required)
-  ##   SignatureVersion: string (required)
-  ##   AWSAccessKeyId: string (required)
-  ##   Version: string (required)
-  var query_21626213 = newJObject()
-  add(query_21626213, "SignatureMethod", newJString(SignatureMethod))
-  add(query_21626213, "Manifest", newJString(Manifest))
-  add(query_21626213, "JobId", newJString(JobId))
-  add(query_21626213, "APIVersion", newJString(APIVersion))
-  add(query_21626213, "Signature", newJString(Signature))
-  add(query_21626213, "Action", newJString(Action))
-  add(query_21626213, "JobType", newJString(JobType))
-  add(query_21626213, "ValidateOnly", newJBool(ValidateOnly))
-  add(query_21626213, "Timestamp", newJString(Timestamp))
-  add(query_21626213, "Operation", newJString(Operation))
-  add(query_21626213, "SignatureVersion", newJString(SignatureVersion))
-  add(query_21626213, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_21626213, "Version", newJString(Version))
-  result = call_21626212.call(nil, query_21626213, nil, nil, nil)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                    ## APIVersion: string
+                                                                                                                                                                                                                                                                                                                                                    ##             
+                                                                                                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                                                                                                    ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                                                                                                    ## version 
+                                                                                                                                                                                                                                                                                                                                                    ## of 
+                                                                                                                                                                                                                                                                                                                                                    ## the 
+                                                                                                                                                                                                                                                                                                                                                    ## client 
+                                                                                                                                                                                                                                                                                                                                                    ## tool.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                            ## Signature: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                           ## Timestamp: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## ValidateOnly: bool (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                          ##               
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## Validate 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## manifest 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## and 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## parameter 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## values 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## in 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## request 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## but 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## do 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## not 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## actually 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## create 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## a 
+                                                                                                                                                                                                                                                                                                                                                                                                                          ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                 ## AWSAccessKeyId: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## JobId: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ##        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## A 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## unique 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## identifier 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## which 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## refers 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## a 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## particular 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## Manifest: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ##           
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## UTF-8 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## encoded 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## text 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## manifest 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ## file.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## Version: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ## Action: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## JobType: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ##          
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## Specifies 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## whether 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## job 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## initiate 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## is 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## an 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## import 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## or 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## export 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## job.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## SignatureMethod: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ## SignatureVersion: string (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ## Operation: string (required)
+  var query_402656670 = newJObject()
+  add(query_402656670, "APIVersion", newJString(APIVersion))
+  add(query_402656670, "Signature", newJString(Signature))
+  add(query_402656670, "Timestamp", newJString(Timestamp))
+  add(query_402656670, "ValidateOnly", newJBool(ValidateOnly))
+  add(query_402656670, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_402656670, "JobId", newJString(JobId))
+  add(query_402656670, "Manifest", newJString(Manifest))
+  add(query_402656670, "Version", newJString(Version))
+  add(query_402656670, "Action", newJString(Action))
+  add(query_402656670, "JobType", newJString(JobType))
+  add(query_402656670, "SignatureMethod", newJString(SignatureMethod))
+  add(query_402656670, "SignatureVersion", newJString(SignatureVersion))
+  add(query_402656670, "Operation", newJString(Operation))
+  result = call_402656669.call(nil, query_402656670, nil, nil, nil)
 
-var getUpdateJob* = Call_GetUpdateJob_21626195(name: "getUpdateJob",
+var getUpdateJob* = Call_GetUpdateJob_402656652(name: "getUpdateJob",
     meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
     route: "/#Operation=UpdateJob&Action=UpdateJob",
-    validator: validate_GetUpdateJob_21626196, base: "/", makeUrl: url_GetUpdateJob_21626197,
-    schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetUpdateJob_402656653, base: "/",
+    makeUrl: url_GetUpdateJob_402656654, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -2271,8 +3839,10 @@ sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 type
   XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+    SecurityToken = "X-Amz-Security-Token",
+    ContentSha256 = "X-Amz-Content-Sha256"
+proc atozSign(recall: var Recallable; query: JsonNode;
+              algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
@@ -2297,12 +3867,14 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers["X-Amz-Date"] = date
   recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    scope = credentialScope(region = region, service = awsServiceName, date = date)
-    request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
-                             normalize = normal, digest = algo)
+    scope = credentialScope(region = region, service = awsServiceName,
+                            date = date)
+    request = canonicalRequest(recall.meth, $url, query, recall.headers,
+                               recall.body, normalize = normal, digest = algo)
     sts = stringToSign(request.hash(algo), scope, date = date, digest = algo)
-    signature = calculateSignature(secret = secret, date = date, region = region,
-                                 service = awsServiceName, sts, digest = algo)
+    signature = calculateSignature(secret = secret, date = date,
+                                   region = region, service = awsServiceName,
+                                   sts, digest = algo)
   var auth = $algo & " "
   auth &= "Credential=" & access / scope & ", "
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "

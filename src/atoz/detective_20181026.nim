@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
-  httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5,
+  base64, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Detective
@@ -16,11 +16,11 @@ import
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/detective/
 type
-  Scheme {.pure.} = enum
+  Scheme* {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
   ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
-                          header: JsonNode = nil; formData: JsonNode = nil;
-                          body: JsonNode = nil; _: string = ""): JsonNode
+                             header: JsonNode = nil; formData: JsonNode = nil;
+                             body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
@@ -28,17 +28,18 @@ type
     host*: string
     schemes*: set[Scheme]
     makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
-                  path: JsonNode; query: JsonNode): Uri
+                    path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_21625426 = ref object of OpenApiRestCall
+  OpenApiRestCall_402656038 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_21625426](t: T): T {.used.} =
-  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
-           schemes: t.schemes, validator: t.validator, url: t.url)
+proc clone[T: OpenApiRestCall_402656038](t: T): T {.used.} =
+  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base,
+             route: t.route, schemes: t.schemes, validator: t.validator,
+             url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_21625426): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_402656038): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -51,9 +52,9 @@ proc pickScheme(t: OpenApiRestCall_21625426): Option[Scheme] {.used.} =
     return some(scheme)
 
 proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
-                      default: JsonNode = nil): JsonNode =
+                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
-  ## a suitable default value when appropriate
+                                                            ## a suitable default value when appropriate
   if js == nil:
     if required:
       if default != nil:
@@ -79,7 +80,8 @@ proc queryString(query: JsonNode): string {.used.} =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.
+    used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -105,7 +107,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
   result = some(head & remainder.get)
 
 const
-  awsServers = {Scheme.Http: {"ap-northeast-1": "api.detective.ap-northeast-1.amazonaws.com", "ap-southeast-1": "api.detective.ap-southeast-1.amazonaws.com", "us-west-2": "api.detective.us-west-2.amazonaws.com", "eu-west-2": "api.detective.eu-west-2.amazonaws.com", "ap-northeast-3": "api.detective.ap-northeast-3.amazonaws.com", "eu-central-1": "api.detective.eu-central-1.amazonaws.com", "us-east-2": "api.detective.us-east-2.amazonaws.com", "us-east-1": "api.detective.us-east-1.amazonaws.com", "cn-northwest-1": "api.detective.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "api.detective.ap-south-1.amazonaws.com", "eu-north-1": "api.detective.eu-north-1.amazonaws.com", "ap-northeast-2": "api.detective.ap-northeast-2.amazonaws.com", "us-west-1": "api.detective.us-west-1.amazonaws.com", "us-gov-east-1": "api.detective.us-gov-east-1.amazonaws.com", "eu-west-3": "api.detective.eu-west-3.amazonaws.com", "cn-north-1": "api.detective.cn-north-1.amazonaws.com.cn", "sa-east-1": "api.detective.sa-east-1.amazonaws.com", "eu-west-1": "api.detective.eu-west-1.amazonaws.com", "us-gov-west-1": "api.detective.us-gov-west-1.amazonaws.com", "ap-southeast-2": "api.detective.ap-southeast-2.amazonaws.com", "ca-central-1": "api.detective.ca-central-1.amazonaws.com"}.toTable, Scheme.Https: {
+  awsServers = {Scheme.Https: {"ap-northeast-1": "api.detective.ap-northeast-1.amazonaws.com", "ap-southeast-1": "api.detective.ap-southeast-1.amazonaws.com", "us-west-2": "api.detective.us-west-2.amazonaws.com", "eu-west-2": "api.detective.eu-west-2.amazonaws.com", "ap-northeast-3": "api.detective.ap-northeast-3.amazonaws.com", "eu-central-1": "api.detective.eu-central-1.amazonaws.com", "us-east-2": "api.detective.us-east-2.amazonaws.com", "us-east-1": "api.detective.us-east-1.amazonaws.com", "cn-northwest-1": "api.detective.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "api.detective.ap-south-1.amazonaws.com", "eu-north-1": "api.detective.eu-north-1.amazonaws.com", "ap-northeast-2": "api.detective.ap-northeast-2.amazonaws.com", "us-west-1": "api.detective.us-west-1.amazonaws.com", "us-gov-east-1": "api.detective.us-gov-east-1.amazonaws.com", "eu-west-3": "api.detective.eu-west-3.amazonaws.com", "cn-north-1": "api.detective.cn-north-1.amazonaws.com.cn", "sa-east-1": "api.detective.sa-east-1.amazonaws.com", "eu-west-1": "api.detective.eu-west-1.amazonaws.com", "us-gov-west-1": "api.detective.us-gov-west-1.amazonaws.com", "ap-southeast-2": "api.detective.ap-southeast-2.amazonaws.com", "ca-central-1": "api.detective.ca-central-1.amazonaws.com"}.toTable, Scheme.Http: {
       "ap-northeast-1": "api.detective.ap-northeast-1.amazonaws.com",
       "ap-southeast-1": "api.detective.ap-southeast-1.amazonaws.com",
       "us-west-2": "api.detective.us-west-2.amazonaws.com",
@@ -129,12 +131,13 @@ const
       "ca-central-1": "api.detective.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "detective"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
-    base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode;
+                body: string = ""): Recallable {.base.}
 type
-  Call_AcceptInvitation_21625770 = ref object of OpenApiRestCall_21625426
-proc url_AcceptInvitation_21625772(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_AcceptInvitation_402656288 = ref object of OpenApiRestCall_402656038
+proc url_AcceptInvitation_402656290(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -143,530 +146,11 @@ proc url_AcceptInvitation_21625772(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_AcceptInvitation_21625771(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Accepts an invitation for the member account to contribute data to a behavior graph. This operation can only be called by an invited member account. </p> <p>The request provides the ARN of behavior graph.</p> <p>The member account status in the graph must be <code>INVITED</code>.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21625873 = header.getOrDefault("X-Amz-Date")
-  valid_21625873 = validateParameter(valid_21625873, JString, required = false,
-                                   default = nil)
-  if valid_21625873 != nil:
-    section.add "X-Amz-Date", valid_21625873
-  var valid_21625874 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21625874 = validateParameter(valid_21625874, JString, required = false,
-                                   default = nil)
-  if valid_21625874 != nil:
-    section.add "X-Amz-Security-Token", valid_21625874
-  var valid_21625875 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21625875 = validateParameter(valid_21625875, JString, required = false,
-                                   default = nil)
-  if valid_21625875 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21625875
-  var valid_21625876 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21625876 = validateParameter(valid_21625876, JString, required = false,
-                                   default = nil)
-  if valid_21625876 != nil:
-    section.add "X-Amz-Algorithm", valid_21625876
-  var valid_21625877 = header.getOrDefault("X-Amz-Signature")
-  valid_21625877 = validateParameter(valid_21625877, JString, required = false,
-                                   default = nil)
-  if valid_21625877 != nil:
-    section.add "X-Amz-Signature", valid_21625877
-  var valid_21625878 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21625878 = validateParameter(valid_21625878, JString, required = false,
-                                   default = nil)
-  if valid_21625878 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21625878
-  var valid_21625879 = header.getOrDefault("X-Amz-Credential")
-  valid_21625879 = validateParameter(valid_21625879, JString, required = false,
-                                   default = nil)
-  if valid_21625879 != nil:
-    section.add "X-Amz-Credential", valid_21625879
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21625905: Call_AcceptInvitation_21625770; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Accepts an invitation for the member account to contribute data to a behavior graph. This operation can only be called by an invited member account. </p> <p>The request provides the ARN of behavior graph.</p> <p>The member account status in the graph must be <code>INVITED</code>.</p>
-  ## 
-  let valid = call_21625905.validator(path, query, header, formData, body, _)
-  let scheme = call_21625905.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21625905.makeUrl(scheme.get, call_21625905.host, call_21625905.base,
-                               call_21625905.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21625905, uri, valid, _)
-
-proc call*(call_21625968: Call_AcceptInvitation_21625770; body: JsonNode): Recallable =
-  ## acceptInvitation
-  ## <p>Amazon Detective is currently in preview.</p> <p>Accepts an invitation for the member account to contribute data to a behavior graph. This operation can only be called by an invited member account. </p> <p>The request provides the ARN of behavior graph.</p> <p>The member account status in the graph must be <code>INVITED</code>.</p>
-  ##   body: JObject (required)
-  var body_21625969 = newJObject()
-  if body != nil:
-    body_21625969 = body
-  result = call_21625968.call(nil, nil, nil, nil, body_21625969)
-
-var acceptInvitation* = Call_AcceptInvitation_21625770(name: "acceptInvitation",
-    meth: HttpMethod.HttpPut, host: "api.detective.amazonaws.com",
-    route: "/invitation", validator: validate_AcceptInvitation_21625771, base: "/",
-    makeUrl: url_AcceptInvitation_21625772, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_CreateGraph_21626005 = ref object of OpenApiRestCall_21625426
-proc url_CreateGraph_21626007(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_CreateGraph_21626006(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Creates a new behavior graph for the calling account, and sets that account as the master account. This operation is called by the account that is enabling Detective.</p> <p>The operation also enables Detective for the calling account in the currently selected Region. It returns the ARN of the new behavior graph.</p> <p> <code>CreateGraph</code> triggers a process to create the corresponding data tables for the new behavior graph.</p> <p>An account can only be the master account for one behavior graph within a Region. If the same account calls <code>CreateGraph</code> with the same master account, it always returns the same behavior graph ARN. It does not create a new behavior graph.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626008 = header.getOrDefault("X-Amz-Date")
-  valid_21626008 = validateParameter(valid_21626008, JString, required = false,
-                                   default = nil)
-  if valid_21626008 != nil:
-    section.add "X-Amz-Date", valid_21626008
-  var valid_21626009 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626009 = validateParameter(valid_21626009, JString, required = false,
-                                   default = nil)
-  if valid_21626009 != nil:
-    section.add "X-Amz-Security-Token", valid_21626009
-  var valid_21626010 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626010 = validateParameter(valid_21626010, JString, required = false,
-                                   default = nil)
-  if valid_21626010 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626010
-  var valid_21626011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626011 = validateParameter(valid_21626011, JString, required = false,
-                                   default = nil)
-  if valid_21626011 != nil:
-    section.add "X-Amz-Algorithm", valid_21626011
-  var valid_21626012 = header.getOrDefault("X-Amz-Signature")
-  valid_21626012 = validateParameter(valid_21626012, JString, required = false,
-                                   default = nil)
-  if valid_21626012 != nil:
-    section.add "X-Amz-Signature", valid_21626012
-  var valid_21626013 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626013 = validateParameter(valid_21626013, JString, required = false,
-                                   default = nil)
-  if valid_21626013 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626013
-  var valid_21626014 = header.getOrDefault("X-Amz-Credential")
-  valid_21626014 = validateParameter(valid_21626014, JString, required = false,
-                                   default = nil)
-  if valid_21626014 != nil:
-    section.add "X-Amz-Credential", valid_21626014
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626015: Call_CreateGraph_21626005; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Creates a new behavior graph for the calling account, and sets that account as the master account. This operation is called by the account that is enabling Detective.</p> <p>The operation also enables Detective for the calling account in the currently selected Region. It returns the ARN of the new behavior graph.</p> <p> <code>CreateGraph</code> triggers a process to create the corresponding data tables for the new behavior graph.</p> <p>An account can only be the master account for one behavior graph within a Region. If the same account calls <code>CreateGraph</code> with the same master account, it always returns the same behavior graph ARN. It does not create a new behavior graph.</p>
-  ## 
-  let valid = call_21626015.validator(path, query, header, formData, body, _)
-  let scheme = call_21626015.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626015.makeUrl(scheme.get, call_21626015.host, call_21626015.base,
-                               call_21626015.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626015, uri, valid, _)
-
-proc call*(call_21626016: Call_CreateGraph_21626005): Recallable =
-  ## createGraph
-  ## <p>Amazon Detective is currently in preview.</p> <p>Creates a new behavior graph for the calling account, and sets that account as the master account. This operation is called by the account that is enabling Detective.</p> <p>The operation also enables Detective for the calling account in the currently selected Region. It returns the ARN of the new behavior graph.</p> <p> <code>CreateGraph</code> triggers a process to create the corresponding data tables for the new behavior graph.</p> <p>An account can only be the master account for one behavior graph within a Region. If the same account calls <code>CreateGraph</code> with the same master account, it always returns the same behavior graph ARN. It does not create a new behavior graph.</p>
-  result = call_21626016.call(nil, nil, nil, nil, nil)
-
-var createGraph* = Call_CreateGraph_21626005(name: "createGraph",
-    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com", route: "/graph",
-    validator: validate_CreateGraph_21626006, base: "/", makeUrl: url_CreateGraph_21626007,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_CreateMembers_21626017 = ref object of OpenApiRestCall_21625426
-proc url_CreateMembers_21626019(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_CreateMembers_21626018(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the master account for a behavior graph. </p> <p> <code>CreateMembers</code> verifies the accounts and then sends invitations to the verified accounts.</p> <p>The request provides the behavior graph ARN and the list of accounts to invite.</p> <p>The response separates the requested accounts into two lists:</p> <ul> <li> <p>The accounts that <code>CreateMembers</code> was able to start the verification for. This list includes member accounts that are being verified, that have passed verification and are being sent an invitation, and that have failed verification.</p> </li> <li> <p>The accounts that <code>CreateMembers</code> was unable to process. This list includes accounts that were already invited to be member accounts in the behavior graph.</p> </li> </ul>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626020 = header.getOrDefault("X-Amz-Date")
-  valid_21626020 = validateParameter(valid_21626020, JString, required = false,
-                                   default = nil)
-  if valid_21626020 != nil:
-    section.add "X-Amz-Date", valid_21626020
-  var valid_21626021 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626021 = validateParameter(valid_21626021, JString, required = false,
-                                   default = nil)
-  if valid_21626021 != nil:
-    section.add "X-Amz-Security-Token", valid_21626021
-  var valid_21626022 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626022 = validateParameter(valid_21626022, JString, required = false,
-                                   default = nil)
-  if valid_21626022 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626022
-  var valid_21626023 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626023 = validateParameter(valid_21626023, JString, required = false,
-                                   default = nil)
-  if valid_21626023 != nil:
-    section.add "X-Amz-Algorithm", valid_21626023
-  var valid_21626024 = header.getOrDefault("X-Amz-Signature")
-  valid_21626024 = validateParameter(valid_21626024, JString, required = false,
-                                   default = nil)
-  if valid_21626024 != nil:
-    section.add "X-Amz-Signature", valid_21626024
-  var valid_21626025 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626025 = validateParameter(valid_21626025, JString, required = false,
-                                   default = nil)
-  if valid_21626025 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626025
-  var valid_21626026 = header.getOrDefault("X-Amz-Credential")
-  valid_21626026 = validateParameter(valid_21626026, JString, required = false,
-                                   default = nil)
-  if valid_21626026 != nil:
-    section.add "X-Amz-Credential", valid_21626026
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626028: Call_CreateMembers_21626017; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the master account for a behavior graph. </p> <p> <code>CreateMembers</code> verifies the accounts and then sends invitations to the verified accounts.</p> <p>The request provides the behavior graph ARN and the list of accounts to invite.</p> <p>The response separates the requested accounts into two lists:</p> <ul> <li> <p>The accounts that <code>CreateMembers</code> was able to start the verification for. This list includes member accounts that are being verified, that have passed verification and are being sent an invitation, and that have failed verification.</p> </li> <li> <p>The accounts that <code>CreateMembers</code> was unable to process. This list includes accounts that were already invited to be member accounts in the behavior graph.</p> </li> </ul>
-  ## 
-  let valid = call_21626028.validator(path, query, header, formData, body, _)
-  let scheme = call_21626028.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626028.makeUrl(scheme.get, call_21626028.host, call_21626028.base,
-                               call_21626028.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626028, uri, valid, _)
-
-proc call*(call_21626029: Call_CreateMembers_21626017; body: JsonNode): Recallable =
-  ## createMembers
-  ## <p>Amazon Detective is currently in preview.</p> <p>Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the master account for a behavior graph. </p> <p> <code>CreateMembers</code> verifies the accounts and then sends invitations to the verified accounts.</p> <p>The request provides the behavior graph ARN and the list of accounts to invite.</p> <p>The response separates the requested accounts into two lists:</p> <ul> <li> <p>The accounts that <code>CreateMembers</code> was able to start the verification for. This list includes member accounts that are being verified, that have passed verification and are being sent an invitation, and that have failed verification.</p> </li> <li> <p>The accounts that <code>CreateMembers</code> was unable to process. This list includes accounts that were already invited to be member accounts in the behavior graph.</p> </li> </ul>
-  ##   body: JObject (required)
-  var body_21626030 = newJObject()
-  if body != nil:
-    body_21626030 = body
-  result = call_21626029.call(nil, nil, nil, nil, body_21626030)
-
-var createMembers* = Call_CreateMembers_21626017(name: "createMembers",
-    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
-    route: "/graph/members", validator: validate_CreateMembers_21626018, base: "/",
-    makeUrl: url_CreateMembers_21626019, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DeleteGraph_21626031 = ref object of OpenApiRestCall_21625426
-proc url_DeleteGraph_21626033(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DeleteGraph_21626032(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Disables the specified behavior graph and queues it to be deleted. This operation removes the graph from each member account's list of behavior graphs.</p> <p> <code>DeleteGraph</code> can only be called by the master account for a behavior graph.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626034 = header.getOrDefault("X-Amz-Date")
-  valid_21626034 = validateParameter(valid_21626034, JString, required = false,
-                                   default = nil)
-  if valid_21626034 != nil:
-    section.add "X-Amz-Date", valid_21626034
-  var valid_21626035 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626035 = validateParameter(valid_21626035, JString, required = false,
-                                   default = nil)
-  if valid_21626035 != nil:
-    section.add "X-Amz-Security-Token", valid_21626035
-  var valid_21626036 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626036 = validateParameter(valid_21626036, JString, required = false,
-                                   default = nil)
-  if valid_21626036 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626036
-  var valid_21626037 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626037 = validateParameter(valid_21626037, JString, required = false,
-                                   default = nil)
-  if valid_21626037 != nil:
-    section.add "X-Amz-Algorithm", valid_21626037
-  var valid_21626038 = header.getOrDefault("X-Amz-Signature")
-  valid_21626038 = validateParameter(valid_21626038, JString, required = false,
-                                   default = nil)
-  if valid_21626038 != nil:
-    section.add "X-Amz-Signature", valid_21626038
-  var valid_21626039 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626039 = validateParameter(valid_21626039, JString, required = false,
-                                   default = nil)
-  if valid_21626039 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626039
-  var valid_21626040 = header.getOrDefault("X-Amz-Credential")
-  valid_21626040 = validateParameter(valid_21626040, JString, required = false,
-                                   default = nil)
-  if valid_21626040 != nil:
-    section.add "X-Amz-Credential", valid_21626040
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626042: Call_DeleteGraph_21626031; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Disables the specified behavior graph and queues it to be deleted. This operation removes the graph from each member account's list of behavior graphs.</p> <p> <code>DeleteGraph</code> can only be called by the master account for a behavior graph.</p>
-  ## 
-  let valid = call_21626042.validator(path, query, header, formData, body, _)
-  let scheme = call_21626042.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626042.makeUrl(scheme.get, call_21626042.host, call_21626042.base,
-                               call_21626042.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626042, uri, valid, _)
-
-proc call*(call_21626043: Call_DeleteGraph_21626031; body: JsonNode): Recallable =
-  ## deleteGraph
-  ## <p>Amazon Detective is currently in preview.</p> <p>Disables the specified behavior graph and queues it to be deleted. This operation removes the graph from each member account's list of behavior graphs.</p> <p> <code>DeleteGraph</code> can only be called by the master account for a behavior graph.</p>
-  ##   body: JObject (required)
-  var body_21626044 = newJObject()
-  if body != nil:
-    body_21626044 = body
-  result = call_21626043.call(nil, nil, nil, nil, body_21626044)
-
-var deleteGraph* = Call_DeleteGraph_21626031(name: "deleteGraph",
-    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
-    route: "/graph/removal", validator: validate_DeleteGraph_21626032, base: "/",
-    makeUrl: url_DeleteGraph_21626033, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DeleteMembers_21626045 = ref object of OpenApiRestCall_21625426
-proc url_DeleteMembers_21626047(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DeleteMembers_21626046(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626048 = header.getOrDefault("X-Amz-Date")
-  valid_21626048 = validateParameter(valid_21626048, JString, required = false,
-                                   default = nil)
-  if valid_21626048 != nil:
-    section.add "X-Amz-Date", valid_21626048
-  var valid_21626049 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626049 = validateParameter(valid_21626049, JString, required = false,
-                                   default = nil)
-  if valid_21626049 != nil:
-    section.add "X-Amz-Security-Token", valid_21626049
-  var valid_21626050 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626050 = validateParameter(valid_21626050, JString, required = false,
-                                   default = nil)
-  if valid_21626050 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626050
-  var valid_21626051 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626051 = validateParameter(valid_21626051, JString, required = false,
-                                   default = nil)
-  if valid_21626051 != nil:
-    section.add "X-Amz-Algorithm", valid_21626051
-  var valid_21626052 = header.getOrDefault("X-Amz-Signature")
-  valid_21626052 = validateParameter(valid_21626052, JString, required = false,
-                                   default = nil)
-  if valid_21626052 != nil:
-    section.add "X-Amz-Signature", valid_21626052
-  var valid_21626053 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626053 = validateParameter(valid_21626053, JString, required = false,
-                                   default = nil)
-  if valid_21626053 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626053
-  var valid_21626054 = header.getOrDefault("X-Amz-Credential")
-  valid_21626054 = validateParameter(valid_21626054, JString, required = false,
-                                   default = nil)
-  if valid_21626054 != nil:
-    section.add "X-Amz-Credential", valid_21626054
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626056: Call_DeleteMembers_21626045; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
-  ## 
-  let valid = call_21626056.validator(path, query, header, formData, body, _)
-  let scheme = call_21626056.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626056.makeUrl(scheme.get, call_21626056.host, call_21626056.base,
-                               call_21626056.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626056, uri, valid, _)
-
-proc call*(call_21626057: Call_DeleteMembers_21626045; body: JsonNode): Recallable =
-  ## deleteMembers
-  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
-  ##   body: JObject (required)
-  var body_21626058 = newJObject()
-  if body != nil:
-    body_21626058 = body
-  result = call_21626057.call(nil, nil, nil, nil, body_21626058)
-
-var deleteMembers* = Call_DeleteMembers_21626045(name: "deleteMembers",
-    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
-    route: "/graph/members/removal", validator: validate_DeleteMembers_21626046,
-    base: "/", makeUrl: url_DeleteMembers_21626047,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DisassociateMembership_21626059 = ref object of OpenApiRestCall_21625426
-proc url_DisassociateMembership_21626061(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DisassociateMembership_21626060(path: JsonNode; query: JsonNode;
+proc validate_AcceptInvitation_402656289(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Removes the member account from the specified behavior graph. This operation can only be called by a member account that has the <code>ENABLED</code> status.</p>
-  ## 
+  ## <p>Amazon Detective is currently in preview.</p> <p>Accepts an invitation for the member account to contribute data to a behavior graph. This operation can only be called by an invited member account. </p> <p>The request provides the ARN of behavior graph.</p> <p>The member account status in the graph must be <code>INVITED</code>.</p>
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -674,49 +158,49 @@ proc validate_DisassociateMembership_21626060(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626062 = header.getOrDefault("X-Amz-Date")
-  valid_21626062 = validateParameter(valid_21626062, JString, required = false,
-                                   default = nil)
-  if valid_21626062 != nil:
-    section.add "X-Amz-Date", valid_21626062
-  var valid_21626063 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626063 = validateParameter(valid_21626063, JString, required = false,
-                                   default = nil)
-  if valid_21626063 != nil:
-    section.add "X-Amz-Security-Token", valid_21626063
-  var valid_21626064 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626064 = validateParameter(valid_21626064, JString, required = false,
-                                   default = nil)
-  if valid_21626064 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626064
-  var valid_21626065 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626065 = validateParameter(valid_21626065, JString, required = false,
-                                   default = nil)
-  if valid_21626065 != nil:
-    section.add "X-Amz-Algorithm", valid_21626065
-  var valid_21626066 = header.getOrDefault("X-Amz-Signature")
-  valid_21626066 = validateParameter(valid_21626066, JString, required = false,
-                                   default = nil)
-  if valid_21626066 != nil:
-    section.add "X-Amz-Signature", valid_21626066
-  var valid_21626067 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626067 = validateParameter(valid_21626067, JString, required = false,
-                                   default = nil)
-  if valid_21626067 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626067
-  var valid_21626068 = header.getOrDefault("X-Amz-Credential")
-  valid_21626068 = validateParameter(valid_21626068, JString, required = false,
-                                   default = nil)
-  if valid_21626068 != nil:
-    section.add "X-Amz-Credential", valid_21626068
+  var valid_402656372 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656372 = validateParameter(valid_402656372, JString,
+                                      required = false, default = nil)
+  if valid_402656372 != nil:
+    section.add "X-Amz-Security-Token", valid_402656372
+  var valid_402656373 = header.getOrDefault("X-Amz-Signature")
+  valid_402656373 = validateParameter(valid_402656373, JString,
+                                      required = false, default = nil)
+  if valid_402656373 != nil:
+    section.add "X-Amz-Signature", valid_402656373
+  var valid_402656374 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656374 = validateParameter(valid_402656374, JString,
+                                      required = false, default = nil)
+  if valid_402656374 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656374
+  var valid_402656375 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656375 = validateParameter(valid_402656375, JString,
+                                      required = false, default = nil)
+  if valid_402656375 != nil:
+    section.add "X-Amz-Algorithm", valid_402656375
+  var valid_402656376 = header.getOrDefault("X-Amz-Date")
+  valid_402656376 = validateParameter(valid_402656376, JString,
+                                      required = false, default = nil)
+  if valid_402656376 != nil:
+    section.add "X-Amz-Date", valid_402656376
+  var valid_402656377 = header.getOrDefault("X-Amz-Credential")
+  valid_402656377 = validateParameter(valid_402656377, JString,
+                                      required = false, default = nil)
+  if valid_402656377 != nil:
+    section.add "X-Amz-Credential", valid_402656377
+  var valid_402656378 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656378 = validateParameter(valid_402656378, JString,
+                                      required = false, default = nil)
+  if valid_402656378 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656378
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -728,39 +212,41 @@ proc validate_DisassociateMembership_21626060(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626070: Call_DisassociateMembership_21626059;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Removes the member account from the specified behavior graph. This operation can only be called by a member account that has the <code>ENABLED</code> status.</p>
-  ## 
-  let valid = call_21626070.validator(path, query, header, formData, body, _)
-  let scheme = call_21626070.pickScheme
+proc call*(call_402656393: Call_AcceptInvitation_402656288;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Accepts an invitation for the member account to contribute data to a behavior graph. This operation can only be called by an invited member account. </p> <p>The request provides the ARN of behavior graph.</p> <p>The member account status in the graph must be <code>INVITED</code>.</p>
+                                                                                         ## 
+  let valid = call_402656393.validator(path, query, header, formData, body, _)
+  let scheme = call_402656393.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626070.makeUrl(scheme.get, call_21626070.host, call_21626070.base,
-                               call_21626070.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626070, uri, valid, _)
+  let uri = call_402656393.makeUrl(scheme.get, call_402656393.host, call_402656393.base,
+                                   call_402656393.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656393, uri, valid, _)
 
-proc call*(call_21626071: Call_DisassociateMembership_21626059; body: JsonNode): Recallable =
-  ## disassociateMembership
-  ## <p>Amazon Detective is currently in preview.</p> <p>Removes the member account from the specified behavior graph. This operation can only be called by a member account that has the <code>ENABLED</code> status.</p>
-  ##   body: JObject (required)
-  var body_21626072 = newJObject()
+proc call*(call_402656442: Call_AcceptInvitation_402656288; body: JsonNode): Recallable =
+  ## acceptInvitation
+  ## <p>Amazon Detective is currently in preview.</p> <p>Accepts an invitation for the member account to contribute data to a behavior graph. This operation can only be called by an invited member account. </p> <p>The request provides the ARN of behavior graph.</p> <p>The member account status in the graph must be <code>INVITED</code>.</p>
+  ##   
+                                                                                                                                                                                                                                                                                                                                                     ## body: JObject (required)
+  var body_402656443 = newJObject()
   if body != nil:
-    body_21626072 = body
-  result = call_21626071.call(nil, nil, nil, nil, body_21626072)
+    body_402656443 = body
+  result = call_402656442.call(nil, nil, nil, nil, body_402656443)
 
-var disassociateMembership* = Call_DisassociateMembership_21626059(
-    name: "disassociateMembership", meth: HttpMethod.HttpPost,
-    host: "api.detective.amazonaws.com", route: "/membership/removal",
-    validator: validate_DisassociateMembership_21626060, base: "/",
-    makeUrl: url_DisassociateMembership_21626061,
+var acceptInvitation* = Call_AcceptInvitation_402656288(
+    name: "acceptInvitation", meth: HttpMethod.HttpPut,
+    host: "api.detective.amazonaws.com", route: "/invitation",
+    validator: validate_AcceptInvitation_402656289, base: "/",
+    makeUrl: url_AcceptInvitation_402656290,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetMembers_21626073 = ref object of OpenApiRestCall_21625426
-proc url_GetMembers_21626075(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateGraph_402656470 = ref object of OpenApiRestCall_402656038
+proc url_CreateGraph_402656472(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -769,11 +255,12 @@ proc url_GetMembers_21626075(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetMembers_21626074(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+proc validate_CreateGraph_402656471(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the membership details for specified member accounts for a behavior graph.</p>
-  ## 
+  ## <p>Amazon Detective is currently in preview.</p> <p>Creates a new behavior graph for the calling account, and sets that account as the master account. This operation is called by the account that is enabling Detective.</p> <p>The operation also enables Detective for the calling account in the currently selected Region. It returns the ARN of the new behavior graph.</p> <p> <code>CreateGraph</code> triggers a process to create the corresponding data tables for the new behavior graph.</p> <p>An account can only be the master account for one behavior graph within a Region. If the same account calls <code>CreateGraph</code> with the same master account, it always returns the same behavior graph ARN. It does not create a new behavior graph.</p>
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -781,224 +268,82 @@ proc validate_GetMembers_21626074(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626076 = header.getOrDefault("X-Amz-Date")
-  valid_21626076 = validateParameter(valid_21626076, JString, required = false,
-                                   default = nil)
-  if valid_21626076 != nil:
-    section.add "X-Amz-Date", valid_21626076
-  var valid_21626077 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626077 = validateParameter(valid_21626077, JString, required = false,
-                                   default = nil)
-  if valid_21626077 != nil:
-    section.add "X-Amz-Security-Token", valid_21626077
-  var valid_21626078 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626078 = validateParameter(valid_21626078, JString, required = false,
-                                   default = nil)
-  if valid_21626078 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626078
-  var valid_21626079 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626079 = validateParameter(valid_21626079, JString, required = false,
-                                   default = nil)
-  if valid_21626079 != nil:
-    section.add "X-Amz-Algorithm", valid_21626079
-  var valid_21626080 = header.getOrDefault("X-Amz-Signature")
-  valid_21626080 = validateParameter(valid_21626080, JString, required = false,
-                                   default = nil)
-  if valid_21626080 != nil:
-    section.add "X-Amz-Signature", valid_21626080
-  var valid_21626081 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626081 = validateParameter(valid_21626081, JString, required = false,
-                                   default = nil)
-  if valid_21626081 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626081
-  var valid_21626082 = header.getOrDefault("X-Amz-Credential")
-  valid_21626082 = validateParameter(valid_21626082, JString, required = false,
-                                   default = nil)
-  if valid_21626082 != nil:
-    section.add "X-Amz-Credential", valid_21626082
+  var valid_402656473 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656473 = validateParameter(valid_402656473, JString,
+                                      required = false, default = nil)
+  if valid_402656473 != nil:
+    section.add "X-Amz-Security-Token", valid_402656473
+  var valid_402656474 = header.getOrDefault("X-Amz-Signature")
+  valid_402656474 = validateParameter(valid_402656474, JString,
+                                      required = false, default = nil)
+  if valid_402656474 != nil:
+    section.add "X-Amz-Signature", valid_402656474
+  var valid_402656475 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656475 = validateParameter(valid_402656475, JString,
+                                      required = false, default = nil)
+  if valid_402656475 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656475
+  var valid_402656476 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656476 = validateParameter(valid_402656476, JString,
+                                      required = false, default = nil)
+  if valid_402656476 != nil:
+    section.add "X-Amz-Algorithm", valid_402656476
+  var valid_402656477 = header.getOrDefault("X-Amz-Date")
+  valid_402656477 = validateParameter(valid_402656477, JString,
+                                      required = false, default = nil)
+  if valid_402656477 != nil:
+    section.add "X-Amz-Date", valid_402656477
+  var valid_402656478 = header.getOrDefault("X-Amz-Credential")
+  valid_402656478 = validateParameter(valid_402656478, JString,
+                                      required = false, default = nil)
+  if valid_402656478 != nil:
+    section.add "X-Amz-Credential", valid_402656478
+  var valid_402656479 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656479 = validateParameter(valid_402656479, JString,
+                                      required = false, default = nil)
+  if valid_402656479 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656479
   result.add "header", section
   section = newJObject()
   result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626084: Call_GetMembers_21626073; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the membership details for specified member accounts for a behavior graph.</p>
-  ## 
-  let valid = call_21626084.validator(path, query, header, formData, body, _)
-  let scheme = call_21626084.pickScheme
+proc call*(call_402656480: Call_CreateGraph_402656470; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Creates a new behavior graph for the calling account, and sets that account as the master account. This operation is called by the account that is enabling Detective.</p> <p>The operation also enables Detective for the calling account in the currently selected Region. It returns the ARN of the new behavior graph.</p> <p> <code>CreateGraph</code> triggers a process to create the corresponding data tables for the new behavior graph.</p> <p>An account can only be the master account for one behavior graph within a Region. If the same account calls <code>CreateGraph</code> with the same master account, it always returns the same behavior graph ARN. It does not create a new behavior graph.</p>
+                                                                                         ## 
+  let valid = call_402656480.validator(path, query, header, formData, body, _)
+  let scheme = call_402656480.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626084.makeUrl(scheme.get, call_21626084.host, call_21626084.base,
-                               call_21626084.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626084, uri, valid, _)
+  let uri = call_402656480.makeUrl(scheme.get, call_402656480.host, call_402656480.base,
+                                   call_402656480.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656480, uri, valid, _)
 
-proc call*(call_21626085: Call_GetMembers_21626073; body: JsonNode): Recallable =
-  ## getMembers
-  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the membership details for specified member accounts for a behavior graph.</p>
-  ##   body: JObject (required)
-  var body_21626086 = newJObject()
-  if body != nil:
-    body_21626086 = body
-  result = call_21626085.call(nil, nil, nil, nil, body_21626086)
+proc call*(call_402656481: Call_CreateGraph_402656470): Recallable =
+  ## createGraph
+  ## <p>Amazon Detective is currently in preview.</p> <p>Creates a new behavior graph for the calling account, and sets that account as the master account. This operation is called by the account that is enabling Detective.</p> <p>The operation also enables Detective for the calling account in the currently selected Region. It returns the ARN of the new behavior graph.</p> <p> <code>CreateGraph</code> triggers a process to create the corresponding data tables for the new behavior graph.</p> <p>An account can only be the master account for one behavior graph within a Region. If the same account calls <code>CreateGraph</code> with the same master account, it always returns the same behavior graph ARN. It does not create a new behavior graph.</p>
+  result = call_402656481.call(nil, nil, nil, nil, nil)
 
-var getMembers* = Call_GetMembers_21626073(name: "getMembers",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "api.detective.amazonaws.com",
-                                        route: "/graph/members/get",
-                                        validator: validate_GetMembers_21626074,
-                                        base: "/", makeUrl: url_GetMembers_21626075,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var createGraph* = Call_CreateGraph_402656470(name: "createGraph",
+    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
+    route: "/graph", validator: validate_CreateGraph_402656471, base: "/",
+    makeUrl: url_CreateGraph_402656472, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListGraphs_21626087 = ref object of OpenApiRestCall_21625426
-proc url_ListGraphs_21626089(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListGraphs_21626088(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the list of behavior graphs that the calling account is a master of. This operation can only be called by a master account.</p> <p>Because an account can currently only be the master of one behavior graph within a Region, the results always contain a single graph.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   MaxResults: JString
-  ##             : Pagination limit
-  section = newJObject()
-  var valid_21626090 = query.getOrDefault("NextToken")
-  valid_21626090 = validateParameter(valid_21626090, JString, required = false,
-                                   default = nil)
-  if valid_21626090 != nil:
-    section.add "NextToken", valid_21626090
-  var valid_21626091 = query.getOrDefault("MaxResults")
-  valid_21626091 = validateParameter(valid_21626091, JString, required = false,
-                                   default = nil)
-  if valid_21626091 != nil:
-    section.add "MaxResults", valid_21626091
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626092 = header.getOrDefault("X-Amz-Date")
-  valid_21626092 = validateParameter(valid_21626092, JString, required = false,
-                                   default = nil)
-  if valid_21626092 != nil:
-    section.add "X-Amz-Date", valid_21626092
-  var valid_21626093 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626093 = validateParameter(valid_21626093, JString, required = false,
-                                   default = nil)
-  if valid_21626093 != nil:
-    section.add "X-Amz-Security-Token", valid_21626093
-  var valid_21626094 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626094 = validateParameter(valid_21626094, JString, required = false,
-                                   default = nil)
-  if valid_21626094 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626094
-  var valid_21626095 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626095 = validateParameter(valid_21626095, JString, required = false,
-                                   default = nil)
-  if valid_21626095 != nil:
-    section.add "X-Amz-Algorithm", valid_21626095
-  var valid_21626096 = header.getOrDefault("X-Amz-Signature")
-  valid_21626096 = validateParameter(valid_21626096, JString, required = false,
-                                   default = nil)
-  if valid_21626096 != nil:
-    section.add "X-Amz-Signature", valid_21626096
-  var valid_21626097 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626097 = validateParameter(valid_21626097, JString, required = false,
-                                   default = nil)
-  if valid_21626097 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626097
-  var valid_21626098 = header.getOrDefault("X-Amz-Credential")
-  valid_21626098 = validateParameter(valid_21626098, JString, required = false,
-                                   default = nil)
-  if valid_21626098 != nil:
-    section.add "X-Amz-Credential", valid_21626098
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626100: Call_ListGraphs_21626087; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the list of behavior graphs that the calling account is a master of. This operation can only be called by a master account.</p> <p>Because an account can currently only be the master of one behavior graph within a Region, the results always contain a single graph.</p>
-  ## 
-  let valid = call_21626100.validator(path, query, header, formData, body, _)
-  let scheme = call_21626100.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626100.makeUrl(scheme.get, call_21626100.host, call_21626100.base,
-                               call_21626100.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626100, uri, valid, _)
-
-proc call*(call_21626101: Call_ListGraphs_21626087; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
-  ## listGraphs
-  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the list of behavior graphs that the calling account is a master of. This operation can only be called by a master account.</p> <p>Because an account can currently only be the master of one behavior graph within a Region, the results always contain a single graph.</p>
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_21626103 = newJObject()
-  var body_21626104 = newJObject()
-  add(query_21626103, "NextToken", newJString(NextToken))
-  if body != nil:
-    body_21626104 = body
-  add(query_21626103, "MaxResults", newJString(MaxResults))
-  result = call_21626101.call(nil, query_21626103, nil, nil, body_21626104)
-
-var listGraphs* = Call_ListGraphs_21626087(name: "listGraphs",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "api.detective.amazonaws.com",
-                                        route: "/graphs/list",
-                                        validator: validate_ListGraphs_21626088,
-                                        base: "/", makeUrl: url_ListGraphs_21626089,
-                                        schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListInvitations_21626108 = ref object of OpenApiRestCall_21625426
-proc url_ListInvitations_21626110(protocol: Scheme; host: string; base: string;
+  Call_CreateMembers_402656482 = ref object of OpenApiRestCall_402656038
+proc url_CreateMembers_402656484(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1008,77 +353,62 @@ proc url_ListInvitations_21626110(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListInvitations_21626109(path: JsonNode; query: JsonNode;
+proc validate_CreateMembers_402656483(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Retrieves the list of open and accepted behavior graph invitations for the member account. This operation can only be called by a member account.</p> <p>Open invitations are invitations that the member account has not responded to.</p> <p>The results do not include behavior graphs for which the member account declined the invitation. The results also do not include behavior graphs that the member account resigned from or was removed from.</p>
-  ## 
+  ## <p>Amazon Detective is currently in preview.</p> <p>Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the master account for a behavior graph. </p> <p> <code>CreateMembers</code> verifies the accounts and then sends invitations to the verified accounts.</p> <p>The request provides the behavior graph ARN and the list of accounts to invite.</p> <p>The response separates the requested accounts into two lists:</p> <ul> <li> <p>The accounts that <code>CreateMembers</code> was able to start the verification for. This list includes member accounts that are being verified, that have passed verification and are being sent an invitation, and that have failed verification.</p> </li> <li> <p>The accounts that <code>CreateMembers</code> was unable to process. This list includes accounts that were already invited to be member accounts in the behavior graph.</p> </li> </ul>
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
-  ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   MaxResults: JString
-  ##             : Pagination limit
   section = newJObject()
-  var valid_21626111 = query.getOrDefault("NextToken")
-  valid_21626111 = validateParameter(valid_21626111, JString, required = false,
-                                   default = nil)
-  if valid_21626111 != nil:
-    section.add "NextToken", valid_21626111
-  var valid_21626112 = query.getOrDefault("MaxResults")
-  valid_21626112 = validateParameter(valid_21626112, JString, required = false,
-                                   default = nil)
-  if valid_21626112 != nil:
-    section.add "MaxResults", valid_21626112
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626113 = header.getOrDefault("X-Amz-Date")
-  valid_21626113 = validateParameter(valid_21626113, JString, required = false,
-                                   default = nil)
-  if valid_21626113 != nil:
-    section.add "X-Amz-Date", valid_21626113
-  var valid_21626114 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626114 = validateParameter(valid_21626114, JString, required = false,
-                                   default = nil)
-  if valid_21626114 != nil:
-    section.add "X-Amz-Security-Token", valid_21626114
-  var valid_21626115 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626115 = validateParameter(valid_21626115, JString, required = false,
-                                   default = nil)
-  if valid_21626115 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626115
-  var valid_21626116 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626116 = validateParameter(valid_21626116, JString, required = false,
-                                   default = nil)
-  if valid_21626116 != nil:
-    section.add "X-Amz-Algorithm", valid_21626116
-  var valid_21626117 = header.getOrDefault("X-Amz-Signature")
-  valid_21626117 = validateParameter(valid_21626117, JString, required = false,
-                                   default = nil)
-  if valid_21626117 != nil:
-    section.add "X-Amz-Signature", valid_21626117
-  var valid_21626118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626118 = validateParameter(valid_21626118, JString, required = false,
-                                   default = nil)
-  if valid_21626118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626118
-  var valid_21626119 = header.getOrDefault("X-Amz-Credential")
-  valid_21626119 = validateParameter(valid_21626119, JString, required = false,
-                                   default = nil)
-  if valid_21626119 != nil:
-    section.add "X-Amz-Credential", valid_21626119
+  var valid_402656485 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656485 = validateParameter(valid_402656485, JString,
+                                      required = false, default = nil)
+  if valid_402656485 != nil:
+    section.add "X-Amz-Security-Token", valid_402656485
+  var valid_402656486 = header.getOrDefault("X-Amz-Signature")
+  valid_402656486 = validateParameter(valid_402656486, JString,
+                                      required = false, default = nil)
+  if valid_402656486 != nil:
+    section.add "X-Amz-Signature", valid_402656486
+  var valid_402656487 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656487 = validateParameter(valid_402656487, JString,
+                                      required = false, default = nil)
+  if valid_402656487 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656487
+  var valid_402656488 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656488 = validateParameter(valid_402656488, JString,
+                                      required = false, default = nil)
+  if valid_402656488 != nil:
+    section.add "X-Amz-Algorithm", valid_402656488
+  var valid_402656489 = header.getOrDefault("X-Amz-Date")
+  valid_402656489 = validateParameter(valid_402656489, JString,
+                                      required = false, default = nil)
+  if valid_402656489 != nil:
+    section.add "X-Amz-Date", valid_402656489
+  var valid_402656490 = header.getOrDefault("X-Amz-Credential")
+  valid_402656490 = validateParameter(valid_402656490, JString,
+                                      required = false, default = nil)
+  if valid_402656490 != nil:
+    section.add "X-Amz-Credential", valid_402656490
+  var valid_402656491 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656491 = validateParameter(valid_402656491, JString,
+                                      required = false, default = nil)
+  if valid_402656491 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656491
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1090,46 +420,756 @@ proc validate_ListInvitations_21626109(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626121: Call_ListInvitations_21626108; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Retrieves the list of open and accepted behavior graph invitations for the member account. This operation can only be called by a member account.</p> <p>Open invitations are invitations that the member account has not responded to.</p> <p>The results do not include behavior graphs for which the member account declined the invitation. The results also do not include behavior graphs that the member account resigned from or was removed from.</p>
-  ## 
-  let valid = call_21626121.validator(path, query, header, formData, body, _)
-  let scheme = call_21626121.pickScheme
+proc call*(call_402656493: Call_CreateMembers_402656482; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the master account for a behavior graph. </p> <p> <code>CreateMembers</code> verifies the accounts and then sends invitations to the verified accounts.</p> <p>The request provides the behavior graph ARN and the list of accounts to invite.</p> <p>The response separates the requested accounts into two lists:</p> <ul> <li> <p>The accounts that <code>CreateMembers</code> was able to start the verification for. This list includes member accounts that are being verified, that have passed verification and are being sent an invitation, and that have failed verification.</p> </li> <li> <p>The accounts that <code>CreateMembers</code> was unable to process. This list includes accounts that were already invited to be member accounts in the behavior graph.</p> </li> </ul>
+                                                                                         ## 
+  let valid = call_402656493.validator(path, query, header, formData, body, _)
+  let scheme = call_402656493.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626121.makeUrl(scheme.get, call_21626121.host, call_21626121.base,
-                               call_21626121.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626121, uri, valid, _)
+  let uri = call_402656493.makeUrl(scheme.get, call_402656493.host, call_402656493.base,
+                                   call_402656493.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656493, uri, valid, _)
 
-proc call*(call_21626122: Call_ListInvitations_21626108; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_402656494: Call_CreateMembers_402656482; body: JsonNode): Recallable =
+  ## createMembers
+  ## <p>Amazon Detective is currently in preview.</p> <p>Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the master account for a behavior graph. </p> <p> <code>CreateMembers</code> verifies the accounts and then sends invitations to the verified accounts.</p> <p>The request provides the behavior graph ARN and the list of accounts to invite.</p> <p>The response separates the requested accounts into two lists:</p> <ul> <li> <p>The accounts that <code>CreateMembers</code> was able to start the verification for. This list includes member accounts that are being verified, that have passed verification and are being sent an invitation, and that have failed verification.</p> </li> <li> <p>The accounts that <code>CreateMembers</code> was unable to process. This list includes accounts that were already invited to be member accounts in the behavior graph.</p> </li> </ul>
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ## body: JObject (required)
+  var body_402656495 = newJObject()
+  if body != nil:
+    body_402656495 = body
+  result = call_402656494.call(nil, nil, nil, nil, body_402656495)
+
+var createMembers* = Call_CreateMembers_402656482(name: "createMembers",
+    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
+    route: "/graph/members", validator: validate_CreateMembers_402656483,
+    base: "/", makeUrl: url_CreateMembers_402656484,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DeleteGraph_402656496 = ref object of OpenApiRestCall_402656038
+proc url_DeleteGraph_402656498(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DeleteGraph_402656497(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Disables the specified behavior graph and queues it to be deleted. This operation removes the graph from each member account's list of behavior graphs.</p> <p> <code>DeleteGraph</code> can only be called by the master account for a behavior graph.</p>
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656499 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656499 = validateParameter(valid_402656499, JString,
+                                      required = false, default = nil)
+  if valid_402656499 != nil:
+    section.add "X-Amz-Security-Token", valid_402656499
+  var valid_402656500 = header.getOrDefault("X-Amz-Signature")
+  valid_402656500 = validateParameter(valid_402656500, JString,
+                                      required = false, default = nil)
+  if valid_402656500 != nil:
+    section.add "X-Amz-Signature", valid_402656500
+  var valid_402656501 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656501 = validateParameter(valid_402656501, JString,
+                                      required = false, default = nil)
+  if valid_402656501 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656501
+  var valid_402656502 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656502 = validateParameter(valid_402656502, JString,
+                                      required = false, default = nil)
+  if valid_402656502 != nil:
+    section.add "X-Amz-Algorithm", valid_402656502
+  var valid_402656503 = header.getOrDefault("X-Amz-Date")
+  valid_402656503 = validateParameter(valid_402656503, JString,
+                                      required = false, default = nil)
+  if valid_402656503 != nil:
+    section.add "X-Amz-Date", valid_402656503
+  var valid_402656504 = header.getOrDefault("X-Amz-Credential")
+  valid_402656504 = validateParameter(valid_402656504, JString,
+                                      required = false, default = nil)
+  if valid_402656504 != nil:
+    section.add "X-Amz-Credential", valid_402656504
+  var valid_402656505 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656505 = validateParameter(valid_402656505, JString,
+                                      required = false, default = nil)
+  if valid_402656505 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656505
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656507: Call_DeleteGraph_402656496; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Disables the specified behavior graph and queues it to be deleted. This operation removes the graph from each member account's list of behavior graphs.</p> <p> <code>DeleteGraph</code> can only be called by the master account for a behavior graph.</p>
+                                                                                         ## 
+  let valid = call_402656507.validator(path, query, header, formData, body, _)
+  let scheme = call_402656507.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656507.makeUrl(scheme.get, call_402656507.host, call_402656507.base,
+                                   call_402656507.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656507, uri, valid, _)
+
+proc call*(call_402656508: Call_DeleteGraph_402656496; body: JsonNode): Recallable =
+  ## deleteGraph
+  ## <p>Amazon Detective is currently in preview.</p> <p>Disables the specified behavior graph and queues it to be deleted. This operation removes the graph from each member account's list of behavior graphs.</p> <p> <code>DeleteGraph</code> can only be called by the master account for a behavior graph.</p>
+  ##   
+                                                                                                                                                                                                                                                                                                                    ## body: JObject (required)
+  var body_402656509 = newJObject()
+  if body != nil:
+    body_402656509 = body
+  result = call_402656508.call(nil, nil, nil, nil, body_402656509)
+
+var deleteGraph* = Call_DeleteGraph_402656496(name: "deleteGraph",
+    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
+    route: "/graph/removal", validator: validate_DeleteGraph_402656497,
+    base: "/", makeUrl: url_DeleteGraph_402656498,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DeleteMembers_402656510 = ref object of OpenApiRestCall_402656038
+proc url_DeleteMembers_402656512(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DeleteMembers_402656511(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656513 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656513 = validateParameter(valid_402656513, JString,
+                                      required = false, default = nil)
+  if valid_402656513 != nil:
+    section.add "X-Amz-Security-Token", valid_402656513
+  var valid_402656514 = header.getOrDefault("X-Amz-Signature")
+  valid_402656514 = validateParameter(valid_402656514, JString,
+                                      required = false, default = nil)
+  if valid_402656514 != nil:
+    section.add "X-Amz-Signature", valid_402656514
+  var valid_402656515 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656515 = validateParameter(valid_402656515, JString,
+                                      required = false, default = nil)
+  if valid_402656515 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656515
+  var valid_402656516 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656516 = validateParameter(valid_402656516, JString,
+                                      required = false, default = nil)
+  if valid_402656516 != nil:
+    section.add "X-Amz-Algorithm", valid_402656516
+  var valid_402656517 = header.getOrDefault("X-Amz-Date")
+  valid_402656517 = validateParameter(valid_402656517, JString,
+                                      required = false, default = nil)
+  if valid_402656517 != nil:
+    section.add "X-Amz-Date", valid_402656517
+  var valid_402656518 = header.getOrDefault("X-Amz-Credential")
+  valid_402656518 = validateParameter(valid_402656518, JString,
+                                      required = false, default = nil)
+  if valid_402656518 != nil:
+    section.add "X-Amz-Credential", valid_402656518
+  var valid_402656519 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656519 = validateParameter(valid_402656519, JString,
+                                      required = false, default = nil)
+  if valid_402656519 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656519
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656521: Call_DeleteMembers_402656510; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
+                                                                                         ## 
+  let valid = call_402656521.validator(path, query, header, formData, body, _)
+  let scheme = call_402656521.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656521.makeUrl(scheme.get, call_402656521.host, call_402656521.base,
+                                   call_402656521.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656521, uri, valid, _)
+
+proc call*(call_402656522: Call_DeleteMembers_402656510; body: JsonNode): Recallable =
+  ## deleteMembers
+  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                               ## body: JObject (required)
+  var body_402656523 = newJObject()
+  if body != nil:
+    body_402656523 = body
+  result = call_402656522.call(nil, nil, nil, nil, body_402656523)
+
+var deleteMembers* = Call_DeleteMembers_402656510(name: "deleteMembers",
+    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
+    route: "/graph/members/removal", validator: validate_DeleteMembers_402656511,
+    base: "/", makeUrl: url_DeleteMembers_402656512,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DisassociateMembership_402656524 = ref object of OpenApiRestCall_402656038
+proc url_DisassociateMembership_402656526(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DisassociateMembership_402656525(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Removes the member account from the specified behavior graph. This operation can only be called by a member account that has the <code>ENABLED</code> status.</p>
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656527 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656527 = validateParameter(valid_402656527, JString,
+                                      required = false, default = nil)
+  if valid_402656527 != nil:
+    section.add "X-Amz-Security-Token", valid_402656527
+  var valid_402656528 = header.getOrDefault("X-Amz-Signature")
+  valid_402656528 = validateParameter(valid_402656528, JString,
+                                      required = false, default = nil)
+  if valid_402656528 != nil:
+    section.add "X-Amz-Signature", valid_402656528
+  var valid_402656529 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656529 = validateParameter(valid_402656529, JString,
+                                      required = false, default = nil)
+  if valid_402656529 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656529
+  var valid_402656530 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656530 = validateParameter(valid_402656530, JString,
+                                      required = false, default = nil)
+  if valid_402656530 != nil:
+    section.add "X-Amz-Algorithm", valid_402656530
+  var valid_402656531 = header.getOrDefault("X-Amz-Date")
+  valid_402656531 = validateParameter(valid_402656531, JString,
+                                      required = false, default = nil)
+  if valid_402656531 != nil:
+    section.add "X-Amz-Date", valid_402656531
+  var valid_402656532 = header.getOrDefault("X-Amz-Credential")
+  valid_402656532 = validateParameter(valid_402656532, JString,
+                                      required = false, default = nil)
+  if valid_402656532 != nil:
+    section.add "X-Amz-Credential", valid_402656532
+  var valid_402656533 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656533 = validateParameter(valid_402656533, JString,
+                                      required = false, default = nil)
+  if valid_402656533 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656533
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656535: Call_DisassociateMembership_402656524;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Removes the member account from the specified behavior graph. This operation can only be called by a member account that has the <code>ENABLED</code> status.</p>
+                                                                                         ## 
+  let valid = call_402656535.validator(path, query, header, formData, body, _)
+  let scheme = call_402656535.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656535.makeUrl(scheme.get, call_402656535.host, call_402656535.base,
+                                   call_402656535.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656535, uri, valid, _)
+
+proc call*(call_402656536: Call_DisassociateMembership_402656524; body: JsonNode): Recallable =
+  ## disassociateMembership
+  ## <p>Amazon Detective is currently in preview.</p> <p>Removes the member account from the specified behavior graph. This operation can only be called by a member account that has the <code>ENABLED</code> status.</p>
+  ##   
+                                                                                                                                                                                                                          ## body: JObject (required)
+  var body_402656537 = newJObject()
+  if body != nil:
+    body_402656537 = body
+  result = call_402656536.call(nil, nil, nil, nil, body_402656537)
+
+var disassociateMembership* = Call_DisassociateMembership_402656524(
+    name: "disassociateMembership", meth: HttpMethod.HttpPost,
+    host: "api.detective.amazonaws.com", route: "/membership/removal",
+    validator: validate_DisassociateMembership_402656525, base: "/",
+    makeUrl: url_DisassociateMembership_402656526,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetMembers_402656538 = ref object of OpenApiRestCall_402656038
+proc url_GetMembers_402656540(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetMembers_402656539(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the membership details for specified member accounts for a behavior graph.</p>
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656541 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656541 = validateParameter(valid_402656541, JString,
+                                      required = false, default = nil)
+  if valid_402656541 != nil:
+    section.add "X-Amz-Security-Token", valid_402656541
+  var valid_402656542 = header.getOrDefault("X-Amz-Signature")
+  valid_402656542 = validateParameter(valid_402656542, JString,
+                                      required = false, default = nil)
+  if valid_402656542 != nil:
+    section.add "X-Amz-Signature", valid_402656542
+  var valid_402656543 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656543 = validateParameter(valid_402656543, JString,
+                                      required = false, default = nil)
+  if valid_402656543 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656543
+  var valid_402656544 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656544 = validateParameter(valid_402656544, JString,
+                                      required = false, default = nil)
+  if valid_402656544 != nil:
+    section.add "X-Amz-Algorithm", valid_402656544
+  var valid_402656545 = header.getOrDefault("X-Amz-Date")
+  valid_402656545 = validateParameter(valid_402656545, JString,
+                                      required = false, default = nil)
+  if valid_402656545 != nil:
+    section.add "X-Amz-Date", valid_402656545
+  var valid_402656546 = header.getOrDefault("X-Amz-Credential")
+  valid_402656546 = validateParameter(valid_402656546, JString,
+                                      required = false, default = nil)
+  if valid_402656546 != nil:
+    section.add "X-Amz-Credential", valid_402656546
+  var valid_402656547 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656547 = validateParameter(valid_402656547, JString,
+                                      required = false, default = nil)
+  if valid_402656547 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656547
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656549: Call_GetMembers_402656538; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the membership details for specified member accounts for a behavior graph.</p>
+                                                                                         ## 
+  let valid = call_402656549.validator(path, query, header, formData, body, _)
+  let scheme = call_402656549.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656549.makeUrl(scheme.get, call_402656549.host, call_402656549.base,
+                                   call_402656549.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656549, uri, valid, _)
+
+proc call*(call_402656550: Call_GetMembers_402656538; body: JsonNode): Recallable =
+  ## getMembers
+  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the membership details for specified member accounts for a behavior graph.</p>
+  ##   
+                                                                                                                                               ## body: JObject (required)
+  var body_402656551 = newJObject()
+  if body != nil:
+    body_402656551 = body
+  result = call_402656550.call(nil, nil, nil, nil, body_402656551)
+
+var getMembers* = Call_GetMembers_402656538(name: "getMembers",
+    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
+    route: "/graph/members/get", validator: validate_GetMembers_402656539,
+    base: "/", makeUrl: url_GetMembers_402656540,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListGraphs_402656552 = ref object of OpenApiRestCall_402656038
+proc url_ListGraphs_402656554(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListGraphs_402656553(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the list of behavior graphs that the calling account is a master of. This operation can only be called by a master account.</p> <p>Because an account can currently only be the master of one behavior graph within a Region, the results always contain a single graph.</p>
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   MaxResults: JString
+                                  ##             : Pagination limit
+  ##   NextToken: JString
+                                                                   ##            : Pagination token
+  section = newJObject()
+  var valid_402656555 = query.getOrDefault("MaxResults")
+  valid_402656555 = validateParameter(valid_402656555, JString,
+                                      required = false, default = nil)
+  if valid_402656555 != nil:
+    section.add "MaxResults", valid_402656555
+  var valid_402656556 = query.getOrDefault("NextToken")
+  valid_402656556 = validateParameter(valid_402656556, JString,
+                                      required = false, default = nil)
+  if valid_402656556 != nil:
+    section.add "NextToken", valid_402656556
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656557 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656557 = validateParameter(valid_402656557, JString,
+                                      required = false, default = nil)
+  if valid_402656557 != nil:
+    section.add "X-Amz-Security-Token", valid_402656557
+  var valid_402656558 = header.getOrDefault("X-Amz-Signature")
+  valid_402656558 = validateParameter(valid_402656558, JString,
+                                      required = false, default = nil)
+  if valid_402656558 != nil:
+    section.add "X-Amz-Signature", valid_402656558
+  var valid_402656559 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656559 = validateParameter(valid_402656559, JString,
+                                      required = false, default = nil)
+  if valid_402656559 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656559
+  var valid_402656560 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656560 = validateParameter(valid_402656560, JString,
+                                      required = false, default = nil)
+  if valid_402656560 != nil:
+    section.add "X-Amz-Algorithm", valid_402656560
+  var valid_402656561 = header.getOrDefault("X-Amz-Date")
+  valid_402656561 = validateParameter(valid_402656561, JString,
+                                      required = false, default = nil)
+  if valid_402656561 != nil:
+    section.add "X-Amz-Date", valid_402656561
+  var valid_402656562 = header.getOrDefault("X-Amz-Credential")
+  valid_402656562 = validateParameter(valid_402656562, JString,
+                                      required = false, default = nil)
+  if valid_402656562 != nil:
+    section.add "X-Amz-Credential", valid_402656562
+  var valid_402656563 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656563 = validateParameter(valid_402656563, JString,
+                                      required = false, default = nil)
+  if valid_402656563 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656563
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656565: Call_ListGraphs_402656552; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the list of behavior graphs that the calling account is a master of. This operation can only be called by a master account.</p> <p>Because an account can currently only be the master of one behavior graph within a Region, the results always contain a single graph.</p>
+                                                                                         ## 
+  let valid = call_402656565.validator(path, query, header, formData, body, _)
+  let scheme = call_402656565.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656565.makeUrl(scheme.get, call_402656565.host, call_402656565.base,
+                                   call_402656565.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656565, uri, valid, _)
+
+proc call*(call_402656566: Call_ListGraphs_402656552; body: JsonNode;
+           MaxResults: string = ""; NextToken: string = ""): Recallable =
+  ## listGraphs
+  ## <p>Amazon Detective is currently in preview.</p> <p>Returns the list of behavior graphs that the calling account is a master of. This operation can only be called by a master account.</p> <p>Because an account can currently only be the master of one behavior graph within a Region, the results always contain a single graph.</p>
+  ##   
+                                                                                                                                                                                                                                                                                                                                             ## MaxResults: string
+                                                                                                                                                                                                                                                                                                                                             ##             
+                                                                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                                                                             ## Pagination 
+                                                                                                                                                                                                                                                                                                                                             ## limit
+  ##   
+                                                                                                                                                                                                                                                                                                                                                     ## body: JObject (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                ## NextToken: string
+                                                                                                                                                                                                                                                                                                                                                                                ##            
+                                                                                                                                                                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                                                                                                                                                                ## Pagination 
+                                                                                                                                                                                                                                                                                                                                                                                ## token
+  var query_402656567 = newJObject()
+  var body_402656568 = newJObject()
+  add(query_402656567, "MaxResults", newJString(MaxResults))
+  if body != nil:
+    body_402656568 = body
+  add(query_402656567, "NextToken", newJString(NextToken))
+  result = call_402656566.call(nil, query_402656567, nil, nil, body_402656568)
+
+var listGraphs* = Call_ListGraphs_402656552(name: "listGraphs",
+    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
+    route: "/graphs/list", validator: validate_ListGraphs_402656553, base: "/",
+    makeUrl: url_ListGraphs_402656554, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListInvitations_402656569 = ref object of OpenApiRestCall_402656038
+proc url_ListInvitations_402656571(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode;
+                                   query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListInvitations_402656570(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Retrieves the list of open and accepted behavior graph invitations for the member account. This operation can only be called by a member account.</p> <p>Open invitations are invitations that the member account has not responded to.</p> <p>The results do not include behavior graphs for which the member account declined the invitation. The results also do not include behavior graphs that the member account resigned from or was removed from.</p>
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   MaxResults: JString
+                                  ##             : Pagination limit
+  ##   NextToken: JString
+                                                                   ##            : Pagination token
+  section = newJObject()
+  var valid_402656572 = query.getOrDefault("MaxResults")
+  valid_402656572 = validateParameter(valid_402656572, JString,
+                                      required = false, default = nil)
+  if valid_402656572 != nil:
+    section.add "MaxResults", valid_402656572
+  var valid_402656573 = query.getOrDefault("NextToken")
+  valid_402656573 = validateParameter(valid_402656573, JString,
+                                      required = false, default = nil)
+  if valid_402656573 != nil:
+    section.add "NextToken", valid_402656573
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656574 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656574 = validateParameter(valid_402656574, JString,
+                                      required = false, default = nil)
+  if valid_402656574 != nil:
+    section.add "X-Amz-Security-Token", valid_402656574
+  var valid_402656575 = header.getOrDefault("X-Amz-Signature")
+  valid_402656575 = validateParameter(valid_402656575, JString,
+                                      required = false, default = nil)
+  if valid_402656575 != nil:
+    section.add "X-Amz-Signature", valid_402656575
+  var valid_402656576 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656576 = validateParameter(valid_402656576, JString,
+                                      required = false, default = nil)
+  if valid_402656576 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656576
+  var valid_402656577 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656577 = validateParameter(valid_402656577, JString,
+                                      required = false, default = nil)
+  if valid_402656577 != nil:
+    section.add "X-Amz-Algorithm", valid_402656577
+  var valid_402656578 = header.getOrDefault("X-Amz-Date")
+  valid_402656578 = validateParameter(valid_402656578, JString,
+                                      required = false, default = nil)
+  if valid_402656578 != nil:
+    section.add "X-Amz-Date", valid_402656578
+  var valid_402656579 = header.getOrDefault("X-Amz-Credential")
+  valid_402656579 = validateParameter(valid_402656579, JString,
+                                      required = false, default = nil)
+  if valid_402656579 != nil:
+    section.add "X-Amz-Credential", valid_402656579
+  var valid_402656580 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656580 = validateParameter(valid_402656580, JString,
+                                      required = false, default = nil)
+  if valid_402656580 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656580
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656582: Call_ListInvitations_402656569; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Amazon Detective is currently in preview.</p> <p>Retrieves the list of open and accepted behavior graph invitations for the member account. This operation can only be called by a member account.</p> <p>Open invitations are invitations that the member account has not responded to.</p> <p>The results do not include behavior graphs for which the member account declined the invitation. The results also do not include behavior graphs that the member account resigned from or was removed from.</p>
+                                                                                         ## 
+  let valid = call_402656582.validator(path, query, header, formData, body, _)
+  let scheme = call_402656582.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656582.makeUrl(scheme.get, call_402656582.host, call_402656582.base,
+                                   call_402656582.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656582, uri, valid, _)
+
+proc call*(call_402656583: Call_ListInvitations_402656569; body: JsonNode;
+           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listInvitations
   ## <p>Amazon Detective is currently in preview.</p> <p>Retrieves the list of open and accepted behavior graph invitations for the member account. This operation can only be called by a member account.</p> <p>Open invitations are invitations that the member account has not responded to.</p> <p>The results do not include behavior graphs for which the member account declined the invitation. The results also do not include behavior graphs that the member account resigned from or was removed from.</p>
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_21626123 = newJObject()
-  var body_21626124 = newJObject()
-  add(query_21626123, "NextToken", newJString(NextToken))
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ## MaxResults: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ##             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ## Pagination 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ## limit
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ## body: JObject (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## NextToken: string
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ##            
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## Pagination 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## token
+  var query_402656584 = newJObject()
+  var body_402656585 = newJObject()
+  add(query_402656584, "MaxResults", newJString(MaxResults))
   if body != nil:
-    body_21626124 = body
-  add(query_21626123, "MaxResults", newJString(MaxResults))
-  result = call_21626122.call(nil, query_21626123, nil, nil, body_21626124)
+    body_402656585 = body
+  add(query_402656584, "NextToken", newJString(NextToken))
+  result = call_402656583.call(nil, query_402656584, nil, nil, body_402656585)
 
-var listInvitations* = Call_ListInvitations_21626108(name: "listInvitations",
+var listInvitations* = Call_ListInvitations_402656569(name: "listInvitations",
     meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
-    route: "/invitations/list", validator: validate_ListInvitations_21626109,
-    base: "/", makeUrl: url_ListInvitations_21626110,
+    route: "/invitations/list", validator: validate_ListInvitations_402656570,
+    base: "/", makeUrl: url_ListInvitations_402656571,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListMembers_21626125 = ref object of OpenApiRestCall_21625426
-proc url_ListMembers_21626127(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListMembers_402656586 = ref object of OpenApiRestCall_402656038
+proc url_ListMembers_402656588(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1138,76 +1178,77 @@ proc url_ListMembers_21626127(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListMembers_21626126(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ListMembers_402656587(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## <p>Amazon Detective is currently in preview.</p> <p>Retrieves the list of member accounts for a behavior graph. Does not return member accounts that were removed from the behavior graph.</p>
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##             : Pagination limit
+  ##   NextToken: JString
+                                                                   ##            : Pagination token
   section = newJObject()
-  var valid_21626128 = query.getOrDefault("NextToken")
-  valid_21626128 = validateParameter(valid_21626128, JString, required = false,
-                                   default = nil)
-  if valid_21626128 != nil:
-    section.add "NextToken", valid_21626128
-  var valid_21626129 = query.getOrDefault("MaxResults")
-  valid_21626129 = validateParameter(valid_21626129, JString, required = false,
-                                   default = nil)
-  if valid_21626129 != nil:
-    section.add "MaxResults", valid_21626129
+  var valid_402656589 = query.getOrDefault("MaxResults")
+  valid_402656589 = validateParameter(valid_402656589, JString,
+                                      required = false, default = nil)
+  if valid_402656589 != nil:
+    section.add "MaxResults", valid_402656589
+  var valid_402656590 = query.getOrDefault("NextToken")
+  valid_402656590 = validateParameter(valid_402656590, JString,
+                                      required = false, default = nil)
+  if valid_402656590 != nil:
+    section.add "NextToken", valid_402656590
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626130 = header.getOrDefault("X-Amz-Date")
-  valid_21626130 = validateParameter(valid_21626130, JString, required = false,
-                                   default = nil)
-  if valid_21626130 != nil:
-    section.add "X-Amz-Date", valid_21626130
-  var valid_21626131 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626131 = validateParameter(valid_21626131, JString, required = false,
-                                   default = nil)
-  if valid_21626131 != nil:
-    section.add "X-Amz-Security-Token", valid_21626131
-  var valid_21626132 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626132 = validateParameter(valid_21626132, JString, required = false,
-                                   default = nil)
-  if valid_21626132 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626132
-  var valid_21626133 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626133 = validateParameter(valid_21626133, JString, required = false,
-                                   default = nil)
-  if valid_21626133 != nil:
-    section.add "X-Amz-Algorithm", valid_21626133
-  var valid_21626134 = header.getOrDefault("X-Amz-Signature")
-  valid_21626134 = validateParameter(valid_21626134, JString, required = false,
-                                   default = nil)
-  if valid_21626134 != nil:
-    section.add "X-Amz-Signature", valid_21626134
-  var valid_21626135 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626135 = validateParameter(valid_21626135, JString, required = false,
-                                   default = nil)
-  if valid_21626135 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626135
-  var valid_21626136 = header.getOrDefault("X-Amz-Credential")
-  valid_21626136 = validateParameter(valid_21626136, JString, required = false,
-                                   default = nil)
-  if valid_21626136 != nil:
-    section.add "X-Amz-Credential", valid_21626136
+  var valid_402656591 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656591 = validateParameter(valid_402656591, JString,
+                                      required = false, default = nil)
+  if valid_402656591 != nil:
+    section.add "X-Amz-Security-Token", valid_402656591
+  var valid_402656592 = header.getOrDefault("X-Amz-Signature")
+  valid_402656592 = validateParameter(valid_402656592, JString,
+                                      required = false, default = nil)
+  if valid_402656592 != nil:
+    section.add "X-Amz-Signature", valid_402656592
+  var valid_402656593 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656593 = validateParameter(valid_402656593, JString,
+                                      required = false, default = nil)
+  if valid_402656593 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656593
+  var valid_402656594 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656594 = validateParameter(valid_402656594, JString,
+                                      required = false, default = nil)
+  if valid_402656594 != nil:
+    section.add "X-Amz-Algorithm", valid_402656594
+  var valid_402656595 = header.getOrDefault("X-Amz-Date")
+  valid_402656595 = validateParameter(valid_402656595, JString,
+                                      required = false, default = nil)
+  if valid_402656595 != nil:
+    section.add "X-Amz-Date", valid_402656595
+  var valid_402656596 = header.getOrDefault("X-Amz-Credential")
+  valid_402656596 = validateParameter(valid_402656596, JString,
+                                      required = false, default = nil)
+  if valid_402656596 != nil:
+    section.add "X-Amz-Credential", valid_402656596
+  var valid_402656597 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656597 = validateParameter(valid_402656597, JString,
+                                      required = false, default = nil)
+  if valid_402656597 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656597
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1219,46 +1260,57 @@ proc validate_ListMembers_21626126(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626138: Call_ListMembers_21626125; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656599: Call_ListMembers_402656586; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Amazon Detective is currently in preview.</p> <p>Retrieves the list of member accounts for a behavior graph. Does not return member accounts that were removed from the behavior graph.</p>
-  ## 
-  let valid = call_21626138.validator(path, query, header, formData, body, _)
-  let scheme = call_21626138.pickScheme
+                                                                                         ## 
+  let valid = call_402656599.validator(path, query, header, formData, body, _)
+  let scheme = call_402656599.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626138.makeUrl(scheme.get, call_21626138.host, call_21626138.base,
-                               call_21626138.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626138, uri, valid, _)
+  let uri = call_402656599.makeUrl(scheme.get, call_402656599.host, call_402656599.base,
+                                   call_402656599.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656599, uri, valid, _)
 
-proc call*(call_21626139: Call_ListMembers_21626125; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_402656600: Call_ListMembers_402656586; body: JsonNode;
+           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listMembers
   ## <p>Amazon Detective is currently in preview.</p> <p>Retrieves the list of member accounts for a behavior graph. Does not return member accounts that were removed from the behavior graph.</p>
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_21626140 = newJObject()
-  var body_21626141 = newJObject()
-  add(query_21626140, "NextToken", newJString(NextToken))
+  ##   
+                                                                                                                                                                                                   ## MaxResults: string
+                                                                                                                                                                                                   ##             
+                                                                                                                                                                                                   ## : 
+                                                                                                                                                                                                   ## Pagination 
+                                                                                                                                                                                                   ## limit
+  ##   
+                                                                                                                                                                                                           ## body: JObject (required)
+  ##   
+                                                                                                                                                                                                                                      ## NextToken: string
+                                                                                                                                                                                                                                      ##            
+                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                      ## Pagination 
+                                                                                                                                                                                                                                      ## token
+  var query_402656601 = newJObject()
+  var body_402656602 = newJObject()
+  add(query_402656601, "MaxResults", newJString(MaxResults))
   if body != nil:
-    body_21626141 = body
-  add(query_21626140, "MaxResults", newJString(MaxResults))
-  result = call_21626139.call(nil, query_21626140, nil, nil, body_21626141)
+    body_402656602 = body
+  add(query_402656601, "NextToken", newJString(NextToken))
+  result = call_402656600.call(nil, query_402656601, nil, nil, body_402656602)
 
-var listMembers* = Call_ListMembers_21626125(name: "listMembers",
+var listMembers* = Call_ListMembers_402656586(name: "listMembers",
     meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
-    route: "/graph/members/list", validator: validate_ListMembers_21626126,
-    base: "/", makeUrl: url_ListMembers_21626127,
+    route: "/graph/members/list", validator: validate_ListMembers_402656587,
+    base: "/", makeUrl: url_ListMembers_402656588,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RejectInvitation_21626142 = ref object of OpenApiRestCall_21625426
-proc url_RejectInvitation_21626144(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RejectInvitation_402656603 = ref object of OpenApiRestCall_402656038
+proc url_RejectInvitation_402656605(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1267,12 +1319,11 @@ proc url_RejectInvitation_21626144(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RejectInvitation_21626143(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
+proc validate_RejectInvitation_402656604(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## <p>Amazon Detective is currently in preview.</p> <p>Rejects an invitation to contribute the account data to a behavior graph. This operation must be called by a member account that has the <code>INVITED</code> status.</p>
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -1280,49 +1331,49 @@ proc validate_RejectInvitation_21626143(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626145 = header.getOrDefault("X-Amz-Date")
-  valid_21626145 = validateParameter(valid_21626145, JString, required = false,
-                                   default = nil)
-  if valid_21626145 != nil:
-    section.add "X-Amz-Date", valid_21626145
-  var valid_21626146 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626146 = validateParameter(valid_21626146, JString, required = false,
-                                   default = nil)
-  if valid_21626146 != nil:
-    section.add "X-Amz-Security-Token", valid_21626146
-  var valid_21626147 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626147 = validateParameter(valid_21626147, JString, required = false,
-                                   default = nil)
-  if valid_21626147 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626147
-  var valid_21626148 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626148 = validateParameter(valid_21626148, JString, required = false,
-                                   default = nil)
-  if valid_21626148 != nil:
-    section.add "X-Amz-Algorithm", valid_21626148
-  var valid_21626149 = header.getOrDefault("X-Amz-Signature")
-  valid_21626149 = validateParameter(valid_21626149, JString, required = false,
-                                   default = nil)
-  if valid_21626149 != nil:
-    section.add "X-Amz-Signature", valid_21626149
-  var valid_21626150 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626150 = validateParameter(valid_21626150, JString, required = false,
-                                   default = nil)
-  if valid_21626150 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626150
-  var valid_21626151 = header.getOrDefault("X-Amz-Credential")
-  valid_21626151 = validateParameter(valid_21626151, JString, required = false,
-                                   default = nil)
-  if valid_21626151 != nil:
-    section.add "X-Amz-Credential", valid_21626151
+  var valid_402656606 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656606 = validateParameter(valid_402656606, JString,
+                                      required = false, default = nil)
+  if valid_402656606 != nil:
+    section.add "X-Amz-Security-Token", valid_402656606
+  var valid_402656607 = header.getOrDefault("X-Amz-Signature")
+  valid_402656607 = validateParameter(valid_402656607, JString,
+                                      required = false, default = nil)
+  if valid_402656607 != nil:
+    section.add "X-Amz-Signature", valid_402656607
+  var valid_402656608 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656608 = validateParameter(valid_402656608, JString,
+                                      required = false, default = nil)
+  if valid_402656608 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656608
+  var valid_402656609 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656609 = validateParameter(valid_402656609, JString,
+                                      required = false, default = nil)
+  if valid_402656609 != nil:
+    section.add "X-Amz-Algorithm", valid_402656609
+  var valid_402656610 = header.getOrDefault("X-Amz-Date")
+  valid_402656610 = validateParameter(valid_402656610, JString,
+                                      required = false, default = nil)
+  if valid_402656610 != nil:
+    section.add "X-Amz-Date", valid_402656610
+  var valid_402656611 = header.getOrDefault("X-Amz-Credential")
+  valid_402656611 = validateParameter(valid_402656611, JString,
+                                      required = false, default = nil)
+  if valid_402656611 != nil:
+    section.add "X-Amz-Credential", valid_402656611
+  var valid_402656612 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656612 = validateParameter(valid_402656612, JString,
+                                      required = false, default = nil)
+  if valid_402656612 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656612
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1334,33 +1385,36 @@ proc validate_RejectInvitation_21626143(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626153: Call_RejectInvitation_21626142; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656614: Call_RejectInvitation_402656603;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Amazon Detective is currently in preview.</p> <p>Rejects an invitation to contribute the account data to a behavior graph. This operation must be called by a member account that has the <code>INVITED</code> status.</p>
-  ## 
-  let valid = call_21626153.validator(path, query, header, formData, body, _)
-  let scheme = call_21626153.pickScheme
+                                                                                         ## 
+  let valid = call_402656614.validator(path, query, header, formData, body, _)
+  let scheme = call_402656614.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626153.makeUrl(scheme.get, call_21626153.host, call_21626153.base,
-                               call_21626153.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626153, uri, valid, _)
+  let uri = call_402656614.makeUrl(scheme.get, call_402656614.host, call_402656614.base,
+                                   call_402656614.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656614, uri, valid, _)
 
-proc call*(call_21626154: Call_RejectInvitation_21626142; body: JsonNode): Recallable =
+proc call*(call_402656615: Call_RejectInvitation_402656603; body: JsonNode): Recallable =
   ## rejectInvitation
   ## <p>Amazon Detective is currently in preview.</p> <p>Rejects an invitation to contribute the account data to a behavior graph. This operation must be called by a member account that has the <code>INVITED</code> status.</p>
-  ##   body: JObject (required)
-  var body_21626155 = newJObject()
+  ##   
+                                                                                                                                                                                                                                  ## body: JObject (required)
+  var body_402656616 = newJObject()
   if body != nil:
-    body_21626155 = body
-  result = call_21626154.call(nil, nil, nil, nil, body_21626155)
+    body_402656616 = body
+  result = call_402656615.call(nil, nil, nil, nil, body_402656616)
 
-var rejectInvitation* = Call_RejectInvitation_21626142(name: "rejectInvitation",
-    meth: HttpMethod.HttpPost, host: "api.detective.amazonaws.com",
-    route: "/invitation/removal", validator: validate_RejectInvitation_21626143,
-    base: "/", makeUrl: url_RejectInvitation_21626144,
+var rejectInvitation* = Call_RejectInvitation_402656603(
+    name: "rejectInvitation", meth: HttpMethod.HttpPost,
+    host: "api.detective.amazonaws.com", route: "/invitation/removal",
+    validator: validate_RejectInvitation_402656604, base: "/",
+    makeUrl: url_RejectInvitation_402656605,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -1393,8 +1447,10 @@ sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 type
   XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+    SecurityToken = "X-Amz-Security-Token",
+    ContentSha256 = "X-Amz-Content-Sha256"
+proc atozSign(recall: var Recallable; query: JsonNode;
+              algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
@@ -1419,12 +1475,14 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers["X-Amz-Date"] = date
   recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    scope = credentialScope(region = region, service = awsServiceName, date = date)
-    request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
-                             normalize = normal, digest = algo)
+    scope = credentialScope(region = region, service = awsServiceName,
+                            date = date)
+    request = canonicalRequest(recall.meth, $url, query, recall.headers,
+                               recall.body, normalize = normal, digest = algo)
     sts = stringToSign(request.hash(algo), scope, date = date, digest = algo)
-    signature = calculateSignature(secret = secret, date = date, region = region,
-                                 service = awsServiceName, sts, digest = algo)
+    signature = calculateSignature(secret = secret, date = date,
+                                   region = region, service = awsServiceName,
+                                   sts, digest = algo)
   var auth = $algo & " "
   auth &= "Credential=" & access / scope & ", "
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "

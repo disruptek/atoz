@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
-  httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5,
+  base64, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon CodeGuru Reviewer
@@ -16,11 +16,11 @@ import
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/codeguru-reviewer/
 type
-  Scheme {.pure.} = enum
+  Scheme* {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
   ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
-                          header: JsonNode = nil; formData: JsonNode = nil;
-                          body: JsonNode = nil; _: string = ""): JsonNode
+                             header: JsonNode = nil; formData: JsonNode = nil;
+                             body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
@@ -28,17 +28,18 @@ type
     host*: string
     schemes*: set[Scheme]
     makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
-                  path: JsonNode; query: JsonNode): Uri
+                    path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_21625426 = ref object of OpenApiRestCall
+  OpenApiRestCall_402656038 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_21625426](t: T): T {.used.} =
-  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
-           schemes: t.schemes, validator: t.validator, url: t.url)
+proc clone[T: OpenApiRestCall_402656038](t: T): T {.used.} =
+  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base,
+             route: t.route, schemes: t.schemes, validator: t.validator,
+             url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_21625426): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_402656038): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -51,9 +52,9 @@ proc pickScheme(t: OpenApiRestCall_21625426): Option[Scheme] {.used.} =
     return some(scheme)
 
 proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
-                      default: JsonNode = nil): JsonNode =
+                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
-  ## a suitable default value when appropriate
+                                                            ## a suitable default value when appropriate
   if js == nil:
     if required:
       if default != nil:
@@ -79,7 +80,8 @@ proc queryString(query: JsonNode): string {.used.} =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.
+    used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -105,7 +107,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
   result = some(head & remainder.get)
 
 const
-  awsServers = {Scheme.Http: {"ap-northeast-1": "codeguru-reviewer.ap-northeast-1.amazonaws.com", "ap-southeast-1": "codeguru-reviewer.ap-southeast-1.amazonaws.com", "us-west-2": "codeguru-reviewer.us-west-2.amazonaws.com", "eu-west-2": "codeguru-reviewer.eu-west-2.amazonaws.com", "ap-northeast-3": "codeguru-reviewer.ap-northeast-3.amazonaws.com", "eu-central-1": "codeguru-reviewer.eu-central-1.amazonaws.com", "us-east-2": "codeguru-reviewer.us-east-2.amazonaws.com", "us-east-1": "codeguru-reviewer.us-east-1.amazonaws.com", "cn-northwest-1": "codeguru-reviewer.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "codeguru-reviewer.ap-south-1.amazonaws.com", "eu-north-1": "codeguru-reviewer.eu-north-1.amazonaws.com", "ap-northeast-2": "codeguru-reviewer.ap-northeast-2.amazonaws.com", "us-west-1": "codeguru-reviewer.us-west-1.amazonaws.com", "us-gov-east-1": "codeguru-reviewer.us-gov-east-1.amazonaws.com", "eu-west-3": "codeguru-reviewer.eu-west-3.amazonaws.com", "cn-north-1": "codeguru-reviewer.cn-north-1.amazonaws.com.cn", "sa-east-1": "codeguru-reviewer.sa-east-1.amazonaws.com", "eu-west-1": "codeguru-reviewer.eu-west-1.amazonaws.com", "us-gov-west-1": "codeguru-reviewer.us-gov-west-1.amazonaws.com", "ap-southeast-2": "codeguru-reviewer.ap-southeast-2.amazonaws.com", "ca-central-1": "codeguru-reviewer.ca-central-1.amazonaws.com"}.toTable, Scheme.Https: {
+  awsServers = {Scheme.Https: {"ap-northeast-1": "codeguru-reviewer.ap-northeast-1.amazonaws.com", "ap-southeast-1": "codeguru-reviewer.ap-southeast-1.amazonaws.com", "us-west-2": "codeguru-reviewer.us-west-2.amazonaws.com", "eu-west-2": "codeguru-reviewer.eu-west-2.amazonaws.com", "ap-northeast-3": "codeguru-reviewer.ap-northeast-3.amazonaws.com", "eu-central-1": "codeguru-reviewer.eu-central-1.amazonaws.com", "us-east-2": "codeguru-reviewer.us-east-2.amazonaws.com", "us-east-1": "codeguru-reviewer.us-east-1.amazonaws.com", "cn-northwest-1": "codeguru-reviewer.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "codeguru-reviewer.ap-south-1.amazonaws.com", "eu-north-1": "codeguru-reviewer.eu-north-1.amazonaws.com", "ap-northeast-2": "codeguru-reviewer.ap-northeast-2.amazonaws.com", "us-west-1": "codeguru-reviewer.us-west-1.amazonaws.com", "us-gov-east-1": "codeguru-reviewer.us-gov-east-1.amazonaws.com", "eu-west-3": "codeguru-reviewer.eu-west-3.amazonaws.com", "cn-north-1": "codeguru-reviewer.cn-north-1.amazonaws.com.cn", "sa-east-1": "codeguru-reviewer.sa-east-1.amazonaws.com", "eu-west-1": "codeguru-reviewer.eu-west-1.amazonaws.com", "us-gov-west-1": "codeguru-reviewer.us-gov-west-1.amazonaws.com", "ap-southeast-2": "codeguru-reviewer.ap-southeast-2.amazonaws.com", "ca-central-1": "codeguru-reviewer.ca-central-1.amazonaws.com"}.toTable, Scheme.Http: {
       "ap-northeast-1": "codeguru-reviewer.ap-northeast-1.amazonaws.com",
       "ap-southeast-1": "codeguru-reviewer.ap-southeast-1.amazonaws.com",
       "us-west-2": "codeguru-reviewer.us-west-2.amazonaws.com",
@@ -129,12 +131,13 @@ const
       "ca-central-1": "codeguru-reviewer.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "codeguru-reviewer"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
-    base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode;
+                body: string = ""): Recallable {.base.}
 type
-  Call_AssociateRepository_21626014 = ref object of OpenApiRestCall_21625426
-proc url_AssociateRepository_21626016(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_AssociateRepository_402656475 = ref object of OpenApiRestCall_402656038
+proc url_AssociateRepository_402656477(protocol: Scheme; host: string;
+                                       base: string; route: string;
+                                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -143,11 +146,11 @@ proc url_AssociateRepository_21626016(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_AssociateRepository_21626015(path: JsonNode; query: JsonNode;
+proc validate_AssociateRepository_402656476(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## <p>Associates an AWS CodeCommit repository with Amazon CodeGuru Reviewer. When you associate an AWS CodeCommit repository with Amazon CodeGuru Reviewer, Amazon CodeGuru Reviewer will provide recommendations for each pull request. You can view recommendations in the AWS CodeCommit repository.</p> <p>You can associate a GitHub repository using the Amazon CodeGuru Reviewer console.</p>
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -155,49 +158,49 @@ proc validate_AssociateRepository_21626015(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626017 = header.getOrDefault("X-Amz-Date")
-  valid_21626017 = validateParameter(valid_21626017, JString, required = false,
-                                   default = nil)
-  if valid_21626017 != nil:
-    section.add "X-Amz-Date", valid_21626017
-  var valid_21626018 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626018 = validateParameter(valid_21626018, JString, required = false,
-                                   default = nil)
-  if valid_21626018 != nil:
-    section.add "X-Amz-Security-Token", valid_21626018
-  var valid_21626019 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626019 = validateParameter(valid_21626019, JString, required = false,
-                                   default = nil)
-  if valid_21626019 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626019
-  var valid_21626020 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626020 = validateParameter(valid_21626020, JString, required = false,
-                                   default = nil)
-  if valid_21626020 != nil:
-    section.add "X-Amz-Algorithm", valid_21626020
-  var valid_21626021 = header.getOrDefault("X-Amz-Signature")
-  valid_21626021 = validateParameter(valid_21626021, JString, required = false,
-                                   default = nil)
-  if valid_21626021 != nil:
-    section.add "X-Amz-Signature", valid_21626021
-  var valid_21626022 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626022 = validateParameter(valid_21626022, JString, required = false,
-                                   default = nil)
-  if valid_21626022 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626022
-  var valid_21626023 = header.getOrDefault("X-Amz-Credential")
-  valid_21626023 = validateParameter(valid_21626023, JString, required = false,
-                                   default = nil)
-  if valid_21626023 != nil:
-    section.add "X-Amz-Credential", valid_21626023
+  var valid_402656478 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656478 = validateParameter(valid_402656478, JString,
+                                      required = false, default = nil)
+  if valid_402656478 != nil:
+    section.add "X-Amz-Security-Token", valid_402656478
+  var valid_402656479 = header.getOrDefault("X-Amz-Signature")
+  valid_402656479 = validateParameter(valid_402656479, JString,
+                                      required = false, default = nil)
+  if valid_402656479 != nil:
+    section.add "X-Amz-Signature", valid_402656479
+  var valid_402656480 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656480 = validateParameter(valid_402656480, JString,
+                                      required = false, default = nil)
+  if valid_402656480 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656480
+  var valid_402656481 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656481 = validateParameter(valid_402656481, JString,
+                                      required = false, default = nil)
+  if valid_402656481 != nil:
+    section.add "X-Amz-Algorithm", valid_402656481
+  var valid_402656482 = header.getOrDefault("X-Amz-Date")
+  valid_402656482 = validateParameter(valid_402656482, JString,
+                                      required = false, default = nil)
+  if valid_402656482 != nil:
+    section.add "X-Amz-Date", valid_402656482
+  var valid_402656483 = header.getOrDefault("X-Amz-Credential")
+  valid_402656483 = validateParameter(valid_402656483, JString,
+                                      required = false, default = nil)
+  if valid_402656483 != nil:
+    section.add "X-Amz-Credential", valid_402656483
+  var valid_402656484 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656484 = validateParameter(valid_402656484, JString,
+                                      required = false, default = nil)
+  if valid_402656484 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656484
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -209,38 +212,40 @@ proc validate_AssociateRepository_21626015(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626025: Call_AssociateRepository_21626014; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656486: Call_AssociateRepository_402656475;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Associates an AWS CodeCommit repository with Amazon CodeGuru Reviewer. When you associate an AWS CodeCommit repository with Amazon CodeGuru Reviewer, Amazon CodeGuru Reviewer will provide recommendations for each pull request. You can view recommendations in the AWS CodeCommit repository.</p> <p>You can associate a GitHub repository using the Amazon CodeGuru Reviewer console.</p>
-  ## 
-  let valid = call_21626025.validator(path, query, header, formData, body, _)
-  let scheme = call_21626025.pickScheme
+                                                                                         ## 
+  let valid = call_402656486.validator(path, query, header, formData, body, _)
+  let scheme = call_402656486.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626025.makeUrl(scheme.get, call_21626025.host, call_21626025.base,
-                               call_21626025.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626025, uri, valid, _)
+  let uri = call_402656486.makeUrl(scheme.get, call_402656486.host, call_402656486.base,
+                                   call_402656486.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656486, uri, valid, _)
 
-proc call*(call_21626026: Call_AssociateRepository_21626014; body: JsonNode): Recallable =
+proc call*(call_402656487: Call_AssociateRepository_402656475; body: JsonNode): Recallable =
   ## associateRepository
   ## <p>Associates an AWS CodeCommit repository with Amazon CodeGuru Reviewer. When you associate an AWS CodeCommit repository with Amazon CodeGuru Reviewer, Amazon CodeGuru Reviewer will provide recommendations for each pull request. You can view recommendations in the AWS CodeCommit repository.</p> <p>You can associate a GitHub repository using the Amazon CodeGuru Reviewer console.</p>
-  ##   body: JObject (required)
-  var body_21626027 = newJObject()
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                      ## body: JObject (required)
+  var body_402656488 = newJObject()
   if body != nil:
-    body_21626027 = body
-  result = call_21626026.call(nil, nil, nil, nil, body_21626027)
+    body_402656488 = body
+  result = call_402656487.call(nil, nil, nil, nil, body_402656488)
 
-var associateRepository* = Call_AssociateRepository_21626014(
+var associateRepository* = Call_AssociateRepository_402656475(
     name: "associateRepository", meth: HttpMethod.HttpPost,
     host: "codeguru-reviewer.amazonaws.com", route: "/associations",
-    validator: validate_AssociateRepository_21626015, base: "/",
-    makeUrl: url_AssociateRepository_21626016,
+    validator: validate_AssociateRepository_402656476, base: "/",
+    makeUrl: url_AssociateRepository_402656477,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRepositoryAssociations_21625770 = ref object of OpenApiRestCall_21625426
-proc url_ListRepositoryAssociations_21625772(protocol: Scheme; host: string;
+  Call_ListRepositoryAssociations_402656288 = ref object of OpenApiRestCall_402656038
+proc url_ListRepositoryAssociations_402656290(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -250,172 +255,584 @@ proc url_ListRepositoryAssociations_21625772(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListRepositoryAssociations_21625771(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_ListRepositoryAssociations_402656289(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## Lists repository associations. You can optionally filter on one or more of the following recommendation properties: provider types, states, names, and owners.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Owner: JArray
-  ##        : List of owners to use as a filter. For AWS CodeCommit, the owner is the AWS account id. For GitHub, it is the GitHub account name.
   ##   ProviderType: JArray
-  ##               : List of provider types to use as a filter.
-  ##   Name: JArray
-  ##       : List of names to use as a filter.
-  ##   State: JArray
-  ##        : List of states to use as a filter.
-  ##   NextToken: JString
-  ##            : <p>The <code>nextToken</code> value returned from a previous paginated <code>ListRepositoryAssociations</code> request where <code>maxResults</code> was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the <code>nextToken</code> value. </p> <note> <p>This token should be treated as an opaque identifier that is only used to retrieve the next items in a list and not for other programmatic purposes.</p> </note>
-  ##   MaxResults: JInt
-  ##             : The maximum number of repository association results returned by <code>ListRepositoryAssociations</code> in paginated output. When this parameter is used, <code>ListRepositoryAssociations</code> only returns <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. The remaining results of the initial request can be seen by sending another <code>ListRepositoryAssociations</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If this parameter is not used, then <code>ListRepositoryAssociations</code> returns up to 100 results and a <code>nextToken</code> value if applicable. 
+                                  ##               : List of provider types to use as a filter.
+  ##   
+                                                                                               ## Name: JArray
+                                                                                               ##       
+                                                                                               ## : 
+                                                                                               ## List 
+                                                                                               ## of 
+                                                                                               ## names 
+                                                                                               ## to 
+                                                                                               ## use 
+                                                                                               ## as 
+                                                                                               ## a 
+                                                                                               ## filter.
+  ##   
+                                                                                                         ## MaxResults: JInt
+                                                                                                         ##             
+                                                                                                         ## : 
+                                                                                                         ## The 
+                                                                                                         ## maximum 
+                                                                                                         ## number 
+                                                                                                         ## of 
+                                                                                                         ## repository 
+                                                                                                         ## association 
+                                                                                                         ## results 
+                                                                                                         ## returned 
+                                                                                                         ## by 
+                                                                                                         ## <code>ListRepositoryAssociations</code> 
+                                                                                                         ## in 
+                                                                                                         ## paginated 
+                                                                                                         ## output. 
+                                                                                                         ## When 
+                                                                                                         ## this 
+                                                                                                         ## parameter 
+                                                                                                         ## is 
+                                                                                                         ## used, 
+                                                                                                         ## <code>ListRepositoryAssociations</code> 
+                                                                                                         ## only 
+                                                                                                         ## returns 
+                                                                                                         ## <code>maxResults</code> 
+                                                                                                         ## results 
+                                                                                                         ## in 
+                                                                                                         ## a 
+                                                                                                         ## single 
+                                                                                                         ## page 
+                                                                                                         ## along 
+                                                                                                         ## with 
+                                                                                                         ## a 
+                                                                                                         ## <code>nextToken</code> 
+                                                                                                         ## response 
+                                                                                                         ## element. 
+                                                                                                         ## The 
+                                                                                                         ## remaining 
+                                                                                                         ## results 
+                                                                                                         ## of 
+                                                                                                         ## the 
+                                                                                                         ## initial 
+                                                                                                         ## request 
+                                                                                                         ## can 
+                                                                                                         ## be 
+                                                                                                         ## seen 
+                                                                                                         ## by 
+                                                                                                         ## sending 
+                                                                                                         ## another 
+                                                                                                         ## <code>ListRepositoryAssociations</code> 
+                                                                                                         ## request 
+                                                                                                         ## with 
+                                                                                                         ## the 
+                                                                                                         ## returned 
+                                                                                                         ## <code>nextToken</code> 
+                                                                                                         ## value. 
+                                                                                                         ## This 
+                                                                                                         ## value 
+                                                                                                         ## can 
+                                                                                                         ## be 
+                                                                                                         ## between 
+                                                                                                         ## 1 
+                                                                                                         ## and 
+                                                                                                         ## 100. 
+                                                                                                         ## If 
+                                                                                                         ## this 
+                                                                                                         ## parameter 
+                                                                                                         ## is 
+                                                                                                         ## not 
+                                                                                                         ## used, 
+                                                                                                         ## then 
+                                                                                                         ## <code>ListRepositoryAssociations</code> 
+                                                                                                         ## returns 
+                                                                                                         ## up 
+                                                                                                         ## to 
+                                                                                                         ## 100 
+                                                                                                         ## results 
+                                                                                                         ## and 
+                                                                                                         ## a 
+                                                                                                         ## <code>nextToken</code> 
+                                                                                                         ## value 
+                                                                                                         ## if 
+                                                                                                         ## applicable. 
+  ##   
+                                                                                                                        ## State: JArray
+                                                                                                                        ##        
+                                                                                                                        ## : 
+                                                                                                                        ## List 
+                                                                                                                        ## of 
+                                                                                                                        ## states 
+                                                                                                                        ## to 
+                                                                                                                        ## use 
+                                                                                                                        ## as 
+                                                                                                                        ## a 
+                                                                                                                        ## filter.
+  ##   
+                                                                                                                                  ## NextToken: JString
+                                                                                                                                  ##            
+                                                                                                                                  ## : 
+                                                                                                                                  ## <p>The 
+                                                                                                                                  ## <code>nextToken</code> 
+                                                                                                                                  ## value 
+                                                                                                                                  ## returned 
+                                                                                                                                  ## from 
+                                                                                                                                  ## a 
+                                                                                                                                  ## previous 
+                                                                                                                                  ## paginated 
+                                                                                                                                  ## <code>ListRepositoryAssociations</code> 
+                                                                                                                                  ## request 
+                                                                                                                                  ## where 
+                                                                                                                                  ## <code>maxResults</code> 
+                                                                                                                                  ## was 
+                                                                                                                                  ## used 
+                                                                                                                                  ## and 
+                                                                                                                                  ## the 
+                                                                                                                                  ## results 
+                                                                                                                                  ## exceeded 
+                                                                                                                                  ## the 
+                                                                                                                                  ## value 
+                                                                                                                                  ## of 
+                                                                                                                                  ## that 
+                                                                                                                                  ## parameter. 
+                                                                                                                                  ## Pagination 
+                                                                                                                                  ## continues 
+                                                                                                                                  ## from 
+                                                                                                                                  ## the 
+                                                                                                                                  ## end 
+                                                                                                                                  ## of 
+                                                                                                                                  ## the 
+                                                                                                                                  ## previous 
+                                                                                                                                  ## results 
+                                                                                                                                  ## that 
+                                                                                                                                  ## returned 
+                                                                                                                                  ## the 
+                                                                                                                                  ## <code>nextToken</code> 
+                                                                                                                                  ## value. 
+                                                                                                                                  ## </p> 
+                                                                                                                                  ## <note> 
+                                                                                                                                  ## <p>This 
+                                                                                                                                  ## token 
+                                                                                                                                  ## should 
+                                                                                                                                  ## be 
+                                                                                                                                  ## treated 
+                                                                                                                                  ## as 
+                                                                                                                                  ## an 
+                                                                                                                                  ## opaque 
+                                                                                                                                  ## identifier 
+                                                                                                                                  ## that 
+                                                                                                                                  ## is 
+                                                                                                                                  ## only 
+                                                                                                                                  ## used 
+                                                                                                                                  ## to 
+                                                                                                                                  ## retrieve 
+                                                                                                                                  ## the 
+                                                                                                                                  ## next 
+                                                                                                                                  ## items 
+                                                                                                                                  ## in 
+                                                                                                                                  ## a 
+                                                                                                                                  ## list 
+                                                                                                                                  ## and 
+                                                                                                                                  ## not 
+                                                                                                                                  ## for 
+                                                                                                                                  ## other 
+                                                                                                                                  ## programmatic 
+                                                                                                                                  ## purposes.</p> 
+                                                                                                                                  ## </note>
+  ##   
+                                                                                                                                            ## Owner: JArray
+                                                                                                                                            ##        
+                                                                                                                                            ## : 
+                                                                                                                                            ## List 
+                                                                                                                                            ## of 
+                                                                                                                                            ## owners 
+                                                                                                                                            ## to 
+                                                                                                                                            ## use 
+                                                                                                                                            ## as 
+                                                                                                                                            ## a 
+                                                                                                                                            ## filter. 
+                                                                                                                                            ## For 
+                                                                                                                                            ## AWS 
+                                                                                                                                            ## CodeCommit, 
+                                                                                                                                            ## the 
+                                                                                                                                            ## owner 
+                                                                                                                                            ## is 
+                                                                                                                                            ## the 
+                                                                                                                                            ## AWS 
+                                                                                                                                            ## account 
+                                                                                                                                            ## id. 
+                                                                                                                                            ## For 
+                                                                                                                                            ## GitHub, 
+                                                                                                                                            ## it 
+                                                                                                                                            ## is 
+                                                                                                                                            ## the 
+                                                                                                                                            ## GitHub 
+                                                                                                                                            ## account 
+                                                                                                                                            ## name.
   section = newJObject()
-  var valid_21625873 = query.getOrDefault("Owner")
-  valid_21625873 = validateParameter(valid_21625873, JArray, required = false,
-                                   default = nil)
-  if valid_21625873 != nil:
-    section.add "Owner", valid_21625873
-  var valid_21625874 = query.getOrDefault("ProviderType")
-  valid_21625874 = validateParameter(valid_21625874, JArray, required = false,
-                                   default = nil)
-  if valid_21625874 != nil:
-    section.add "ProviderType", valid_21625874
-  var valid_21625875 = query.getOrDefault("Name")
-  valid_21625875 = validateParameter(valid_21625875, JArray, required = false,
-                                   default = nil)
-  if valid_21625875 != nil:
-    section.add "Name", valid_21625875
-  var valid_21625876 = query.getOrDefault("State")
-  valid_21625876 = validateParameter(valid_21625876, JArray, required = false,
-                                   default = nil)
-  if valid_21625876 != nil:
-    section.add "State", valid_21625876
-  var valid_21625877 = query.getOrDefault("NextToken")
-  valid_21625877 = validateParameter(valid_21625877, JString, required = false,
-                                   default = nil)
-  if valid_21625877 != nil:
-    section.add "NextToken", valid_21625877
-  var valid_21625878 = query.getOrDefault("MaxResults")
-  valid_21625878 = validateParameter(valid_21625878, JInt, required = false,
-                                   default = nil)
-  if valid_21625878 != nil:
-    section.add "MaxResults", valid_21625878
+  var valid_402656372 = query.getOrDefault("ProviderType")
+  valid_402656372 = validateParameter(valid_402656372, JArray, required = false,
+                                      default = nil)
+  if valid_402656372 != nil:
+    section.add "ProviderType", valid_402656372
+  var valid_402656373 = query.getOrDefault("Name")
+  valid_402656373 = validateParameter(valid_402656373, JArray, required = false,
+                                      default = nil)
+  if valid_402656373 != nil:
+    section.add "Name", valid_402656373
+  var valid_402656374 = query.getOrDefault("MaxResults")
+  valid_402656374 = validateParameter(valid_402656374, JInt, required = false,
+                                      default = nil)
+  if valid_402656374 != nil:
+    section.add "MaxResults", valid_402656374
+  var valid_402656375 = query.getOrDefault("State")
+  valid_402656375 = validateParameter(valid_402656375, JArray, required = false,
+                                      default = nil)
+  if valid_402656375 != nil:
+    section.add "State", valid_402656375
+  var valid_402656376 = query.getOrDefault("NextToken")
+  valid_402656376 = validateParameter(valid_402656376, JString,
+                                      required = false, default = nil)
+  if valid_402656376 != nil:
+    section.add "NextToken", valid_402656376
+  var valid_402656377 = query.getOrDefault("Owner")
+  valid_402656377 = validateParameter(valid_402656377, JArray, required = false,
+                                      default = nil)
+  if valid_402656377 != nil:
+    section.add "Owner", valid_402656377
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21625879 = header.getOrDefault("X-Amz-Date")
-  valid_21625879 = validateParameter(valid_21625879, JString, required = false,
-                                   default = nil)
-  if valid_21625879 != nil:
-    section.add "X-Amz-Date", valid_21625879
-  var valid_21625880 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21625880 = validateParameter(valid_21625880, JString, required = false,
-                                   default = nil)
-  if valid_21625880 != nil:
-    section.add "X-Amz-Security-Token", valid_21625880
-  var valid_21625881 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21625881 = validateParameter(valid_21625881, JString, required = false,
-                                   default = nil)
-  if valid_21625881 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21625881
-  var valid_21625882 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21625882 = validateParameter(valid_21625882, JString, required = false,
-                                   default = nil)
-  if valid_21625882 != nil:
-    section.add "X-Amz-Algorithm", valid_21625882
-  var valid_21625883 = header.getOrDefault("X-Amz-Signature")
-  valid_21625883 = validateParameter(valid_21625883, JString, required = false,
-                                   default = nil)
-  if valid_21625883 != nil:
-    section.add "X-Amz-Signature", valid_21625883
-  var valid_21625884 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21625884 = validateParameter(valid_21625884, JString, required = false,
-                                   default = nil)
-  if valid_21625884 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21625884
-  var valid_21625885 = header.getOrDefault("X-Amz-Credential")
-  valid_21625885 = validateParameter(valid_21625885, JString, required = false,
-                                   default = nil)
-  if valid_21625885 != nil:
-    section.add "X-Amz-Credential", valid_21625885
+  var valid_402656378 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656378 = validateParameter(valid_402656378, JString,
+                                      required = false, default = nil)
+  if valid_402656378 != nil:
+    section.add "X-Amz-Security-Token", valid_402656378
+  var valid_402656379 = header.getOrDefault("X-Amz-Signature")
+  valid_402656379 = validateParameter(valid_402656379, JString,
+                                      required = false, default = nil)
+  if valid_402656379 != nil:
+    section.add "X-Amz-Signature", valid_402656379
+  var valid_402656380 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656380 = validateParameter(valid_402656380, JString,
+                                      required = false, default = nil)
+  if valid_402656380 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656380
+  var valid_402656381 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656381 = validateParameter(valid_402656381, JString,
+                                      required = false, default = nil)
+  if valid_402656381 != nil:
+    section.add "X-Amz-Algorithm", valid_402656381
+  var valid_402656382 = header.getOrDefault("X-Amz-Date")
+  valid_402656382 = validateParameter(valid_402656382, JString,
+                                      required = false, default = nil)
+  if valid_402656382 != nil:
+    section.add "X-Amz-Date", valid_402656382
+  var valid_402656383 = header.getOrDefault("X-Amz-Credential")
+  valid_402656383 = validateParameter(valid_402656383, JString,
+                                      required = false, default = nil)
+  if valid_402656383 != nil:
+    section.add "X-Amz-Credential", valid_402656383
+  var valid_402656384 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656384 = validateParameter(valid_402656384, JString,
+                                      required = false, default = nil)
+  if valid_402656384 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656384
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21625910: Call_ListRepositoryAssociations_21625770;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656398: Call_ListRepositoryAssociations_402656288;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Lists repository associations. You can optionally filter on one or more of the following recommendation properties: provider types, states, names, and owners.
-  ## 
-  let valid = call_21625910.validator(path, query, header, formData, body, _)
-  let scheme = call_21625910.pickScheme
+                                                                                         ## 
+  let valid = call_402656398.validator(path, query, header, formData, body, _)
+  let scheme = call_402656398.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21625910.makeUrl(scheme.get, call_21625910.host, call_21625910.base,
-                               call_21625910.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21625910, uri, valid, _)
+  let uri = call_402656398.makeUrl(scheme.get, call_402656398.host, call_402656398.base,
+                                   call_402656398.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656398, uri, valid, _)
 
-proc call*(call_21625973: Call_ListRepositoryAssociations_21625770;
-          Owner: JsonNode = nil; ProviderType: JsonNode = nil; Name: JsonNode = nil;
-          State: JsonNode = nil; NextToken: string = ""; MaxResults: int = 0): Recallable =
+proc call*(call_402656447: Call_ListRepositoryAssociations_402656288;
+           ProviderType: JsonNode = nil; Name: JsonNode = nil;
+           MaxResults: int = 0; State: JsonNode = nil; NextToken: string = "";
+           Owner: JsonNode = nil): Recallable =
   ## listRepositoryAssociations
   ## Lists repository associations. You can optionally filter on one or more of the following recommendation properties: provider types, states, names, and owners.
-  ##   Owner: JArray
-  ##        : List of owners to use as a filter. For AWS CodeCommit, the owner is the AWS account id. For GitHub, it is the GitHub account name.
-  ##   ProviderType: JArray
-  ##               : List of provider types to use as a filter.
-  ##   Name: JArray
-  ##       : List of names to use as a filter.
-  ##   State: JArray
-  ##        : List of states to use as a filter.
-  ##   NextToken: string
-  ##            : <p>The <code>nextToken</code> value returned from a previous paginated <code>ListRepositoryAssociations</code> request where <code>maxResults</code> was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the <code>nextToken</code> value. </p> <note> <p>This token should be treated as an opaque identifier that is only used to retrieve the next items in a list and not for other programmatic purposes.</p> </note>
-  ##   MaxResults: int
-  ##             : The maximum number of repository association results returned by <code>ListRepositoryAssociations</code> in paginated output. When this parameter is used, <code>ListRepositoryAssociations</code> only returns <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. The remaining results of the initial request can be seen by sending another <code>ListRepositoryAssociations</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If this parameter is not used, then <code>ListRepositoryAssociations</code> returns up to 100 results and a <code>nextToken</code> value if applicable. 
-  var query_21625975 = newJObject()
-  if Owner != nil:
-    query_21625975.add "Owner", Owner
+  ##   
+                                                                                                                                                                   ## ProviderType: JArray
+                                                                                                                                                                   ##               
+                                                                                                                                                                   ## : 
+                                                                                                                                                                   ## List 
+                                                                                                                                                                   ## of 
+                                                                                                                                                                   ## provider 
+                                                                                                                                                                   ## types 
+                                                                                                                                                                   ## to 
+                                                                                                                                                                   ## use 
+                                                                                                                                                                   ## as 
+                                                                                                                                                                   ## a 
+                                                                                                                                                                   ## filter.
+  ##   
+                                                                                                                                                                             ## Name: JArray
+                                                                                                                                                                             ##       
+                                                                                                                                                                             ## : 
+                                                                                                                                                                             ## List 
+                                                                                                                                                                             ## of 
+                                                                                                                                                                             ## names 
+                                                                                                                                                                             ## to 
+                                                                                                                                                                             ## use 
+                                                                                                                                                                             ## as 
+                                                                                                                                                                             ## a 
+                                                                                                                                                                             ## filter.
+  ##   
+                                                                                                                                                                                       ## MaxResults: int
+                                                                                                                                                                                       ##             
+                                                                                                                                                                                       ## : 
+                                                                                                                                                                                       ## The 
+                                                                                                                                                                                       ## maximum 
+                                                                                                                                                                                       ## number 
+                                                                                                                                                                                       ## of 
+                                                                                                                                                                                       ## repository 
+                                                                                                                                                                                       ## association 
+                                                                                                                                                                                       ## results 
+                                                                                                                                                                                       ## returned 
+                                                                                                                                                                                       ## by 
+                                                                                                                                                                                       ## <code>ListRepositoryAssociations</code> 
+                                                                                                                                                                                       ## in 
+                                                                                                                                                                                       ## paginated 
+                                                                                                                                                                                       ## output. 
+                                                                                                                                                                                       ## When 
+                                                                                                                                                                                       ## this 
+                                                                                                                                                                                       ## parameter 
+                                                                                                                                                                                       ## is 
+                                                                                                                                                                                       ## used, 
+                                                                                                                                                                                       ## <code>ListRepositoryAssociations</code> 
+                                                                                                                                                                                       ## only 
+                                                                                                                                                                                       ## returns 
+                                                                                                                                                                                       ## <code>maxResults</code> 
+                                                                                                                                                                                       ## results 
+                                                                                                                                                                                       ## in 
+                                                                                                                                                                                       ## a 
+                                                                                                                                                                                       ## single 
+                                                                                                                                                                                       ## page 
+                                                                                                                                                                                       ## along 
+                                                                                                                                                                                       ## with 
+                                                                                                                                                                                       ## a 
+                                                                                                                                                                                       ## <code>nextToken</code> 
+                                                                                                                                                                                       ## response 
+                                                                                                                                                                                       ## element. 
+                                                                                                                                                                                       ## The 
+                                                                                                                                                                                       ## remaining 
+                                                                                                                                                                                       ## results 
+                                                                                                                                                                                       ## of 
+                                                                                                                                                                                       ## the 
+                                                                                                                                                                                       ## initial 
+                                                                                                                                                                                       ## request 
+                                                                                                                                                                                       ## can 
+                                                                                                                                                                                       ## be 
+                                                                                                                                                                                       ## seen 
+                                                                                                                                                                                       ## by 
+                                                                                                                                                                                       ## sending 
+                                                                                                                                                                                       ## another 
+                                                                                                                                                                                       ## <code>ListRepositoryAssociations</code> 
+                                                                                                                                                                                       ## request 
+                                                                                                                                                                                       ## with 
+                                                                                                                                                                                       ## the 
+                                                                                                                                                                                       ## returned 
+                                                                                                                                                                                       ## <code>nextToken</code> 
+                                                                                                                                                                                       ## value. 
+                                                                                                                                                                                       ## This 
+                                                                                                                                                                                       ## value 
+                                                                                                                                                                                       ## can 
+                                                                                                                                                                                       ## be 
+                                                                                                                                                                                       ## between 
+                                                                                                                                                                                       ## 1 
+                                                                                                                                                                                       ## and 
+                                                                                                                                                                                       ## 100. 
+                                                                                                                                                                                       ## If 
+                                                                                                                                                                                       ## this 
+                                                                                                                                                                                       ## parameter 
+                                                                                                                                                                                       ## is 
+                                                                                                                                                                                       ## not 
+                                                                                                                                                                                       ## used, 
+                                                                                                                                                                                       ## then 
+                                                                                                                                                                                       ## <code>ListRepositoryAssociations</code> 
+                                                                                                                                                                                       ## returns 
+                                                                                                                                                                                       ## up 
+                                                                                                                                                                                       ## to 
+                                                                                                                                                                                       ## 100 
+                                                                                                                                                                                       ## results 
+                                                                                                                                                                                       ## and 
+                                                                                                                                                                                       ## a 
+                                                                                                                                                                                       ## <code>nextToken</code> 
+                                                                                                                                                                                       ## value 
+                                                                                                                                                                                       ## if 
+                                                                                                                                                                                       ## applicable. 
+  ##   
+                                                                                                                                                                                                      ## State: JArray
+                                                                                                                                                                                                      ##        
+                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                      ## List 
+                                                                                                                                                                                                      ## of 
+                                                                                                                                                                                                      ## states 
+                                                                                                                                                                                                      ## to 
+                                                                                                                                                                                                      ## use 
+                                                                                                                                                                                                      ## as 
+                                                                                                                                                                                                      ## a 
+                                                                                                                                                                                                      ## filter.
+  ##   
+                                                                                                                                                                                                                ## NextToken: string
+                                                                                                                                                                                                                ##            
+                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                ## <p>The 
+                                                                                                                                                                                                                ## <code>nextToken</code> 
+                                                                                                                                                                                                                ## value 
+                                                                                                                                                                                                                ## returned 
+                                                                                                                                                                                                                ## from 
+                                                                                                                                                                                                                ## a 
+                                                                                                                                                                                                                ## previous 
+                                                                                                                                                                                                                ## paginated 
+                                                                                                                                                                                                                ## <code>ListRepositoryAssociations</code> 
+                                                                                                                                                                                                                ## request 
+                                                                                                                                                                                                                ## where 
+                                                                                                                                                                                                                ## <code>maxResults</code> 
+                                                                                                                                                                                                                ## was 
+                                                                                                                                                                                                                ## used 
+                                                                                                                                                                                                                ## and 
+                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                ## results 
+                                                                                                                                                                                                                ## exceeded 
+                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                ## value 
+                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                ## that 
+                                                                                                                                                                                                                ## parameter. 
+                                                                                                                                                                                                                ## Pagination 
+                                                                                                                                                                                                                ## continues 
+                                                                                                                                                                                                                ## from 
+                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                ## end 
+                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                ## previous 
+                                                                                                                                                                                                                ## results 
+                                                                                                                                                                                                                ## that 
+                                                                                                                                                                                                                ## returned 
+                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                ## <code>nextToken</code> 
+                                                                                                                                                                                                                ## value. 
+                                                                                                                                                                                                                ## </p> 
+                                                                                                                                                                                                                ## <note> 
+                                                                                                                                                                                                                ## <p>This 
+                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                ## should 
+                                                                                                                                                                                                                ## be 
+                                                                                                                                                                                                                ## treated 
+                                                                                                                                                                                                                ## as 
+                                                                                                                                                                                                                ## an 
+                                                                                                                                                                                                                ## opaque 
+                                                                                                                                                                                                                ## identifier 
+                                                                                                                                                                                                                ## that 
+                                                                                                                                                                                                                ## is 
+                                                                                                                                                                                                                ## only 
+                                                                                                                                                                                                                ## used 
+                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                ## retrieve 
+                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                ## next 
+                                                                                                                                                                                                                ## items 
+                                                                                                                                                                                                                ## in 
+                                                                                                                                                                                                                ## a 
+                                                                                                                                                                                                                ## list 
+                                                                                                                                                                                                                ## and 
+                                                                                                                                                                                                                ## not 
+                                                                                                                                                                                                                ## for 
+                                                                                                                                                                                                                ## other 
+                                                                                                                                                                                                                ## programmatic 
+                                                                                                                                                                                                                ## purposes.</p> 
+                                                                                                                                                                                                                ## </note>
+  ##   
+                                                                                                                                                                                                                          ## Owner: JArray
+                                                                                                                                                                                                                          ##        
+                                                                                                                                                                                                                          ## : 
+                                                                                                                                                                                                                          ## List 
+                                                                                                                                                                                                                          ## of 
+                                                                                                                                                                                                                          ## owners 
+                                                                                                                                                                                                                          ## to 
+                                                                                                                                                                                                                          ## use 
+                                                                                                                                                                                                                          ## as 
+                                                                                                                                                                                                                          ## a 
+                                                                                                                                                                                                                          ## filter. 
+                                                                                                                                                                                                                          ## For 
+                                                                                                                                                                                                                          ## AWS 
+                                                                                                                                                                                                                          ## CodeCommit, 
+                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                          ## owner 
+                                                                                                                                                                                                                          ## is 
+                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                          ## AWS 
+                                                                                                                                                                                                                          ## account 
+                                                                                                                                                                                                                          ## id. 
+                                                                                                                                                                                                                          ## For 
+                                                                                                                                                                                                                          ## GitHub, 
+                                                                                                                                                                                                                          ## it 
+                                                                                                                                                                                                                          ## is 
+                                                                                                                                                                                                                          ## the 
+                                                                                                                                                                                                                          ## GitHub 
+                                                                                                                                                                                                                          ## account 
+                                                                                                                                                                                                                          ## name.
+  var query_402656448 = newJObject()
   if ProviderType != nil:
-    query_21625975.add "ProviderType", ProviderType
+    query_402656448.add "ProviderType", ProviderType
   if Name != nil:
-    query_21625975.add "Name", Name
+    query_402656448.add "Name", Name
+  add(query_402656448, "MaxResults", newJInt(MaxResults))
   if State != nil:
-    query_21625975.add "State", State
-  add(query_21625975, "NextToken", newJString(NextToken))
-  add(query_21625975, "MaxResults", newJInt(MaxResults))
-  result = call_21625973.call(nil, query_21625975, nil, nil, nil)
+    query_402656448.add "State", State
+  add(query_402656448, "NextToken", newJString(NextToken))
+  if Owner != nil:
+    query_402656448.add "Owner", Owner
+  result = call_402656447.call(nil, query_402656448, nil, nil, nil)
 
-var listRepositoryAssociations* = Call_ListRepositoryAssociations_21625770(
+var listRepositoryAssociations* = Call_ListRepositoryAssociations_402656288(
     name: "listRepositoryAssociations", meth: HttpMethod.HttpGet,
     host: "codeguru-reviewer.amazonaws.com", route: "/associations",
-    validator: validate_ListRepositoryAssociations_21625771, base: "/",
-    makeUrl: url_ListRepositoryAssociations_21625772,
+    validator: validate_ListRepositoryAssociations_402656289, base: "/",
+    makeUrl: url_ListRepositoryAssociations_402656290,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeRepositoryAssociation_21626028 = ref object of OpenApiRestCall_21625426
-proc url_DescribeRepositoryAssociation_21626030(protocol: Scheme; host: string;
+  Call_DescribeRepositoryAssociation_402656489 = ref object of OpenApiRestCall_402656038
+proc url_DescribeRepositoryAssociation_402656491(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
-  assert "AssociationArn" in path, "`AssociationArn` is a required path parameter"
+  assert "AssociationArn" in path,
+         "`AssociationArn` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/associations/"),
-               (kind: VariableSegment, value: "AssociationArn")]
+                 (kind: VariableSegment, value: "AssociationArn")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -424,121 +841,122 @@ proc url_DescribeRepositoryAssociation_21626030(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeRepositoryAssociation_21626029(path: JsonNode;
+proc validate_DescribeRepositoryAssociation_402656490(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
     _: string = ""): JsonNode {.nosinks.} =
   ## Describes a repository association.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   AssociationArn: JString (required)
-  ##                 : The Amazon Resource Name (ARN) identifying the association.
+                                 ##                 : The Amazon Resource Name (ARN) identifying the association.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `AssociationArn` field"
-  var valid_21626044 = path.getOrDefault("AssociationArn")
-  valid_21626044 = validateParameter(valid_21626044, JString, required = true,
-                                   default = nil)
-  if valid_21626044 != nil:
-    section.add "AssociationArn", valid_21626044
+         "path argument is necessary due to required `AssociationArn` field"
+  var valid_402656503 = path.getOrDefault("AssociationArn")
+  valid_402656503 = validateParameter(valid_402656503, JString, required = true,
+                                      default = nil)
+  if valid_402656503 != nil:
+    section.add "AssociationArn", valid_402656503
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626045 = header.getOrDefault("X-Amz-Date")
-  valid_21626045 = validateParameter(valid_21626045, JString, required = false,
-                                   default = nil)
-  if valid_21626045 != nil:
-    section.add "X-Amz-Date", valid_21626045
-  var valid_21626046 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626046 = validateParameter(valid_21626046, JString, required = false,
-                                   default = nil)
-  if valid_21626046 != nil:
-    section.add "X-Amz-Security-Token", valid_21626046
-  var valid_21626047 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626047 = validateParameter(valid_21626047, JString, required = false,
-                                   default = nil)
-  if valid_21626047 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626047
-  var valid_21626048 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626048 = validateParameter(valid_21626048, JString, required = false,
-                                   default = nil)
-  if valid_21626048 != nil:
-    section.add "X-Amz-Algorithm", valid_21626048
-  var valid_21626049 = header.getOrDefault("X-Amz-Signature")
-  valid_21626049 = validateParameter(valid_21626049, JString, required = false,
-                                   default = nil)
-  if valid_21626049 != nil:
-    section.add "X-Amz-Signature", valid_21626049
-  var valid_21626050 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626050 = validateParameter(valid_21626050, JString, required = false,
-                                   default = nil)
-  if valid_21626050 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626050
-  var valid_21626051 = header.getOrDefault("X-Amz-Credential")
-  valid_21626051 = validateParameter(valid_21626051, JString, required = false,
-                                   default = nil)
-  if valid_21626051 != nil:
-    section.add "X-Amz-Credential", valid_21626051
+  var valid_402656504 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656504 = validateParameter(valid_402656504, JString,
+                                      required = false, default = nil)
+  if valid_402656504 != nil:
+    section.add "X-Amz-Security-Token", valid_402656504
+  var valid_402656505 = header.getOrDefault("X-Amz-Signature")
+  valid_402656505 = validateParameter(valid_402656505, JString,
+                                      required = false, default = nil)
+  if valid_402656505 != nil:
+    section.add "X-Amz-Signature", valid_402656505
+  var valid_402656506 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656506 = validateParameter(valid_402656506, JString,
+                                      required = false, default = nil)
+  if valid_402656506 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656506
+  var valid_402656507 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656507 = validateParameter(valid_402656507, JString,
+                                      required = false, default = nil)
+  if valid_402656507 != nil:
+    section.add "X-Amz-Algorithm", valid_402656507
+  var valid_402656508 = header.getOrDefault("X-Amz-Date")
+  valid_402656508 = validateParameter(valid_402656508, JString,
+                                      required = false, default = nil)
+  if valid_402656508 != nil:
+    section.add "X-Amz-Date", valid_402656508
+  var valid_402656509 = header.getOrDefault("X-Amz-Credential")
+  valid_402656509 = validateParameter(valid_402656509, JString,
+                                      required = false, default = nil)
+  if valid_402656509 != nil:
+    section.add "X-Amz-Credential", valid_402656509
+  var valid_402656510 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656510 = validateParameter(valid_402656510, JString,
+                                      required = false, default = nil)
+  if valid_402656510 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656510
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626052: Call_DescribeRepositoryAssociation_21626028;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656511: Call_DescribeRepositoryAssociation_402656489;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Describes a repository association.
-  ## 
-  let valid = call_21626052.validator(path, query, header, formData, body, _)
-  let scheme = call_21626052.pickScheme
+                                                                                         ## 
+  let valid = call_402656511.validator(path, query, header, formData, body, _)
+  let scheme = call_402656511.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626052.makeUrl(scheme.get, call_21626052.host, call_21626052.base,
-                               call_21626052.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626052, uri, valid, _)
+  let uri = call_402656511.makeUrl(scheme.get, call_402656511.host, call_402656511.base,
+                                   call_402656511.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656511, uri, valid, _)
 
-proc call*(call_21626053: Call_DescribeRepositoryAssociation_21626028;
-          AssociationArn: string): Recallable =
+proc call*(call_402656512: Call_DescribeRepositoryAssociation_402656489;
+           AssociationArn: string): Recallable =
   ## describeRepositoryAssociation
   ## Describes a repository association.
   ##   AssociationArn: string (required)
-  ##                 : The Amazon Resource Name (ARN) identifying the association.
-  var path_21626054 = newJObject()
-  add(path_21626054, "AssociationArn", newJString(AssociationArn))
-  result = call_21626053.call(path_21626054, nil, nil, nil, nil)
+                                        ##                 : The Amazon Resource Name (ARN) identifying the association.
+  var path_402656513 = newJObject()
+  add(path_402656513, "AssociationArn", newJString(AssociationArn))
+  result = call_402656512.call(path_402656513, nil, nil, nil, nil)
 
-var describeRepositoryAssociation* = Call_DescribeRepositoryAssociation_21626028(
+var describeRepositoryAssociation* = Call_DescribeRepositoryAssociation_402656489(
     name: "describeRepositoryAssociation", meth: HttpMethod.HttpGet,
     host: "codeguru-reviewer.amazonaws.com",
     route: "/associations/{AssociationArn}",
-    validator: validate_DescribeRepositoryAssociation_21626029, base: "/",
-    makeUrl: url_DescribeRepositoryAssociation_21626030,
+    validator: validate_DescribeRepositoryAssociation_402656490, base: "/",
+    makeUrl: url_DescribeRepositoryAssociation_402656491,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateRepository_21626055 = ref object of OpenApiRestCall_21625426
-proc url_DisassociateRepository_21626057(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
+  Call_DisassociateRepository_402656514 = ref object of OpenApiRestCall_402656038
+proc url_DisassociateRepository_402656516(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
-  assert "AssociationArn" in path, "`AssociationArn` is a required path parameter"
+  assert "AssociationArn" in path,
+         "`AssociationArn` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/associations/"),
-               (kind: VariableSegment, value: "AssociationArn")]
+                 (kind: VariableSegment, value: "AssociationArn")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -547,107 +965,118 @@ proc url_DisassociateRepository_21626057(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DisassociateRepository_21626056(path: JsonNode; query: JsonNode;
+proc validate_DisassociateRepository_402656515(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Removes the association between Amazon CodeGuru Reviewer and a repository.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   AssociationArn: JString (required)
-  ##                 : The Amazon Resource Name (ARN) identifying the association.
+                                 ##                 : The Amazon Resource Name (ARN) identifying the association.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `AssociationArn` field"
-  var valid_21626058 = path.getOrDefault("AssociationArn")
-  valid_21626058 = validateParameter(valid_21626058, JString, required = true,
-                                   default = nil)
-  if valid_21626058 != nil:
-    section.add "AssociationArn", valid_21626058
+         "path argument is necessary due to required `AssociationArn` field"
+  var valid_402656517 = path.getOrDefault("AssociationArn")
+  valid_402656517 = validateParameter(valid_402656517, JString, required = true,
+                                      default = nil)
+  if valid_402656517 != nil:
+    section.add "AssociationArn", valid_402656517
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626059 = header.getOrDefault("X-Amz-Date")
-  valid_21626059 = validateParameter(valid_21626059, JString, required = false,
-                                   default = nil)
-  if valid_21626059 != nil:
-    section.add "X-Amz-Date", valid_21626059
-  var valid_21626060 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626060 = validateParameter(valid_21626060, JString, required = false,
-                                   default = nil)
-  if valid_21626060 != nil:
-    section.add "X-Amz-Security-Token", valid_21626060
-  var valid_21626061 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626061 = validateParameter(valid_21626061, JString, required = false,
-                                   default = nil)
-  if valid_21626061 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626061
-  var valid_21626062 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626062 = validateParameter(valid_21626062, JString, required = false,
-                                   default = nil)
-  if valid_21626062 != nil:
-    section.add "X-Amz-Algorithm", valid_21626062
-  var valid_21626063 = header.getOrDefault("X-Amz-Signature")
-  valid_21626063 = validateParameter(valid_21626063, JString, required = false,
-                                   default = nil)
-  if valid_21626063 != nil:
-    section.add "X-Amz-Signature", valid_21626063
-  var valid_21626064 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626064 = validateParameter(valid_21626064, JString, required = false,
-                                   default = nil)
-  if valid_21626064 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626064
-  var valid_21626065 = header.getOrDefault("X-Amz-Credential")
-  valid_21626065 = validateParameter(valid_21626065, JString, required = false,
-                                   default = nil)
-  if valid_21626065 != nil:
-    section.add "X-Amz-Credential", valid_21626065
+  var valid_402656518 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656518 = validateParameter(valid_402656518, JString,
+                                      required = false, default = nil)
+  if valid_402656518 != nil:
+    section.add "X-Amz-Security-Token", valid_402656518
+  var valid_402656519 = header.getOrDefault("X-Amz-Signature")
+  valid_402656519 = validateParameter(valid_402656519, JString,
+                                      required = false, default = nil)
+  if valid_402656519 != nil:
+    section.add "X-Amz-Signature", valid_402656519
+  var valid_402656520 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656520 = validateParameter(valid_402656520, JString,
+                                      required = false, default = nil)
+  if valid_402656520 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656520
+  var valid_402656521 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656521 = validateParameter(valid_402656521, JString,
+                                      required = false, default = nil)
+  if valid_402656521 != nil:
+    section.add "X-Amz-Algorithm", valid_402656521
+  var valid_402656522 = header.getOrDefault("X-Amz-Date")
+  valid_402656522 = validateParameter(valid_402656522, JString,
+                                      required = false, default = nil)
+  if valid_402656522 != nil:
+    section.add "X-Amz-Date", valid_402656522
+  var valid_402656523 = header.getOrDefault("X-Amz-Credential")
+  valid_402656523 = validateParameter(valid_402656523, JString,
+                                      required = false, default = nil)
+  if valid_402656523 != nil:
+    section.add "X-Amz-Credential", valid_402656523
+  var valid_402656524 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656524 = validateParameter(valid_402656524, JString,
+                                      required = false, default = nil)
+  if valid_402656524 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656524
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626066: Call_DisassociateRepository_21626055;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656525: Call_DisassociateRepository_402656514;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Removes the association between Amazon CodeGuru Reviewer and a repository.
-  ## 
-  let valid = call_21626066.validator(path, query, header, formData, body, _)
-  let scheme = call_21626066.pickScheme
+                                                                                         ## 
+  let valid = call_402656525.validator(path, query, header, formData, body, _)
+  let scheme = call_402656525.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626066.makeUrl(scheme.get, call_21626066.host, call_21626066.base,
-                               call_21626066.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626066, uri, valid, _)
+  let uri = call_402656525.makeUrl(scheme.get, call_402656525.host, call_402656525.base,
+                                   call_402656525.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656525, uri, valid, _)
 
-proc call*(call_21626067: Call_DisassociateRepository_21626055;
-          AssociationArn: string): Recallable =
+proc call*(call_402656526: Call_DisassociateRepository_402656514;
+           AssociationArn: string): Recallable =
   ## disassociateRepository
   ## Removes the association between Amazon CodeGuru Reviewer and a repository.
-  ##   AssociationArn: string (required)
-  ##                 : The Amazon Resource Name (ARN) identifying the association.
-  var path_21626068 = newJObject()
-  add(path_21626068, "AssociationArn", newJString(AssociationArn))
-  result = call_21626067.call(path_21626068, nil, nil, nil, nil)
+  ##   
+                                                                               ## AssociationArn: string (required)
+                                                                               ##                 
+                                                                               ## : 
+                                                                               ## The 
+                                                                               ## Amazon 
+                                                                               ## Resource 
+                                                                               ## Name 
+                                                                               ## (ARN) 
+                                                                               ## identifying 
+                                                                               ## the 
+                                                                               ## association.
+  var path_402656527 = newJObject()
+  add(path_402656527, "AssociationArn", newJString(AssociationArn))
+  result = call_402656526.call(path_402656527, nil, nil, nil, nil)
 
-var disassociateRepository* = Call_DisassociateRepository_21626055(
+var disassociateRepository* = Call_DisassociateRepository_402656514(
     name: "disassociateRepository", meth: HttpMethod.HttpDelete,
     host: "codeguru-reviewer.amazonaws.com",
     route: "/associations/{AssociationArn}",
-    validator: validate_DisassociateRepository_21626056, base: "/",
-    makeUrl: url_DisassociateRepository_21626057,
+    validator: validate_DisassociateRepository_402656515, base: "/",
+    makeUrl: url_DisassociateRepository_402656516,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -680,8 +1109,10 @@ sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 type
   XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+    SecurityToken = "X-Amz-Security-Token",
+    ContentSha256 = "X-Amz-Content-Sha256"
+proc atozSign(recall: var Recallable; query: JsonNode;
+              algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
@@ -706,12 +1137,14 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers["X-Amz-Date"] = date
   recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    scope = credentialScope(region = region, service = awsServiceName, date = date)
-    request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
-                             normalize = normal, digest = algo)
+    scope = credentialScope(region = region, service = awsServiceName,
+                            date = date)
+    request = canonicalRequest(recall.meth, $url, query, recall.headers,
+                               recall.body, normalize = normal, digest = algo)
     sts = stringToSign(request.hash(algo), scope, date = date, digest = algo)
-    signature = calculateSignature(secret = secret, date = date, region = region,
-                                 service = awsServiceName, sts, digest = algo)
+    signature = calculateSignature(secret = secret, date = date,
+                                   region = region, service = awsServiceName,
+                                   sts, digest = algo)
   var auth = $algo & " "
   auth &= "Credential=" & access / scope & ", "
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "

@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
-  httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5,
+  base64, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Connect Service
@@ -16,11 +16,11 @@ import
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/connect/
 type
-  Scheme {.pure.} = enum
+  Scheme* {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
   ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
-                          header: JsonNode = nil; formData: JsonNode = nil;
-                          body: JsonNode = nil; _: string = ""): JsonNode
+                             header: JsonNode = nil; formData: JsonNode = nil;
+                             body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
@@ -28,17 +28,18 @@ type
     host*: string
     schemes*: set[Scheme]
     makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
-                  path: JsonNode; query: JsonNode): Uri
+                    path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_21625435 = ref object of OpenApiRestCall
+  OpenApiRestCall_402656044 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_21625435](t: T): T {.used.} =
-  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
-           schemes: t.schemes, validator: t.validator, url: t.url)
+proc clone[T: OpenApiRestCall_402656044](t: T): T {.used.} =
+  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base,
+             route: t.route, schemes: t.schemes, validator: t.validator,
+             url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_402656044): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -51,9 +52,9 @@ proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
     return some(scheme)
 
 proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
-                      default: JsonNode = nil): JsonNode =
+                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
-  ## a suitable default value when appropriate
+                                                            ## a suitable default value when appropriate
   if js == nil:
     if required:
       if default != nil:
@@ -79,7 +80,8 @@ proc queryString(query: JsonNode): string {.used.} =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.
+    used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -105,19 +107,15 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
   result = some(head & remainder.get)
 
 const
-  awsServers = {Scheme.Http: {"ap-northeast-1": "connect.ap-northeast-1.amazonaws.com", "ap-southeast-1": "connect.ap-southeast-1.amazonaws.com",
-                           "us-west-2": "connect.us-west-2.amazonaws.com",
-                           "eu-west-2": "connect.eu-west-2.amazonaws.com", "ap-northeast-3": "connect.ap-northeast-3.amazonaws.com", "eu-central-1": "connect.eu-central-1.amazonaws.com",
-                           "us-east-2": "connect.us-east-2.amazonaws.com",
-                           "us-east-1": "connect.us-east-1.amazonaws.com", "cn-northwest-1": "connect.cn-northwest-1.amazonaws.com.cn",
-                           "ap-south-1": "connect.ap-south-1.amazonaws.com",
-                           "eu-north-1": "connect.eu-north-1.amazonaws.com", "ap-northeast-2": "connect.ap-northeast-2.amazonaws.com",
-                           "us-west-1": "connect.us-west-1.amazonaws.com", "us-gov-east-1": "connect.us-gov-east-1.amazonaws.com",
-                           "eu-west-3": "connect.eu-west-3.amazonaws.com",
-                           "cn-north-1": "connect.cn-north-1.amazonaws.com.cn",
-                           "sa-east-1": "connect.sa-east-1.amazonaws.com",
-                           "eu-west-1": "connect.eu-west-1.amazonaws.com", "us-gov-west-1": "connect.us-gov-west-1.amazonaws.com", "ap-southeast-2": "connect.ap-southeast-2.amazonaws.com",
-                           "ca-central-1": "connect.ca-central-1.amazonaws.com"}.toTable, Scheme.Https: {
+  awsServers = {Scheme.Https: {"ap-northeast-1": "connect.ap-northeast-1.amazonaws.com", "ap-southeast-1": "connect.ap-southeast-1.amazonaws.com",
+                               "us-west-2": "connect.us-west-2.amazonaws.com",
+                               "eu-west-2": "connect.eu-west-2.amazonaws.com", "ap-northeast-3": "connect.ap-northeast-3.amazonaws.com", "eu-central-1": "connect.eu-central-1.amazonaws.com",
+                               "us-east-2": "connect.us-east-2.amazonaws.com",
+                               "us-east-1": "connect.us-east-1.amazonaws.com", "cn-northwest-1": "connect.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "connect.ap-south-1.amazonaws.com", "eu-north-1": "connect.eu-north-1.amazonaws.com", "ap-northeast-2": "connect.ap-northeast-2.amazonaws.com",
+                               "us-west-1": "connect.us-west-1.amazonaws.com", "us-gov-east-1": "connect.us-gov-east-1.amazonaws.com",
+                               "eu-west-3": "connect.eu-west-3.amazonaws.com", "cn-north-1": "connect.cn-north-1.amazonaws.com.cn",
+                               "sa-east-1": "connect.sa-east-1.amazonaws.com",
+                               "eu-west-1": "connect.eu-west-1.amazonaws.com", "us-gov-west-1": "connect.us-gov-west-1.amazonaws.com", "ap-southeast-2": "connect.ap-southeast-2.amazonaws.com", "ca-central-1": "connect.ca-central-1.amazonaws.com"}.toTable, Scheme.Http: {
       "ap-northeast-1": "connect.ap-northeast-1.amazonaws.com",
       "ap-southeast-1": "connect.ap-southeast-1.amazonaws.com",
       "us-west-2": "connect.us-west-2.amazonaws.com",
@@ -141,12 +139,12 @@ const
       "ca-central-1": "connect.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "connect"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
-    base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode;
+                body: string = ""): Recallable {.base.}
 type
-  Call_CreateUser_21625779 = ref object of OpenApiRestCall_21625435
-proc url_CreateUser_21625781(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateUser_402656294 = ref object of OpenApiRestCall_402656044
+proc url_CreateUser_402656296(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -154,7 +152,7 @@ proc url_CreateUser_21625781(protocol: Scheme; host: string; base: string;
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/users/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -163,71 +161,72 @@ proc url_CreateUser_21625781(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_CreateUser_21625780(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+proc validate_CreateUser_402656295(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Creates a user account for the specified Amazon Connect instance.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21625895 = path.getOrDefault("InstanceId")
-  valid_21625895 = validateParameter(valid_21625895, JString, required = true,
-                                   default = nil)
-  if valid_21625895 != nil:
-    section.add "InstanceId", valid_21625895
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656389 = path.getOrDefault("InstanceId")
+  valid_402656389 = validateParameter(valid_402656389, JString, required = true,
+                                      default = nil)
+  if valid_402656389 != nil:
+    section.add "InstanceId", valid_402656389
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21625896 = header.getOrDefault("X-Amz-Date")
-  valid_21625896 = validateParameter(valid_21625896, JString, required = false,
-                                   default = nil)
-  if valid_21625896 != nil:
-    section.add "X-Amz-Date", valid_21625896
-  var valid_21625897 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21625897 = validateParameter(valid_21625897, JString, required = false,
-                                   default = nil)
-  if valid_21625897 != nil:
-    section.add "X-Amz-Security-Token", valid_21625897
-  var valid_21625898 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21625898 = validateParameter(valid_21625898, JString, required = false,
-                                   default = nil)
-  if valid_21625898 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21625898
-  var valid_21625899 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21625899 = validateParameter(valid_21625899, JString, required = false,
-                                   default = nil)
-  if valid_21625899 != nil:
-    section.add "X-Amz-Algorithm", valid_21625899
-  var valid_21625900 = header.getOrDefault("X-Amz-Signature")
-  valid_21625900 = validateParameter(valid_21625900, JString, required = false,
-                                   default = nil)
-  if valid_21625900 != nil:
-    section.add "X-Amz-Signature", valid_21625900
-  var valid_21625901 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21625901 = validateParameter(valid_21625901, JString, required = false,
-                                   default = nil)
-  if valid_21625901 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21625901
-  var valid_21625902 = header.getOrDefault("X-Amz-Credential")
-  valid_21625902 = validateParameter(valid_21625902, JString, required = false,
-                                   default = nil)
-  if valid_21625902 != nil:
-    section.add "X-Amz-Credential", valid_21625902
+  var valid_402656390 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656390 = validateParameter(valid_402656390, JString,
+                                      required = false, default = nil)
+  if valid_402656390 != nil:
+    section.add "X-Amz-Security-Token", valid_402656390
+  var valid_402656391 = header.getOrDefault("X-Amz-Signature")
+  valid_402656391 = validateParameter(valid_402656391, JString,
+                                      required = false, default = nil)
+  if valid_402656391 != nil:
+    section.add "X-Amz-Signature", valid_402656391
+  var valid_402656392 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656392 = validateParameter(valid_402656392, JString,
+                                      required = false, default = nil)
+  if valid_402656392 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656392
+  var valid_402656393 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656393 = validateParameter(valid_402656393, JString,
+                                      required = false, default = nil)
+  if valid_402656393 != nil:
+    section.add "X-Amz-Algorithm", valid_402656393
+  var valid_402656394 = header.getOrDefault("X-Amz-Date")
+  valid_402656394 = validateParameter(valid_402656394, JString,
+                                      required = false, default = nil)
+  if valid_402656394 != nil:
+    section.add "X-Amz-Date", valid_402656394
+  var valid_402656395 = header.getOrDefault("X-Amz-Credential")
+  valid_402656395 = validateParameter(valid_402656395, JString,
+                                      required = false, default = nil)
+  if valid_402656395 != nil:
+    section.add "X-Amz-Credential", valid_402656395
+  var valid_402656396 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656396 = validateParameter(valid_402656396, JString,
+                                      required = false, default = nil)
+  if valid_402656396 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656396
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -239,44 +238,203 @@ proc validate_CreateUser_21625780(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_21625928: Call_CreateUser_21625779; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656411: Call_CreateUser_402656294; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Creates a user account for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21625928.validator(path, query, header, formData, body, _)
-  let scheme = call_21625928.pickScheme
+                                                                                         ## 
+  let valid = call_402656411.validator(path, query, header, formData, body, _)
+  let scheme = call_402656411.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21625928.makeUrl(scheme.get, call_21625928.host, call_21625928.base,
-                               call_21625928.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21625928, uri, valid, _)
+  let uri = call_402656411.makeUrl(scheme.get, call_402656411.host, call_402656411.base,
+                                   call_402656411.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656411, uri, valid, _)
 
-proc call*(call_21625991: Call_CreateUser_21625779; InstanceId: string;
-          body: JsonNode): Recallable =
+proc call*(call_402656460: Call_CreateUser_402656294; body: JsonNode;
+           InstanceId: string): Recallable =
   ## createUser
   ## Creates a user account for the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
   ##   body: JObject (required)
-  var path_21625993 = newJObject()
-  var body_21625995 = newJObject()
-  add(path_21625993, "InstanceId", newJString(InstanceId))
+  ##   InstanceId: string (required)
+                               ##             : The identifier of the Amazon Connect instance.
+  var path_402656461 = newJObject()
+  var body_402656463 = newJObject()
   if body != nil:
-    body_21625995 = body
-  result = call_21625991.call(path_21625993, nil, nil, nil, body_21625995)
+    body_402656463 = body
+  add(path_402656461, "InstanceId", newJString(InstanceId))
+  result = call_402656460.call(path_402656461, nil, nil, nil, body_402656463)
 
-var createUser* = Call_CreateUser_21625779(name: "createUser",
-                                        meth: HttpMethod.HttpPut,
-                                        host: "connect.amazonaws.com",
-                                        route: "/users/{InstanceId}",
-                                        validator: validate_CreateUser_21625780,
-                                        base: "/", makeUrl: url_CreateUser_21625781,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var createUser* = Call_CreateUser_402656294(name: "createUser",
+    meth: HttpMethod.HttpPut, host: "connect.amazonaws.com",
+    route: "/users/{InstanceId}", validator: validate_CreateUser_402656295,
+    base: "/", makeUrl: url_CreateUser_402656296,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeUser_21626032 = ref object of OpenApiRestCall_21625435
-proc url_DescribeUser_21626034(protocol: Scheme; host: string; base: string;
+  Call_DescribeUser_402656489 = ref object of OpenApiRestCall_402656044
+proc url_DescribeUser_402656491(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "InstanceId" in path, "`InstanceId` is a required path parameter"
+  assert "UserId" in path, "`UserId` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/users/"),
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "UserId")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_DescribeUser_402656490(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Describes the specified user account. You can find the instance ID in the console (it’s the final part of the ARN). The console does not display the user IDs. Instead, list the users and note the IDs provided in the output.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   InstanceId: JString (required)
+                                 ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                ## UserId: JString (required)
+                                                                                                ##         
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## identifier 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## user 
+                                                                                                ## account.
+  section = newJObject()
+  assert path != nil,
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656492 = path.getOrDefault("InstanceId")
+  valid_402656492 = validateParameter(valid_402656492, JString, required = true,
+                                      default = nil)
+  if valid_402656492 != nil:
+    section.add "InstanceId", valid_402656492
+  var valid_402656493 = path.getOrDefault("UserId")
+  valid_402656493 = validateParameter(valid_402656493, JString, required = true,
+                                      default = nil)
+  if valid_402656493 != nil:
+    section.add "UserId", valid_402656493
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656494 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656494 = validateParameter(valid_402656494, JString,
+                                      required = false, default = nil)
+  if valid_402656494 != nil:
+    section.add "X-Amz-Security-Token", valid_402656494
+  var valid_402656495 = header.getOrDefault("X-Amz-Signature")
+  valid_402656495 = validateParameter(valid_402656495, JString,
+                                      required = false, default = nil)
+  if valid_402656495 != nil:
+    section.add "X-Amz-Signature", valid_402656495
+  var valid_402656496 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656496 = validateParameter(valid_402656496, JString,
+                                      required = false, default = nil)
+  if valid_402656496 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656496
+  var valid_402656497 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656497 = validateParameter(valid_402656497, JString,
+                                      required = false, default = nil)
+  if valid_402656497 != nil:
+    section.add "X-Amz-Algorithm", valid_402656497
+  var valid_402656498 = header.getOrDefault("X-Amz-Date")
+  valid_402656498 = validateParameter(valid_402656498, JString,
+                                      required = false, default = nil)
+  if valid_402656498 != nil:
+    section.add "X-Amz-Date", valid_402656498
+  var valid_402656499 = header.getOrDefault("X-Amz-Credential")
+  valid_402656499 = validateParameter(valid_402656499, JString,
+                                      required = false, default = nil)
+  if valid_402656499 != nil:
+    section.add "X-Amz-Credential", valid_402656499
+  var valid_402656500 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656500 = validateParameter(valid_402656500, JString,
+                                      required = false, default = nil)
+  if valid_402656500 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656500
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656501: Call_DescribeUser_402656489; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Describes the specified user account. You can find the instance ID in the console (it’s the final part of the ARN). The console does not display the user IDs. Instead, list the users and note the IDs provided in the output.
+                                                                                         ## 
+  let valid = call_402656501.validator(path, query, header, formData, body, _)
+  let scheme = call_402656501.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656501.makeUrl(scheme.get, call_402656501.host, call_402656501.base,
+                                   call_402656501.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656501, uri, valid, _)
+
+proc call*(call_402656502: Call_DescribeUser_402656489; InstanceId: string;
+           UserId: string): Recallable =
+  ## describeUser
+  ## Describes the specified user account. You can find the instance ID in the console (it’s the final part of the ARN). The console does not display the user IDs. Instead, list the users and note the IDs provided in the output.
+  ##   
+                                                                                                                                                                                                                                      ## InstanceId: string (required)
+                                                                                                                                                                                                                                      ##             
+                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                      ## The 
+                                                                                                                                                                                                                                      ## identifier 
+                                                                                                                                                                                                                                      ## of 
+                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                      ## Amazon 
+                                                                                                                                                                                                                                      ## Connect 
+                                                                                                                                                                                                                                      ## instance.
+  ##   
+                                                                                                                                                                                                                                                  ## UserId: string (required)
+                                                                                                                                                                                                                                                  ##         
+                                                                                                                                                                                                                                                  ## : 
+                                                                                                                                                                                                                                                  ## The 
+                                                                                                                                                                                                                                                  ## identifier 
+                                                                                                                                                                                                                                                  ## of 
+                                                                                                                                                                                                                                                  ## the 
+                                                                                                                                                                                                                                                  ## user 
+                                                                                                                                                                                                                                                  ## account.
+  var path_402656503 = newJObject()
+  add(path_402656503, "InstanceId", newJString(InstanceId))
+  add(path_402656503, "UserId", newJString(UserId))
+  result = call_402656502.call(path_402656503, nil, nil, nil, nil)
+
+var describeUser* = Call_DescribeUser_402656489(name: "describeUser",
+    meth: HttpMethod.HttpGet, host: "connect.amazonaws.com",
+    route: "/users/{InstanceId}/{UserId}", validator: validate_DescribeUser_402656490,
+    base: "/", makeUrl: url_DescribeUser_402656491,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DeleteUser_402656504 = ref object of OpenApiRestCall_402656044
+proc url_DeleteUser_402656506(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -286,9 +444,9 @@ proc url_DescribeUser_21626034(protocol: Scheme; host: string; base: string;
   assert "UserId" in path, "`UserId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/users/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "UserId")]
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "UserId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -297,254 +455,143 @@ proc url_DescribeUser_21626034(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeUser_21626033(path: JsonNode; query: JsonNode;
+proc validate_DeleteUser_402656505(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
-                                   body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
-  ## Describes the specified user account. You can find the instance ID in the console (it’s the final part of the ARN). The console does not display the user IDs. Instead, list the users and note the IDs provided in the output.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: JString (required)
-  ##         : The identifier of the user account.
-  section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626035 = path.getOrDefault("InstanceId")
-  valid_21626035 = validateParameter(valid_21626035, JString, required = true,
-                                   default = nil)
-  if valid_21626035 != nil:
-    section.add "InstanceId", valid_21626035
-  var valid_21626036 = path.getOrDefault("UserId")
-  valid_21626036 = validateParameter(valid_21626036, JString, required = true,
-                                   default = nil)
-  if valid_21626036 != nil:
-    section.add "UserId", valid_21626036
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626037 = header.getOrDefault("X-Amz-Date")
-  valid_21626037 = validateParameter(valid_21626037, JString, required = false,
-                                   default = nil)
-  if valid_21626037 != nil:
-    section.add "X-Amz-Date", valid_21626037
-  var valid_21626038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626038 = validateParameter(valid_21626038, JString, required = false,
-                                   default = nil)
-  if valid_21626038 != nil:
-    section.add "X-Amz-Security-Token", valid_21626038
-  var valid_21626039 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626039 = validateParameter(valid_21626039, JString, required = false,
-                                   default = nil)
-  if valid_21626039 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626039
-  var valid_21626040 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626040 = validateParameter(valid_21626040, JString, required = false,
-                                   default = nil)
-  if valid_21626040 != nil:
-    section.add "X-Amz-Algorithm", valid_21626040
-  var valid_21626041 = header.getOrDefault("X-Amz-Signature")
-  valid_21626041 = validateParameter(valid_21626041, JString, required = false,
-                                   default = nil)
-  if valid_21626041 != nil:
-    section.add "X-Amz-Signature", valid_21626041
-  var valid_21626042 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626042 = validateParameter(valid_21626042, JString, required = false,
-                                   default = nil)
-  if valid_21626042 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626042
-  var valid_21626043 = header.getOrDefault("X-Amz-Credential")
-  valid_21626043 = validateParameter(valid_21626043, JString, required = false,
-                                   default = nil)
-  if valid_21626043 != nil:
-    section.add "X-Amz-Credential", valid_21626043
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626044: Call_DescribeUser_21626032; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Describes the specified user account. You can find the instance ID in the console (it’s the final part of the ARN). The console does not display the user IDs. Instead, list the users and note the IDs provided in the output.
-  ## 
-  let valid = call_21626044.validator(path, query, header, formData, body, _)
-  let scheme = call_21626044.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626044.makeUrl(scheme.get, call_21626044.host, call_21626044.base,
-                               call_21626044.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626044, uri, valid, _)
-
-proc call*(call_21626045: Call_DescribeUser_21626032; InstanceId: string;
-          UserId: string): Recallable =
-  ## describeUser
-  ## Describes the specified user account. You can find the instance ID in the console (it’s the final part of the ARN). The console does not display the user IDs. Instead, list the users and note the IDs provided in the output.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: string (required)
-  ##         : The identifier of the user account.
-  var path_21626046 = newJObject()
-  add(path_21626046, "InstanceId", newJString(InstanceId))
-  add(path_21626046, "UserId", newJString(UserId))
-  result = call_21626045.call(path_21626046, nil, nil, nil, nil)
-
-var describeUser* = Call_DescribeUser_21626032(name: "describeUser",
-    meth: HttpMethod.HttpGet, host: "connect.amazonaws.com",
-    route: "/users/{InstanceId}/{UserId}", validator: validate_DescribeUser_21626033,
-    base: "/", makeUrl: url_DescribeUser_21626034,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DeleteUser_21626047 = ref object of OpenApiRestCall_21625435
-proc url_DeleteUser_21626049(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "InstanceId" in path, "`InstanceId` is a required path parameter"
-  assert "UserId" in path, "`UserId` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/users/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "UserId")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_DeleteUser_21626048(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+                                   body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Deletes a user account from the specified Amazon Connect instance.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: JString (required)
-  ##         : The identifier of the user.
+                                 ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                ## UserId: JString (required)
+                                                                                                ##         
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## identifier 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## user.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626050 = path.getOrDefault("InstanceId")
-  valid_21626050 = validateParameter(valid_21626050, JString, required = true,
-                                   default = nil)
-  if valid_21626050 != nil:
-    section.add "InstanceId", valid_21626050
-  var valid_21626051 = path.getOrDefault("UserId")
-  valid_21626051 = validateParameter(valid_21626051, JString, required = true,
-                                   default = nil)
-  if valid_21626051 != nil:
-    section.add "UserId", valid_21626051
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656507 = path.getOrDefault("InstanceId")
+  valid_402656507 = validateParameter(valid_402656507, JString, required = true,
+                                      default = nil)
+  if valid_402656507 != nil:
+    section.add "InstanceId", valid_402656507
+  var valid_402656508 = path.getOrDefault("UserId")
+  valid_402656508 = validateParameter(valid_402656508, JString, required = true,
+                                      default = nil)
+  if valid_402656508 != nil:
+    section.add "UserId", valid_402656508
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626052 = header.getOrDefault("X-Amz-Date")
-  valid_21626052 = validateParameter(valid_21626052, JString, required = false,
-                                   default = nil)
-  if valid_21626052 != nil:
-    section.add "X-Amz-Date", valid_21626052
-  var valid_21626053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626053 = validateParameter(valid_21626053, JString, required = false,
-                                   default = nil)
-  if valid_21626053 != nil:
-    section.add "X-Amz-Security-Token", valid_21626053
-  var valid_21626054 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626054 = validateParameter(valid_21626054, JString, required = false,
-                                   default = nil)
-  if valid_21626054 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626054
-  var valid_21626055 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626055 = validateParameter(valid_21626055, JString, required = false,
-                                   default = nil)
-  if valid_21626055 != nil:
-    section.add "X-Amz-Algorithm", valid_21626055
-  var valid_21626056 = header.getOrDefault("X-Amz-Signature")
-  valid_21626056 = validateParameter(valid_21626056, JString, required = false,
-                                   default = nil)
-  if valid_21626056 != nil:
-    section.add "X-Amz-Signature", valid_21626056
-  var valid_21626057 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626057 = validateParameter(valid_21626057, JString, required = false,
-                                   default = nil)
-  if valid_21626057 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626057
-  var valid_21626058 = header.getOrDefault("X-Amz-Credential")
-  valid_21626058 = validateParameter(valid_21626058, JString, required = false,
-                                   default = nil)
-  if valid_21626058 != nil:
-    section.add "X-Amz-Credential", valid_21626058
+  var valid_402656509 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656509 = validateParameter(valid_402656509, JString,
+                                      required = false, default = nil)
+  if valid_402656509 != nil:
+    section.add "X-Amz-Security-Token", valid_402656509
+  var valid_402656510 = header.getOrDefault("X-Amz-Signature")
+  valid_402656510 = validateParameter(valid_402656510, JString,
+                                      required = false, default = nil)
+  if valid_402656510 != nil:
+    section.add "X-Amz-Signature", valid_402656510
+  var valid_402656511 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656511 = validateParameter(valid_402656511, JString,
+                                      required = false, default = nil)
+  if valid_402656511 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656511
+  var valid_402656512 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656512 = validateParameter(valid_402656512, JString,
+                                      required = false, default = nil)
+  if valid_402656512 != nil:
+    section.add "X-Amz-Algorithm", valid_402656512
+  var valid_402656513 = header.getOrDefault("X-Amz-Date")
+  valid_402656513 = validateParameter(valid_402656513, JString,
+                                      required = false, default = nil)
+  if valid_402656513 != nil:
+    section.add "X-Amz-Date", valid_402656513
+  var valid_402656514 = header.getOrDefault("X-Amz-Credential")
+  valid_402656514 = validateParameter(valid_402656514, JString,
+                                      required = false, default = nil)
+  if valid_402656514 != nil:
+    section.add "X-Amz-Credential", valid_402656514
+  var valid_402656515 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656515 = validateParameter(valid_402656515, JString,
+                                      required = false, default = nil)
+  if valid_402656515 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656515
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626059: Call_DeleteUser_21626047; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656516: Call_DeleteUser_402656504; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Deletes a user account from the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626059.validator(path, query, header, formData, body, _)
-  let scheme = call_21626059.pickScheme
+                                                                                         ## 
+  let valid = call_402656516.validator(path, query, header, formData, body, _)
+  let scheme = call_402656516.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626059.makeUrl(scheme.get, call_21626059.host, call_21626059.base,
-                               call_21626059.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626059, uri, valid, _)
+  let uri = call_402656516.makeUrl(scheme.get, call_402656516.host, call_402656516.base,
+                                   call_402656516.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656516, uri, valid, _)
 
-proc call*(call_21626060: Call_DeleteUser_21626047; InstanceId: string;
-          UserId: string): Recallable =
+proc call*(call_402656517: Call_DeleteUser_402656504; InstanceId: string;
+           UserId: string): Recallable =
   ## deleteUser
   ## Deletes a user account from the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: string (required)
-  ##         : The identifier of the user.
-  var path_21626061 = newJObject()
-  add(path_21626061, "InstanceId", newJString(InstanceId))
-  add(path_21626061, "UserId", newJString(UserId))
-  result = call_21626060.call(path_21626061, nil, nil, nil, nil)
+  ##   
+                                                                       ## InstanceId: string (required)
+                                                                       ##             
+                                                                       ## : 
+                                                                       ## The 
+                                                                       ## identifier of 
+                                                                       ## the 
+                                                                       ## Amazon 
+                                                                       ## Connect 
+                                                                       ## instance.
+  ##   
+                                                                                   ## UserId: string (required)
+                                                                                   ##         
+                                                                                   ## : 
+                                                                                   ## The 
+                                                                                   ## identifier 
+                                                                                   ## of 
+                                                                                   ## the 
+                                                                                   ## user.
+  var path_402656518 = newJObject()
+  add(path_402656518, "InstanceId", newJString(InstanceId))
+  add(path_402656518, "UserId", newJString(UserId))
+  result = call_402656517.call(path_402656518, nil, nil, nil, nil)
 
-var deleteUser* = Call_DeleteUser_21626047(name: "deleteUser",
-                                        meth: HttpMethod.HttpDelete,
-                                        host: "connect.amazonaws.com",
-                                        route: "/users/{InstanceId}/{UserId}",
-                                        validator: validate_DeleteUser_21626048,
-                                        base: "/", makeUrl: url_DeleteUser_21626049,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var deleteUser* = Call_DeleteUser_402656504(name: "deleteUser",
+    meth: HttpMethod.HttpDelete, host: "connect.amazonaws.com",
+    route: "/users/{InstanceId}/{UserId}", validator: validate_DeleteUser_402656505,
+    base: "/", makeUrl: url_DeleteUser_402656506,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeUserHierarchyGroup_21626062 = ref object of OpenApiRestCall_21625435
-proc url_DescribeUserHierarchyGroup_21626064(protocol: Scheme; host: string;
+  Call_DescribeUserHierarchyGroup_402656519 = ref object of OpenApiRestCall_402656044
+proc url_DescribeUserHierarchyGroup_402656521(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -552,12 +599,12 @@ proc url_DescribeUserHierarchyGroup_21626064(protocol: Scheme; host: string;
   assert path != nil, "path is required to populate template"
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   assert "HierarchyGroupId" in path,
-        "`HierarchyGroupId` is a required path parameter"
+         "`HierarchyGroupId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/user-hierarchy-groups/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "HierarchyGroupId")]
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "HierarchyGroupId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -566,122 +613,141 @@ proc url_DescribeUserHierarchyGroup_21626064(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeUserHierarchyGroup_21626063(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_DescribeUserHierarchyGroup_402656520(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## Describes the specified hierarchy group.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   HierarchyGroupId: JString (required)
-  ##                   : The identifier of the hierarchy group.
-  ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##                   : The identifier of the hierarchy group.
+  ##   
+                                                                                              ## InstanceId: JString (required)
+                                                                                              ##             
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## identifier 
+                                                                                              ## of 
+                                                                                              ## the 
+                                                                                              ## Amazon 
+                                                                                              ## Connect 
+                                                                                              ## instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `HierarchyGroupId` field"
-  var valid_21626065 = path.getOrDefault("HierarchyGroupId")
-  valid_21626065 = validateParameter(valid_21626065, JString, required = true,
-                                   default = nil)
-  if valid_21626065 != nil:
-    section.add "HierarchyGroupId", valid_21626065
-  var valid_21626066 = path.getOrDefault("InstanceId")
-  valid_21626066 = validateParameter(valid_21626066, JString, required = true,
-                                   default = nil)
-  if valid_21626066 != nil:
-    section.add "InstanceId", valid_21626066
+         "path argument is necessary due to required `HierarchyGroupId` field"
+  var valid_402656522 = path.getOrDefault("HierarchyGroupId")
+  valid_402656522 = validateParameter(valid_402656522, JString, required = true,
+                                      default = nil)
+  if valid_402656522 != nil:
+    section.add "HierarchyGroupId", valid_402656522
+  var valid_402656523 = path.getOrDefault("InstanceId")
+  valid_402656523 = validateParameter(valid_402656523, JString, required = true,
+                                      default = nil)
+  if valid_402656523 != nil:
+    section.add "InstanceId", valid_402656523
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626067 = header.getOrDefault("X-Amz-Date")
-  valid_21626067 = validateParameter(valid_21626067, JString, required = false,
-                                   default = nil)
-  if valid_21626067 != nil:
-    section.add "X-Amz-Date", valid_21626067
-  var valid_21626068 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626068 = validateParameter(valid_21626068, JString, required = false,
-                                   default = nil)
-  if valid_21626068 != nil:
-    section.add "X-Amz-Security-Token", valid_21626068
-  var valid_21626069 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626069 = validateParameter(valid_21626069, JString, required = false,
-                                   default = nil)
-  if valid_21626069 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626069
-  var valid_21626070 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626070 = validateParameter(valid_21626070, JString, required = false,
-                                   default = nil)
-  if valid_21626070 != nil:
-    section.add "X-Amz-Algorithm", valid_21626070
-  var valid_21626071 = header.getOrDefault("X-Amz-Signature")
-  valid_21626071 = validateParameter(valid_21626071, JString, required = false,
-                                   default = nil)
-  if valid_21626071 != nil:
-    section.add "X-Amz-Signature", valid_21626071
-  var valid_21626072 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626072 = validateParameter(valid_21626072, JString, required = false,
-                                   default = nil)
-  if valid_21626072 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626072
-  var valid_21626073 = header.getOrDefault("X-Amz-Credential")
-  valid_21626073 = validateParameter(valid_21626073, JString, required = false,
-                                   default = nil)
-  if valid_21626073 != nil:
-    section.add "X-Amz-Credential", valid_21626073
+  var valid_402656524 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656524 = validateParameter(valid_402656524, JString,
+                                      required = false, default = nil)
+  if valid_402656524 != nil:
+    section.add "X-Amz-Security-Token", valid_402656524
+  var valid_402656525 = header.getOrDefault("X-Amz-Signature")
+  valid_402656525 = validateParameter(valid_402656525, JString,
+                                      required = false, default = nil)
+  if valid_402656525 != nil:
+    section.add "X-Amz-Signature", valid_402656525
+  var valid_402656526 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656526 = validateParameter(valid_402656526, JString,
+                                      required = false, default = nil)
+  if valid_402656526 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656526
+  var valid_402656527 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656527 = validateParameter(valid_402656527, JString,
+                                      required = false, default = nil)
+  if valid_402656527 != nil:
+    section.add "X-Amz-Algorithm", valid_402656527
+  var valid_402656528 = header.getOrDefault("X-Amz-Date")
+  valid_402656528 = validateParameter(valid_402656528, JString,
+                                      required = false, default = nil)
+  if valid_402656528 != nil:
+    section.add "X-Amz-Date", valid_402656528
+  var valid_402656529 = header.getOrDefault("X-Amz-Credential")
+  valid_402656529 = validateParameter(valid_402656529, JString,
+                                      required = false, default = nil)
+  if valid_402656529 != nil:
+    section.add "X-Amz-Credential", valid_402656529
+  var valid_402656530 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656530 = validateParameter(valid_402656530, JString,
+                                      required = false, default = nil)
+  if valid_402656530 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656530
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626074: Call_DescribeUserHierarchyGroup_21626062;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656531: Call_DescribeUserHierarchyGroup_402656519;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Describes the specified hierarchy group.
-  ## 
-  let valid = call_21626074.validator(path, query, header, formData, body, _)
-  let scheme = call_21626074.pickScheme
+                                                                                         ## 
+  let valid = call_402656531.validator(path, query, header, formData, body, _)
+  let scheme = call_402656531.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626074.makeUrl(scheme.get, call_21626074.host, call_21626074.base,
-                               call_21626074.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626074, uri, valid, _)
+  let uri = call_402656531.makeUrl(scheme.get, call_402656531.host, call_402656531.base,
+                                   call_402656531.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656531, uri, valid, _)
 
-proc call*(call_21626075: Call_DescribeUserHierarchyGroup_21626062;
-          HierarchyGroupId: string; InstanceId: string): Recallable =
+proc call*(call_402656532: Call_DescribeUserHierarchyGroup_402656519;
+           HierarchyGroupId: string; InstanceId: string): Recallable =
   ## describeUserHierarchyGroup
   ## Describes the specified hierarchy group.
   ##   HierarchyGroupId: string (required)
-  ##                   : The identifier of the hierarchy group.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  var path_21626076 = newJObject()
-  add(path_21626076, "HierarchyGroupId", newJString(HierarchyGroupId))
-  add(path_21626076, "InstanceId", newJString(InstanceId))
-  result = call_21626075.call(path_21626076, nil, nil, nil, nil)
+                                             ##                   : The identifier of the hierarchy group.
+  ##   
+                                                                                                          ## InstanceId: string (required)
+                                                                                                          ##             
+                                                                                                          ## : 
+                                                                                                          ## The 
+                                                                                                          ## identifier 
+                                                                                                          ## of 
+                                                                                                          ## the 
+                                                                                                          ## Amazon 
+                                                                                                          ## Connect 
+                                                                                                          ## instance.
+  var path_402656533 = newJObject()
+  add(path_402656533, "HierarchyGroupId", newJString(HierarchyGroupId))
+  add(path_402656533, "InstanceId", newJString(InstanceId))
+  result = call_402656532.call(path_402656533, nil, nil, nil, nil)
 
-var describeUserHierarchyGroup* = Call_DescribeUserHierarchyGroup_21626062(
+var describeUserHierarchyGroup* = Call_DescribeUserHierarchyGroup_402656519(
     name: "describeUserHierarchyGroup", meth: HttpMethod.HttpGet,
     host: "connect.amazonaws.com",
     route: "/user-hierarchy-groups/{InstanceId}/{HierarchyGroupId}",
-    validator: validate_DescribeUserHierarchyGroup_21626063, base: "/",
-    makeUrl: url_DescribeUserHierarchyGroup_21626064,
+    validator: validate_DescribeUserHierarchyGroup_402656520, base: "/",
+    makeUrl: url_DescribeUserHierarchyGroup_402656521,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeUserHierarchyStructure_21626077 = ref object of OpenApiRestCall_21625435
-proc url_DescribeUserHierarchyStructure_21626079(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeUserHierarchyStructure_402656534 = ref object of OpenApiRestCall_402656044
+proc url_DescribeUserHierarchyStructure_402656536(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -689,7 +755,7 @@ proc url_DescribeUserHierarchyStructure_21626079(protocol: Scheme; host: string;
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/user-hierarchy-structure/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -698,124 +764,135 @@ proc url_DescribeUserHierarchyStructure_21626079(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeUserHierarchyStructure_21626078(path: JsonNode;
+proc validate_DescribeUserHierarchyStructure_402656535(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
     _: string = ""): JsonNode {.nosinks.} =
   ## Describes the hierarchy structure of the specified Amazon Connect instance.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626080 = path.getOrDefault("InstanceId")
-  valid_21626080 = validateParameter(valid_21626080, JString, required = true,
-                                   default = nil)
-  if valid_21626080 != nil:
-    section.add "InstanceId", valid_21626080
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656537 = path.getOrDefault("InstanceId")
+  valid_402656537 = validateParameter(valid_402656537, JString, required = true,
+                                      default = nil)
+  if valid_402656537 != nil:
+    section.add "InstanceId", valid_402656537
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626081 = header.getOrDefault("X-Amz-Date")
-  valid_21626081 = validateParameter(valid_21626081, JString, required = false,
-                                   default = nil)
-  if valid_21626081 != nil:
-    section.add "X-Amz-Date", valid_21626081
-  var valid_21626082 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626082 = validateParameter(valid_21626082, JString, required = false,
-                                   default = nil)
-  if valid_21626082 != nil:
-    section.add "X-Amz-Security-Token", valid_21626082
-  var valid_21626083 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626083 = validateParameter(valid_21626083, JString, required = false,
-                                   default = nil)
-  if valid_21626083 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626083
-  var valid_21626084 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626084 = validateParameter(valid_21626084, JString, required = false,
-                                   default = nil)
-  if valid_21626084 != nil:
-    section.add "X-Amz-Algorithm", valid_21626084
-  var valid_21626085 = header.getOrDefault("X-Amz-Signature")
-  valid_21626085 = validateParameter(valid_21626085, JString, required = false,
-                                   default = nil)
-  if valid_21626085 != nil:
-    section.add "X-Amz-Signature", valid_21626085
-  var valid_21626086 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626086 = validateParameter(valid_21626086, JString, required = false,
-                                   default = nil)
-  if valid_21626086 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626086
-  var valid_21626087 = header.getOrDefault("X-Amz-Credential")
-  valid_21626087 = validateParameter(valid_21626087, JString, required = false,
-                                   default = nil)
-  if valid_21626087 != nil:
-    section.add "X-Amz-Credential", valid_21626087
+  var valid_402656538 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656538 = validateParameter(valid_402656538, JString,
+                                      required = false, default = nil)
+  if valid_402656538 != nil:
+    section.add "X-Amz-Security-Token", valid_402656538
+  var valid_402656539 = header.getOrDefault("X-Amz-Signature")
+  valid_402656539 = validateParameter(valid_402656539, JString,
+                                      required = false, default = nil)
+  if valid_402656539 != nil:
+    section.add "X-Amz-Signature", valid_402656539
+  var valid_402656540 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656540 = validateParameter(valid_402656540, JString,
+                                      required = false, default = nil)
+  if valid_402656540 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656540
+  var valid_402656541 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656541 = validateParameter(valid_402656541, JString,
+                                      required = false, default = nil)
+  if valid_402656541 != nil:
+    section.add "X-Amz-Algorithm", valid_402656541
+  var valid_402656542 = header.getOrDefault("X-Amz-Date")
+  valid_402656542 = validateParameter(valid_402656542, JString,
+                                      required = false, default = nil)
+  if valid_402656542 != nil:
+    section.add "X-Amz-Date", valid_402656542
+  var valid_402656543 = header.getOrDefault("X-Amz-Credential")
+  valid_402656543 = validateParameter(valid_402656543, JString,
+                                      required = false, default = nil)
+  if valid_402656543 != nil:
+    section.add "X-Amz-Credential", valid_402656543
+  var valid_402656544 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656544 = validateParameter(valid_402656544, JString,
+                                      required = false, default = nil)
+  if valid_402656544 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656544
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626088: Call_DescribeUserHierarchyStructure_21626077;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656545: Call_DescribeUserHierarchyStructure_402656534;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Describes the hierarchy structure of the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626088.validator(path, query, header, formData, body, _)
-  let scheme = call_21626088.pickScheme
+                                                                                         ## 
+  let valid = call_402656545.validator(path, query, header, formData, body, _)
+  let scheme = call_402656545.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626088.makeUrl(scheme.get, call_21626088.host, call_21626088.base,
-                               call_21626088.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626088, uri, valid, _)
+  let uri = call_402656545.makeUrl(scheme.get, call_402656545.host, call_402656545.base,
+                                   call_402656545.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656545, uri, valid, _)
 
-proc call*(call_21626089: Call_DescribeUserHierarchyStructure_21626077;
-          InstanceId: string): Recallable =
+proc call*(call_402656546: Call_DescribeUserHierarchyStructure_402656534;
+           InstanceId: string): Recallable =
   ## describeUserHierarchyStructure
   ## Describes the hierarchy structure of the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  var path_21626090 = newJObject()
-  add(path_21626090, "InstanceId", newJString(InstanceId))
-  result = call_21626089.call(path_21626090, nil, nil, nil, nil)
+  ##   
+                                                                                ## InstanceId: string (required)
+                                                                                ##             
+                                                                                ## : 
+                                                                                ## The 
+                                                                                ## identifier 
+                                                                                ## of 
+                                                                                ## the 
+                                                                                ## Amazon 
+                                                                                ## Connect 
+                                                                                ## instance.
+  var path_402656547 = newJObject()
+  add(path_402656547, "InstanceId", newJString(InstanceId))
+  result = call_402656546.call(path_402656547, nil, nil, nil, nil)
 
-var describeUserHierarchyStructure* = Call_DescribeUserHierarchyStructure_21626077(
+var describeUserHierarchyStructure* = Call_DescribeUserHierarchyStructure_402656534(
     name: "describeUserHierarchyStructure", meth: HttpMethod.HttpGet,
     host: "connect.amazonaws.com",
     route: "/user-hierarchy-structure/{InstanceId}",
-    validator: validate_DescribeUserHierarchyStructure_21626078, base: "/",
-    makeUrl: url_DescribeUserHierarchyStructure_21626079,
+    validator: validate_DescribeUserHierarchyStructure_402656535, base: "/",
+    makeUrl: url_DescribeUserHierarchyStructure_402656536,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetContactAttributes_21626091 = ref object of OpenApiRestCall_21625435
-proc url_GetContactAttributes_21626093(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetContactAttributes_402656548 = ref object of OpenApiRestCall_402656044
+proc url_GetContactAttributes_402656550(protocol: Scheme; host: string;
+                                        base: string; route: string;
+                                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   assert "InitialContactId" in path,
-        "`InitialContactId` is a required path parameter"
+         "`InitialContactId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/contact/attributes/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "InitialContactId")]
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "InitialContactId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -824,122 +901,140 @@ proc url_GetContactAttributes_21626093(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_GetContactAttributes_21626092(path: JsonNode; query: JsonNode;
+proc validate_GetContactAttributes_402656549(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Retrieves the contact attributes for the specified contact.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   InitialContactId: JString (required)
-  ##                   : The identifier of the initial contact.
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                ## InitialContactId: JString (required)
+                                                                                                ##                   
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## identifier 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## initial 
+                                                                                                ## contact.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InitialContactId` field"
-  var valid_21626094 = path.getOrDefault("InitialContactId")
-  valid_21626094 = validateParameter(valid_21626094, JString, required = true,
-                                   default = nil)
-  if valid_21626094 != nil:
-    section.add "InitialContactId", valid_21626094
-  var valid_21626095 = path.getOrDefault("InstanceId")
-  valid_21626095 = validateParameter(valid_21626095, JString, required = true,
-                                   default = nil)
-  if valid_21626095 != nil:
-    section.add "InstanceId", valid_21626095
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656551 = path.getOrDefault("InstanceId")
+  valid_402656551 = validateParameter(valid_402656551, JString, required = true,
+                                      default = nil)
+  if valid_402656551 != nil:
+    section.add "InstanceId", valid_402656551
+  var valid_402656552 = path.getOrDefault("InitialContactId")
+  valid_402656552 = validateParameter(valid_402656552, JString, required = true,
+                                      default = nil)
+  if valid_402656552 != nil:
+    section.add "InitialContactId", valid_402656552
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626096 = header.getOrDefault("X-Amz-Date")
-  valid_21626096 = validateParameter(valid_21626096, JString, required = false,
-                                   default = nil)
-  if valid_21626096 != nil:
-    section.add "X-Amz-Date", valid_21626096
-  var valid_21626097 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626097 = validateParameter(valid_21626097, JString, required = false,
-                                   default = nil)
-  if valid_21626097 != nil:
-    section.add "X-Amz-Security-Token", valid_21626097
-  var valid_21626098 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626098 = validateParameter(valid_21626098, JString, required = false,
-                                   default = nil)
-  if valid_21626098 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626098
-  var valid_21626099 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626099 = validateParameter(valid_21626099, JString, required = false,
-                                   default = nil)
-  if valid_21626099 != nil:
-    section.add "X-Amz-Algorithm", valid_21626099
-  var valid_21626100 = header.getOrDefault("X-Amz-Signature")
-  valid_21626100 = validateParameter(valid_21626100, JString, required = false,
-                                   default = nil)
-  if valid_21626100 != nil:
-    section.add "X-Amz-Signature", valid_21626100
-  var valid_21626101 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626101 = validateParameter(valid_21626101, JString, required = false,
-                                   default = nil)
-  if valid_21626101 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626101
-  var valid_21626102 = header.getOrDefault("X-Amz-Credential")
-  valid_21626102 = validateParameter(valid_21626102, JString, required = false,
-                                   default = nil)
-  if valid_21626102 != nil:
-    section.add "X-Amz-Credential", valid_21626102
+  var valid_402656553 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656553 = validateParameter(valid_402656553, JString,
+                                      required = false, default = nil)
+  if valid_402656553 != nil:
+    section.add "X-Amz-Security-Token", valid_402656553
+  var valid_402656554 = header.getOrDefault("X-Amz-Signature")
+  valid_402656554 = validateParameter(valid_402656554, JString,
+                                      required = false, default = nil)
+  if valid_402656554 != nil:
+    section.add "X-Amz-Signature", valid_402656554
+  var valid_402656555 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656555 = validateParameter(valid_402656555, JString,
+                                      required = false, default = nil)
+  if valid_402656555 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656555
+  var valid_402656556 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656556 = validateParameter(valid_402656556, JString,
+                                      required = false, default = nil)
+  if valid_402656556 != nil:
+    section.add "X-Amz-Algorithm", valid_402656556
+  var valid_402656557 = header.getOrDefault("X-Amz-Date")
+  valid_402656557 = validateParameter(valid_402656557, JString,
+                                      required = false, default = nil)
+  if valid_402656557 != nil:
+    section.add "X-Amz-Date", valid_402656557
+  var valid_402656558 = header.getOrDefault("X-Amz-Credential")
+  valid_402656558 = validateParameter(valid_402656558, JString,
+                                      required = false, default = nil)
+  if valid_402656558 != nil:
+    section.add "X-Amz-Credential", valid_402656558
+  var valid_402656559 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656559 = validateParameter(valid_402656559, JString,
+                                      required = false, default = nil)
+  if valid_402656559 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656559
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626103: Call_GetContactAttributes_21626091; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656560: Call_GetContactAttributes_402656548;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Retrieves the contact attributes for the specified contact.
-  ## 
-  let valid = call_21626103.validator(path, query, header, formData, body, _)
-  let scheme = call_21626103.pickScheme
+                                                                                         ## 
+  let valid = call_402656560.validator(path, query, header, formData, body, _)
+  let scheme = call_402656560.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626103.makeUrl(scheme.get, call_21626103.host, call_21626103.base,
-                               call_21626103.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626103, uri, valid, _)
+  let uri = call_402656560.makeUrl(scheme.get, call_402656560.host, call_402656560.base,
+                                   call_402656560.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656560, uri, valid, _)
 
-proc call*(call_21626104: Call_GetContactAttributes_21626091;
-          InitialContactId: string; InstanceId: string): Recallable =
+proc call*(call_402656561: Call_GetContactAttributes_402656548;
+           InstanceId: string; InitialContactId: string): Recallable =
   ## getContactAttributes
   ## Retrieves the contact attributes for the specified contact.
-  ##   InitialContactId: string (required)
-  ##                   : The identifier of the initial contact.
   ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  var path_21626105 = newJObject()
-  add(path_21626105, "InitialContactId", newJString(InitialContactId))
-  add(path_21626105, "InstanceId", newJString(InstanceId))
-  result = call_21626104.call(path_21626105, nil, nil, nil, nil)
+                                                                ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                                               ## InitialContactId: string (required)
+                                                                                                                               ##                   
+                                                                                                                               ## : 
+                                                                                                                               ## The 
+                                                                                                                               ## identifier 
+                                                                                                                               ## of 
+                                                                                                                               ## the 
+                                                                                                                               ## initial 
+                                                                                                                               ## contact.
+  var path_402656562 = newJObject()
+  add(path_402656562, "InstanceId", newJString(InstanceId))
+  add(path_402656562, "InitialContactId", newJString(InitialContactId))
+  result = call_402656561.call(path_402656562, nil, nil, nil, nil)
 
-var getContactAttributes* = Call_GetContactAttributes_21626091(
+var getContactAttributes* = Call_GetContactAttributes_402656548(
     name: "getContactAttributes", meth: HttpMethod.HttpGet,
     host: "connect.amazonaws.com",
     route: "/contact/attributes/{InstanceId}/{InitialContactId}",
-    validator: validate_GetContactAttributes_21626092, base: "/",
-    makeUrl: url_GetContactAttributes_21626093,
+    validator: validate_GetContactAttributes_402656549, base: "/",
+    makeUrl: url_GetContactAttributes_402656550,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCurrentMetricData_21626106 = ref object of OpenApiRestCall_21625435
-proc url_GetCurrentMetricData_21626108(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetCurrentMetricData_402656563 = ref object of OpenApiRestCall_402656044
+proc url_GetCurrentMetricData_402656565(protocol: Scheme; host: string;
+                                        base: string; route: string;
+                                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -947,7 +1042,7 @@ proc url_GetCurrentMetricData_21626108(protocol: Scheme; host: string; base: str
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/metrics/current/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -956,86 +1051,86 @@ proc url_GetCurrentMetricData_21626108(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_GetCurrentMetricData_21626107(path: JsonNode; query: JsonNode;
+proc validate_GetCurrentMetricData_402656564(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## <p>Gets the real-time metric data from the specified Amazon Connect instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/connect/latest/adminguide/real-time-metrics-reports.html">Real-time Metrics Reports</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626109 = path.getOrDefault("InstanceId")
-  valid_21626109 = validateParameter(valid_21626109, JString, required = true,
-                                   default = nil)
-  if valid_21626109 != nil:
-    section.add "InstanceId", valid_21626109
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656566 = path.getOrDefault("InstanceId")
+  valid_402656566 = validateParameter(valid_402656566, JString, required = true,
+                                      default = nil)
+  if valid_402656566 != nil:
+    section.add "InstanceId", valid_402656566
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##             : Pagination limit
+  ##   NextToken: JString
+                                                                   ##            : Pagination token
   section = newJObject()
-  var valid_21626110 = query.getOrDefault("NextToken")
-  valid_21626110 = validateParameter(valid_21626110, JString, required = false,
-                                   default = nil)
-  if valid_21626110 != nil:
-    section.add "NextToken", valid_21626110
-  var valid_21626111 = query.getOrDefault("MaxResults")
-  valid_21626111 = validateParameter(valid_21626111, JString, required = false,
-                                   default = nil)
-  if valid_21626111 != nil:
-    section.add "MaxResults", valid_21626111
+  var valid_402656567 = query.getOrDefault("MaxResults")
+  valid_402656567 = validateParameter(valid_402656567, JString,
+                                      required = false, default = nil)
+  if valid_402656567 != nil:
+    section.add "MaxResults", valid_402656567
+  var valid_402656568 = query.getOrDefault("NextToken")
+  valid_402656568 = validateParameter(valid_402656568, JString,
+                                      required = false, default = nil)
+  if valid_402656568 != nil:
+    section.add "NextToken", valid_402656568
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626112 = header.getOrDefault("X-Amz-Date")
-  valid_21626112 = validateParameter(valid_21626112, JString, required = false,
-                                   default = nil)
-  if valid_21626112 != nil:
-    section.add "X-Amz-Date", valid_21626112
-  var valid_21626113 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626113 = validateParameter(valid_21626113, JString, required = false,
-                                   default = nil)
-  if valid_21626113 != nil:
-    section.add "X-Amz-Security-Token", valid_21626113
-  var valid_21626114 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626114 = validateParameter(valid_21626114, JString, required = false,
-                                   default = nil)
-  if valid_21626114 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626114
-  var valid_21626115 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626115 = validateParameter(valid_21626115, JString, required = false,
-                                   default = nil)
-  if valid_21626115 != nil:
-    section.add "X-Amz-Algorithm", valid_21626115
-  var valid_21626116 = header.getOrDefault("X-Amz-Signature")
-  valid_21626116 = validateParameter(valid_21626116, JString, required = false,
-                                   default = nil)
-  if valid_21626116 != nil:
-    section.add "X-Amz-Signature", valid_21626116
-  var valid_21626117 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626117 = validateParameter(valid_21626117, JString, required = false,
-                                   default = nil)
-  if valid_21626117 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626117
-  var valid_21626118 = header.getOrDefault("X-Amz-Credential")
-  valid_21626118 = validateParameter(valid_21626118, JString, required = false,
-                                   default = nil)
-  if valid_21626118 != nil:
-    section.add "X-Amz-Credential", valid_21626118
+  var valid_402656569 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656569 = validateParameter(valid_402656569, JString,
+                                      required = false, default = nil)
+  if valid_402656569 != nil:
+    section.add "X-Amz-Security-Token", valid_402656569
+  var valid_402656570 = header.getOrDefault("X-Amz-Signature")
+  valid_402656570 = validateParameter(valid_402656570, JString,
+                                      required = false, default = nil)
+  if valid_402656570 != nil:
+    section.add "X-Amz-Signature", valid_402656570
+  var valid_402656571 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656571 = validateParameter(valid_402656571, JString,
+                                      required = false, default = nil)
+  if valid_402656571 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656571
+  var valid_402656572 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656572 = validateParameter(valid_402656572, JString,
+                                      required = false, default = nil)
+  if valid_402656572 != nil:
+    section.add "X-Amz-Algorithm", valid_402656572
+  var valid_402656573 = header.getOrDefault("X-Amz-Date")
+  valid_402656573 = validateParameter(valid_402656573, JString,
+                                      required = false, default = nil)
+  if valid_402656573 != nil:
+    section.add "X-Amz-Date", valid_402656573
+  var valid_402656574 = header.getOrDefault("X-Amz-Credential")
+  valid_402656574 = validateParameter(valid_402656574, JString,
+                                      required = false, default = nil)
+  if valid_402656574 != nil:
+    section.add "X-Amz-Credential", valid_402656574
+  var valid_402656575 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656575 = validateParameter(valid_402656575, JString,
+                                      required = false, default = nil)
+  if valid_402656575 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656575
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1047,51 +1142,71 @@ proc validate_GetCurrentMetricData_21626107(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626120: Call_GetCurrentMetricData_21626106; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656577: Call_GetCurrentMetricData_402656563;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Gets the real-time metric data from the specified Amazon Connect instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/connect/latest/adminguide/real-time-metrics-reports.html">Real-time Metrics Reports</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-  ## 
-  let valid = call_21626120.validator(path, query, header, formData, body, _)
-  let scheme = call_21626120.pickScheme
+                                                                                         ## 
+  let valid = call_402656577.validator(path, query, header, formData, body, _)
+  let scheme = call_402656577.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626120.makeUrl(scheme.get, call_21626120.host, call_21626120.base,
-                               call_21626120.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626120, uri, valid, _)
+  let uri = call_402656577.makeUrl(scheme.get, call_402656577.host, call_402656577.base,
+                                   call_402656577.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656577, uri, valid, _)
 
-proc call*(call_21626121: Call_GetCurrentMetricData_21626106; InstanceId: string;
-          body: JsonNode; NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_402656578: Call_GetCurrentMetricData_402656563; body: JsonNode;
+           InstanceId: string; MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## getCurrentMetricData
   ## <p>Gets the real-time metric data from the specified Amazon Connect instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/connect/latest/adminguide/real-time-metrics-reports.html">Real-time Metrics Reports</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626122 = newJObject()
-  var query_21626123 = newJObject()
-  var body_21626124 = newJObject()
-  add(path_21626122, "InstanceId", newJString(InstanceId))
-  add(query_21626123, "NextToken", newJString(NextToken))
+  ##   
+                                                                                                                                                                                                                                                                                                      ## MaxResults: string
+                                                                                                                                                                                                                                                                                                      ##             
+                                                                                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                                                                                      ## Pagination 
+                                                                                                                                                                                                                                                                                                      ## limit
+  ##   
+                                                                                                                                                                                                                                                                                                              ## body: JObject (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                         ## NextToken: string
+                                                                                                                                                                                                                                                                                                                                         ##            
+                                                                                                                                                                                                                                                                                                                                         ## : 
+                                                                                                                                                                                                                                                                                                                                         ## Pagination 
+                                                                                                                                                                                                                                                                                                                                         ## token
+  ##   
+                                                                                                                                                                                                                                                                                                                                                 ## InstanceId: string (required)
+                                                                                                                                                                                                                                                                                                                                                 ##             
+                                                                                                                                                                                                                                                                                                                                                 ## : 
+                                                                                                                                                                                                                                                                                                                                                 ## The 
+                                                                                                                                                                                                                                                                                                                                                 ## identifier 
+                                                                                                                                                                                                                                                                                                                                                 ## of 
+                                                                                                                                                                                                                                                                                                                                                 ## the 
+                                                                                                                                                                                                                                                                                                                                                 ## Amazon 
+                                                                                                                                                                                                                                                                                                                                                 ## Connect 
+                                                                                                                                                                                                                                                                                                                                                 ## instance.
+  var path_402656579 = newJObject()
+  var query_402656580 = newJObject()
+  var body_402656581 = newJObject()
+  add(query_402656580, "MaxResults", newJString(MaxResults))
   if body != nil:
-    body_21626124 = body
-  add(query_21626123, "MaxResults", newJString(MaxResults))
-  result = call_21626121.call(path_21626122, query_21626123, nil, nil, body_21626124)
+    body_402656581 = body
+  add(query_402656580, "NextToken", newJString(NextToken))
+  add(path_402656579, "InstanceId", newJString(InstanceId))
+  result = call_402656578.call(path_402656579, query_402656580, nil, nil, body_402656581)
 
-var getCurrentMetricData* = Call_GetCurrentMetricData_21626106(
+var getCurrentMetricData* = Call_GetCurrentMetricData_402656563(
     name: "getCurrentMetricData", meth: HttpMethod.HttpPost,
     host: "connect.amazonaws.com", route: "/metrics/current/{InstanceId}",
-    validator: validate_GetCurrentMetricData_21626107, base: "/",
-    makeUrl: url_GetCurrentMetricData_21626108,
+    validator: validate_GetCurrentMetricData_402656564, base: "/",
+    makeUrl: url_GetCurrentMetricData_402656565,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetFederationToken_21626126 = ref object of OpenApiRestCall_21625435
-proc url_GetFederationToken_21626128(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetFederationToken_402656582 = ref object of OpenApiRestCall_402656044
+proc url_GetFederationToken_402656584(protocol: Scheme; host: string;
+                                      base: string; route: string;
+                                      path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1099,7 +1214,7 @@ proc url_GetFederationToken_21626128(protocol: Scheme; host: string; base: strin
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/user/federate/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1108,109 +1223,111 @@ proc url_GetFederationToken_21626128(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_GetFederationToken_21626127(path: JsonNode; query: JsonNode;
+proc validate_GetFederationToken_402656583(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Retrieves a token for federation.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626129 = path.getOrDefault("InstanceId")
-  valid_21626129 = validateParameter(valid_21626129, JString, required = true,
-                                   default = nil)
-  if valid_21626129 != nil:
-    section.add "InstanceId", valid_21626129
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656585 = path.getOrDefault("InstanceId")
+  valid_402656585 = validateParameter(valid_402656585, JString, required = true,
+                                      default = nil)
+  if valid_402656585 != nil:
+    section.add "InstanceId", valid_402656585
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626130 = header.getOrDefault("X-Amz-Date")
-  valid_21626130 = validateParameter(valid_21626130, JString, required = false,
-                                   default = nil)
-  if valid_21626130 != nil:
-    section.add "X-Amz-Date", valid_21626130
-  var valid_21626131 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626131 = validateParameter(valid_21626131, JString, required = false,
-                                   default = nil)
-  if valid_21626131 != nil:
-    section.add "X-Amz-Security-Token", valid_21626131
-  var valid_21626132 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626132 = validateParameter(valid_21626132, JString, required = false,
-                                   default = nil)
-  if valid_21626132 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626132
-  var valid_21626133 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626133 = validateParameter(valid_21626133, JString, required = false,
-                                   default = nil)
-  if valid_21626133 != nil:
-    section.add "X-Amz-Algorithm", valid_21626133
-  var valid_21626134 = header.getOrDefault("X-Amz-Signature")
-  valid_21626134 = validateParameter(valid_21626134, JString, required = false,
-                                   default = nil)
-  if valid_21626134 != nil:
-    section.add "X-Amz-Signature", valid_21626134
-  var valid_21626135 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626135 = validateParameter(valid_21626135, JString, required = false,
-                                   default = nil)
-  if valid_21626135 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626135
-  var valid_21626136 = header.getOrDefault("X-Amz-Credential")
-  valid_21626136 = validateParameter(valid_21626136, JString, required = false,
-                                   default = nil)
-  if valid_21626136 != nil:
-    section.add "X-Amz-Credential", valid_21626136
+  var valid_402656586 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656586 = validateParameter(valid_402656586, JString,
+                                      required = false, default = nil)
+  if valid_402656586 != nil:
+    section.add "X-Amz-Security-Token", valid_402656586
+  var valid_402656587 = header.getOrDefault("X-Amz-Signature")
+  valid_402656587 = validateParameter(valid_402656587, JString,
+                                      required = false, default = nil)
+  if valid_402656587 != nil:
+    section.add "X-Amz-Signature", valid_402656587
+  var valid_402656588 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656588 = validateParameter(valid_402656588, JString,
+                                      required = false, default = nil)
+  if valid_402656588 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656588
+  var valid_402656589 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656589 = validateParameter(valid_402656589, JString,
+                                      required = false, default = nil)
+  if valid_402656589 != nil:
+    section.add "X-Amz-Algorithm", valid_402656589
+  var valid_402656590 = header.getOrDefault("X-Amz-Date")
+  valid_402656590 = validateParameter(valid_402656590, JString,
+                                      required = false, default = nil)
+  if valid_402656590 != nil:
+    section.add "X-Amz-Date", valid_402656590
+  var valid_402656591 = header.getOrDefault("X-Amz-Credential")
+  valid_402656591 = validateParameter(valid_402656591, JString,
+                                      required = false, default = nil)
+  if valid_402656591 != nil:
+    section.add "X-Amz-Credential", valid_402656591
+  var valid_402656592 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656592 = validateParameter(valid_402656592, JString,
+                                      required = false, default = nil)
+  if valid_402656592 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656592
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626137: Call_GetFederationToken_21626126; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656593: Call_GetFederationToken_402656582;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Retrieves a token for federation.
-  ## 
-  let valid = call_21626137.validator(path, query, header, formData, body, _)
-  let scheme = call_21626137.pickScheme
+                                                                                         ## 
+  let valid = call_402656593.validator(path, query, header, formData, body, _)
+  let scheme = call_402656593.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626137.makeUrl(scheme.get, call_21626137.host, call_21626137.base,
-                               call_21626137.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626137, uri, valid, _)
+  let uri = call_402656593.makeUrl(scheme.get, call_402656593.host, call_402656593.base,
+                                   call_402656593.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656593, uri, valid, _)
 
-proc call*(call_21626138: Call_GetFederationToken_21626126; InstanceId: string): Recallable =
+proc call*(call_402656594: Call_GetFederationToken_402656582; InstanceId: string): Recallable =
   ## getFederationToken
   ## Retrieves a token for federation.
   ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  var path_21626139 = newJObject()
-  add(path_21626139, "InstanceId", newJString(InstanceId))
-  result = call_21626138.call(path_21626139, nil, nil, nil, nil)
+                                      ##             : The identifier of the Amazon Connect instance.
+  var path_402656595 = newJObject()
+  add(path_402656595, "InstanceId", newJString(InstanceId))
+  result = call_402656594.call(path_402656595, nil, nil, nil, nil)
 
-var getFederationToken* = Call_GetFederationToken_21626126(
+var getFederationToken* = Call_GetFederationToken_402656582(
     name: "getFederationToken", meth: HttpMethod.HttpGet,
     host: "connect.amazonaws.com", route: "/user/federate/{InstanceId}",
-    validator: validate_GetFederationToken_21626127, base: "/",
-    makeUrl: url_GetFederationToken_21626128, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetFederationToken_402656583, base: "/",
+    makeUrl: url_GetFederationToken_402656584,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetMetricData_21626140 = ref object of OpenApiRestCall_21625435
-proc url_GetMetricData_21626142(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetMetricData_402656596 = ref object of OpenApiRestCall_402656044
+proc url_GetMetricData_402656598(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1218,7 +1335,7 @@ proc url_GetMetricData_21626142(protocol: Scheme; host: string; base: string;
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/metrics/historical/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1227,86 +1344,87 @@ proc url_GetMetricData_21626142(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetMetricData_21626141(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_GetMetricData_402656597(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## <p>Gets historical metric data from the specified Amazon Connect instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/connect/latest/adminguide/historical-metrics.html">Historical Metrics Reports</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626143 = path.getOrDefault("InstanceId")
-  valid_21626143 = validateParameter(valid_21626143, JString, required = true,
-                                   default = nil)
-  if valid_21626143 != nil:
-    section.add "InstanceId", valid_21626143
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656599 = path.getOrDefault("InstanceId")
+  valid_402656599 = validateParameter(valid_402656599, JString, required = true,
+                                      default = nil)
+  if valid_402656599 != nil:
+    section.add "InstanceId", valid_402656599
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##             : Pagination limit
+  ##   NextToken: JString
+                                                                   ##            : Pagination token
   section = newJObject()
-  var valid_21626144 = query.getOrDefault("NextToken")
-  valid_21626144 = validateParameter(valid_21626144, JString, required = false,
-                                   default = nil)
-  if valid_21626144 != nil:
-    section.add "NextToken", valid_21626144
-  var valid_21626145 = query.getOrDefault("MaxResults")
-  valid_21626145 = validateParameter(valid_21626145, JString, required = false,
-                                   default = nil)
-  if valid_21626145 != nil:
-    section.add "MaxResults", valid_21626145
+  var valid_402656600 = query.getOrDefault("MaxResults")
+  valid_402656600 = validateParameter(valid_402656600, JString,
+                                      required = false, default = nil)
+  if valid_402656600 != nil:
+    section.add "MaxResults", valid_402656600
+  var valid_402656601 = query.getOrDefault("NextToken")
+  valid_402656601 = validateParameter(valid_402656601, JString,
+                                      required = false, default = nil)
+  if valid_402656601 != nil:
+    section.add "NextToken", valid_402656601
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626146 = header.getOrDefault("X-Amz-Date")
-  valid_21626146 = validateParameter(valid_21626146, JString, required = false,
-                                   default = nil)
-  if valid_21626146 != nil:
-    section.add "X-Amz-Date", valid_21626146
-  var valid_21626147 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626147 = validateParameter(valid_21626147, JString, required = false,
-                                   default = nil)
-  if valid_21626147 != nil:
-    section.add "X-Amz-Security-Token", valid_21626147
-  var valid_21626148 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626148 = validateParameter(valid_21626148, JString, required = false,
-                                   default = nil)
-  if valid_21626148 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626148
-  var valid_21626149 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626149 = validateParameter(valid_21626149, JString, required = false,
-                                   default = nil)
-  if valid_21626149 != nil:
-    section.add "X-Amz-Algorithm", valid_21626149
-  var valid_21626150 = header.getOrDefault("X-Amz-Signature")
-  valid_21626150 = validateParameter(valid_21626150, JString, required = false,
-                                   default = nil)
-  if valid_21626150 != nil:
-    section.add "X-Amz-Signature", valid_21626150
-  var valid_21626151 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626151 = validateParameter(valid_21626151, JString, required = false,
-                                   default = nil)
-  if valid_21626151 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626151
-  var valid_21626152 = header.getOrDefault("X-Amz-Credential")
-  valid_21626152 = validateParameter(valid_21626152, JString, required = false,
-                                   default = nil)
-  if valid_21626152 != nil:
-    section.add "X-Amz-Credential", valid_21626152
+  var valid_402656602 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656602 = validateParameter(valid_402656602, JString,
+                                      required = false, default = nil)
+  if valid_402656602 != nil:
+    section.add "X-Amz-Security-Token", valid_402656602
+  var valid_402656603 = header.getOrDefault("X-Amz-Signature")
+  valid_402656603 = validateParameter(valid_402656603, JString,
+                                      required = false, default = nil)
+  if valid_402656603 != nil:
+    section.add "X-Amz-Signature", valid_402656603
+  var valid_402656604 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656604 = validateParameter(valid_402656604, JString,
+                                      required = false, default = nil)
+  if valid_402656604 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656604
+  var valid_402656605 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656605 = validateParameter(valid_402656605, JString,
+                                      required = false, default = nil)
+  if valid_402656605 != nil:
+    section.add "X-Amz-Algorithm", valid_402656605
+  var valid_402656606 = header.getOrDefault("X-Amz-Date")
+  valid_402656606 = validateParameter(valid_402656606, JString,
+                                      required = false, default = nil)
+  if valid_402656606 != nil:
+    section.add "X-Amz-Date", valid_402656606
+  var valid_402656607 = header.getOrDefault("X-Amz-Credential")
+  valid_402656607 = validateParameter(valid_402656607, JString,
+                                      required = false, default = nil)
+  if valid_402656607 != nil:
+    section.add "X-Amz-Credential", valid_402656607
+  var valid_402656608 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656608 = validateParameter(valid_402656608, JString,
+                                      required = false, default = nil)
+  if valid_402656608 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656608
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1318,50 +1436,70 @@ proc validate_GetMetricData_21626141(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626154: Call_GetMetricData_21626140; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656610: Call_GetMetricData_402656596; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Gets historical metric data from the specified Amazon Connect instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/connect/latest/adminguide/historical-metrics.html">Historical Metrics Reports</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-  ## 
-  let valid = call_21626154.validator(path, query, header, formData, body, _)
-  let scheme = call_21626154.pickScheme
+                                                                                         ## 
+  let valid = call_402656610.validator(path, query, header, formData, body, _)
+  let scheme = call_402656610.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626154.makeUrl(scheme.get, call_21626154.host, call_21626154.base,
-                               call_21626154.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626154, uri, valid, _)
+  let uri = call_402656610.makeUrl(scheme.get, call_402656610.host, call_402656610.base,
+                                   call_402656610.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656610, uri, valid, _)
 
-proc call*(call_21626155: Call_GetMetricData_21626140; InstanceId: string;
-          body: JsonNode; NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_402656611: Call_GetMetricData_402656596; body: JsonNode;
+           InstanceId: string; MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## getMetricData
   ## <p>Gets historical metric data from the specified Amazon Connect instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/connect/latest/adminguide/historical-metrics.html">Historical Metrics Reports</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626156 = newJObject()
-  var query_21626157 = newJObject()
-  var body_21626158 = newJObject()
-  add(path_21626156, "InstanceId", newJString(InstanceId))
-  add(query_21626157, "NextToken", newJString(NextToken))
+  ##   
+                                                                                                                                                                                                                                                                                             ## MaxResults: string
+                                                                                                                                                                                                                                                                                             ##             
+                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                             ## Pagination 
+                                                                                                                                                                                                                                                                                             ## limit
+  ##   
+                                                                                                                                                                                                                                                                                                     ## body: JObject (required)
+  ##   
+                                                                                                                                                                                                                                                                                                                                ## NextToken: string
+                                                                                                                                                                                                                                                                                                                                ##            
+                                                                                                                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                                                                                                                ## Pagination 
+                                                                                                                                                                                                                                                                                                                                ## token
+  ##   
+                                                                                                                                                                                                                                                                                                                                        ## InstanceId: string (required)
+                                                                                                                                                                                                                                                                                                                                        ##             
+                                                                                                                                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                                                                                                                                        ## The 
+                                                                                                                                                                                                                                                                                                                                        ## identifier 
+                                                                                                                                                                                                                                                                                                                                        ## of 
+                                                                                                                                                                                                                                                                                                                                        ## the 
+                                                                                                                                                                                                                                                                                                                                        ## Amazon 
+                                                                                                                                                                                                                                                                                                                                        ## Connect 
+                                                                                                                                                                                                                                                                                                                                        ## instance.
+  var path_402656612 = newJObject()
+  var query_402656613 = newJObject()
+  var body_402656614 = newJObject()
+  add(query_402656613, "MaxResults", newJString(MaxResults))
   if body != nil:
-    body_21626158 = body
-  add(query_21626157, "MaxResults", newJString(MaxResults))
-  result = call_21626155.call(path_21626156, query_21626157, nil, nil, body_21626158)
+    body_402656614 = body
+  add(query_402656613, "NextToken", newJString(NextToken))
+  add(path_402656612, "InstanceId", newJString(InstanceId))
+  result = call_402656611.call(path_402656612, query_402656613, nil, nil, body_402656614)
 
-var getMetricData* = Call_GetMetricData_21626140(name: "getMetricData",
+var getMetricData* = Call_GetMetricData_402656596(name: "getMetricData",
     meth: HttpMethod.HttpPost, host: "connect.amazonaws.com",
-    route: "/metrics/historical/{InstanceId}", validator: validate_GetMetricData_21626141,
-    base: "/", makeUrl: url_GetMetricData_21626142,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/metrics/historical/{InstanceId}",
+    validator: validate_GetMetricData_402656597, base: "/",
+    makeUrl: url_GetMetricData_402656598, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListContactFlows_21626159 = ref object of OpenApiRestCall_21625435
-proc url_ListContactFlows_21626161(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListContactFlows_402656615 = ref object of OpenApiRestCall_402656044
+proc url_ListContactFlows_402656617(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1369,7 +1507,7 @@ proc url_ListContactFlows_21626161(protocol: Scheme; host: string; base: string;
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/contact-flows-summary/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1378,166 +1516,274 @@ proc url_ListContactFlows_21626161(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListContactFlows_21626160(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ListContactFlows_402656616(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Provides information about the contact flows for the specified Amazon Connect instance.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626162 = path.getOrDefault("InstanceId")
-  valid_21626162 = validateParameter(valid_21626162, JString, required = true,
-                                   default = nil)
-  if valid_21626162 != nil:
-    section.add "InstanceId", valid_21626162
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656618 = path.getOrDefault("InstanceId")
+  valid_402656618 = validateParameter(valid_402656618, JString, required = true,
+                                      default = nil)
+  if valid_402656618 != nil:
+    section.add "InstanceId", valid_402656618
   result.add "path", section
   ## parameters in `query` object:
-  ##   contactFlowTypes: JArray
-  ##                   : The type of contact flow.
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   maxResults: JInt
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: JString
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##             : The maximimum number of results to return per page.
+  ##   
+                                                                                                      ## nextToken: JString
+                                                                                                      ##            
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## token 
+                                                                                                      ## for 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results. 
+                                                                                                      ## Use 
+                                                                                                      ## the 
+                                                                                                      ## value 
+                                                                                                      ## returned 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## previous 
+                                                                                                      ## response 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## request 
+                                                                                                      ## to 
+                                                                                                      ## retrieve 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results.
+  ##   
+                                                                                                                 ## MaxResults: JString
+                                                                                                                 ##             
+                                                                                                                 ## : 
+                                                                                                                 ## Pagination 
+                                                                                                                 ## limit
+  ##   
+                                                                                                                         ## NextToken: JString
+                                                                                                                         ##            
+                                                                                                                         ## : 
+                                                                                                                         ## Pagination 
+                                                                                                                         ## token
+  ##   
+                                                                                                                                 ## contactFlowTypes: JArray
+                                                                                                                                 ##                   
+                                                                                                                                 ## : 
+                                                                                                                                 ## The 
+                                                                                                                                 ## type 
+                                                                                                                                 ## of 
+                                                                                                                                 ## contact 
+                                                                                                                                 ## flow.
   section = newJObject()
-  var valid_21626163 = query.getOrDefault("contactFlowTypes")
-  valid_21626163 = validateParameter(valid_21626163, JArray, required = false,
-                                   default = nil)
-  if valid_21626163 != nil:
-    section.add "contactFlowTypes", valid_21626163
-  var valid_21626164 = query.getOrDefault("NextToken")
-  valid_21626164 = validateParameter(valid_21626164, JString, required = false,
-                                   default = nil)
-  if valid_21626164 != nil:
-    section.add "NextToken", valid_21626164
-  var valid_21626165 = query.getOrDefault("maxResults")
-  valid_21626165 = validateParameter(valid_21626165, JInt, required = false,
-                                   default = nil)
-  if valid_21626165 != nil:
-    section.add "maxResults", valid_21626165
-  var valid_21626166 = query.getOrDefault("nextToken")
-  valid_21626166 = validateParameter(valid_21626166, JString, required = false,
-                                   default = nil)
-  if valid_21626166 != nil:
-    section.add "nextToken", valid_21626166
-  var valid_21626167 = query.getOrDefault("MaxResults")
-  valid_21626167 = validateParameter(valid_21626167, JString, required = false,
-                                   default = nil)
-  if valid_21626167 != nil:
-    section.add "MaxResults", valid_21626167
+  var valid_402656619 = query.getOrDefault("maxResults")
+  valid_402656619 = validateParameter(valid_402656619, JInt, required = false,
+                                      default = nil)
+  if valid_402656619 != nil:
+    section.add "maxResults", valid_402656619
+  var valid_402656620 = query.getOrDefault("nextToken")
+  valid_402656620 = validateParameter(valid_402656620, JString,
+                                      required = false, default = nil)
+  if valid_402656620 != nil:
+    section.add "nextToken", valid_402656620
+  var valid_402656621 = query.getOrDefault("MaxResults")
+  valid_402656621 = validateParameter(valid_402656621, JString,
+                                      required = false, default = nil)
+  if valid_402656621 != nil:
+    section.add "MaxResults", valid_402656621
+  var valid_402656622 = query.getOrDefault("NextToken")
+  valid_402656622 = validateParameter(valid_402656622, JString,
+                                      required = false, default = nil)
+  if valid_402656622 != nil:
+    section.add "NextToken", valid_402656622
+  var valid_402656623 = query.getOrDefault("contactFlowTypes")
+  valid_402656623 = validateParameter(valid_402656623, JArray, required = false,
+                                      default = nil)
+  if valid_402656623 != nil:
+    section.add "contactFlowTypes", valid_402656623
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626168 = header.getOrDefault("X-Amz-Date")
-  valid_21626168 = validateParameter(valid_21626168, JString, required = false,
-                                   default = nil)
-  if valid_21626168 != nil:
-    section.add "X-Amz-Date", valid_21626168
-  var valid_21626169 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626169 = validateParameter(valid_21626169, JString, required = false,
-                                   default = nil)
-  if valid_21626169 != nil:
-    section.add "X-Amz-Security-Token", valid_21626169
-  var valid_21626170 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626170 = validateParameter(valid_21626170, JString, required = false,
-                                   default = nil)
-  if valid_21626170 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626170
-  var valid_21626171 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626171 = validateParameter(valid_21626171, JString, required = false,
-                                   default = nil)
-  if valid_21626171 != nil:
-    section.add "X-Amz-Algorithm", valid_21626171
-  var valid_21626172 = header.getOrDefault("X-Amz-Signature")
-  valid_21626172 = validateParameter(valid_21626172, JString, required = false,
-                                   default = nil)
-  if valid_21626172 != nil:
-    section.add "X-Amz-Signature", valid_21626172
-  var valid_21626173 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626173 = validateParameter(valid_21626173, JString, required = false,
-                                   default = nil)
-  if valid_21626173 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626173
-  var valid_21626174 = header.getOrDefault("X-Amz-Credential")
-  valid_21626174 = validateParameter(valid_21626174, JString, required = false,
-                                   default = nil)
-  if valid_21626174 != nil:
-    section.add "X-Amz-Credential", valid_21626174
+  var valid_402656624 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656624 = validateParameter(valid_402656624, JString,
+                                      required = false, default = nil)
+  if valid_402656624 != nil:
+    section.add "X-Amz-Security-Token", valid_402656624
+  var valid_402656625 = header.getOrDefault("X-Amz-Signature")
+  valid_402656625 = validateParameter(valid_402656625, JString,
+                                      required = false, default = nil)
+  if valid_402656625 != nil:
+    section.add "X-Amz-Signature", valid_402656625
+  var valid_402656626 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656626 = validateParameter(valid_402656626, JString,
+                                      required = false, default = nil)
+  if valid_402656626 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656626
+  var valid_402656627 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656627 = validateParameter(valid_402656627, JString,
+                                      required = false, default = nil)
+  if valid_402656627 != nil:
+    section.add "X-Amz-Algorithm", valid_402656627
+  var valid_402656628 = header.getOrDefault("X-Amz-Date")
+  valid_402656628 = validateParameter(valid_402656628, JString,
+                                      required = false, default = nil)
+  if valid_402656628 != nil:
+    section.add "X-Amz-Date", valid_402656628
+  var valid_402656629 = header.getOrDefault("X-Amz-Credential")
+  valid_402656629 = validateParameter(valid_402656629, JString,
+                                      required = false, default = nil)
+  if valid_402656629 != nil:
+    section.add "X-Amz-Credential", valid_402656629
+  var valid_402656630 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656630 = validateParameter(valid_402656630, JString,
+                                      required = false, default = nil)
+  if valid_402656630 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656630
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626175: Call_ListContactFlows_21626159; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656631: Call_ListContactFlows_402656615;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Provides information about the contact flows for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626175.validator(path, query, header, formData, body, _)
-  let scheme = call_21626175.pickScheme
+                                                                                         ## 
+  let valid = call_402656631.validator(path, query, header, formData, body, _)
+  let scheme = call_402656631.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626175.makeUrl(scheme.get, call_21626175.host, call_21626175.base,
-                               call_21626175.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626175, uri, valid, _)
+  let uri = call_402656631.makeUrl(scheme.get, call_402656631.host, call_402656631.base,
+                                   call_402656631.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656631, uri, valid, _)
 
-proc call*(call_21626176: Call_ListContactFlows_21626159; InstanceId: string;
-          contactFlowTypes: JsonNode = nil; NextToken: string = ""; maxResults: int = 0;
-          nextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_402656632: Call_ListContactFlows_402656615; InstanceId: string;
+           maxResults: int = 0; nextToken: string = ""; MaxResults: string = "";
+           NextToken: string = ""; contactFlowTypes: JsonNode = nil): Recallable =
   ## listContactFlows
   ## Provides information about the contact flows for the specified Amazon Connect instance.
-  ##   contactFlowTypes: JArray
-  ##                   : The type of contact flow.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   maxResults: int
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: string
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626177 = newJObject()
-  var query_21626178 = newJObject()
+  ##   
+                                                                                            ## maxResults: int
+                                                                                            ##             
+                                                                                            ## : 
+                                                                                            ## The 
+                                                                                            ## maximimum 
+                                                                                            ## number 
+                                                                                            ## of 
+                                                                                            ## results 
+                                                                                            ## to 
+                                                                                            ## return 
+                                                                                            ## per 
+                                                                                            ## page.
+  ##   
+                                                                                                    ## nextToken: string
+                                                                                                    ##            
+                                                                                                    ## : 
+                                                                                                    ## The 
+                                                                                                    ## token 
+                                                                                                    ## for 
+                                                                                                    ## the 
+                                                                                                    ## next 
+                                                                                                    ## set 
+                                                                                                    ## of 
+                                                                                                    ## results. 
+                                                                                                    ## Use 
+                                                                                                    ## the 
+                                                                                                    ## value 
+                                                                                                    ## returned 
+                                                                                                    ## in 
+                                                                                                    ## the 
+                                                                                                    ## previous 
+                                                                                                    ## response 
+                                                                                                    ## in 
+                                                                                                    ## the 
+                                                                                                    ## next 
+                                                                                                    ## request 
+                                                                                                    ## to 
+                                                                                                    ## retrieve 
+                                                                                                    ## the 
+                                                                                                    ## next 
+                                                                                                    ## set 
+                                                                                                    ## of 
+                                                                                                    ## results.
+  ##   
+                                                                                                               ## MaxResults: string
+                                                                                                               ##             
+                                                                                                               ## : 
+                                                                                                               ## Pagination 
+                                                                                                               ## limit
+  ##   
+                                                                                                                       ## NextToken: string
+                                                                                                                       ##            
+                                                                                                                       ## : 
+                                                                                                                       ## Pagination 
+                                                                                                                       ## token
+  ##   
+                                                                                                                               ## InstanceId: string (required)
+                                                                                                                               ##             
+                                                                                                                               ## : 
+                                                                                                                               ## The 
+                                                                                                                               ## identifier 
+                                                                                                                               ## of 
+                                                                                                                               ## the 
+                                                                                                                               ## Amazon 
+                                                                                                                               ## Connect 
+                                                                                                                               ## instance.
+  ##   
+                                                                                                                                           ## contactFlowTypes: JArray
+                                                                                                                                           ##                   
+                                                                                                                                           ## : 
+                                                                                                                                           ## The 
+                                                                                                                                           ## type 
+                                                                                                                                           ## of 
+                                                                                                                                           ## contact 
+                                                                                                                                           ## flow.
+  var path_402656633 = newJObject()
+  var query_402656634 = newJObject()
+  add(query_402656634, "maxResults", newJInt(maxResults))
+  add(query_402656634, "nextToken", newJString(nextToken))
+  add(query_402656634, "MaxResults", newJString(MaxResults))
+  add(query_402656634, "NextToken", newJString(NextToken))
+  add(path_402656633, "InstanceId", newJString(InstanceId))
   if contactFlowTypes != nil:
-    query_21626178.add "contactFlowTypes", contactFlowTypes
-  add(path_21626177, "InstanceId", newJString(InstanceId))
-  add(query_21626178, "NextToken", newJString(NextToken))
-  add(query_21626178, "maxResults", newJInt(maxResults))
-  add(query_21626178, "nextToken", newJString(nextToken))
-  add(query_21626178, "MaxResults", newJString(MaxResults))
-  result = call_21626176.call(path_21626177, query_21626178, nil, nil, nil)
+    query_402656634.add "contactFlowTypes", contactFlowTypes
+  result = call_402656632.call(path_402656633, query_402656634, nil, nil, nil)
 
-var listContactFlows* = Call_ListContactFlows_21626159(name: "listContactFlows",
-    meth: HttpMethod.HttpGet, host: "connect.amazonaws.com",
-    route: "/contact-flows-summary/{InstanceId}",
-    validator: validate_ListContactFlows_21626160, base: "/",
-    makeUrl: url_ListContactFlows_21626161, schemes: {Scheme.Https, Scheme.Http})
+var listContactFlows* = Call_ListContactFlows_402656615(
+    name: "listContactFlows", meth: HttpMethod.HttpGet,
+    host: "connect.amazonaws.com", route: "/contact-flows-summary/{InstanceId}",
+    validator: validate_ListContactFlows_402656616, base: "/",
+    makeUrl: url_ListContactFlows_402656617,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHoursOfOperations_21626179 = ref object of OpenApiRestCall_21625435
-proc url_ListHoursOfOperations_21626181(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode;
-                                       query: JsonNode): Uri =
+  Call_ListHoursOfOperations_402656635 = ref object of OpenApiRestCall_402656044
+proc url_ListHoursOfOperations_402656637(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1545,7 +1791,7 @@ proc url_ListHoursOfOperations_21626181(protocol: Scheme; host: string; base: st
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/hours-of-operations-summary/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1554,155 +1800,251 @@ proc url_ListHoursOfOperations_21626181(protocol: Scheme; host: string; base: st
   else:
     result.path = base & hydrated.get
 
-proc validate_ListHoursOfOperations_21626180(path: JsonNode; query: JsonNode;
+proc validate_ListHoursOfOperations_402656636(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Provides information about the hours of operation for the specified Amazon Connect instance.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626182 = path.getOrDefault("InstanceId")
-  valid_21626182 = validateParameter(valid_21626182, JString, required = true,
-                                   default = nil)
-  if valid_21626182 != nil:
-    section.add "InstanceId", valid_21626182
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656638 = path.getOrDefault("InstanceId")
+  valid_402656638 = validateParameter(valid_402656638, JString, required = true,
+                                      default = nil)
+  if valid_402656638 != nil:
+    section.add "InstanceId", valid_402656638
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   maxResults: JInt
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: JString
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##             : The maximimum number of results to return per page.
+  ##   
+                                                                                                      ## nextToken: JString
+                                                                                                      ##            
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## token 
+                                                                                                      ## for 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results. 
+                                                                                                      ## Use 
+                                                                                                      ## the 
+                                                                                                      ## value 
+                                                                                                      ## returned 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## previous 
+                                                                                                      ## response 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## request 
+                                                                                                      ## to 
+                                                                                                      ## retrieve 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results.
+  ##   
+                                                                                                                 ## MaxResults: JString
+                                                                                                                 ##             
+                                                                                                                 ## : 
+                                                                                                                 ## Pagination 
+                                                                                                                 ## limit
+  ##   
+                                                                                                                         ## NextToken: JString
+                                                                                                                         ##            
+                                                                                                                         ## : 
+                                                                                                                         ## Pagination 
+                                                                                                                         ## token
   section = newJObject()
-  var valid_21626183 = query.getOrDefault("NextToken")
-  valid_21626183 = validateParameter(valid_21626183, JString, required = false,
-                                   default = nil)
-  if valid_21626183 != nil:
-    section.add "NextToken", valid_21626183
-  var valid_21626184 = query.getOrDefault("maxResults")
-  valid_21626184 = validateParameter(valid_21626184, JInt, required = false,
-                                   default = nil)
-  if valid_21626184 != nil:
-    section.add "maxResults", valid_21626184
-  var valid_21626185 = query.getOrDefault("nextToken")
-  valid_21626185 = validateParameter(valid_21626185, JString, required = false,
-                                   default = nil)
-  if valid_21626185 != nil:
-    section.add "nextToken", valid_21626185
-  var valid_21626186 = query.getOrDefault("MaxResults")
-  valid_21626186 = validateParameter(valid_21626186, JString, required = false,
-                                   default = nil)
-  if valid_21626186 != nil:
-    section.add "MaxResults", valid_21626186
+  var valid_402656639 = query.getOrDefault("maxResults")
+  valid_402656639 = validateParameter(valid_402656639, JInt, required = false,
+                                      default = nil)
+  if valid_402656639 != nil:
+    section.add "maxResults", valid_402656639
+  var valid_402656640 = query.getOrDefault("nextToken")
+  valid_402656640 = validateParameter(valid_402656640, JString,
+                                      required = false, default = nil)
+  if valid_402656640 != nil:
+    section.add "nextToken", valid_402656640
+  var valid_402656641 = query.getOrDefault("MaxResults")
+  valid_402656641 = validateParameter(valid_402656641, JString,
+                                      required = false, default = nil)
+  if valid_402656641 != nil:
+    section.add "MaxResults", valid_402656641
+  var valid_402656642 = query.getOrDefault("NextToken")
+  valid_402656642 = validateParameter(valid_402656642, JString,
+                                      required = false, default = nil)
+  if valid_402656642 != nil:
+    section.add "NextToken", valid_402656642
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626187 = header.getOrDefault("X-Amz-Date")
-  valid_21626187 = validateParameter(valid_21626187, JString, required = false,
-                                   default = nil)
-  if valid_21626187 != nil:
-    section.add "X-Amz-Date", valid_21626187
-  var valid_21626188 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626188 = validateParameter(valid_21626188, JString, required = false,
-                                   default = nil)
-  if valid_21626188 != nil:
-    section.add "X-Amz-Security-Token", valid_21626188
-  var valid_21626189 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626189 = validateParameter(valid_21626189, JString, required = false,
-                                   default = nil)
-  if valid_21626189 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626189
-  var valid_21626190 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626190 = validateParameter(valid_21626190, JString, required = false,
-                                   default = nil)
-  if valid_21626190 != nil:
-    section.add "X-Amz-Algorithm", valid_21626190
-  var valid_21626191 = header.getOrDefault("X-Amz-Signature")
-  valid_21626191 = validateParameter(valid_21626191, JString, required = false,
-                                   default = nil)
-  if valid_21626191 != nil:
-    section.add "X-Amz-Signature", valid_21626191
-  var valid_21626192 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626192 = validateParameter(valid_21626192, JString, required = false,
-                                   default = nil)
-  if valid_21626192 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626192
-  var valid_21626193 = header.getOrDefault("X-Amz-Credential")
-  valid_21626193 = validateParameter(valid_21626193, JString, required = false,
-                                   default = nil)
-  if valid_21626193 != nil:
-    section.add "X-Amz-Credential", valid_21626193
+  var valid_402656643 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656643 = validateParameter(valid_402656643, JString,
+                                      required = false, default = nil)
+  if valid_402656643 != nil:
+    section.add "X-Amz-Security-Token", valid_402656643
+  var valid_402656644 = header.getOrDefault("X-Amz-Signature")
+  valid_402656644 = validateParameter(valid_402656644, JString,
+                                      required = false, default = nil)
+  if valid_402656644 != nil:
+    section.add "X-Amz-Signature", valid_402656644
+  var valid_402656645 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656645 = validateParameter(valid_402656645, JString,
+                                      required = false, default = nil)
+  if valid_402656645 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656645
+  var valid_402656646 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656646 = validateParameter(valid_402656646, JString,
+                                      required = false, default = nil)
+  if valid_402656646 != nil:
+    section.add "X-Amz-Algorithm", valid_402656646
+  var valid_402656647 = header.getOrDefault("X-Amz-Date")
+  valid_402656647 = validateParameter(valid_402656647, JString,
+                                      required = false, default = nil)
+  if valid_402656647 != nil:
+    section.add "X-Amz-Date", valid_402656647
+  var valid_402656648 = header.getOrDefault("X-Amz-Credential")
+  valid_402656648 = validateParameter(valid_402656648, JString,
+                                      required = false, default = nil)
+  if valid_402656648 != nil:
+    section.add "X-Amz-Credential", valid_402656648
+  var valid_402656649 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656649 = validateParameter(valid_402656649, JString,
+                                      required = false, default = nil)
+  if valid_402656649 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656649
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626194: Call_ListHoursOfOperations_21626179;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656650: Call_ListHoursOfOperations_402656635;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Provides information about the hours of operation for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626194.validator(path, query, header, formData, body, _)
-  let scheme = call_21626194.pickScheme
+                                                                                         ## 
+  let valid = call_402656650.validator(path, query, header, formData, body, _)
+  let scheme = call_402656650.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626194.makeUrl(scheme.get, call_21626194.host, call_21626194.base,
-                               call_21626194.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626194, uri, valid, _)
+  let uri = call_402656650.makeUrl(scheme.get, call_402656650.host, call_402656650.base,
+                                   call_402656650.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656650, uri, valid, _)
 
-proc call*(call_21626195: Call_ListHoursOfOperations_21626179; InstanceId: string;
-          NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
-          MaxResults: string = ""): Recallable =
+proc call*(call_402656651: Call_ListHoursOfOperations_402656635;
+           InstanceId: string; maxResults: int = 0; nextToken: string = "";
+           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listHoursOfOperations
   ## Provides information about the hours of operation for the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   maxResults: int
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: string
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626196 = newJObject()
-  var query_21626197 = newJObject()
-  add(path_21626196, "InstanceId", newJString(InstanceId))
-  add(query_21626197, "NextToken", newJString(NextToken))
-  add(query_21626197, "maxResults", newJInt(maxResults))
-  add(query_21626197, "nextToken", newJString(nextToken))
-  add(query_21626197, "MaxResults", newJString(MaxResults))
-  result = call_21626195.call(path_21626196, query_21626197, nil, nil, nil)
+  ##   
+                                                                                                 ## maxResults: int
+                                                                                                 ##             
+                                                                                                 ## : 
+                                                                                                 ## The 
+                                                                                                 ## maximimum 
+                                                                                                 ## number 
+                                                                                                 ## of 
+                                                                                                 ## results 
+                                                                                                 ## to 
+                                                                                                 ## return 
+                                                                                                 ## per 
+                                                                                                 ## page.
+  ##   
+                                                                                                         ## nextToken: string
+                                                                                                         ##            
+                                                                                                         ## : 
+                                                                                                         ## The 
+                                                                                                         ## token 
+                                                                                                         ## for 
+                                                                                                         ## the 
+                                                                                                         ## next 
+                                                                                                         ## set 
+                                                                                                         ## of 
+                                                                                                         ## results. 
+                                                                                                         ## Use 
+                                                                                                         ## the 
+                                                                                                         ## value 
+                                                                                                         ## returned 
+                                                                                                         ## in 
+                                                                                                         ## the 
+                                                                                                         ## previous 
+                                                                                                         ## response 
+                                                                                                         ## in 
+                                                                                                         ## the 
+                                                                                                         ## next 
+                                                                                                         ## request 
+                                                                                                         ## to 
+                                                                                                         ## retrieve 
+                                                                                                         ## the 
+                                                                                                         ## next 
+                                                                                                         ## set 
+                                                                                                         ## of 
+                                                                                                         ## results.
+  ##   
+                                                                                                                    ## MaxResults: string
+                                                                                                                    ##             
+                                                                                                                    ## : 
+                                                                                                                    ## Pagination 
+                                                                                                                    ## limit
+  ##   
+                                                                                                                            ## NextToken: string
+                                                                                                                            ##            
+                                                                                                                            ## : 
+                                                                                                                            ## Pagination 
+                                                                                                                            ## token
+  ##   
+                                                                                                                                    ## InstanceId: string (required)
+                                                                                                                                    ##             
+                                                                                                                                    ## : 
+                                                                                                                                    ## The 
+                                                                                                                                    ## identifier 
+                                                                                                                                    ## of 
+                                                                                                                                    ## the 
+                                                                                                                                    ## Amazon 
+                                                                                                                                    ## Connect 
+                                                                                                                                    ## instance.
+  var path_402656652 = newJObject()
+  var query_402656653 = newJObject()
+  add(query_402656653, "maxResults", newJInt(maxResults))
+  add(query_402656653, "nextToken", newJString(nextToken))
+  add(query_402656653, "MaxResults", newJString(MaxResults))
+  add(query_402656653, "NextToken", newJString(NextToken))
+  add(path_402656652, "InstanceId", newJString(InstanceId))
+  result = call_402656651.call(path_402656652, query_402656653, nil, nil, nil)
 
-var listHoursOfOperations* = Call_ListHoursOfOperations_21626179(
+var listHoursOfOperations* = Call_ListHoursOfOperations_402656635(
     name: "listHoursOfOperations", meth: HttpMethod.HttpGet,
     host: "connect.amazonaws.com",
     route: "/hours-of-operations-summary/{InstanceId}",
-    validator: validate_ListHoursOfOperations_21626180, base: "/",
-    makeUrl: url_ListHoursOfOperations_21626181,
+    validator: validate_ListHoursOfOperations_402656636, base: "/",
+    makeUrl: url_ListHoursOfOperations_402656637,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPhoneNumbers_21626198 = ref object of OpenApiRestCall_21625435
-proc url_ListPhoneNumbers_21626200(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListPhoneNumbers_402656654 = ref object of OpenApiRestCall_402656044
+proc url_ListPhoneNumbers_402656656(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1710,7 +2052,7 @@ proc url_ListPhoneNumbers_21626200(protocol: Scheme; host: string; base: string;
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/phone-numbers-summary/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1719,177 +2061,302 @@ proc url_ListPhoneNumbers_21626200(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListPhoneNumbers_21626199(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ListPhoneNumbers_402656655(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Provides information about the phone numbers for the specified Amazon Connect instance.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626201 = path.getOrDefault("InstanceId")
-  valid_21626201 = validateParameter(valid_21626201, JString, required = true,
-                                   default = nil)
-  if valid_21626201 != nil:
-    section.add "InstanceId", valid_21626201
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656657 = path.getOrDefault("InstanceId")
+  valid_402656657 = validateParameter(valid_402656657, JString, required = true,
+                                      default = nil)
+  if valid_402656657 != nil:
+    section.add "InstanceId", valid_402656657
   result.add "path", section
   ## parameters in `query` object:
   ##   phoneNumberTypes: JArray
-  ##                   : The type of phone number.
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   maxResults: JInt
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: JString
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   phoneNumberCountryCodes: JArray
-  ##                          : The ISO country code.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##                   : The type of phone number.
+  ##   
+                                                                                  ## maxResults: JInt
+                                                                                  ##             
+                                                                                  ## : 
+                                                                                  ## The 
+                                                                                  ## maximimum 
+                                                                                  ## number 
+                                                                                  ## of 
+                                                                                  ## results 
+                                                                                  ## to 
+                                                                                  ## return 
+                                                                                  ## per 
+                                                                                  ## page.
+  ##   
+                                                                                          ## nextToken: JString
+                                                                                          ##            
+                                                                                          ## : 
+                                                                                          ## The 
+                                                                                          ## token 
+                                                                                          ## for 
+                                                                                          ## the 
+                                                                                          ## next 
+                                                                                          ## set 
+                                                                                          ## of 
+                                                                                          ## results. 
+                                                                                          ## Use 
+                                                                                          ## the 
+                                                                                          ## value 
+                                                                                          ## returned 
+                                                                                          ## in 
+                                                                                          ## the 
+                                                                                          ## previous 
+                                                                                          ## response 
+                                                                                          ## in 
+                                                                                          ## the 
+                                                                                          ## next 
+                                                                                          ## request 
+                                                                                          ## to 
+                                                                                          ## retrieve 
+                                                                                          ## the 
+                                                                                          ## next 
+                                                                                          ## set 
+                                                                                          ## of 
+                                                                                          ## results.
+  ##   
+                                                                                                     ## MaxResults: JString
+                                                                                                     ##             
+                                                                                                     ## : 
+                                                                                                     ## Pagination 
+                                                                                                     ## limit
+  ##   
+                                                                                                             ## NextToken: JString
+                                                                                                             ##            
+                                                                                                             ## : 
+                                                                                                             ## Pagination 
+                                                                                                             ## token
+  ##   
+                                                                                                                     ## phoneNumberCountryCodes: JArray
+                                                                                                                     ##                          
+                                                                                                                     ## : 
+                                                                                                                     ## The 
+                                                                                                                     ## ISO 
+                                                                                                                     ## country 
+                                                                                                                     ## code.
   section = newJObject()
-  var valid_21626202 = query.getOrDefault("phoneNumberTypes")
-  valid_21626202 = validateParameter(valid_21626202, JArray, required = false,
-                                   default = nil)
-  if valid_21626202 != nil:
-    section.add "phoneNumberTypes", valid_21626202
-  var valid_21626203 = query.getOrDefault("NextToken")
-  valid_21626203 = validateParameter(valid_21626203, JString, required = false,
-                                   default = nil)
-  if valid_21626203 != nil:
-    section.add "NextToken", valid_21626203
-  var valid_21626204 = query.getOrDefault("maxResults")
-  valid_21626204 = validateParameter(valid_21626204, JInt, required = false,
-                                   default = nil)
-  if valid_21626204 != nil:
-    section.add "maxResults", valid_21626204
-  var valid_21626205 = query.getOrDefault("nextToken")
-  valid_21626205 = validateParameter(valid_21626205, JString, required = false,
-                                   default = nil)
-  if valid_21626205 != nil:
-    section.add "nextToken", valid_21626205
-  var valid_21626206 = query.getOrDefault("phoneNumberCountryCodes")
-  valid_21626206 = validateParameter(valid_21626206, JArray, required = false,
-                                   default = nil)
-  if valid_21626206 != nil:
-    section.add "phoneNumberCountryCodes", valid_21626206
-  var valid_21626207 = query.getOrDefault("MaxResults")
-  valid_21626207 = validateParameter(valid_21626207, JString, required = false,
-                                   default = nil)
-  if valid_21626207 != nil:
-    section.add "MaxResults", valid_21626207
+  var valid_402656658 = query.getOrDefault("phoneNumberTypes")
+  valid_402656658 = validateParameter(valid_402656658, JArray, required = false,
+                                      default = nil)
+  if valid_402656658 != nil:
+    section.add "phoneNumberTypes", valid_402656658
+  var valid_402656659 = query.getOrDefault("maxResults")
+  valid_402656659 = validateParameter(valid_402656659, JInt, required = false,
+                                      default = nil)
+  if valid_402656659 != nil:
+    section.add "maxResults", valid_402656659
+  var valid_402656660 = query.getOrDefault("nextToken")
+  valid_402656660 = validateParameter(valid_402656660, JString,
+                                      required = false, default = nil)
+  if valid_402656660 != nil:
+    section.add "nextToken", valid_402656660
+  var valid_402656661 = query.getOrDefault("MaxResults")
+  valid_402656661 = validateParameter(valid_402656661, JString,
+                                      required = false, default = nil)
+  if valid_402656661 != nil:
+    section.add "MaxResults", valid_402656661
+  var valid_402656662 = query.getOrDefault("NextToken")
+  valid_402656662 = validateParameter(valid_402656662, JString,
+                                      required = false, default = nil)
+  if valid_402656662 != nil:
+    section.add "NextToken", valid_402656662
+  var valid_402656663 = query.getOrDefault("phoneNumberCountryCodes")
+  valid_402656663 = validateParameter(valid_402656663, JArray, required = false,
+                                      default = nil)
+  if valid_402656663 != nil:
+    section.add "phoneNumberCountryCodes", valid_402656663
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626208 = header.getOrDefault("X-Amz-Date")
-  valid_21626208 = validateParameter(valid_21626208, JString, required = false,
-                                   default = nil)
-  if valid_21626208 != nil:
-    section.add "X-Amz-Date", valid_21626208
-  var valid_21626209 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626209 = validateParameter(valid_21626209, JString, required = false,
-                                   default = nil)
-  if valid_21626209 != nil:
-    section.add "X-Amz-Security-Token", valid_21626209
-  var valid_21626210 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626210 = validateParameter(valid_21626210, JString, required = false,
-                                   default = nil)
-  if valid_21626210 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626210
-  var valid_21626211 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626211 = validateParameter(valid_21626211, JString, required = false,
-                                   default = nil)
-  if valid_21626211 != nil:
-    section.add "X-Amz-Algorithm", valid_21626211
-  var valid_21626212 = header.getOrDefault("X-Amz-Signature")
-  valid_21626212 = validateParameter(valid_21626212, JString, required = false,
-                                   default = nil)
-  if valid_21626212 != nil:
-    section.add "X-Amz-Signature", valid_21626212
-  var valid_21626213 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626213 = validateParameter(valid_21626213, JString, required = false,
-                                   default = nil)
-  if valid_21626213 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626213
-  var valid_21626214 = header.getOrDefault("X-Amz-Credential")
-  valid_21626214 = validateParameter(valid_21626214, JString, required = false,
-                                   default = nil)
-  if valid_21626214 != nil:
-    section.add "X-Amz-Credential", valid_21626214
+  var valid_402656664 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656664 = validateParameter(valid_402656664, JString,
+                                      required = false, default = nil)
+  if valid_402656664 != nil:
+    section.add "X-Amz-Security-Token", valid_402656664
+  var valid_402656665 = header.getOrDefault("X-Amz-Signature")
+  valid_402656665 = validateParameter(valid_402656665, JString,
+                                      required = false, default = nil)
+  if valid_402656665 != nil:
+    section.add "X-Amz-Signature", valid_402656665
+  var valid_402656666 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656666 = validateParameter(valid_402656666, JString,
+                                      required = false, default = nil)
+  if valid_402656666 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656666
+  var valid_402656667 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656667 = validateParameter(valid_402656667, JString,
+                                      required = false, default = nil)
+  if valid_402656667 != nil:
+    section.add "X-Amz-Algorithm", valid_402656667
+  var valid_402656668 = header.getOrDefault("X-Amz-Date")
+  valid_402656668 = validateParameter(valid_402656668, JString,
+                                      required = false, default = nil)
+  if valid_402656668 != nil:
+    section.add "X-Amz-Date", valid_402656668
+  var valid_402656669 = header.getOrDefault("X-Amz-Credential")
+  valid_402656669 = validateParameter(valid_402656669, JString,
+                                      required = false, default = nil)
+  if valid_402656669 != nil:
+    section.add "X-Amz-Credential", valid_402656669
+  var valid_402656670 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656670 = validateParameter(valid_402656670, JString,
+                                      required = false, default = nil)
+  if valid_402656670 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656670
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626215: Call_ListPhoneNumbers_21626198; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656671: Call_ListPhoneNumbers_402656654;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Provides information about the phone numbers for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626215.validator(path, query, header, formData, body, _)
-  let scheme = call_21626215.pickScheme
+                                                                                         ## 
+  let valid = call_402656671.validator(path, query, header, formData, body, _)
+  let scheme = call_402656671.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626215.makeUrl(scheme.get, call_21626215.host, call_21626215.base,
-                               call_21626215.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626215, uri, valid, _)
+  let uri = call_402656671.makeUrl(scheme.get, call_402656671.host, call_402656671.base,
+                                   call_402656671.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656671, uri, valid, _)
 
-proc call*(call_21626216: Call_ListPhoneNumbers_21626198; InstanceId: string;
-          phoneNumberTypes: JsonNode = nil; NextToken: string = ""; maxResults: int = 0;
-          nextToken: string = ""; phoneNumberCountryCodes: JsonNode = nil;
-          MaxResults: string = ""): Recallable =
+proc call*(call_402656672: Call_ListPhoneNumbers_402656654; InstanceId: string;
+           phoneNumberTypes: JsonNode = nil; maxResults: int = 0;
+           nextToken: string = ""; MaxResults: string = "";
+           NextToken: string = ""; phoneNumberCountryCodes: JsonNode = nil): Recallable =
   ## listPhoneNumbers
   ## Provides information about the phone numbers for the specified Amazon Connect instance.
-  ##   phoneNumberTypes: JArray
-  ##                   : The type of phone number.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   maxResults: int
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: string
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   phoneNumberCountryCodes: JArray
-  ##                          : The ISO country code.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626217 = newJObject()
-  var query_21626218 = newJObject()
+  ##   
+                                                                                            ## phoneNumberTypes: JArray
+                                                                                            ##                   
+                                                                                            ## : 
+                                                                                            ## The 
+                                                                                            ## type 
+                                                                                            ## of 
+                                                                                            ## phone 
+                                                                                            ## number.
+  ##   
+                                                                                                      ## maxResults: int
+                                                                                                      ##             
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## maximimum 
+                                                                                                      ## number 
+                                                                                                      ## of 
+                                                                                                      ## results 
+                                                                                                      ## to 
+                                                                                                      ## return 
+                                                                                                      ## per 
+                                                                                                      ## page.
+  ##   
+                                                                                                              ## nextToken: string
+                                                                                                              ##            
+                                                                                                              ## : 
+                                                                                                              ## The 
+                                                                                                              ## token 
+                                                                                                              ## for 
+                                                                                                              ## the 
+                                                                                                              ## next 
+                                                                                                              ## set 
+                                                                                                              ## of 
+                                                                                                              ## results. 
+                                                                                                              ## Use 
+                                                                                                              ## the 
+                                                                                                              ## value 
+                                                                                                              ## returned 
+                                                                                                              ## in 
+                                                                                                              ## the 
+                                                                                                              ## previous 
+                                                                                                              ## response 
+                                                                                                              ## in 
+                                                                                                              ## the 
+                                                                                                              ## next 
+                                                                                                              ## request 
+                                                                                                              ## to 
+                                                                                                              ## retrieve 
+                                                                                                              ## the 
+                                                                                                              ## next 
+                                                                                                              ## set 
+                                                                                                              ## of 
+                                                                                                              ## results.
+  ##   
+                                                                                                                         ## MaxResults: string
+                                                                                                                         ##             
+                                                                                                                         ## : 
+                                                                                                                         ## Pagination 
+                                                                                                                         ## limit
+  ##   
+                                                                                                                                 ## NextToken: string
+                                                                                                                                 ##            
+                                                                                                                                 ## : 
+                                                                                                                                 ## Pagination 
+                                                                                                                                 ## token
+  ##   
+                                                                                                                                         ## InstanceId: string (required)
+                                                                                                                                         ##             
+                                                                                                                                         ## : 
+                                                                                                                                         ## The 
+                                                                                                                                         ## identifier 
+                                                                                                                                         ## of 
+                                                                                                                                         ## the 
+                                                                                                                                         ## Amazon 
+                                                                                                                                         ## Connect 
+                                                                                                                                         ## instance.
+  ##   
+                                                                                                                                                     ## phoneNumberCountryCodes: JArray
+                                                                                                                                                     ##                          
+                                                                                                                                                     ## : 
+                                                                                                                                                     ## The 
+                                                                                                                                                     ## ISO 
+                                                                                                                                                     ## country 
+                                                                                                                                                     ## code.
+  var path_402656673 = newJObject()
+  var query_402656674 = newJObject()
   if phoneNumberTypes != nil:
-    query_21626218.add "phoneNumberTypes", phoneNumberTypes
-  add(path_21626217, "InstanceId", newJString(InstanceId))
-  add(query_21626218, "NextToken", newJString(NextToken))
-  add(query_21626218, "maxResults", newJInt(maxResults))
-  add(query_21626218, "nextToken", newJString(nextToken))
+    query_402656674.add "phoneNumberTypes", phoneNumberTypes
+  add(query_402656674, "maxResults", newJInt(maxResults))
+  add(query_402656674, "nextToken", newJString(nextToken))
+  add(query_402656674, "MaxResults", newJString(MaxResults))
+  add(query_402656674, "NextToken", newJString(NextToken))
+  add(path_402656673, "InstanceId", newJString(InstanceId))
   if phoneNumberCountryCodes != nil:
-    query_21626218.add "phoneNumberCountryCodes", phoneNumberCountryCodes
-  add(query_21626218, "MaxResults", newJString(MaxResults))
-  result = call_21626216.call(path_21626217, query_21626218, nil, nil, nil)
+    query_402656674.add "phoneNumberCountryCodes", phoneNumberCountryCodes
+  result = call_402656672.call(path_402656673, query_402656674, nil, nil, nil)
 
-var listPhoneNumbers* = Call_ListPhoneNumbers_21626198(name: "listPhoneNumbers",
-    meth: HttpMethod.HttpGet, host: "connect.amazonaws.com",
-    route: "/phone-numbers-summary/{InstanceId}",
-    validator: validate_ListPhoneNumbers_21626199, base: "/",
-    makeUrl: url_ListPhoneNumbers_21626200, schemes: {Scheme.Https, Scheme.Http})
+var listPhoneNumbers* = Call_ListPhoneNumbers_402656654(
+    name: "listPhoneNumbers", meth: HttpMethod.HttpGet,
+    host: "connect.amazonaws.com", route: "/phone-numbers-summary/{InstanceId}",
+    validator: validate_ListPhoneNumbers_402656655, base: "/",
+    makeUrl: url_ListPhoneNumbers_402656656,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListQueues_21626219 = ref object of OpenApiRestCall_21625435
-proc url_ListQueues_21626221(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListQueues_402656675 = ref object of OpenApiRestCall_402656044
+proc url_ListQueues_402656677(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1897,7 +2364,7 @@ proc url_ListQueues_21626221(protocol: Scheme; host: string; base: string;
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/queues-summary/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1906,166 +2373,268 @@ proc url_ListQueues_21626221(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListQueues_21626220(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ListQueues_402656676(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Provides information about the queues for the specified Amazon Connect instance.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626222 = path.getOrDefault("InstanceId")
-  valid_21626222 = validateParameter(valid_21626222, JString, required = true,
-                                   default = nil)
-  if valid_21626222 != nil:
-    section.add "InstanceId", valid_21626222
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656678 = path.getOrDefault("InstanceId")
+  valid_402656678 = validateParameter(valid_402656678, JString, required = true,
+                                      default = nil)
+  if valid_402656678 != nil:
+    section.add "InstanceId", valid_402656678
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   maxResults: JInt
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: JString
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
   ##   queueTypes: JArray
-  ##             : The type of queue.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##             : The type of queue.
+  ##   maxResults: JInt
+                                                                     ##             : The maximimum number of results to return per page.
+  ##   
+                                                                                                                                         ## nextToken: JString
+                                                                                                                                         ##            
+                                                                                                                                         ## : 
+                                                                                                                                         ## The 
+                                                                                                                                         ## token 
+                                                                                                                                         ## for 
+                                                                                                                                         ## the 
+                                                                                                                                         ## next 
+                                                                                                                                         ## set 
+                                                                                                                                         ## of 
+                                                                                                                                         ## results. 
+                                                                                                                                         ## Use 
+                                                                                                                                         ## the 
+                                                                                                                                         ## value 
+                                                                                                                                         ## returned 
+                                                                                                                                         ## in 
+                                                                                                                                         ## the 
+                                                                                                                                         ## previous 
+                                                                                                                                         ## response 
+                                                                                                                                         ## in 
+                                                                                                                                         ## the 
+                                                                                                                                         ## next 
+                                                                                                                                         ## request 
+                                                                                                                                         ## to 
+                                                                                                                                         ## retrieve 
+                                                                                                                                         ## the 
+                                                                                                                                         ## next 
+                                                                                                                                         ## set 
+                                                                                                                                         ## of 
+                                                                                                                                         ## results.
+  ##   
+                                                                                                                                                    ## MaxResults: JString
+                                                                                                                                                    ##             
+                                                                                                                                                    ## : 
+                                                                                                                                                    ## Pagination 
+                                                                                                                                                    ## limit
+  ##   
+                                                                                                                                                            ## NextToken: JString
+                                                                                                                                                            ##            
+                                                                                                                                                            ## : 
+                                                                                                                                                            ## Pagination 
+                                                                                                                                                            ## token
   section = newJObject()
-  var valid_21626223 = query.getOrDefault("NextToken")
-  valid_21626223 = validateParameter(valid_21626223, JString, required = false,
-                                   default = nil)
-  if valid_21626223 != nil:
-    section.add "NextToken", valid_21626223
-  var valid_21626224 = query.getOrDefault("maxResults")
-  valid_21626224 = validateParameter(valid_21626224, JInt, required = false,
-                                   default = nil)
-  if valid_21626224 != nil:
-    section.add "maxResults", valid_21626224
-  var valid_21626225 = query.getOrDefault("nextToken")
-  valid_21626225 = validateParameter(valid_21626225, JString, required = false,
-                                   default = nil)
-  if valid_21626225 != nil:
-    section.add "nextToken", valid_21626225
-  var valid_21626226 = query.getOrDefault("queueTypes")
-  valid_21626226 = validateParameter(valid_21626226, JArray, required = false,
-                                   default = nil)
-  if valid_21626226 != nil:
-    section.add "queueTypes", valid_21626226
-  var valid_21626227 = query.getOrDefault("MaxResults")
-  valid_21626227 = validateParameter(valid_21626227, JString, required = false,
-                                   default = nil)
-  if valid_21626227 != nil:
-    section.add "MaxResults", valid_21626227
+  var valid_402656679 = query.getOrDefault("queueTypes")
+  valid_402656679 = validateParameter(valid_402656679, JArray, required = false,
+                                      default = nil)
+  if valid_402656679 != nil:
+    section.add "queueTypes", valid_402656679
+  var valid_402656680 = query.getOrDefault("maxResults")
+  valid_402656680 = validateParameter(valid_402656680, JInt, required = false,
+                                      default = nil)
+  if valid_402656680 != nil:
+    section.add "maxResults", valid_402656680
+  var valid_402656681 = query.getOrDefault("nextToken")
+  valid_402656681 = validateParameter(valid_402656681, JString,
+                                      required = false, default = nil)
+  if valid_402656681 != nil:
+    section.add "nextToken", valid_402656681
+  var valid_402656682 = query.getOrDefault("MaxResults")
+  valid_402656682 = validateParameter(valid_402656682, JString,
+                                      required = false, default = nil)
+  if valid_402656682 != nil:
+    section.add "MaxResults", valid_402656682
+  var valid_402656683 = query.getOrDefault("NextToken")
+  valid_402656683 = validateParameter(valid_402656683, JString,
+                                      required = false, default = nil)
+  if valid_402656683 != nil:
+    section.add "NextToken", valid_402656683
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626228 = header.getOrDefault("X-Amz-Date")
-  valid_21626228 = validateParameter(valid_21626228, JString, required = false,
-                                   default = nil)
-  if valid_21626228 != nil:
-    section.add "X-Amz-Date", valid_21626228
-  var valid_21626229 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626229 = validateParameter(valid_21626229, JString, required = false,
-                                   default = nil)
-  if valid_21626229 != nil:
-    section.add "X-Amz-Security-Token", valid_21626229
-  var valid_21626230 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626230 = validateParameter(valid_21626230, JString, required = false,
-                                   default = nil)
-  if valid_21626230 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626230
-  var valid_21626231 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626231 = validateParameter(valid_21626231, JString, required = false,
-                                   default = nil)
-  if valid_21626231 != nil:
-    section.add "X-Amz-Algorithm", valid_21626231
-  var valid_21626232 = header.getOrDefault("X-Amz-Signature")
-  valid_21626232 = validateParameter(valid_21626232, JString, required = false,
-                                   default = nil)
-  if valid_21626232 != nil:
-    section.add "X-Amz-Signature", valid_21626232
-  var valid_21626233 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626233 = validateParameter(valid_21626233, JString, required = false,
-                                   default = nil)
-  if valid_21626233 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626233
-  var valid_21626234 = header.getOrDefault("X-Amz-Credential")
-  valid_21626234 = validateParameter(valid_21626234, JString, required = false,
-                                   default = nil)
-  if valid_21626234 != nil:
-    section.add "X-Amz-Credential", valid_21626234
+  var valid_402656684 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656684 = validateParameter(valid_402656684, JString,
+                                      required = false, default = nil)
+  if valid_402656684 != nil:
+    section.add "X-Amz-Security-Token", valid_402656684
+  var valid_402656685 = header.getOrDefault("X-Amz-Signature")
+  valid_402656685 = validateParameter(valid_402656685, JString,
+                                      required = false, default = nil)
+  if valid_402656685 != nil:
+    section.add "X-Amz-Signature", valid_402656685
+  var valid_402656686 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656686 = validateParameter(valid_402656686, JString,
+                                      required = false, default = nil)
+  if valid_402656686 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656686
+  var valid_402656687 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656687 = validateParameter(valid_402656687, JString,
+                                      required = false, default = nil)
+  if valid_402656687 != nil:
+    section.add "X-Amz-Algorithm", valid_402656687
+  var valid_402656688 = header.getOrDefault("X-Amz-Date")
+  valid_402656688 = validateParameter(valid_402656688, JString,
+                                      required = false, default = nil)
+  if valid_402656688 != nil:
+    section.add "X-Amz-Date", valid_402656688
+  var valid_402656689 = header.getOrDefault("X-Amz-Credential")
+  valid_402656689 = validateParameter(valid_402656689, JString,
+                                      required = false, default = nil)
+  if valid_402656689 != nil:
+    section.add "X-Amz-Credential", valid_402656689
+  var valid_402656690 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656690 = validateParameter(valid_402656690, JString,
+                                      required = false, default = nil)
+  if valid_402656690 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656690
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626235: Call_ListQueues_21626219; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656691: Call_ListQueues_402656675; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Provides information about the queues for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626235.validator(path, query, header, formData, body, _)
-  let scheme = call_21626235.pickScheme
+                                                                                         ## 
+  let valid = call_402656691.validator(path, query, header, formData, body, _)
+  let scheme = call_402656691.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626235.makeUrl(scheme.get, call_21626235.host, call_21626235.base,
-                               call_21626235.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626235, uri, valid, _)
+  let uri = call_402656691.makeUrl(scheme.get, call_402656691.host, call_402656691.base,
+                                   call_402656691.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656691, uri, valid, _)
 
-proc call*(call_21626236: Call_ListQueues_21626219; InstanceId: string;
-          NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
-          queueTypes: JsonNode = nil; MaxResults: string = ""): Recallable =
+proc call*(call_402656692: Call_ListQueues_402656675; InstanceId: string;
+           queueTypes: JsonNode = nil; maxResults: int = 0;
+           nextToken: string = ""; MaxResults: string = "";
+           NextToken: string = ""): Recallable =
   ## listQueues
   ## Provides information about the queues for the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   maxResults: int
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: string
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   queueTypes: JArray
-  ##             : The type of queue.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626237 = newJObject()
-  var query_21626238 = newJObject()
-  add(path_21626237, "InstanceId", newJString(InstanceId))
-  add(query_21626238, "NextToken", newJString(NextToken))
-  add(query_21626238, "maxResults", newJInt(maxResults))
-  add(query_21626238, "nextToken", newJString(nextToken))
+  ##   
+                                                                                     ## queueTypes: JArray
+                                                                                     ##             
+                                                                                     ## : 
+                                                                                     ## The 
+                                                                                     ## type 
+                                                                                     ## of 
+                                                                                     ## queue.
+  ##   
+                                                                                              ## maxResults: int
+                                                                                              ##             
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## maximimum 
+                                                                                              ## number 
+                                                                                              ## of 
+                                                                                              ## results 
+                                                                                              ## to 
+                                                                                              ## return 
+                                                                                              ## per 
+                                                                                              ## page.
+  ##   
+                                                                                                      ## nextToken: string
+                                                                                                      ##            
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## token 
+                                                                                                      ## for 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results. 
+                                                                                                      ## Use 
+                                                                                                      ## the 
+                                                                                                      ## value 
+                                                                                                      ## returned 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## previous 
+                                                                                                      ## response 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## request 
+                                                                                                      ## to 
+                                                                                                      ## retrieve 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results.
+  ##   
+                                                                                                                 ## MaxResults: string
+                                                                                                                 ##             
+                                                                                                                 ## : 
+                                                                                                                 ## Pagination 
+                                                                                                                 ## limit
+  ##   
+                                                                                                                         ## NextToken: string
+                                                                                                                         ##            
+                                                                                                                         ## : 
+                                                                                                                         ## Pagination 
+                                                                                                                         ## token
+  ##   
+                                                                                                                                 ## InstanceId: string (required)
+                                                                                                                                 ##             
+                                                                                                                                 ## : 
+                                                                                                                                 ## The 
+                                                                                                                                 ## identifier 
+                                                                                                                                 ## of 
+                                                                                                                                 ## the 
+                                                                                                                                 ## Amazon 
+                                                                                                                                 ## Connect 
+                                                                                                                                 ## instance.
+  var path_402656693 = newJObject()
+  var query_402656694 = newJObject()
   if queueTypes != nil:
-    query_21626238.add "queueTypes", queueTypes
-  add(query_21626238, "MaxResults", newJString(MaxResults))
-  result = call_21626236.call(path_21626237, query_21626238, nil, nil, nil)
+    query_402656694.add "queueTypes", queueTypes
+  add(query_402656694, "maxResults", newJInt(maxResults))
+  add(query_402656694, "nextToken", newJString(nextToken))
+  add(query_402656694, "MaxResults", newJString(MaxResults))
+  add(query_402656694, "NextToken", newJString(NextToken))
+  add(path_402656693, "InstanceId", newJString(InstanceId))
+  result = call_402656692.call(path_402656693, query_402656694, nil, nil, nil)
 
-var listQueues* = Call_ListQueues_21626219(name: "listQueues",
-                                        meth: HttpMethod.HttpGet,
-                                        host: "connect.amazonaws.com",
-                                        route: "/queues-summary/{InstanceId}",
-                                        validator: validate_ListQueues_21626220,
-                                        base: "/", makeUrl: url_ListQueues_21626221,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var listQueues* = Call_ListQueues_402656675(name: "listQueues",
+    meth: HttpMethod.HttpGet, host: "connect.amazonaws.com",
+    route: "/queues-summary/{InstanceId}", validator: validate_ListQueues_402656676,
+    base: "/", makeUrl: url_ListQueues_402656677,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRoutingProfiles_21626239 = ref object of OpenApiRestCall_21625435
-proc url_ListRoutingProfiles_21626241(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListRoutingProfiles_402656695 = ref object of OpenApiRestCall_402656044
+proc url_ListRoutingProfiles_402656697(protocol: Scheme; host: string;
+                                       base: string; route: string;
+                                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2073,7 +2642,7 @@ proc url_ListRoutingProfiles_21626241(protocol: Scheme; host: string; base: stri
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/routing-profiles-summary/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2082,155 +2651,251 @@ proc url_ListRoutingProfiles_21626241(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & hydrated.get
 
-proc validate_ListRoutingProfiles_21626240(path: JsonNode; query: JsonNode;
+proc validate_ListRoutingProfiles_402656696(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Provides summary information about the routing profiles for the specified Amazon Connect instance.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626242 = path.getOrDefault("InstanceId")
-  valid_21626242 = validateParameter(valid_21626242, JString, required = true,
-                                   default = nil)
-  if valid_21626242 != nil:
-    section.add "InstanceId", valid_21626242
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656698 = path.getOrDefault("InstanceId")
+  valid_402656698 = validateParameter(valid_402656698, JString, required = true,
+                                      default = nil)
+  if valid_402656698 != nil:
+    section.add "InstanceId", valid_402656698
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   maxResults: JInt
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: JString
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##             : The maximimum number of results to return per page.
+  ##   
+                                                                                                      ## nextToken: JString
+                                                                                                      ##            
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## token 
+                                                                                                      ## for 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results. 
+                                                                                                      ## Use 
+                                                                                                      ## the 
+                                                                                                      ## value 
+                                                                                                      ## returned 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## previous 
+                                                                                                      ## response 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## request 
+                                                                                                      ## to 
+                                                                                                      ## retrieve 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results.
+  ##   
+                                                                                                                 ## MaxResults: JString
+                                                                                                                 ##             
+                                                                                                                 ## : 
+                                                                                                                 ## Pagination 
+                                                                                                                 ## limit
+  ##   
+                                                                                                                         ## NextToken: JString
+                                                                                                                         ##            
+                                                                                                                         ## : 
+                                                                                                                         ## Pagination 
+                                                                                                                         ## token
   section = newJObject()
-  var valid_21626243 = query.getOrDefault("NextToken")
-  valid_21626243 = validateParameter(valid_21626243, JString, required = false,
-                                   default = nil)
-  if valid_21626243 != nil:
-    section.add "NextToken", valid_21626243
-  var valid_21626244 = query.getOrDefault("maxResults")
-  valid_21626244 = validateParameter(valid_21626244, JInt, required = false,
-                                   default = nil)
-  if valid_21626244 != nil:
-    section.add "maxResults", valid_21626244
-  var valid_21626245 = query.getOrDefault("nextToken")
-  valid_21626245 = validateParameter(valid_21626245, JString, required = false,
-                                   default = nil)
-  if valid_21626245 != nil:
-    section.add "nextToken", valid_21626245
-  var valid_21626246 = query.getOrDefault("MaxResults")
-  valid_21626246 = validateParameter(valid_21626246, JString, required = false,
-                                   default = nil)
-  if valid_21626246 != nil:
-    section.add "MaxResults", valid_21626246
+  var valid_402656699 = query.getOrDefault("maxResults")
+  valid_402656699 = validateParameter(valid_402656699, JInt, required = false,
+                                      default = nil)
+  if valid_402656699 != nil:
+    section.add "maxResults", valid_402656699
+  var valid_402656700 = query.getOrDefault("nextToken")
+  valid_402656700 = validateParameter(valid_402656700, JString,
+                                      required = false, default = nil)
+  if valid_402656700 != nil:
+    section.add "nextToken", valid_402656700
+  var valid_402656701 = query.getOrDefault("MaxResults")
+  valid_402656701 = validateParameter(valid_402656701, JString,
+                                      required = false, default = nil)
+  if valid_402656701 != nil:
+    section.add "MaxResults", valid_402656701
+  var valid_402656702 = query.getOrDefault("NextToken")
+  valid_402656702 = validateParameter(valid_402656702, JString,
+                                      required = false, default = nil)
+  if valid_402656702 != nil:
+    section.add "NextToken", valid_402656702
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626247 = header.getOrDefault("X-Amz-Date")
-  valid_21626247 = validateParameter(valid_21626247, JString, required = false,
-                                   default = nil)
-  if valid_21626247 != nil:
-    section.add "X-Amz-Date", valid_21626247
-  var valid_21626248 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626248 = validateParameter(valid_21626248, JString, required = false,
-                                   default = nil)
-  if valid_21626248 != nil:
-    section.add "X-Amz-Security-Token", valid_21626248
-  var valid_21626249 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626249 = validateParameter(valid_21626249, JString, required = false,
-                                   default = nil)
-  if valid_21626249 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626249
-  var valid_21626250 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626250 = validateParameter(valid_21626250, JString, required = false,
-                                   default = nil)
-  if valid_21626250 != nil:
-    section.add "X-Amz-Algorithm", valid_21626250
-  var valid_21626251 = header.getOrDefault("X-Amz-Signature")
-  valid_21626251 = validateParameter(valid_21626251, JString, required = false,
-                                   default = nil)
-  if valid_21626251 != nil:
-    section.add "X-Amz-Signature", valid_21626251
-  var valid_21626252 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626252 = validateParameter(valid_21626252, JString, required = false,
-                                   default = nil)
-  if valid_21626252 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626252
-  var valid_21626253 = header.getOrDefault("X-Amz-Credential")
-  valid_21626253 = validateParameter(valid_21626253, JString, required = false,
-                                   default = nil)
-  if valid_21626253 != nil:
-    section.add "X-Amz-Credential", valid_21626253
+  var valid_402656703 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656703 = validateParameter(valid_402656703, JString,
+                                      required = false, default = nil)
+  if valid_402656703 != nil:
+    section.add "X-Amz-Security-Token", valid_402656703
+  var valid_402656704 = header.getOrDefault("X-Amz-Signature")
+  valid_402656704 = validateParameter(valid_402656704, JString,
+                                      required = false, default = nil)
+  if valid_402656704 != nil:
+    section.add "X-Amz-Signature", valid_402656704
+  var valid_402656705 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656705 = validateParameter(valid_402656705, JString,
+                                      required = false, default = nil)
+  if valid_402656705 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656705
+  var valid_402656706 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656706 = validateParameter(valid_402656706, JString,
+                                      required = false, default = nil)
+  if valid_402656706 != nil:
+    section.add "X-Amz-Algorithm", valid_402656706
+  var valid_402656707 = header.getOrDefault("X-Amz-Date")
+  valid_402656707 = validateParameter(valid_402656707, JString,
+                                      required = false, default = nil)
+  if valid_402656707 != nil:
+    section.add "X-Amz-Date", valid_402656707
+  var valid_402656708 = header.getOrDefault("X-Amz-Credential")
+  valid_402656708 = validateParameter(valid_402656708, JString,
+                                      required = false, default = nil)
+  if valid_402656708 != nil:
+    section.add "X-Amz-Credential", valid_402656708
+  var valid_402656709 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656709 = validateParameter(valid_402656709, JString,
+                                      required = false, default = nil)
+  if valid_402656709 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656709
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626254: Call_ListRoutingProfiles_21626239; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656710: Call_ListRoutingProfiles_402656695;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Provides summary information about the routing profiles for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626254.validator(path, query, header, formData, body, _)
-  let scheme = call_21626254.pickScheme
+                                                                                         ## 
+  let valid = call_402656710.validator(path, query, header, formData, body, _)
+  let scheme = call_402656710.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626254.makeUrl(scheme.get, call_21626254.host, call_21626254.base,
-                               call_21626254.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626254, uri, valid, _)
+  let uri = call_402656710.makeUrl(scheme.get, call_402656710.host, call_402656710.base,
+                                   call_402656710.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656710, uri, valid, _)
 
-proc call*(call_21626255: Call_ListRoutingProfiles_21626239; InstanceId: string;
-          NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
-          MaxResults: string = ""): Recallable =
+proc call*(call_402656711: Call_ListRoutingProfiles_402656695;
+           InstanceId: string; maxResults: int = 0; nextToken: string = "";
+           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listRoutingProfiles
   ## Provides summary information about the routing profiles for the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   maxResults: int
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: string
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626256 = newJObject()
-  var query_21626257 = newJObject()
-  add(path_21626256, "InstanceId", newJString(InstanceId))
-  add(query_21626257, "NextToken", newJString(NextToken))
-  add(query_21626257, "maxResults", newJInt(maxResults))
-  add(query_21626257, "nextToken", newJString(nextToken))
-  add(query_21626257, "MaxResults", newJString(MaxResults))
-  result = call_21626255.call(path_21626256, query_21626257, nil, nil, nil)
+  ##   
+                                                                                                       ## maxResults: int
+                                                                                                       ##             
+                                                                                                       ## : 
+                                                                                                       ## The 
+                                                                                                       ## maximimum 
+                                                                                                       ## number 
+                                                                                                       ## of 
+                                                                                                       ## results 
+                                                                                                       ## to 
+                                                                                                       ## return 
+                                                                                                       ## per 
+                                                                                                       ## page.
+  ##   
+                                                                                                               ## nextToken: string
+                                                                                                               ##            
+                                                                                                               ## : 
+                                                                                                               ## The 
+                                                                                                               ## token 
+                                                                                                               ## for 
+                                                                                                               ## the 
+                                                                                                               ## next 
+                                                                                                               ## set 
+                                                                                                               ## of 
+                                                                                                               ## results. 
+                                                                                                               ## Use 
+                                                                                                               ## the 
+                                                                                                               ## value 
+                                                                                                               ## returned 
+                                                                                                               ## in 
+                                                                                                               ## the 
+                                                                                                               ## previous 
+                                                                                                               ## response 
+                                                                                                               ## in 
+                                                                                                               ## the 
+                                                                                                               ## next 
+                                                                                                               ## request 
+                                                                                                               ## to 
+                                                                                                               ## retrieve 
+                                                                                                               ## the 
+                                                                                                               ## next 
+                                                                                                               ## set 
+                                                                                                               ## of 
+                                                                                                               ## results.
+  ##   
+                                                                                                                          ## MaxResults: string
+                                                                                                                          ##             
+                                                                                                                          ## : 
+                                                                                                                          ## Pagination 
+                                                                                                                          ## limit
+  ##   
+                                                                                                                                  ## NextToken: string
+                                                                                                                                  ##            
+                                                                                                                                  ## : 
+                                                                                                                                  ## Pagination 
+                                                                                                                                  ## token
+  ##   
+                                                                                                                                          ## InstanceId: string (required)
+                                                                                                                                          ##             
+                                                                                                                                          ## : 
+                                                                                                                                          ## The 
+                                                                                                                                          ## identifier 
+                                                                                                                                          ## of 
+                                                                                                                                          ## the 
+                                                                                                                                          ## Amazon 
+                                                                                                                                          ## Connect 
+                                                                                                                                          ## instance.
+  var path_402656712 = newJObject()
+  var query_402656713 = newJObject()
+  add(query_402656713, "maxResults", newJInt(maxResults))
+  add(query_402656713, "nextToken", newJString(nextToken))
+  add(query_402656713, "MaxResults", newJString(MaxResults))
+  add(query_402656713, "NextToken", newJString(NextToken))
+  add(path_402656712, "InstanceId", newJString(InstanceId))
+  result = call_402656711.call(path_402656712, query_402656713, nil, nil, nil)
 
-var listRoutingProfiles* = Call_ListRoutingProfiles_21626239(
+var listRoutingProfiles* = Call_ListRoutingProfiles_402656695(
     name: "listRoutingProfiles", meth: HttpMethod.HttpGet,
     host: "connect.amazonaws.com",
     route: "/routing-profiles-summary/{InstanceId}",
-    validator: validate_ListRoutingProfiles_21626240, base: "/",
-    makeUrl: url_ListRoutingProfiles_21626241,
+    validator: validate_ListRoutingProfiles_402656696, base: "/",
+    makeUrl: url_ListRoutingProfiles_402656697,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSecurityProfiles_21626258 = ref object of OpenApiRestCall_21625435
-proc url_ListSecurityProfiles_21626260(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListSecurityProfiles_402656714 = ref object of OpenApiRestCall_402656044
+proc url_ListSecurityProfiles_402656716(protocol: Scheme; host: string;
+                                        base: string; route: string;
+                                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2238,7 +2903,7 @@ proc url_ListSecurityProfiles_21626260(protocol: Scheme; host: string; base: str
   assert "InstanceId" in path, "`InstanceId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/security-profiles-summary/"),
-               (kind: VariableSegment, value: "InstanceId")]
+                 (kind: VariableSegment, value: "InstanceId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2247,1050 +2912,249 @@ proc url_ListSecurityProfiles_21626260(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_ListSecurityProfiles_21626259(path: JsonNode; query: JsonNode;
+proc validate_ListSecurityProfiles_402656715(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Provides summary information about the security profiles for the specified Amazon Connect instance.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
+                                 ##             : The identifier of the Amazon Connect instance.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626261 = path.getOrDefault("InstanceId")
-  valid_21626261 = validateParameter(valid_21626261, JString, required = true,
-                                   default = nil)
-  if valid_21626261 != nil:
-    section.add "InstanceId", valid_21626261
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656717 = path.getOrDefault("InstanceId")
+  valid_402656717 = validateParameter(valid_402656717, JString, required = true,
+                                      default = nil)
+  if valid_402656717 != nil:
+    section.add "InstanceId", valid_402656717
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   maxResults: JInt
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: JString
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##             : The maximimum number of results to return per page.
+  ##   
+                                                                                                      ## nextToken: JString
+                                                                                                      ##            
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## token 
+                                                                                                      ## for 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results. 
+                                                                                                      ## Use 
+                                                                                                      ## the 
+                                                                                                      ## value 
+                                                                                                      ## returned 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## previous 
+                                                                                                      ## response 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## request 
+                                                                                                      ## to 
+                                                                                                      ## retrieve 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results.
+  ##   
+                                                                                                                 ## MaxResults: JString
+                                                                                                                 ##             
+                                                                                                                 ## : 
+                                                                                                                 ## Pagination 
+                                                                                                                 ## limit
+  ##   
+                                                                                                                         ## NextToken: JString
+                                                                                                                         ##            
+                                                                                                                         ## : 
+                                                                                                                         ## Pagination 
+                                                                                                                         ## token
   section = newJObject()
-  var valid_21626262 = query.getOrDefault("NextToken")
-  valid_21626262 = validateParameter(valid_21626262, JString, required = false,
-                                   default = nil)
-  if valid_21626262 != nil:
-    section.add "NextToken", valid_21626262
-  var valid_21626263 = query.getOrDefault("maxResults")
-  valid_21626263 = validateParameter(valid_21626263, JInt, required = false,
-                                   default = nil)
-  if valid_21626263 != nil:
-    section.add "maxResults", valid_21626263
-  var valid_21626264 = query.getOrDefault("nextToken")
-  valid_21626264 = validateParameter(valid_21626264, JString, required = false,
-                                   default = nil)
-  if valid_21626264 != nil:
-    section.add "nextToken", valid_21626264
-  var valid_21626265 = query.getOrDefault("MaxResults")
-  valid_21626265 = validateParameter(valid_21626265, JString, required = false,
-                                   default = nil)
-  if valid_21626265 != nil:
-    section.add "MaxResults", valid_21626265
+  var valid_402656718 = query.getOrDefault("maxResults")
+  valid_402656718 = validateParameter(valid_402656718, JInt, required = false,
+                                      default = nil)
+  if valid_402656718 != nil:
+    section.add "maxResults", valid_402656718
+  var valid_402656719 = query.getOrDefault("nextToken")
+  valid_402656719 = validateParameter(valid_402656719, JString,
+                                      required = false, default = nil)
+  if valid_402656719 != nil:
+    section.add "nextToken", valid_402656719
+  var valid_402656720 = query.getOrDefault("MaxResults")
+  valid_402656720 = validateParameter(valid_402656720, JString,
+                                      required = false, default = nil)
+  if valid_402656720 != nil:
+    section.add "MaxResults", valid_402656720
+  var valid_402656721 = query.getOrDefault("NextToken")
+  valid_402656721 = validateParameter(valid_402656721, JString,
+                                      required = false, default = nil)
+  if valid_402656721 != nil:
+    section.add "NextToken", valid_402656721
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626266 = header.getOrDefault("X-Amz-Date")
-  valid_21626266 = validateParameter(valid_21626266, JString, required = false,
-                                   default = nil)
-  if valid_21626266 != nil:
-    section.add "X-Amz-Date", valid_21626266
-  var valid_21626267 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626267 = validateParameter(valid_21626267, JString, required = false,
-                                   default = nil)
-  if valid_21626267 != nil:
-    section.add "X-Amz-Security-Token", valid_21626267
-  var valid_21626268 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626268 = validateParameter(valid_21626268, JString, required = false,
-                                   default = nil)
-  if valid_21626268 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626268
-  var valid_21626269 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626269 = validateParameter(valid_21626269, JString, required = false,
-                                   default = nil)
-  if valid_21626269 != nil:
-    section.add "X-Amz-Algorithm", valid_21626269
-  var valid_21626270 = header.getOrDefault("X-Amz-Signature")
-  valid_21626270 = validateParameter(valid_21626270, JString, required = false,
-                                   default = nil)
-  if valid_21626270 != nil:
-    section.add "X-Amz-Signature", valid_21626270
-  var valid_21626271 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626271 = validateParameter(valid_21626271, JString, required = false,
-                                   default = nil)
-  if valid_21626271 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626271
-  var valid_21626272 = header.getOrDefault("X-Amz-Credential")
-  valid_21626272 = validateParameter(valid_21626272, JString, required = false,
-                                   default = nil)
-  if valid_21626272 != nil:
-    section.add "X-Amz-Credential", valid_21626272
+  var valid_402656722 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656722 = validateParameter(valid_402656722, JString,
+                                      required = false, default = nil)
+  if valid_402656722 != nil:
+    section.add "X-Amz-Security-Token", valid_402656722
+  var valid_402656723 = header.getOrDefault("X-Amz-Signature")
+  valid_402656723 = validateParameter(valid_402656723, JString,
+                                      required = false, default = nil)
+  if valid_402656723 != nil:
+    section.add "X-Amz-Signature", valid_402656723
+  var valid_402656724 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656724 = validateParameter(valid_402656724, JString,
+                                      required = false, default = nil)
+  if valid_402656724 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656724
+  var valid_402656725 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656725 = validateParameter(valid_402656725, JString,
+                                      required = false, default = nil)
+  if valid_402656725 != nil:
+    section.add "X-Amz-Algorithm", valid_402656725
+  var valid_402656726 = header.getOrDefault("X-Amz-Date")
+  valid_402656726 = validateParameter(valid_402656726, JString,
+                                      required = false, default = nil)
+  if valid_402656726 != nil:
+    section.add "X-Amz-Date", valid_402656726
+  var valid_402656727 = header.getOrDefault("X-Amz-Credential")
+  valid_402656727 = validateParameter(valid_402656727, JString,
+                                      required = false, default = nil)
+  if valid_402656727 != nil:
+    section.add "X-Amz-Credential", valid_402656727
+  var valid_402656728 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656728 = validateParameter(valid_402656728, JString,
+                                      required = false, default = nil)
+  if valid_402656728 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656728
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626273: Call_ListSecurityProfiles_21626258; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656729: Call_ListSecurityProfiles_402656714;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Provides summary information about the security profiles for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626273.validator(path, query, header, formData, body, _)
-  let scheme = call_21626273.pickScheme
+                                                                                         ## 
+  let valid = call_402656729.validator(path, query, header, formData, body, _)
+  let scheme = call_402656729.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626273.makeUrl(scheme.get, call_21626273.host, call_21626273.base,
-                               call_21626273.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626273, uri, valid, _)
+  let uri = call_402656729.makeUrl(scheme.get, call_402656729.host, call_402656729.base,
+                                   call_402656729.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656729, uri, valid, _)
 
-proc call*(call_21626274: Call_ListSecurityProfiles_21626258; InstanceId: string;
-          NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
-          MaxResults: string = ""): Recallable =
+proc call*(call_402656730: Call_ListSecurityProfiles_402656714;
+           InstanceId: string; maxResults: int = 0; nextToken: string = "";
+           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listSecurityProfiles
   ## Provides summary information about the security profiles for the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   maxResults: int
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: string
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626275 = newJObject()
-  var query_21626276 = newJObject()
-  add(path_21626275, "InstanceId", newJString(InstanceId))
-  add(query_21626276, "NextToken", newJString(NextToken))
-  add(query_21626276, "maxResults", newJInt(maxResults))
-  add(query_21626276, "nextToken", newJString(nextToken))
-  add(query_21626276, "MaxResults", newJString(MaxResults))
-  result = call_21626274.call(path_21626275, query_21626276, nil, nil, nil)
+  ##   
+                                                                                                        ## maxResults: int
+                                                                                                        ##             
+                                                                                                        ## : 
+                                                                                                        ## The 
+                                                                                                        ## maximimum 
+                                                                                                        ## number 
+                                                                                                        ## of 
+                                                                                                        ## results 
+                                                                                                        ## to 
+                                                                                                        ## return 
+                                                                                                        ## per 
+                                                                                                        ## page.
+  ##   
+                                                                                                                ## nextToken: string
+                                                                                                                ##            
+                                                                                                                ## : 
+                                                                                                                ## The 
+                                                                                                                ## token 
+                                                                                                                ## for 
+                                                                                                                ## the 
+                                                                                                                ## next 
+                                                                                                                ## set 
+                                                                                                                ## of 
+                                                                                                                ## results. 
+                                                                                                                ## Use 
+                                                                                                                ## the 
+                                                                                                                ## value 
+                                                                                                                ## returned 
+                                                                                                                ## in 
+                                                                                                                ## the 
+                                                                                                                ## previous 
+                                                                                                                ## response 
+                                                                                                                ## in 
+                                                                                                                ## the 
+                                                                                                                ## next 
+                                                                                                                ## request 
+                                                                                                                ## to 
+                                                                                                                ## retrieve 
+                                                                                                                ## the 
+                                                                                                                ## next 
+                                                                                                                ## set 
+                                                                                                                ## of 
+                                                                                                                ## results.
+  ##   
+                                                                                                                           ## MaxResults: string
+                                                                                                                           ##             
+                                                                                                                           ## : 
+                                                                                                                           ## Pagination 
+                                                                                                                           ## limit
+  ##   
+                                                                                                                                   ## NextToken: string
+                                                                                                                                   ##            
+                                                                                                                                   ## : 
+                                                                                                                                   ## Pagination 
+                                                                                                                                   ## token
+  ##   
+                                                                                                                                           ## InstanceId: string (required)
+                                                                                                                                           ##             
+                                                                                                                                           ## : 
+                                                                                                                                           ## The 
+                                                                                                                                           ## identifier 
+                                                                                                                                           ## of 
+                                                                                                                                           ## the 
+                                                                                                                                           ## Amazon 
+                                                                                                                                           ## Connect 
+                                                                                                                                           ## instance.
+  var path_402656731 = newJObject()
+  var query_402656732 = newJObject()
+  add(query_402656732, "maxResults", newJInt(maxResults))
+  add(query_402656732, "nextToken", newJString(nextToken))
+  add(query_402656732, "MaxResults", newJString(MaxResults))
+  add(query_402656732, "NextToken", newJString(NextToken))
+  add(path_402656731, "InstanceId", newJString(InstanceId))
+  result = call_402656730.call(path_402656731, query_402656732, nil, nil, nil)
 
-var listSecurityProfiles* = Call_ListSecurityProfiles_21626258(
+var listSecurityProfiles* = Call_ListSecurityProfiles_402656714(
     name: "listSecurityProfiles", meth: HttpMethod.HttpGet,
     host: "connect.amazonaws.com",
     route: "/security-profiles-summary/{InstanceId}",
-    validator: validate_ListSecurityProfiles_21626259, base: "/",
-    makeUrl: url_ListSecurityProfiles_21626260,
+    validator: validate_ListSecurityProfiles_402656715, base: "/",
+    makeUrl: url_ListSecurityProfiles_402656716,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_21626291 = ref object of OpenApiRestCall_21625435
-proc url_TagResource_21626293(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "resourceArn" in path, "`resourceArn` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/tags/"),
-               (kind: VariableSegment, value: "resourceArn")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_TagResource_21626292(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## <p>Adds the specified tags to the specified resource.</p> <p>The supported resource type is users.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   resourceArn: JString (required)
-  ##              : The Amazon Resource Name (ARN) of the resource.
-  section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `resourceArn` field"
-  var valid_21626294 = path.getOrDefault("resourceArn")
-  valid_21626294 = validateParameter(valid_21626294, JString, required = true,
-                                   default = nil)
-  if valid_21626294 != nil:
-    section.add "resourceArn", valid_21626294
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626295 = header.getOrDefault("X-Amz-Date")
-  valid_21626295 = validateParameter(valid_21626295, JString, required = false,
-                                   default = nil)
-  if valid_21626295 != nil:
-    section.add "X-Amz-Date", valid_21626295
-  var valid_21626296 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626296 = validateParameter(valid_21626296, JString, required = false,
-                                   default = nil)
-  if valid_21626296 != nil:
-    section.add "X-Amz-Security-Token", valid_21626296
-  var valid_21626297 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626297 = validateParameter(valid_21626297, JString, required = false,
-                                   default = nil)
-  if valid_21626297 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626297
-  var valid_21626298 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626298 = validateParameter(valid_21626298, JString, required = false,
-                                   default = nil)
-  if valid_21626298 != nil:
-    section.add "X-Amz-Algorithm", valid_21626298
-  var valid_21626299 = header.getOrDefault("X-Amz-Signature")
-  valid_21626299 = validateParameter(valid_21626299, JString, required = false,
-                                   default = nil)
-  if valid_21626299 != nil:
-    section.add "X-Amz-Signature", valid_21626299
-  var valid_21626300 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626300 = validateParameter(valid_21626300, JString, required = false,
-                                   default = nil)
-  if valid_21626300 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626300
-  var valid_21626301 = header.getOrDefault("X-Amz-Credential")
-  valid_21626301 = validateParameter(valid_21626301, JString, required = false,
-                                   default = nil)
-  if valid_21626301 != nil:
-    section.add "X-Amz-Credential", valid_21626301
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626303: Call_TagResource_21626291; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Adds the specified tags to the specified resource.</p> <p>The supported resource type is users.</p>
-  ## 
-  let valid = call_21626303.validator(path, query, header, formData, body, _)
-  let scheme = call_21626303.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626303.makeUrl(scheme.get, call_21626303.host, call_21626303.base,
-                               call_21626303.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626303, uri, valid, _)
-
-proc call*(call_21626304: Call_TagResource_21626291; body: JsonNode;
-          resourceArn: string): Recallable =
-  ## tagResource
-  ## <p>Adds the specified tags to the specified resource.</p> <p>The supported resource type is users.</p>
-  ##   body: JObject (required)
-  ##   resourceArn: string (required)
-  ##              : The Amazon Resource Name (ARN) of the resource.
-  var path_21626305 = newJObject()
-  var body_21626306 = newJObject()
-  if body != nil:
-    body_21626306 = body
-  add(path_21626305, "resourceArn", newJString(resourceArn))
-  result = call_21626304.call(path_21626305, nil, nil, nil, body_21626306)
-
-var tagResource* = Call_TagResource_21626291(name: "tagResource",
-    meth: HttpMethod.HttpPost, host: "connect.amazonaws.com",
-    route: "/tags/{resourceArn}", validator: validate_TagResource_21626292,
-    base: "/", makeUrl: url_TagResource_21626293,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListTagsForResource_21626277 = ref object of OpenApiRestCall_21625435
-proc url_ListTagsForResource_21626279(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "resourceArn" in path, "`resourceArn` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/tags/"),
-               (kind: VariableSegment, value: "resourceArn")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_ListTagsForResource_21626278(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## Lists the tags for the specified resource.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   resourceArn: JString (required)
-  ##              : The Amazon Resource Name (ARN) of the resource.
-  section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `resourceArn` field"
-  var valid_21626280 = path.getOrDefault("resourceArn")
-  valid_21626280 = validateParameter(valid_21626280, JString, required = true,
-                                   default = nil)
-  if valid_21626280 != nil:
-    section.add "resourceArn", valid_21626280
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626281 = header.getOrDefault("X-Amz-Date")
-  valid_21626281 = validateParameter(valid_21626281, JString, required = false,
-                                   default = nil)
-  if valid_21626281 != nil:
-    section.add "X-Amz-Date", valid_21626281
-  var valid_21626282 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626282 = validateParameter(valid_21626282, JString, required = false,
-                                   default = nil)
-  if valid_21626282 != nil:
-    section.add "X-Amz-Security-Token", valid_21626282
-  var valid_21626283 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626283 = validateParameter(valid_21626283, JString, required = false,
-                                   default = nil)
-  if valid_21626283 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626283
-  var valid_21626284 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626284 = validateParameter(valid_21626284, JString, required = false,
-                                   default = nil)
-  if valid_21626284 != nil:
-    section.add "X-Amz-Algorithm", valid_21626284
-  var valid_21626285 = header.getOrDefault("X-Amz-Signature")
-  valid_21626285 = validateParameter(valid_21626285, JString, required = false,
-                                   default = nil)
-  if valid_21626285 != nil:
-    section.add "X-Amz-Signature", valid_21626285
-  var valid_21626286 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626286 = validateParameter(valid_21626286, JString, required = false,
-                                   default = nil)
-  if valid_21626286 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626286
-  var valid_21626287 = header.getOrDefault("X-Amz-Credential")
-  valid_21626287 = validateParameter(valid_21626287, JString, required = false,
-                                   default = nil)
-  if valid_21626287 != nil:
-    section.add "X-Amz-Credential", valid_21626287
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626288: Call_ListTagsForResource_21626277; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Lists the tags for the specified resource.
-  ## 
-  let valid = call_21626288.validator(path, query, header, formData, body, _)
-  let scheme = call_21626288.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626288.makeUrl(scheme.get, call_21626288.host, call_21626288.base,
-                               call_21626288.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626288, uri, valid, _)
-
-proc call*(call_21626289: Call_ListTagsForResource_21626277; resourceArn: string): Recallable =
-  ## listTagsForResource
-  ## Lists the tags for the specified resource.
-  ##   resourceArn: string (required)
-  ##              : The Amazon Resource Name (ARN) of the resource.
-  var path_21626290 = newJObject()
-  add(path_21626290, "resourceArn", newJString(resourceArn))
-  result = call_21626289.call(path_21626290, nil, nil, nil, nil)
-
-var listTagsForResource* = Call_ListTagsForResource_21626277(
-    name: "listTagsForResource", meth: HttpMethod.HttpGet,
-    host: "connect.amazonaws.com", route: "/tags/{resourceArn}",
-    validator: validate_ListTagsForResource_21626278, base: "/",
-    makeUrl: url_ListTagsForResource_21626279,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListUserHierarchyGroups_21626307 = ref object of OpenApiRestCall_21625435
-proc url_ListUserHierarchyGroups_21626309(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "InstanceId" in path, "`InstanceId` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/user-hierarchy-groups-summary/"),
-               (kind: VariableSegment, value: "InstanceId")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_ListUserHierarchyGroups_21626308(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## Provides summary information about the hierarchy groups for the specified Amazon Connect instance.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626310 = path.getOrDefault("InstanceId")
-  valid_21626310 = validateParameter(valid_21626310, JString, required = true,
-                                   default = nil)
-  if valid_21626310 != nil:
-    section.add "InstanceId", valid_21626310
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   maxResults: JInt
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: JString
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
-  section = newJObject()
-  var valid_21626311 = query.getOrDefault("NextToken")
-  valid_21626311 = validateParameter(valid_21626311, JString, required = false,
-                                   default = nil)
-  if valid_21626311 != nil:
-    section.add "NextToken", valid_21626311
-  var valid_21626312 = query.getOrDefault("maxResults")
-  valid_21626312 = validateParameter(valid_21626312, JInt, required = false,
-                                   default = nil)
-  if valid_21626312 != nil:
-    section.add "maxResults", valid_21626312
-  var valid_21626313 = query.getOrDefault("nextToken")
-  valid_21626313 = validateParameter(valid_21626313, JString, required = false,
-                                   default = nil)
-  if valid_21626313 != nil:
-    section.add "nextToken", valid_21626313
-  var valid_21626314 = query.getOrDefault("MaxResults")
-  valid_21626314 = validateParameter(valid_21626314, JString, required = false,
-                                   default = nil)
-  if valid_21626314 != nil:
-    section.add "MaxResults", valid_21626314
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626315 = header.getOrDefault("X-Amz-Date")
-  valid_21626315 = validateParameter(valid_21626315, JString, required = false,
-                                   default = nil)
-  if valid_21626315 != nil:
-    section.add "X-Amz-Date", valid_21626315
-  var valid_21626316 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626316 = validateParameter(valid_21626316, JString, required = false,
-                                   default = nil)
-  if valid_21626316 != nil:
-    section.add "X-Amz-Security-Token", valid_21626316
-  var valid_21626317 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626317 = validateParameter(valid_21626317, JString, required = false,
-                                   default = nil)
-  if valid_21626317 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626317
-  var valid_21626318 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626318 = validateParameter(valid_21626318, JString, required = false,
-                                   default = nil)
-  if valid_21626318 != nil:
-    section.add "X-Amz-Algorithm", valid_21626318
-  var valid_21626319 = header.getOrDefault("X-Amz-Signature")
-  valid_21626319 = validateParameter(valid_21626319, JString, required = false,
-                                   default = nil)
-  if valid_21626319 != nil:
-    section.add "X-Amz-Signature", valid_21626319
-  var valid_21626320 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626320 = validateParameter(valid_21626320, JString, required = false,
-                                   default = nil)
-  if valid_21626320 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626320
-  var valid_21626321 = header.getOrDefault("X-Amz-Credential")
-  valid_21626321 = validateParameter(valid_21626321, JString, required = false,
-                                   default = nil)
-  if valid_21626321 != nil:
-    section.add "X-Amz-Credential", valid_21626321
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626322: Call_ListUserHierarchyGroups_21626307;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
-  ## Provides summary information about the hierarchy groups for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626322.validator(path, query, header, formData, body, _)
-  let scheme = call_21626322.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626322.makeUrl(scheme.get, call_21626322.host, call_21626322.base,
-                               call_21626322.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626322, uri, valid, _)
-
-proc call*(call_21626323: Call_ListUserHierarchyGroups_21626307;
-          InstanceId: string; NextToken: string = ""; maxResults: int = 0;
-          nextToken: string = ""; MaxResults: string = ""): Recallable =
-  ## listUserHierarchyGroups
-  ## Provides summary information about the hierarchy groups for the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   maxResults: int
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: string
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626324 = newJObject()
-  var query_21626325 = newJObject()
-  add(path_21626324, "InstanceId", newJString(InstanceId))
-  add(query_21626325, "NextToken", newJString(NextToken))
-  add(query_21626325, "maxResults", newJInt(maxResults))
-  add(query_21626325, "nextToken", newJString(nextToken))
-  add(query_21626325, "MaxResults", newJString(MaxResults))
-  result = call_21626323.call(path_21626324, query_21626325, nil, nil, nil)
-
-var listUserHierarchyGroups* = Call_ListUserHierarchyGroups_21626307(
-    name: "listUserHierarchyGroups", meth: HttpMethod.HttpGet,
-    host: "connect.amazonaws.com",
-    route: "/user-hierarchy-groups-summary/{InstanceId}",
-    validator: validate_ListUserHierarchyGroups_21626308, base: "/",
-    makeUrl: url_ListUserHierarchyGroups_21626309,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListUsers_21626326 = ref object of OpenApiRestCall_21625435
-proc url_ListUsers_21626328(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "InstanceId" in path, "`InstanceId` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/users-summary/"),
-               (kind: VariableSegment, value: "InstanceId")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_ListUsers_21626327(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## Provides summary information about the users for the specified Amazon Connect instance.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626329 = path.getOrDefault("InstanceId")
-  valid_21626329 = validateParameter(valid_21626329, JString, required = true,
-                                   default = nil)
-  if valid_21626329 != nil:
-    section.add "InstanceId", valid_21626329
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   maxResults: JInt
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: JString
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
-  section = newJObject()
-  var valid_21626330 = query.getOrDefault("NextToken")
-  valid_21626330 = validateParameter(valid_21626330, JString, required = false,
-                                   default = nil)
-  if valid_21626330 != nil:
-    section.add "NextToken", valid_21626330
-  var valid_21626331 = query.getOrDefault("maxResults")
-  valid_21626331 = validateParameter(valid_21626331, JInt, required = false,
-                                   default = nil)
-  if valid_21626331 != nil:
-    section.add "maxResults", valid_21626331
-  var valid_21626332 = query.getOrDefault("nextToken")
-  valid_21626332 = validateParameter(valid_21626332, JString, required = false,
-                                   default = nil)
-  if valid_21626332 != nil:
-    section.add "nextToken", valid_21626332
-  var valid_21626333 = query.getOrDefault("MaxResults")
-  valid_21626333 = validateParameter(valid_21626333, JString, required = false,
-                                   default = nil)
-  if valid_21626333 != nil:
-    section.add "MaxResults", valid_21626333
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626334 = header.getOrDefault("X-Amz-Date")
-  valid_21626334 = validateParameter(valid_21626334, JString, required = false,
-                                   default = nil)
-  if valid_21626334 != nil:
-    section.add "X-Amz-Date", valid_21626334
-  var valid_21626335 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626335 = validateParameter(valid_21626335, JString, required = false,
-                                   default = nil)
-  if valid_21626335 != nil:
-    section.add "X-Amz-Security-Token", valid_21626335
-  var valid_21626336 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626336 = validateParameter(valid_21626336, JString, required = false,
-                                   default = nil)
-  if valid_21626336 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626336
-  var valid_21626337 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626337 = validateParameter(valid_21626337, JString, required = false,
-                                   default = nil)
-  if valid_21626337 != nil:
-    section.add "X-Amz-Algorithm", valid_21626337
-  var valid_21626338 = header.getOrDefault("X-Amz-Signature")
-  valid_21626338 = validateParameter(valid_21626338, JString, required = false,
-                                   default = nil)
-  if valid_21626338 != nil:
-    section.add "X-Amz-Signature", valid_21626338
-  var valid_21626339 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626339 = validateParameter(valid_21626339, JString, required = false,
-                                   default = nil)
-  if valid_21626339 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626339
-  var valid_21626340 = header.getOrDefault("X-Amz-Credential")
-  valid_21626340 = validateParameter(valid_21626340, JString, required = false,
-                                   default = nil)
-  if valid_21626340 != nil:
-    section.add "X-Amz-Credential", valid_21626340
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626341: Call_ListUsers_21626326; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Provides summary information about the users for the specified Amazon Connect instance.
-  ## 
-  let valid = call_21626341.validator(path, query, header, formData, body, _)
-  let scheme = call_21626341.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626341.makeUrl(scheme.get, call_21626341.host, call_21626341.base,
-                               call_21626341.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626341, uri, valid, _)
-
-proc call*(call_21626342: Call_ListUsers_21626326; InstanceId: string;
-          NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
-          MaxResults: string = ""): Recallable =
-  ## listUsers
-  ## Provides summary information about the users for the specified Amazon Connect instance.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   maxResults: int
-  ##             : The maximimum number of results to return per page.
-  ##   nextToken: string
-  ##            : The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626343 = newJObject()
-  var query_21626344 = newJObject()
-  add(path_21626343, "InstanceId", newJString(InstanceId))
-  add(query_21626344, "NextToken", newJString(NextToken))
-  add(query_21626344, "maxResults", newJInt(maxResults))
-  add(query_21626344, "nextToken", newJString(nextToken))
-  add(query_21626344, "MaxResults", newJString(MaxResults))
-  result = call_21626342.call(path_21626343, query_21626344, nil, nil, nil)
-
-var listUsers* = Call_ListUsers_21626326(name: "listUsers", meth: HttpMethod.HttpGet,
-                                      host: "connect.amazonaws.com",
-                                      route: "/users-summary/{InstanceId}",
-                                      validator: validate_ListUsers_21626327,
-                                      base: "/", makeUrl: url_ListUsers_21626328,
-                                      schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_StartChatContact_21626345 = ref object of OpenApiRestCall_21625435
-proc url_StartChatContact_21626347(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_StartChatContact_21626346(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## <p>Initiates a contact flow to start a new chat for the customer. Response of this API provides a token required to obtain credentials from the <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> API in the Amazon Connect Participant Service.</p> <p>When a new chat contact is successfully created, clients need to subscribe to the participant’s connection for the created chat within 5 minutes. This is achieved by invoking <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> with WEBSOCKET and CONNECTION_CREDENTIALS. </p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626348 = header.getOrDefault("X-Amz-Date")
-  valid_21626348 = validateParameter(valid_21626348, JString, required = false,
-                                   default = nil)
-  if valid_21626348 != nil:
-    section.add "X-Amz-Date", valid_21626348
-  var valid_21626349 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626349 = validateParameter(valid_21626349, JString, required = false,
-                                   default = nil)
-  if valid_21626349 != nil:
-    section.add "X-Amz-Security-Token", valid_21626349
-  var valid_21626350 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626350 = validateParameter(valid_21626350, JString, required = false,
-                                   default = nil)
-  if valid_21626350 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626350
-  var valid_21626351 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626351 = validateParameter(valid_21626351, JString, required = false,
-                                   default = nil)
-  if valid_21626351 != nil:
-    section.add "X-Amz-Algorithm", valid_21626351
-  var valid_21626352 = header.getOrDefault("X-Amz-Signature")
-  valid_21626352 = validateParameter(valid_21626352, JString, required = false,
-                                   default = nil)
-  if valid_21626352 != nil:
-    section.add "X-Amz-Signature", valid_21626352
-  var valid_21626353 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626353 = validateParameter(valid_21626353, JString, required = false,
-                                   default = nil)
-  if valid_21626353 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626353
-  var valid_21626354 = header.getOrDefault("X-Amz-Credential")
-  valid_21626354 = validateParameter(valid_21626354, JString, required = false,
-                                   default = nil)
-  if valid_21626354 != nil:
-    section.add "X-Amz-Credential", valid_21626354
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626356: Call_StartChatContact_21626345; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Initiates a contact flow to start a new chat for the customer. Response of this API provides a token required to obtain credentials from the <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> API in the Amazon Connect Participant Service.</p> <p>When a new chat contact is successfully created, clients need to subscribe to the participant’s connection for the created chat within 5 minutes. This is achieved by invoking <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> with WEBSOCKET and CONNECTION_CREDENTIALS. </p>
-  ## 
-  let valid = call_21626356.validator(path, query, header, formData, body, _)
-  let scheme = call_21626356.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626356.makeUrl(scheme.get, call_21626356.host, call_21626356.base,
-                               call_21626356.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626356, uri, valid, _)
-
-proc call*(call_21626357: Call_StartChatContact_21626345; body: JsonNode): Recallable =
-  ## startChatContact
-  ## <p>Initiates a contact flow to start a new chat for the customer. Response of this API provides a token required to obtain credentials from the <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> API in the Amazon Connect Participant Service.</p> <p>When a new chat contact is successfully created, clients need to subscribe to the participant’s connection for the created chat within 5 minutes. This is achieved by invoking <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> with WEBSOCKET and CONNECTION_CREDENTIALS. </p>
-  ##   body: JObject (required)
-  var body_21626358 = newJObject()
-  if body != nil:
-    body_21626358 = body
-  result = call_21626357.call(nil, nil, nil, nil, body_21626358)
-
-var startChatContact* = Call_StartChatContact_21626345(name: "startChatContact",
-    meth: HttpMethod.HttpPut, host: "connect.amazonaws.com", route: "/contact/chat",
-    validator: validate_StartChatContact_21626346, base: "/",
-    makeUrl: url_StartChatContact_21626347, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_StartOutboundVoiceContact_21626359 = ref object of OpenApiRestCall_21625435
-proc url_StartOutboundVoiceContact_21626361(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_StartOutboundVoiceContact_21626360(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## <p>Initiates a contact flow to place an outbound call to a customer.</p> <p>There is a 60 second dialing timeout for this operation. If the call is not connected after 60 seconds, it fails.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626362 = header.getOrDefault("X-Amz-Date")
-  valid_21626362 = validateParameter(valid_21626362, JString, required = false,
-                                   default = nil)
-  if valid_21626362 != nil:
-    section.add "X-Amz-Date", valid_21626362
-  var valid_21626363 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626363 = validateParameter(valid_21626363, JString, required = false,
-                                   default = nil)
-  if valid_21626363 != nil:
-    section.add "X-Amz-Security-Token", valid_21626363
-  var valid_21626364 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626364 = validateParameter(valid_21626364, JString, required = false,
-                                   default = nil)
-  if valid_21626364 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626364
-  var valid_21626365 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626365 = validateParameter(valid_21626365, JString, required = false,
-                                   default = nil)
-  if valid_21626365 != nil:
-    section.add "X-Amz-Algorithm", valid_21626365
-  var valid_21626366 = header.getOrDefault("X-Amz-Signature")
-  valid_21626366 = validateParameter(valid_21626366, JString, required = false,
-                                   default = nil)
-  if valid_21626366 != nil:
-    section.add "X-Amz-Signature", valid_21626366
-  var valid_21626367 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626367 = validateParameter(valid_21626367, JString, required = false,
-                                   default = nil)
-  if valid_21626367 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626367
-  var valid_21626368 = header.getOrDefault("X-Amz-Credential")
-  valid_21626368 = validateParameter(valid_21626368, JString, required = false,
-                                   default = nil)
-  if valid_21626368 != nil:
-    section.add "X-Amz-Credential", valid_21626368
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626370: Call_StartOutboundVoiceContact_21626359;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Initiates a contact flow to place an outbound call to a customer.</p> <p>There is a 60 second dialing timeout for this operation. If the call is not connected after 60 seconds, it fails.</p>
-  ## 
-  let valid = call_21626370.validator(path, query, header, formData, body, _)
-  let scheme = call_21626370.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626370.makeUrl(scheme.get, call_21626370.host, call_21626370.base,
-                               call_21626370.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626370, uri, valid, _)
-
-proc call*(call_21626371: Call_StartOutboundVoiceContact_21626359; body: JsonNode): Recallable =
-  ## startOutboundVoiceContact
-  ## <p>Initiates a contact flow to place an outbound call to a customer.</p> <p>There is a 60 second dialing timeout for this operation. If the call is not connected after 60 seconds, it fails.</p>
-  ##   body: JObject (required)
-  var body_21626372 = newJObject()
-  if body != nil:
-    body_21626372 = body
-  result = call_21626371.call(nil, nil, nil, nil, body_21626372)
-
-var startOutboundVoiceContact* = Call_StartOutboundVoiceContact_21626359(
-    name: "startOutboundVoiceContact", meth: HttpMethod.HttpPut,
-    host: "connect.amazonaws.com", route: "/contact/outbound-voice",
-    validator: validate_StartOutboundVoiceContact_21626360, base: "/",
-    makeUrl: url_StartOutboundVoiceContact_21626361,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_StopContact_21626373 = ref object of OpenApiRestCall_21625435
-proc url_StopContact_21626375(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base == "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_StopContact_21626374(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## Ends the specified contact.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626376 = header.getOrDefault("X-Amz-Date")
-  valid_21626376 = validateParameter(valid_21626376, JString, required = false,
-                                   default = nil)
-  if valid_21626376 != nil:
-    section.add "X-Amz-Date", valid_21626376
-  var valid_21626377 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626377 = validateParameter(valid_21626377, JString, required = false,
-                                   default = nil)
-  if valid_21626377 != nil:
-    section.add "X-Amz-Security-Token", valid_21626377
-  var valid_21626378 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626378 = validateParameter(valid_21626378, JString, required = false,
-                                   default = nil)
-  if valid_21626378 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626378
-  var valid_21626379 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626379 = validateParameter(valid_21626379, JString, required = false,
-                                   default = nil)
-  if valid_21626379 != nil:
-    section.add "X-Amz-Algorithm", valid_21626379
-  var valid_21626380 = header.getOrDefault("X-Amz-Signature")
-  valid_21626380 = validateParameter(valid_21626380, JString, required = false,
-                                   default = nil)
-  if valid_21626380 != nil:
-    section.add "X-Amz-Signature", valid_21626380
-  var valid_21626381 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626381 = validateParameter(valid_21626381, JString, required = false,
-                                   default = nil)
-  if valid_21626381 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626381
-  var valid_21626382 = header.getOrDefault("X-Amz-Credential")
-  valid_21626382 = validateParameter(valid_21626382, JString, required = false,
-                                   default = nil)
-  if valid_21626382 != nil:
-    section.add "X-Amz-Credential", valid_21626382
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626384: Call_StopContact_21626373; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Ends the specified contact.
-  ## 
-  let valid = call_21626384.validator(path, query, header, formData, body, _)
-  let scheme = call_21626384.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626384.makeUrl(scheme.get, call_21626384.host, call_21626384.base,
-                               call_21626384.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626384, uri, valid, _)
-
-proc call*(call_21626385: Call_StopContact_21626373; body: JsonNode): Recallable =
-  ## stopContact
-  ## Ends the specified contact.
-  ##   body: JObject (required)
-  var body_21626386 = newJObject()
-  if body != nil:
-    body_21626386 = body
-  result = call_21626385.call(nil, nil, nil, nil, body_21626386)
-
-var stopContact* = Call_StopContact_21626373(name: "stopContact",
-    meth: HttpMethod.HttpPost, host: "connect.amazonaws.com",
-    route: "/contact/stop", validator: validate_StopContact_21626374, base: "/",
-    makeUrl: url_StopContact_21626375, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_UntagResource_21626387 = ref object of OpenApiRestCall_21625435
-proc url_UntagResource_21626389(protocol: Scheme; host: string; base: string;
+  Call_TagResource_402656747 = ref object of OpenApiRestCall_402656044
+proc url_TagResource_402656749(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3299,8 +3163,7 @@ proc url_UntagResource_21626389(protocol: Scheme; host: string; base: string;
   assert "resourceArn" in path, "`resourceArn` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/tags/"),
-               (kind: VariableSegment, value: "resourceArn"),
-               (kind: ConstantSegment, value: "#tagKeys")]
+                 (kind: VariableSegment, value: "resourceArn")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3309,123 +3172,884 @@ proc url_UntagResource_21626389(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UntagResource_21626388(path: JsonNode; query: JsonNode;
+proc validate_TagResource_402656748(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
-  ## Removes the specified tags from the specified resource.
-  ## 
+                                    body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Adds the specified tags to the specified resource.</p> <p>The supported resource type is users.</p>
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   resourceArn: JString (required)
-  ##              : The Amazon Resource Name (ARN) of the resource.
+                                 ##              : The Amazon Resource Name (ARN) of the resource.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `resourceArn` field"
-  var valid_21626390 = path.getOrDefault("resourceArn")
-  valid_21626390 = validateParameter(valid_21626390, JString, required = true,
-                                   default = nil)
-  if valid_21626390 != nil:
-    section.add "resourceArn", valid_21626390
+         "path argument is necessary due to required `resourceArn` field"
+  var valid_402656750 = path.getOrDefault("resourceArn")
+  valid_402656750 = validateParameter(valid_402656750, JString, required = true,
+                                      default = nil)
+  if valid_402656750 != nil:
+    section.add "resourceArn", valid_402656750
   result.add "path", section
-  ## parameters in `query` object:
-  ##   tagKeys: JArray (required)
-  ##          : The tag keys.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `tagKeys` field"
-  var valid_21626391 = query.getOrDefault("tagKeys")
-  valid_21626391 = validateParameter(valid_21626391, JArray, required = true,
-                                   default = nil)
-  if valid_21626391 != nil:
-    section.add "tagKeys", valid_21626391
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626392 = header.getOrDefault("X-Amz-Date")
-  valid_21626392 = validateParameter(valid_21626392, JString, required = false,
-                                   default = nil)
-  if valid_21626392 != nil:
-    section.add "X-Amz-Date", valid_21626392
-  var valid_21626393 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626393 = validateParameter(valid_21626393, JString, required = false,
-                                   default = nil)
-  if valid_21626393 != nil:
-    section.add "X-Amz-Security-Token", valid_21626393
-  var valid_21626394 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626394 = validateParameter(valid_21626394, JString, required = false,
-                                   default = nil)
-  if valid_21626394 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626394
-  var valid_21626395 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626395 = validateParameter(valid_21626395, JString, required = false,
-                                   default = nil)
-  if valid_21626395 != nil:
-    section.add "X-Amz-Algorithm", valid_21626395
-  var valid_21626396 = header.getOrDefault("X-Amz-Signature")
-  valid_21626396 = validateParameter(valid_21626396, JString, required = false,
-                                   default = nil)
-  if valid_21626396 != nil:
-    section.add "X-Amz-Signature", valid_21626396
-  var valid_21626397 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626397 = validateParameter(valid_21626397, JString, required = false,
-                                   default = nil)
-  if valid_21626397 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626397
-  var valid_21626398 = header.getOrDefault("X-Amz-Credential")
-  valid_21626398 = validateParameter(valid_21626398, JString, required = false,
-                                   default = nil)
-  if valid_21626398 != nil:
-    section.add "X-Amz-Credential", valid_21626398
+  var valid_402656751 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656751 = validateParameter(valid_402656751, JString,
+                                      required = false, default = nil)
+  if valid_402656751 != nil:
+    section.add "X-Amz-Security-Token", valid_402656751
+  var valid_402656752 = header.getOrDefault("X-Amz-Signature")
+  valid_402656752 = validateParameter(valid_402656752, JString,
+                                      required = false, default = nil)
+  if valid_402656752 != nil:
+    section.add "X-Amz-Signature", valid_402656752
+  var valid_402656753 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656753 = validateParameter(valid_402656753, JString,
+                                      required = false, default = nil)
+  if valid_402656753 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656753
+  var valid_402656754 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656754 = validateParameter(valid_402656754, JString,
+                                      required = false, default = nil)
+  if valid_402656754 != nil:
+    section.add "X-Amz-Algorithm", valid_402656754
+  var valid_402656755 = header.getOrDefault("X-Amz-Date")
+  valid_402656755 = validateParameter(valid_402656755, JString,
+                                      required = false, default = nil)
+  if valid_402656755 != nil:
+    section.add "X-Amz-Date", valid_402656755
+  var valid_402656756 = header.getOrDefault("X-Amz-Credential")
+  valid_402656756 = validateParameter(valid_402656756, JString,
+                                      required = false, default = nil)
+  if valid_402656756 != nil:
+    section.add "X-Amz-Credential", valid_402656756
+  var valid_402656757 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656757 = validateParameter(valid_402656757, JString,
+                                      required = false, default = nil)
+  if valid_402656757 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656757
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656759: Call_TagResource_402656747; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Adds the specified tags to the specified resource.</p> <p>The supported resource type is users.</p>
+                                                                                         ## 
+  let valid = call_402656759.validator(path, query, header, formData, body, _)
+  let scheme = call_402656759.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656759.makeUrl(scheme.get, call_402656759.host, call_402656759.base,
+                                   call_402656759.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656759, uri, valid, _)
+
+proc call*(call_402656760: Call_TagResource_402656747; body: JsonNode;
+           resourceArn: string): Recallable =
+  ## tagResource
+  ## <p>Adds the specified tags to the specified resource.</p> <p>The supported resource type is users.</p>
+  ##   
+                                                                                                           ## body: JObject (required)
+  ##   
+                                                                                                                                      ## resourceArn: string (required)
+                                                                                                                                      ##              
+                                                                                                                                      ## : 
+                                                                                                                                      ## The 
+                                                                                                                                      ## Amazon 
+                                                                                                                                      ## Resource 
+                                                                                                                                      ## Name 
+                                                                                                                                      ## (ARN) 
+                                                                                                                                      ## of 
+                                                                                                                                      ## the 
+                                                                                                                                      ## resource.
+  var path_402656761 = newJObject()
+  var body_402656762 = newJObject()
+  if body != nil:
+    body_402656762 = body
+  add(path_402656761, "resourceArn", newJString(resourceArn))
+  result = call_402656760.call(path_402656761, nil, nil, nil, body_402656762)
+
+var tagResource* = Call_TagResource_402656747(name: "tagResource",
+    meth: HttpMethod.HttpPost, host: "connect.amazonaws.com",
+    route: "/tags/{resourceArn}", validator: validate_TagResource_402656748,
+    base: "/", makeUrl: url_TagResource_402656749,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListTagsForResource_402656733 = ref object of OpenApiRestCall_402656044
+proc url_ListTagsForResource_402656735(protocol: Scheme; host: string;
+                                       base: string; route: string;
+                                       path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "resourceArn" in path, "`resourceArn` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/tags/"),
+                 (kind: VariableSegment, value: "resourceArn")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_ListTagsForResource_402656734(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Lists the tags for the specified resource.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   resourceArn: JString (required)
+                                 ##              : The Amazon Resource Name (ARN) of the resource.
+  section = newJObject()
+  assert path != nil,
+         "path argument is necessary due to required `resourceArn` field"
+  var valid_402656736 = path.getOrDefault("resourceArn")
+  valid_402656736 = validateParameter(valid_402656736, JString, required = true,
+                                      default = nil)
+  if valid_402656736 != nil:
+    section.add "resourceArn", valid_402656736
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656737 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656737 = validateParameter(valid_402656737, JString,
+                                      required = false, default = nil)
+  if valid_402656737 != nil:
+    section.add "X-Amz-Security-Token", valid_402656737
+  var valid_402656738 = header.getOrDefault("X-Amz-Signature")
+  valid_402656738 = validateParameter(valid_402656738, JString,
+                                      required = false, default = nil)
+  if valid_402656738 != nil:
+    section.add "X-Amz-Signature", valid_402656738
+  var valid_402656739 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656739 = validateParameter(valid_402656739, JString,
+                                      required = false, default = nil)
+  if valid_402656739 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656739
+  var valid_402656740 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656740 = validateParameter(valid_402656740, JString,
+                                      required = false, default = nil)
+  if valid_402656740 != nil:
+    section.add "X-Amz-Algorithm", valid_402656740
+  var valid_402656741 = header.getOrDefault("X-Amz-Date")
+  valid_402656741 = validateParameter(valid_402656741, JString,
+                                      required = false, default = nil)
+  if valid_402656741 != nil:
+    section.add "X-Amz-Date", valid_402656741
+  var valid_402656742 = header.getOrDefault("X-Amz-Credential")
+  valid_402656742 = validateParameter(valid_402656742, JString,
+                                      required = false, default = nil)
+  if valid_402656742 != nil:
+    section.add "X-Amz-Credential", valid_402656742
+  var valid_402656743 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656743 = validateParameter(valid_402656743, JString,
+                                      required = false, default = nil)
+  if valid_402656743 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656743
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626399: Call_UntagResource_21626387; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Removes the specified tags from the specified resource.
-  ## 
-  let valid = call_21626399.validator(path, query, header, formData, body, _)
-  let scheme = call_21626399.pickScheme
+proc call*(call_402656744: Call_ListTagsForResource_402656733;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Lists the tags for the specified resource.
+                                                                                         ## 
+  let valid = call_402656744.validator(path, query, header, formData, body, _)
+  let scheme = call_402656744.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626399.makeUrl(scheme.get, call_21626399.host, call_21626399.base,
-                               call_21626399.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626399, uri, valid, _)
+  let uri = call_402656744.makeUrl(scheme.get, call_402656744.host, call_402656744.base,
+                                   call_402656744.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656744, uri, valid, _)
 
-proc call*(call_21626400: Call_UntagResource_21626387; tagKeys: JsonNode;
-          resourceArn: string): Recallable =
-  ## untagResource
-  ## Removes the specified tags from the specified resource.
-  ##   tagKeys: JArray (required)
-  ##          : The tag keys.
+proc call*(call_402656745: Call_ListTagsForResource_402656733;
+           resourceArn: string): Recallable =
+  ## listTagsForResource
+  ## Lists the tags for the specified resource.
   ##   resourceArn: string (required)
-  ##              : The Amazon Resource Name (ARN) of the resource.
-  var path_21626401 = newJObject()
-  var query_21626402 = newJObject()
-  if tagKeys != nil:
-    query_21626402.add "tagKeys", tagKeys
-  add(path_21626401, "resourceArn", newJString(resourceArn))
-  result = call_21626400.call(path_21626401, query_21626402, nil, nil, nil)
+                                               ##              : The Amazon Resource Name (ARN) of the resource.
+  var path_402656746 = newJObject()
+  add(path_402656746, "resourceArn", newJString(resourceArn))
+  result = call_402656745.call(path_402656746, nil, nil, nil, nil)
 
-var untagResource* = Call_UntagResource_21626387(name: "untagResource",
-    meth: HttpMethod.HttpDelete, host: "connect.amazonaws.com",
-    route: "/tags/{resourceArn}#tagKeys", validator: validate_UntagResource_21626388,
-    base: "/", makeUrl: url_UntagResource_21626389,
+var listTagsForResource* = Call_ListTagsForResource_402656733(
+    name: "listTagsForResource", meth: HttpMethod.HttpGet,
+    host: "connect.amazonaws.com", route: "/tags/{resourceArn}",
+    validator: validate_ListTagsForResource_402656734, base: "/",
+    makeUrl: url_ListTagsForResource_402656735,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateContactAttributes_21626403 = ref object of OpenApiRestCall_21625435
-proc url_UpdateContactAttributes_21626405(protocol: Scheme; host: string;
+  Call_ListUserHierarchyGroups_402656763 = ref object of OpenApiRestCall_402656044
+proc url_ListUserHierarchyGroups_402656765(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "InstanceId" in path, "`InstanceId` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment,
+                  value: "/user-hierarchy-groups-summary/"),
+                 (kind: VariableSegment, value: "InstanceId")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_ListUserHierarchyGroups_402656764(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Provides summary information about the hierarchy groups for the specified Amazon Connect instance.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   InstanceId: JString (required)
+                                 ##             : The identifier of the Amazon Connect instance.
+  section = newJObject()
+  assert path != nil,
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656766 = path.getOrDefault("InstanceId")
+  valid_402656766 = validateParameter(valid_402656766, JString, required = true,
+                                      default = nil)
+  if valid_402656766 != nil:
+    section.add "InstanceId", valid_402656766
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   maxResults: JInt
+                                  ##             : The maximimum number of results to return per page.
+  ##   
+                                                                                                      ## nextToken: JString
+                                                                                                      ##            
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## token 
+                                                                                                      ## for 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results. 
+                                                                                                      ## Use 
+                                                                                                      ## the 
+                                                                                                      ## value 
+                                                                                                      ## returned 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## previous 
+                                                                                                      ## response 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## request 
+                                                                                                      ## to 
+                                                                                                      ## retrieve 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results.
+  ##   
+                                                                                                                 ## MaxResults: JString
+                                                                                                                 ##             
+                                                                                                                 ## : 
+                                                                                                                 ## Pagination 
+                                                                                                                 ## limit
+  ##   
+                                                                                                                         ## NextToken: JString
+                                                                                                                         ##            
+                                                                                                                         ## : 
+                                                                                                                         ## Pagination 
+                                                                                                                         ## token
+  section = newJObject()
+  var valid_402656767 = query.getOrDefault("maxResults")
+  valid_402656767 = validateParameter(valid_402656767, JInt, required = false,
+                                      default = nil)
+  if valid_402656767 != nil:
+    section.add "maxResults", valid_402656767
+  var valid_402656768 = query.getOrDefault("nextToken")
+  valid_402656768 = validateParameter(valid_402656768, JString,
+                                      required = false, default = nil)
+  if valid_402656768 != nil:
+    section.add "nextToken", valid_402656768
+  var valid_402656769 = query.getOrDefault("MaxResults")
+  valid_402656769 = validateParameter(valid_402656769, JString,
+                                      required = false, default = nil)
+  if valid_402656769 != nil:
+    section.add "MaxResults", valid_402656769
+  var valid_402656770 = query.getOrDefault("NextToken")
+  valid_402656770 = validateParameter(valid_402656770, JString,
+                                      required = false, default = nil)
+  if valid_402656770 != nil:
+    section.add "NextToken", valid_402656770
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656771 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656771 = validateParameter(valid_402656771, JString,
+                                      required = false, default = nil)
+  if valid_402656771 != nil:
+    section.add "X-Amz-Security-Token", valid_402656771
+  var valid_402656772 = header.getOrDefault("X-Amz-Signature")
+  valid_402656772 = validateParameter(valid_402656772, JString,
+                                      required = false, default = nil)
+  if valid_402656772 != nil:
+    section.add "X-Amz-Signature", valid_402656772
+  var valid_402656773 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656773 = validateParameter(valid_402656773, JString,
+                                      required = false, default = nil)
+  if valid_402656773 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656773
+  var valid_402656774 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656774 = validateParameter(valid_402656774, JString,
+                                      required = false, default = nil)
+  if valid_402656774 != nil:
+    section.add "X-Amz-Algorithm", valid_402656774
+  var valid_402656775 = header.getOrDefault("X-Amz-Date")
+  valid_402656775 = validateParameter(valid_402656775, JString,
+                                      required = false, default = nil)
+  if valid_402656775 != nil:
+    section.add "X-Amz-Date", valid_402656775
+  var valid_402656776 = header.getOrDefault("X-Amz-Credential")
+  valid_402656776 = validateParameter(valid_402656776, JString,
+                                      required = false, default = nil)
+  if valid_402656776 != nil:
+    section.add "X-Amz-Credential", valid_402656776
+  var valid_402656777 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656777 = validateParameter(valid_402656777, JString,
+                                      required = false, default = nil)
+  if valid_402656777 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656777
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656778: Call_ListUserHierarchyGroups_402656763;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Provides summary information about the hierarchy groups for the specified Amazon Connect instance.
+                                                                                         ## 
+  let valid = call_402656778.validator(path, query, header, formData, body, _)
+  let scheme = call_402656778.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656778.makeUrl(scheme.get, call_402656778.host, call_402656778.base,
+                                   call_402656778.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656778, uri, valid, _)
+
+proc call*(call_402656779: Call_ListUserHierarchyGroups_402656763;
+           InstanceId: string; maxResults: int = 0; nextToken: string = "";
+           MaxResults: string = ""; NextToken: string = ""): Recallable =
+  ## listUserHierarchyGroups
+  ## Provides summary information about the hierarchy groups for the specified Amazon Connect instance.
+  ##   
+                                                                                                       ## maxResults: int
+                                                                                                       ##             
+                                                                                                       ## : 
+                                                                                                       ## The 
+                                                                                                       ## maximimum 
+                                                                                                       ## number 
+                                                                                                       ## of 
+                                                                                                       ## results 
+                                                                                                       ## to 
+                                                                                                       ## return 
+                                                                                                       ## per 
+                                                                                                       ## page.
+  ##   
+                                                                                                               ## nextToken: string
+                                                                                                               ##            
+                                                                                                               ## : 
+                                                                                                               ## The 
+                                                                                                               ## token 
+                                                                                                               ## for 
+                                                                                                               ## the 
+                                                                                                               ## next 
+                                                                                                               ## set 
+                                                                                                               ## of 
+                                                                                                               ## results. 
+                                                                                                               ## Use 
+                                                                                                               ## the 
+                                                                                                               ## value 
+                                                                                                               ## returned 
+                                                                                                               ## in 
+                                                                                                               ## the 
+                                                                                                               ## previous 
+                                                                                                               ## response 
+                                                                                                               ## in 
+                                                                                                               ## the 
+                                                                                                               ## next 
+                                                                                                               ## request 
+                                                                                                               ## to 
+                                                                                                               ## retrieve 
+                                                                                                               ## the 
+                                                                                                               ## next 
+                                                                                                               ## set 
+                                                                                                               ## of 
+                                                                                                               ## results.
+  ##   
+                                                                                                                          ## MaxResults: string
+                                                                                                                          ##             
+                                                                                                                          ## : 
+                                                                                                                          ## Pagination 
+                                                                                                                          ## limit
+  ##   
+                                                                                                                                  ## NextToken: string
+                                                                                                                                  ##            
+                                                                                                                                  ## : 
+                                                                                                                                  ## Pagination 
+                                                                                                                                  ## token
+  ##   
+                                                                                                                                          ## InstanceId: string (required)
+                                                                                                                                          ##             
+                                                                                                                                          ## : 
+                                                                                                                                          ## The 
+                                                                                                                                          ## identifier 
+                                                                                                                                          ## of 
+                                                                                                                                          ## the 
+                                                                                                                                          ## Amazon 
+                                                                                                                                          ## Connect 
+                                                                                                                                          ## instance.
+  var path_402656780 = newJObject()
+  var query_402656781 = newJObject()
+  add(query_402656781, "maxResults", newJInt(maxResults))
+  add(query_402656781, "nextToken", newJString(nextToken))
+  add(query_402656781, "MaxResults", newJString(MaxResults))
+  add(query_402656781, "NextToken", newJString(NextToken))
+  add(path_402656780, "InstanceId", newJString(InstanceId))
+  result = call_402656779.call(path_402656780, query_402656781, nil, nil, nil)
+
+var listUserHierarchyGroups* = Call_ListUserHierarchyGroups_402656763(
+    name: "listUserHierarchyGroups", meth: HttpMethod.HttpGet,
+    host: "connect.amazonaws.com",
+    route: "/user-hierarchy-groups-summary/{InstanceId}",
+    validator: validate_ListUserHierarchyGroups_402656764, base: "/",
+    makeUrl: url_ListUserHierarchyGroups_402656765,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListUsers_402656782 = ref object of OpenApiRestCall_402656044
+proc url_ListUsers_402656784(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "InstanceId" in path, "`InstanceId` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/users-summary/"),
+                 (kind: VariableSegment, value: "InstanceId")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_ListUsers_402656783(path: JsonNode; query: JsonNode;
+                                  header: JsonNode; formData: JsonNode;
+                                  body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Provides summary information about the users for the specified Amazon Connect instance.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   InstanceId: JString (required)
+                                 ##             : The identifier of the Amazon Connect instance.
+  section = newJObject()
+  assert path != nil,
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656785 = path.getOrDefault("InstanceId")
+  valid_402656785 = validateParameter(valid_402656785, JString, required = true,
+                                      default = nil)
+  if valid_402656785 != nil:
+    section.add "InstanceId", valid_402656785
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   maxResults: JInt
+                                  ##             : The maximimum number of results to return per page.
+  ##   
+                                                                                                      ## nextToken: JString
+                                                                                                      ##            
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## token 
+                                                                                                      ## for 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results. 
+                                                                                                      ## Use 
+                                                                                                      ## the 
+                                                                                                      ## value 
+                                                                                                      ## returned 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## previous 
+                                                                                                      ## response 
+                                                                                                      ## in 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## request 
+                                                                                                      ## to 
+                                                                                                      ## retrieve 
+                                                                                                      ## the 
+                                                                                                      ## next 
+                                                                                                      ## set 
+                                                                                                      ## of 
+                                                                                                      ## results.
+  ##   
+                                                                                                                 ## MaxResults: JString
+                                                                                                                 ##             
+                                                                                                                 ## : 
+                                                                                                                 ## Pagination 
+                                                                                                                 ## limit
+  ##   
+                                                                                                                         ## NextToken: JString
+                                                                                                                         ##            
+                                                                                                                         ## : 
+                                                                                                                         ## Pagination 
+                                                                                                                         ## token
+  section = newJObject()
+  var valid_402656786 = query.getOrDefault("maxResults")
+  valid_402656786 = validateParameter(valid_402656786, JInt, required = false,
+                                      default = nil)
+  if valid_402656786 != nil:
+    section.add "maxResults", valid_402656786
+  var valid_402656787 = query.getOrDefault("nextToken")
+  valid_402656787 = validateParameter(valid_402656787, JString,
+                                      required = false, default = nil)
+  if valid_402656787 != nil:
+    section.add "nextToken", valid_402656787
+  var valid_402656788 = query.getOrDefault("MaxResults")
+  valid_402656788 = validateParameter(valid_402656788, JString,
+                                      required = false, default = nil)
+  if valid_402656788 != nil:
+    section.add "MaxResults", valid_402656788
+  var valid_402656789 = query.getOrDefault("NextToken")
+  valid_402656789 = validateParameter(valid_402656789, JString,
+                                      required = false, default = nil)
+  if valid_402656789 != nil:
+    section.add "NextToken", valid_402656789
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656790 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656790 = validateParameter(valid_402656790, JString,
+                                      required = false, default = nil)
+  if valid_402656790 != nil:
+    section.add "X-Amz-Security-Token", valid_402656790
+  var valid_402656791 = header.getOrDefault("X-Amz-Signature")
+  valid_402656791 = validateParameter(valid_402656791, JString,
+                                      required = false, default = nil)
+  if valid_402656791 != nil:
+    section.add "X-Amz-Signature", valid_402656791
+  var valid_402656792 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656792 = validateParameter(valid_402656792, JString,
+                                      required = false, default = nil)
+  if valid_402656792 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656792
+  var valid_402656793 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656793 = validateParameter(valid_402656793, JString,
+                                      required = false, default = nil)
+  if valid_402656793 != nil:
+    section.add "X-Amz-Algorithm", valid_402656793
+  var valid_402656794 = header.getOrDefault("X-Amz-Date")
+  valid_402656794 = validateParameter(valid_402656794, JString,
+                                      required = false, default = nil)
+  if valid_402656794 != nil:
+    section.add "X-Amz-Date", valid_402656794
+  var valid_402656795 = header.getOrDefault("X-Amz-Credential")
+  valid_402656795 = validateParameter(valid_402656795, JString,
+                                      required = false, default = nil)
+  if valid_402656795 != nil:
+    section.add "X-Amz-Credential", valid_402656795
+  var valid_402656796 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656796 = validateParameter(valid_402656796, JString,
+                                      required = false, default = nil)
+  if valid_402656796 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656796
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656797: Call_ListUsers_402656782; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Provides summary information about the users for the specified Amazon Connect instance.
+                                                                                         ## 
+  let valid = call_402656797.validator(path, query, header, formData, body, _)
+  let scheme = call_402656797.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656797.makeUrl(scheme.get, call_402656797.host, call_402656797.base,
+                                   call_402656797.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656797, uri, valid, _)
+
+proc call*(call_402656798: Call_ListUsers_402656782; InstanceId: string;
+           maxResults: int = 0; nextToken: string = ""; MaxResults: string = "";
+           NextToken: string = ""): Recallable =
+  ## listUsers
+  ## Provides summary information about the users for the specified Amazon Connect instance.
+  ##   
+                                                                                            ## maxResults: int
+                                                                                            ##             
+                                                                                            ## : 
+                                                                                            ## The 
+                                                                                            ## maximimum 
+                                                                                            ## number 
+                                                                                            ## of 
+                                                                                            ## results 
+                                                                                            ## to 
+                                                                                            ## return 
+                                                                                            ## per 
+                                                                                            ## page.
+  ##   
+                                                                                                    ## nextToken: string
+                                                                                                    ##            
+                                                                                                    ## : 
+                                                                                                    ## The 
+                                                                                                    ## token 
+                                                                                                    ## for 
+                                                                                                    ## the 
+                                                                                                    ## next 
+                                                                                                    ## set 
+                                                                                                    ## of 
+                                                                                                    ## results. 
+                                                                                                    ## Use 
+                                                                                                    ## the 
+                                                                                                    ## value 
+                                                                                                    ## returned 
+                                                                                                    ## in 
+                                                                                                    ## the 
+                                                                                                    ## previous 
+                                                                                                    ## response 
+                                                                                                    ## in 
+                                                                                                    ## the 
+                                                                                                    ## next 
+                                                                                                    ## request 
+                                                                                                    ## to 
+                                                                                                    ## retrieve 
+                                                                                                    ## the 
+                                                                                                    ## next 
+                                                                                                    ## set 
+                                                                                                    ## of 
+                                                                                                    ## results.
+  ##   
+                                                                                                               ## MaxResults: string
+                                                                                                               ##             
+                                                                                                               ## : 
+                                                                                                               ## Pagination 
+                                                                                                               ## limit
+  ##   
+                                                                                                                       ## NextToken: string
+                                                                                                                       ##            
+                                                                                                                       ## : 
+                                                                                                                       ## Pagination 
+                                                                                                                       ## token
+  ##   
+                                                                                                                               ## InstanceId: string (required)
+                                                                                                                               ##             
+                                                                                                                               ## : 
+                                                                                                                               ## The 
+                                                                                                                               ## identifier 
+                                                                                                                               ## of 
+                                                                                                                               ## the 
+                                                                                                                               ## Amazon 
+                                                                                                                               ## Connect 
+                                                                                                                               ## instance.
+  var path_402656799 = newJObject()
+  var query_402656800 = newJObject()
+  add(query_402656800, "maxResults", newJInt(maxResults))
+  add(query_402656800, "nextToken", newJString(nextToken))
+  add(query_402656800, "MaxResults", newJString(MaxResults))
+  add(query_402656800, "NextToken", newJString(NextToken))
+  add(path_402656799, "InstanceId", newJString(InstanceId))
+  result = call_402656798.call(path_402656799, query_402656800, nil, nil, nil)
+
+var listUsers* = Call_ListUsers_402656782(name: "listUsers",
+    meth: HttpMethod.HttpGet, host: "connect.amazonaws.com",
+    route: "/users-summary/{InstanceId}", validator: validate_ListUsers_402656783,
+    base: "/", makeUrl: url_ListUsers_402656784,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_StartChatContact_402656801 = ref object of OpenApiRestCall_402656044
+proc url_StartChatContact_402656803(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StartChatContact_402656802(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Initiates a contact flow to start a new chat for the customer. Response of this API provides a token required to obtain credentials from the <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> API in the Amazon Connect Participant Service.</p> <p>When a new chat contact is successfully created, clients need to subscribe to the participant’s connection for the created chat within 5 minutes. This is achieved by invoking <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> with WEBSOCKET and CONNECTION_CREDENTIALS. </p>
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656804 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656804 = validateParameter(valid_402656804, JString,
+                                      required = false, default = nil)
+  if valid_402656804 != nil:
+    section.add "X-Amz-Security-Token", valid_402656804
+  var valid_402656805 = header.getOrDefault("X-Amz-Signature")
+  valid_402656805 = validateParameter(valid_402656805, JString,
+                                      required = false, default = nil)
+  if valid_402656805 != nil:
+    section.add "X-Amz-Signature", valid_402656805
+  var valid_402656806 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656806 = validateParameter(valid_402656806, JString,
+                                      required = false, default = nil)
+  if valid_402656806 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656806
+  var valid_402656807 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656807 = validateParameter(valid_402656807, JString,
+                                      required = false, default = nil)
+  if valid_402656807 != nil:
+    section.add "X-Amz-Algorithm", valid_402656807
+  var valid_402656808 = header.getOrDefault("X-Amz-Date")
+  valid_402656808 = validateParameter(valid_402656808, JString,
+                                      required = false, default = nil)
+  if valid_402656808 != nil:
+    section.add "X-Amz-Date", valid_402656808
+  var valid_402656809 = header.getOrDefault("X-Amz-Credential")
+  valid_402656809 = validateParameter(valid_402656809, JString,
+                                      required = false, default = nil)
+  if valid_402656809 != nil:
+    section.add "X-Amz-Credential", valid_402656809
+  var valid_402656810 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656810 = validateParameter(valid_402656810, JString,
+                                      required = false, default = nil)
+  if valid_402656810 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656810
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656812: Call_StartChatContact_402656801;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Initiates a contact flow to start a new chat for the customer. Response of this API provides a token required to obtain credentials from the <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> API in the Amazon Connect Participant Service.</p> <p>When a new chat contact is successfully created, clients need to subscribe to the participant’s connection for the created chat within 5 minutes. This is achieved by invoking <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> with WEBSOCKET and CONNECTION_CREDENTIALS. </p>
+                                                                                         ## 
+  let valid = call_402656812.validator(path, query, header, formData, body, _)
+  let scheme = call_402656812.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656812.makeUrl(scheme.get, call_402656812.host, call_402656812.base,
+                                   call_402656812.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656812, uri, valid, _)
+
+proc call*(call_402656813: Call_StartChatContact_402656801; body: JsonNode): Recallable =
+  ## startChatContact
+  ## <p>Initiates a contact flow to start a new chat for the customer. Response of this API provides a token required to obtain credentials from the <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> API in the Amazon Connect Participant Service.</p> <p>When a new chat contact is successfully created, clients need to subscribe to the participant’s connection for the created chat within 5 minutes. This is achieved by invoking <a href="https://docs.aws.amazon.com/connect-participant/latest/APIReference/API_CreateParticipantConnection.html">CreateParticipantConnection</a> with WEBSOCKET and CONNECTION_CREDENTIALS. </p>
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ## body: JObject (required)
+  var body_402656814 = newJObject()
+  if body != nil:
+    body_402656814 = body
+  result = call_402656813.call(nil, nil, nil, nil, body_402656814)
+
+var startChatContact* = Call_StartChatContact_402656801(
+    name: "startChatContact", meth: HttpMethod.HttpPut,
+    host: "connect.amazonaws.com", route: "/contact/chat",
+    validator: validate_StartChatContact_402656802, base: "/",
+    makeUrl: url_StartChatContact_402656803,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_StartOutboundVoiceContact_402656815 = ref object of OpenApiRestCall_402656044
+proc url_StartOutboundVoiceContact_402656817(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3435,11 +4059,11 @@ proc url_UpdateContactAttributes_21626405(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateContactAttributes_21626404(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## <p>Creates or updates the contact attributes associated with the specified contact.</p> <p>You can add or update attributes for both ongoing and completed contacts. For example, you can update the customer's name or the reason the customer called while the call is active, or add notes about steps that the agent took during the call that are displayed to the next agent that takes the call. You can also update attributes for a contact using data from your CRM application and save the data with the contact in Amazon Connect. You could also flag calls for additional analysis, such as legal review or identifying abusive callers.</p> <p>Contact attributes are available in Amazon Connect for 24 months, and are then deleted.</p> <p> <b>Important:</b> You cannot use the operation to update attributes for contacts that occurred prior to the release of the API, September 12, 2018. You can update attributes only for contacts that started after the release of the API. If you attempt to update attributes for a contact that occurred prior to the release of the API, a 400 error is returned. This applies also to queued callbacks that were initiated prior to the release of the API but are still active in your instance.</p>
-  ## 
+proc validate_StartOutboundVoiceContact_402656816(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
+  ## <p>Initiates a contact flow to place an outbound call to a customer.</p> <p>There is a 60 second dialing timeout for this operation. If the call is not connected after 60 seconds, it fails.</p>
+                                            ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -3447,49 +4071,49 @@ proc validate_UpdateContactAttributes_21626404(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626406 = header.getOrDefault("X-Amz-Date")
-  valid_21626406 = validateParameter(valid_21626406, JString, required = false,
-                                   default = nil)
-  if valid_21626406 != nil:
-    section.add "X-Amz-Date", valid_21626406
-  var valid_21626407 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626407 = validateParameter(valid_21626407, JString, required = false,
-                                   default = nil)
-  if valid_21626407 != nil:
-    section.add "X-Amz-Security-Token", valid_21626407
-  var valid_21626408 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626408 = validateParameter(valid_21626408, JString, required = false,
-                                   default = nil)
-  if valid_21626408 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626408
-  var valid_21626409 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626409 = validateParameter(valid_21626409, JString, required = false,
-                                   default = nil)
-  if valid_21626409 != nil:
-    section.add "X-Amz-Algorithm", valid_21626409
-  var valid_21626410 = header.getOrDefault("X-Amz-Signature")
-  valid_21626410 = validateParameter(valid_21626410, JString, required = false,
-                                   default = nil)
-  if valid_21626410 != nil:
-    section.add "X-Amz-Signature", valid_21626410
-  var valid_21626411 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626411 = validateParameter(valid_21626411, JString, required = false,
-                                   default = nil)
-  if valid_21626411 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626411
-  var valid_21626412 = header.getOrDefault("X-Amz-Credential")
-  valid_21626412 = validateParameter(valid_21626412, JString, required = false,
-                                   default = nil)
-  if valid_21626412 != nil:
-    section.add "X-Amz-Credential", valid_21626412
+  var valid_402656818 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656818 = validateParameter(valid_402656818, JString,
+                                      required = false, default = nil)
+  if valid_402656818 != nil:
+    section.add "X-Amz-Security-Token", valid_402656818
+  var valid_402656819 = header.getOrDefault("X-Amz-Signature")
+  valid_402656819 = validateParameter(valid_402656819, JString,
+                                      required = false, default = nil)
+  if valid_402656819 != nil:
+    section.add "X-Amz-Signature", valid_402656819
+  var valid_402656820 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656820 = validateParameter(valid_402656820, JString,
+                                      required = false, default = nil)
+  if valid_402656820 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656820
+  var valid_402656821 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656821 = validateParameter(valid_402656821, JString,
+                                      required = false, default = nil)
+  if valid_402656821 != nil:
+    section.add "X-Amz-Algorithm", valid_402656821
+  var valid_402656822 = header.getOrDefault("X-Amz-Date")
+  valid_402656822 = validateParameter(valid_402656822, JString,
+                                      required = false, default = nil)
+  if valid_402656822 != nil:
+    section.add "X-Amz-Date", valid_402656822
+  var valid_402656823 = header.getOrDefault("X-Amz-Credential")
+  valid_402656823 = validateParameter(valid_402656823, JString,
+                                      required = false, default = nil)
+  if valid_402656823 != nil:
+    section.add "X-Amz-Credential", valid_402656823
+  var valid_402656824 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656824 = validateParameter(valid_402656824, JString,
+                                      required = false, default = nil)
+  if valid_402656824 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656824
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3501,51 +4125,159 @@ proc validate_UpdateContactAttributes_21626404(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626414: Call_UpdateContactAttributes_21626403;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
-  ## <p>Creates or updates the contact attributes associated with the specified contact.</p> <p>You can add or update attributes for both ongoing and completed contacts. For example, you can update the customer's name or the reason the customer called while the call is active, or add notes about steps that the agent took during the call that are displayed to the next agent that takes the call. You can also update attributes for a contact using data from your CRM application and save the data with the contact in Amazon Connect. You could also flag calls for additional analysis, such as legal review or identifying abusive callers.</p> <p>Contact attributes are available in Amazon Connect for 24 months, and are then deleted.</p> <p> <b>Important:</b> You cannot use the operation to update attributes for contacts that occurred prior to the release of the API, September 12, 2018. You can update attributes only for contacts that started after the release of the API. If you attempt to update attributes for a contact that occurred prior to the release of the API, a 400 error is returned. This applies also to queued callbacks that were initiated prior to the release of the API but are still active in your instance.</p>
-  ## 
-  let valid = call_21626414.validator(path, query, header, formData, body, _)
-  let scheme = call_21626414.pickScheme
+proc call*(call_402656826: Call_StartOutboundVoiceContact_402656815;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Initiates a contact flow to place an outbound call to a customer.</p> <p>There is a 60 second dialing timeout for this operation. If the call is not connected after 60 seconds, it fails.</p>
+                                                                                         ## 
+  let valid = call_402656826.validator(path, query, header, formData, body, _)
+  let scheme = call_402656826.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626414.makeUrl(scheme.get, call_21626414.host, call_21626414.base,
-                               call_21626414.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626414, uri, valid, _)
+  let uri = call_402656826.makeUrl(scheme.get, call_402656826.host, call_402656826.base,
+                                   call_402656826.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656826, uri, valid, _)
 
-proc call*(call_21626415: Call_UpdateContactAttributes_21626403; body: JsonNode): Recallable =
-  ## updateContactAttributes
-  ## <p>Creates or updates the contact attributes associated with the specified contact.</p> <p>You can add or update attributes for both ongoing and completed contacts. For example, you can update the customer's name or the reason the customer called while the call is active, or add notes about steps that the agent took during the call that are displayed to the next agent that takes the call. You can also update attributes for a contact using data from your CRM application and save the data with the contact in Amazon Connect. You could also flag calls for additional analysis, such as legal review or identifying abusive callers.</p> <p>Contact attributes are available in Amazon Connect for 24 months, and are then deleted.</p> <p> <b>Important:</b> You cannot use the operation to update attributes for contacts that occurred prior to the release of the API, September 12, 2018. You can update attributes only for contacts that started after the release of the API. If you attempt to update attributes for a contact that occurred prior to the release of the API, a 400 error is returned. This applies also to queued callbacks that were initiated prior to the release of the API but are still active in your instance.</p>
-  ##   body: JObject (required)
-  var body_21626416 = newJObject()
+proc call*(call_402656827: Call_StartOutboundVoiceContact_402656815;
+           body: JsonNode): Recallable =
+  ## startOutboundVoiceContact
+  ## <p>Initiates a contact flow to place an outbound call to a customer.</p> <p>There is a 60 second dialing timeout for this operation. If the call is not connected after 60 seconds, it fails.</p>
+  ##   
+                                                                                                                                                                                                      ## body: JObject (required)
+  var body_402656828 = newJObject()
   if body != nil:
-    body_21626416 = body
-  result = call_21626415.call(nil, nil, nil, nil, body_21626416)
+    body_402656828 = body
+  result = call_402656827.call(nil, nil, nil, nil, body_402656828)
 
-var updateContactAttributes* = Call_UpdateContactAttributes_21626403(
-    name: "updateContactAttributes", meth: HttpMethod.HttpPost,
-    host: "connect.amazonaws.com", route: "/contact/attributes",
-    validator: validate_UpdateContactAttributes_21626404, base: "/",
-    makeUrl: url_UpdateContactAttributes_21626405,
+var startOutboundVoiceContact* = Call_StartOutboundVoiceContact_402656815(
+    name: "startOutboundVoiceContact", meth: HttpMethod.HttpPut,
+    host: "connect.amazonaws.com", route: "/contact/outbound-voice",
+    validator: validate_StartOutboundVoiceContact_402656816, base: "/",
+    makeUrl: url_StartOutboundVoiceContact_402656817,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateUserHierarchy_21626417 = ref object of OpenApiRestCall_21625435
-proc url_UpdateUserHierarchy_21626419(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopContact_402656829 = ref object of OpenApiRestCall_402656044
+proc url_StopContact_402656831(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StopContact_402656830(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Ends the specified contact.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656832 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656832 = validateParameter(valid_402656832, JString,
+                                      required = false, default = nil)
+  if valid_402656832 != nil:
+    section.add "X-Amz-Security-Token", valid_402656832
+  var valid_402656833 = header.getOrDefault("X-Amz-Signature")
+  valid_402656833 = validateParameter(valid_402656833, JString,
+                                      required = false, default = nil)
+  if valid_402656833 != nil:
+    section.add "X-Amz-Signature", valid_402656833
+  var valid_402656834 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656834 = validateParameter(valid_402656834, JString,
+                                      required = false, default = nil)
+  if valid_402656834 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656834
+  var valid_402656835 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656835 = validateParameter(valid_402656835, JString,
+                                      required = false, default = nil)
+  if valid_402656835 != nil:
+    section.add "X-Amz-Algorithm", valid_402656835
+  var valid_402656836 = header.getOrDefault("X-Amz-Date")
+  valid_402656836 = validateParameter(valid_402656836, JString,
+                                      required = false, default = nil)
+  if valid_402656836 != nil:
+    section.add "X-Amz-Date", valid_402656836
+  var valid_402656837 = header.getOrDefault("X-Amz-Credential")
+  valid_402656837 = validateParameter(valid_402656837, JString,
+                                      required = false, default = nil)
+  if valid_402656837 != nil:
+    section.add "X-Amz-Credential", valid_402656837
+  var valid_402656838 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656838 = validateParameter(valid_402656838, JString,
+                                      required = false, default = nil)
+  if valid_402656838 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656838
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656840: Call_StopContact_402656829; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Ends the specified contact.
+                                                                                         ## 
+  let valid = call_402656840.validator(path, query, header, formData, body, _)
+  let scheme = call_402656840.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656840.makeUrl(scheme.get, call_402656840.host, call_402656840.base,
+                                   call_402656840.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656840, uri, valid, _)
+
+proc call*(call_402656841: Call_StopContact_402656829; body: JsonNode): Recallable =
+  ## stopContact
+  ## Ends the specified contact.
+  ##   body: JObject (required)
+  var body_402656842 = newJObject()
+  if body != nil:
+    body_402656842 = body
+  result = call_402656841.call(nil, nil, nil, nil, body_402656842)
+
+var stopContact* = Call_StopContact_402656829(name: "stopContact",
+    meth: HttpMethod.HttpPost, host: "connect.amazonaws.com",
+    route: "/contact/stop", validator: validate_StopContact_402656830,
+    base: "/", makeUrl: url_StopContact_402656831,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UntagResource_402656843 = ref object of OpenApiRestCall_402656044
+proc url_UntagResource_402656845(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
-  assert "InstanceId" in path, "`InstanceId` is a required path parameter"
-  assert "UserId" in path, "`UserId` is a required path parameter"
+  assert "resourceArn" in path, "`resourceArn` is a required path parameter"
   const
-    segments = @[(kind: ConstantSegment, value: "/users/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "UserId"),
-               (kind: ConstantSegment, value: "/hierarchy")]
+    segments = @[(kind: ConstantSegment, value: "/tags/"),
+                 (kind: VariableSegment, value: "resourceArn"),
+                 (kind: ConstantSegment, value: "#tagKeys")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3554,78 +4286,200 @@ proc url_UpdateUserHierarchy_21626419(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateUserHierarchy_21626418(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+proc validate_UntagResource_402656844(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
-  ## Assigns the specified hierarchy group to the specified user.
-  ## 
+  ## Removes the specified tags from the specified resource.
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: JString (required)
-  ##         : The identifier of the user account.
+  ##   resourceArn: JString (required)
+                                 ##              : The Amazon Resource Name (ARN) of the resource.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626420 = path.getOrDefault("InstanceId")
-  valid_21626420 = validateParameter(valid_21626420, JString, required = true,
-                                   default = nil)
-  if valid_21626420 != nil:
-    section.add "InstanceId", valid_21626420
-  var valid_21626421 = path.getOrDefault("UserId")
-  valid_21626421 = validateParameter(valid_21626421, JString, required = true,
-                                   default = nil)
-  if valid_21626421 != nil:
-    section.add "UserId", valid_21626421
+         "path argument is necessary due to required `resourceArn` field"
+  var valid_402656846 = path.getOrDefault("resourceArn")
+  valid_402656846 = validateParameter(valid_402656846, JString, required = true,
+                                      default = nil)
+  if valid_402656846 != nil:
+    section.add "resourceArn", valid_402656846
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   tagKeys: JArray (required)
+                                  ##          : The tag keys.
+  section = newJObject()
+  assert query != nil,
+         "query argument is necessary due to required `tagKeys` field"
+  var valid_402656847 = query.getOrDefault("tagKeys")
+  valid_402656847 = validateParameter(valid_402656847, JArray, required = true,
+                                      default = nil)
+  if valid_402656847 != nil:
+    section.add "tagKeys", valid_402656847
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656848 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656848 = validateParameter(valid_402656848, JString,
+                                      required = false, default = nil)
+  if valid_402656848 != nil:
+    section.add "X-Amz-Security-Token", valid_402656848
+  var valid_402656849 = header.getOrDefault("X-Amz-Signature")
+  valid_402656849 = validateParameter(valid_402656849, JString,
+                                      required = false, default = nil)
+  if valid_402656849 != nil:
+    section.add "X-Amz-Signature", valid_402656849
+  var valid_402656850 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656850 = validateParameter(valid_402656850, JString,
+                                      required = false, default = nil)
+  if valid_402656850 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656850
+  var valid_402656851 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656851 = validateParameter(valid_402656851, JString,
+                                      required = false, default = nil)
+  if valid_402656851 != nil:
+    section.add "X-Amz-Algorithm", valid_402656851
+  var valid_402656852 = header.getOrDefault("X-Amz-Date")
+  valid_402656852 = validateParameter(valid_402656852, JString,
+                                      required = false, default = nil)
+  if valid_402656852 != nil:
+    section.add "X-Amz-Date", valid_402656852
+  var valid_402656853 = header.getOrDefault("X-Amz-Credential")
+  valid_402656853 = validateParameter(valid_402656853, JString,
+                                      required = false, default = nil)
+  if valid_402656853 != nil:
+    section.add "X-Amz-Credential", valid_402656853
+  var valid_402656854 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656854 = validateParameter(valid_402656854, JString,
+                                      required = false, default = nil)
+  if valid_402656854 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656854
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656855: Call_UntagResource_402656843; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Removes the specified tags from the specified resource.
+                                                                                         ## 
+  let valid = call_402656855.validator(path, query, header, formData, body, _)
+  let scheme = call_402656855.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656855.makeUrl(scheme.get, call_402656855.host, call_402656855.base,
+                                   call_402656855.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656855, uri, valid, _)
+
+proc call*(call_402656856: Call_UntagResource_402656843; tagKeys: JsonNode;
+           resourceArn: string): Recallable =
+  ## untagResource
+  ## Removes the specified tags from the specified resource.
+  ##   tagKeys: JArray (required)
+                                                            ##          : The tag keys.
+  ##   
+                                                                                       ## resourceArn: string (required)
+                                                                                       ##              
+                                                                                       ## : 
+                                                                                       ## The 
+                                                                                       ## Amazon 
+                                                                                       ## Resource 
+                                                                                       ## Name 
+                                                                                       ## (ARN) 
+                                                                                       ## of 
+                                                                                       ## the 
+                                                                                       ## resource.
+  var path_402656857 = newJObject()
+  var query_402656858 = newJObject()
+  if tagKeys != nil:
+    query_402656858.add "tagKeys", tagKeys
+  add(path_402656857, "resourceArn", newJString(resourceArn))
+  result = call_402656856.call(path_402656857, query_402656858, nil, nil, nil)
+
+var untagResource* = Call_UntagResource_402656843(name: "untagResource",
+    meth: HttpMethod.HttpDelete, host: "connect.amazonaws.com",
+    route: "/tags/{resourceArn}#tagKeys", validator: validate_UntagResource_402656844,
+    base: "/", makeUrl: url_UntagResource_402656845,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateContactAttributes_402656859 = ref object of OpenApiRestCall_402656044
+proc url_UpdateContactAttributes_402656861(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateContactAttributes_402656860(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## <p>Creates or updates the contact attributes associated with the specified contact.</p> <p>You can add or update attributes for both ongoing and completed contacts. For example, you can update the customer's name or the reason the customer called while the call is active, or add notes about steps that the agent took during the call that are displayed to the next agent that takes the call. You can also update attributes for a contact using data from your CRM application and save the data with the contact in Amazon Connect. You could also flag calls for additional analysis, such as legal review or identifying abusive callers.</p> <p>Contact attributes are available in Amazon Connect for 24 months, and are then deleted.</p> <p> <b>Important:</b> You cannot use the operation to update attributes for contacts that occurred prior to the release of the API, September 12, 2018. You can update attributes only for contacts that started after the release of the API. If you attempt to update attributes for a contact that occurred prior to the release of the API, a 400 error is returned. This applies also to queued callbacks that were initiated prior to the release of the API but are still active in your instance.</p>
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626422 = header.getOrDefault("X-Amz-Date")
-  valid_21626422 = validateParameter(valid_21626422, JString, required = false,
-                                   default = nil)
-  if valid_21626422 != nil:
-    section.add "X-Amz-Date", valid_21626422
-  var valid_21626423 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626423 = validateParameter(valid_21626423, JString, required = false,
-                                   default = nil)
-  if valid_21626423 != nil:
-    section.add "X-Amz-Security-Token", valid_21626423
-  var valid_21626424 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626424 = validateParameter(valid_21626424, JString, required = false,
-                                   default = nil)
-  if valid_21626424 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626424
-  var valid_21626425 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626425 = validateParameter(valid_21626425, JString, required = false,
-                                   default = nil)
-  if valid_21626425 != nil:
-    section.add "X-Amz-Algorithm", valid_21626425
-  var valid_21626426 = header.getOrDefault("X-Amz-Signature")
-  valid_21626426 = validateParameter(valid_21626426, JString, required = false,
-                                   default = nil)
-  if valid_21626426 != nil:
-    section.add "X-Amz-Signature", valid_21626426
-  var valid_21626427 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626427 = validateParameter(valid_21626427, JString, required = false,
-                                   default = nil)
-  if valid_21626427 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626427
-  var valid_21626428 = header.getOrDefault("X-Amz-Credential")
-  valid_21626428 = validateParameter(valid_21626428, JString, required = false,
-                                   default = nil)
-  if valid_21626428 != nil:
-    section.add "X-Amz-Credential", valid_21626428
+  var valid_402656862 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656862 = validateParameter(valid_402656862, JString,
+                                      required = false, default = nil)
+  if valid_402656862 != nil:
+    section.add "X-Amz-Security-Token", valid_402656862
+  var valid_402656863 = header.getOrDefault("X-Amz-Signature")
+  valid_402656863 = validateParameter(valid_402656863, JString,
+                                      required = false, default = nil)
+  if valid_402656863 != nil:
+    section.add "X-Amz-Signature", valid_402656863
+  var valid_402656864 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656864 = validateParameter(valid_402656864, JString,
+                                      required = false, default = nil)
+  if valid_402656864 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656864
+  var valid_402656865 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656865 = validateParameter(valid_402656865, JString,
+                                      required = false, default = nil)
+  if valid_402656865 != nil:
+    section.add "X-Amz-Algorithm", valid_402656865
+  var valid_402656866 = header.getOrDefault("X-Amz-Date")
+  valid_402656866 = validateParameter(valid_402656866, JString,
+                                      required = false, default = nil)
+  if valid_402656866 != nil:
+    section.add "X-Amz-Date", valid_402656866
+  var valid_402656867 = header.getOrDefault("X-Amz-Credential")
+  valid_402656867 = validateParameter(valid_402656867, JString,
+                                      required = false, default = nil)
+  if valid_402656867 != nil:
+    section.add "X-Amz-Credential", valid_402656867
+  var valid_402656868 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656868 = validateParameter(valid_402656868, JString,
+                                      required = false, default = nil)
+  if valid_402656868 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656868
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3637,49 +4491,205 @@ proc validate_UpdateUserHierarchy_21626418(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626430: Call_UpdateUserHierarchy_21626417; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Assigns the specified hierarchy group to the specified user.
-  ## 
-  let valid = call_21626430.validator(path, query, header, formData, body, _)
-  let scheme = call_21626430.pickScheme
+proc call*(call_402656870: Call_UpdateContactAttributes_402656859;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## <p>Creates or updates the contact attributes associated with the specified contact.</p> <p>You can add or update attributes for both ongoing and completed contacts. For example, you can update the customer's name or the reason the customer called while the call is active, or add notes about steps that the agent took during the call that are displayed to the next agent that takes the call. You can also update attributes for a contact using data from your CRM application and save the data with the contact in Amazon Connect. You could also flag calls for additional analysis, such as legal review or identifying abusive callers.</p> <p>Contact attributes are available in Amazon Connect for 24 months, and are then deleted.</p> <p> <b>Important:</b> You cannot use the operation to update attributes for contacts that occurred prior to the release of the API, September 12, 2018. You can update attributes only for contacts that started after the release of the API. If you attempt to update attributes for a contact that occurred prior to the release of the API, a 400 error is returned. This applies also to queued callbacks that were initiated prior to the release of the API but are still active in your instance.</p>
+                                                                                         ## 
+  let valid = call_402656870.validator(path, query, header, formData, body, _)
+  let scheme = call_402656870.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626430.makeUrl(scheme.get, call_21626430.host, call_21626430.base,
-                               call_21626430.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626430, uri, valid, _)
+  let uri = call_402656870.makeUrl(scheme.get, call_402656870.host, call_402656870.base,
+                                   call_402656870.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656870, uri, valid, _)
 
-proc call*(call_21626431: Call_UpdateUserHierarchy_21626417; InstanceId: string;
-          body: JsonNode; UserId: string): Recallable =
+proc call*(call_402656871: Call_UpdateContactAttributes_402656859;
+           body: JsonNode): Recallable =
+  ## updateContactAttributes
+  ## <p>Creates or updates the contact attributes associated with the specified contact.</p> <p>You can add or update attributes for both ongoing and completed contacts. For example, you can update the customer's name or the reason the customer called while the call is active, or add notes about steps that the agent took during the call that are displayed to the next agent that takes the call. You can also update attributes for a contact using data from your CRM application and save the data with the contact in Amazon Connect. You could also flag calls for additional analysis, such as legal review or identifying abusive callers.</p> <p>Contact attributes are available in Amazon Connect for 24 months, and are then deleted.</p> <p> <b>Important:</b> You cannot use the operation to update attributes for contacts that occurred prior to the release of the API, September 12, 2018. You can update attributes only for contacts that started after the release of the API. If you attempt to update attributes for a contact that occurred prior to the release of the API, a 400 error is returned. This applies also to queued callbacks that were initiated prior to the release of the API but are still active in your instance.</p>
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## body: JObject (required)
+  var body_402656872 = newJObject()
+  if body != nil:
+    body_402656872 = body
+  result = call_402656871.call(nil, nil, nil, nil, body_402656872)
+
+var updateContactAttributes* = Call_UpdateContactAttributes_402656859(
+    name: "updateContactAttributes", meth: HttpMethod.HttpPost,
+    host: "connect.amazonaws.com", route: "/contact/attributes",
+    validator: validate_UpdateContactAttributes_402656860, base: "/",
+    makeUrl: url_UpdateContactAttributes_402656861,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateUserHierarchy_402656873 = ref object of OpenApiRestCall_402656044
+proc url_UpdateUserHierarchy_402656875(protocol: Scheme; host: string;
+                                       base: string; route: string;
+                                       path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "InstanceId" in path, "`InstanceId` is a required path parameter"
+  assert "UserId" in path, "`UserId` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/users/"),
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "UserId"),
+                 (kind: ConstantSegment, value: "/hierarchy")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_UpdateUserHierarchy_402656874(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Assigns the specified hierarchy group to the specified user.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   InstanceId: JString (required)
+                                 ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                ## UserId: JString (required)
+                                                                                                ##         
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## identifier 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## user 
+                                                                                                ## account.
+  section = newJObject()
+  assert path != nil,
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656876 = path.getOrDefault("InstanceId")
+  valid_402656876 = validateParameter(valid_402656876, JString, required = true,
+                                      default = nil)
+  if valid_402656876 != nil:
+    section.add "InstanceId", valid_402656876
+  var valid_402656877 = path.getOrDefault("UserId")
+  valid_402656877 = validateParameter(valid_402656877, JString, required = true,
+                                      default = nil)
+  if valid_402656877 != nil:
+    section.add "UserId", valid_402656877
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656878 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656878 = validateParameter(valid_402656878, JString,
+                                      required = false, default = nil)
+  if valid_402656878 != nil:
+    section.add "X-Amz-Security-Token", valid_402656878
+  var valid_402656879 = header.getOrDefault("X-Amz-Signature")
+  valid_402656879 = validateParameter(valid_402656879, JString,
+                                      required = false, default = nil)
+  if valid_402656879 != nil:
+    section.add "X-Amz-Signature", valid_402656879
+  var valid_402656880 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656880 = validateParameter(valid_402656880, JString,
+                                      required = false, default = nil)
+  if valid_402656880 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656880
+  var valid_402656881 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656881 = validateParameter(valid_402656881, JString,
+                                      required = false, default = nil)
+  if valid_402656881 != nil:
+    section.add "X-Amz-Algorithm", valid_402656881
+  var valid_402656882 = header.getOrDefault("X-Amz-Date")
+  valid_402656882 = validateParameter(valid_402656882, JString,
+                                      required = false, default = nil)
+  if valid_402656882 != nil:
+    section.add "X-Amz-Date", valid_402656882
+  var valid_402656883 = header.getOrDefault("X-Amz-Credential")
+  valid_402656883 = validateParameter(valid_402656883, JString,
+                                      required = false, default = nil)
+  if valid_402656883 != nil:
+    section.add "X-Amz-Credential", valid_402656883
+  var valid_402656884 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656884 = validateParameter(valid_402656884, JString,
+                                      required = false, default = nil)
+  if valid_402656884 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656884
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656886: Call_UpdateUserHierarchy_402656873;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Assigns the specified hierarchy group to the specified user.
+                                                                                         ## 
+  let valid = call_402656886.validator(path, query, header, formData, body, _)
+  let scheme = call_402656886.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656886.makeUrl(scheme.get, call_402656886.host, call_402656886.base,
+                                   call_402656886.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656886, uri, valid, _)
+
+proc call*(call_402656887: Call_UpdateUserHierarchy_402656873; body: JsonNode;
+           InstanceId: string; UserId: string): Recallable =
   ## updateUserHierarchy
   ## Assigns the specified hierarchy group to the specified user.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
   ##   body: JObject (required)
-  ##   UserId: string (required)
-  ##         : The identifier of the user account.
-  var path_21626432 = newJObject()
-  var body_21626433 = newJObject()
-  add(path_21626432, "InstanceId", newJString(InstanceId))
+  ##   InstanceId: string (required)
+                               ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                              ## UserId: string (required)
+                                                                                              ##         
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## identifier 
+                                                                                              ## of 
+                                                                                              ## the 
+                                                                                              ## user 
+                                                                                              ## account.
+  var path_402656888 = newJObject()
+  var body_402656889 = newJObject()
   if body != nil:
-    body_21626433 = body
-  add(path_21626432, "UserId", newJString(UserId))
-  result = call_21626431.call(path_21626432, nil, nil, nil, body_21626433)
+    body_402656889 = body
+  add(path_402656888, "InstanceId", newJString(InstanceId))
+  add(path_402656888, "UserId", newJString(UserId))
+  result = call_402656887.call(path_402656888, nil, nil, nil, body_402656889)
 
-var updateUserHierarchy* = Call_UpdateUserHierarchy_21626417(
+var updateUserHierarchy* = Call_UpdateUserHierarchy_402656873(
     name: "updateUserHierarchy", meth: HttpMethod.HttpPost,
     host: "connect.amazonaws.com",
     route: "/users/{InstanceId}/{UserId}/hierarchy",
-    validator: validate_UpdateUserHierarchy_21626418, base: "/",
-    makeUrl: url_UpdateUserHierarchy_21626419,
+    validator: validate_UpdateUserHierarchy_402656874, base: "/",
+    makeUrl: url_UpdateUserHierarchy_402656875,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateUserIdentityInfo_21626434 = ref object of OpenApiRestCall_21625435
-proc url_UpdateUserIdentityInfo_21626436(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
+  Call_UpdateUserIdentityInfo_402656890 = ref object of OpenApiRestCall_402656044
+proc url_UpdateUserIdentityInfo_402656892(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3688,10 +4698,10 @@ proc url_UpdateUserIdentityInfo_21626436(protocol: Scheme; host: string;
   assert "UserId" in path, "`UserId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/users/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "UserId"),
-               (kind: ConstantSegment, value: "/identity-info")]
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "UserId"),
+                 (kind: ConstantSegment, value: "/identity-info")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3700,78 +4710,86 @@ proc url_UpdateUserIdentityInfo_21626436(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateUserIdentityInfo_21626435(path: JsonNode; query: JsonNode;
+proc validate_UpdateUserIdentityInfo_402656891(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Updates the identity information for the specified user.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: JString (required)
-  ##         : The identifier of the user account.
+                                 ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                ## UserId: JString (required)
+                                                                                                ##         
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## identifier 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## user 
+                                                                                                ## account.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626437 = path.getOrDefault("InstanceId")
-  valid_21626437 = validateParameter(valid_21626437, JString, required = true,
-                                   default = nil)
-  if valid_21626437 != nil:
-    section.add "InstanceId", valid_21626437
-  var valid_21626438 = path.getOrDefault("UserId")
-  valid_21626438 = validateParameter(valid_21626438, JString, required = true,
-                                   default = nil)
-  if valid_21626438 != nil:
-    section.add "UserId", valid_21626438
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656893 = path.getOrDefault("InstanceId")
+  valid_402656893 = validateParameter(valid_402656893, JString, required = true,
+                                      default = nil)
+  if valid_402656893 != nil:
+    section.add "InstanceId", valid_402656893
+  var valid_402656894 = path.getOrDefault("UserId")
+  valid_402656894 = validateParameter(valid_402656894, JString, required = true,
+                                      default = nil)
+  if valid_402656894 != nil:
+    section.add "UserId", valid_402656894
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626439 = header.getOrDefault("X-Amz-Date")
-  valid_21626439 = validateParameter(valid_21626439, JString, required = false,
-                                   default = nil)
-  if valid_21626439 != nil:
-    section.add "X-Amz-Date", valid_21626439
-  var valid_21626440 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626440 = validateParameter(valid_21626440, JString, required = false,
-                                   default = nil)
-  if valid_21626440 != nil:
-    section.add "X-Amz-Security-Token", valid_21626440
-  var valid_21626441 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626441 = validateParameter(valid_21626441, JString, required = false,
-                                   default = nil)
-  if valid_21626441 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626441
-  var valid_21626442 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626442 = validateParameter(valid_21626442, JString, required = false,
-                                   default = nil)
-  if valid_21626442 != nil:
-    section.add "X-Amz-Algorithm", valid_21626442
-  var valid_21626443 = header.getOrDefault("X-Amz-Signature")
-  valid_21626443 = validateParameter(valid_21626443, JString, required = false,
-                                   default = nil)
-  if valid_21626443 != nil:
-    section.add "X-Amz-Signature", valid_21626443
-  var valid_21626444 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626444 = validateParameter(valid_21626444, JString, required = false,
-                                   default = nil)
-  if valid_21626444 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626444
-  var valid_21626445 = header.getOrDefault("X-Amz-Credential")
-  valid_21626445 = validateParameter(valid_21626445, JString, required = false,
-                                   default = nil)
-  if valid_21626445 != nil:
-    section.add "X-Amz-Credential", valid_21626445
+  var valid_402656895 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656895 = validateParameter(valid_402656895, JString,
+                                      required = false, default = nil)
+  if valid_402656895 != nil:
+    section.add "X-Amz-Security-Token", valid_402656895
+  var valid_402656896 = header.getOrDefault("X-Amz-Signature")
+  valid_402656896 = validateParameter(valid_402656896, JString,
+                                      required = false, default = nil)
+  if valid_402656896 != nil:
+    section.add "X-Amz-Signature", valid_402656896
+  var valid_402656897 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656897 = validateParameter(valid_402656897, JString,
+                                      required = false, default = nil)
+  if valid_402656897 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656897
+  var valid_402656898 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656898 = validateParameter(valid_402656898, JString,
+                                      required = false, default = nil)
+  if valid_402656898 != nil:
+    section.add "X-Amz-Algorithm", valid_402656898
+  var valid_402656899 = header.getOrDefault("X-Amz-Date")
+  valid_402656899 = validateParameter(valid_402656899, JString,
+                                      required = false, default = nil)
+  if valid_402656899 != nil:
+    section.add "X-Amz-Date", valid_402656899
+  var valid_402656900 = header.getOrDefault("X-Amz-Credential")
+  valid_402656900 = validateParameter(valid_402656900, JString,
+                                      required = false, default = nil)
+  if valid_402656900 != nil:
+    section.add "X-Amz-Credential", valid_402656900
+  var valid_402656901 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656901 = validateParameter(valid_402656901, JString,
+                                      required = false, default = nil)
+  if valid_402656901 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656901
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3783,49 +4801,57 @@ proc validate_UpdateUserIdentityInfo_21626435(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626447: Call_UpdateUserIdentityInfo_21626434;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656903: Call_UpdateUserIdentityInfo_402656890;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Updates the identity information for the specified user.
-  ## 
-  let valid = call_21626447.validator(path, query, header, formData, body, _)
-  let scheme = call_21626447.pickScheme
+                                                                                         ## 
+  let valid = call_402656903.validator(path, query, header, formData, body, _)
+  let scheme = call_402656903.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626447.makeUrl(scheme.get, call_21626447.host, call_21626447.base,
-                               call_21626447.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626447, uri, valid, _)
+  let uri = call_402656903.makeUrl(scheme.get, call_402656903.host, call_402656903.base,
+                                   call_402656903.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656903, uri, valid, _)
 
-proc call*(call_21626448: Call_UpdateUserIdentityInfo_21626434; InstanceId: string;
-          body: JsonNode; UserId: string): Recallable =
+proc call*(call_402656904: Call_UpdateUserIdentityInfo_402656890;
+           body: JsonNode; InstanceId: string; UserId: string): Recallable =
   ## updateUserIdentityInfo
   ## Updates the identity information for the specified user.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
   ##   body: JObject (required)
-  ##   UserId: string (required)
-  ##         : The identifier of the user account.
-  var path_21626449 = newJObject()
-  var body_21626450 = newJObject()
-  add(path_21626449, "InstanceId", newJString(InstanceId))
+  ##   InstanceId: string (required)
+                               ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                              ## UserId: string (required)
+                                                                                              ##         
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## identifier 
+                                                                                              ## of 
+                                                                                              ## the 
+                                                                                              ## user 
+                                                                                              ## account.
+  var path_402656905 = newJObject()
+  var body_402656906 = newJObject()
   if body != nil:
-    body_21626450 = body
-  add(path_21626449, "UserId", newJString(UserId))
-  result = call_21626448.call(path_21626449, nil, nil, nil, body_21626450)
+    body_402656906 = body
+  add(path_402656905, "InstanceId", newJString(InstanceId))
+  add(path_402656905, "UserId", newJString(UserId))
+  result = call_402656904.call(path_402656905, nil, nil, nil, body_402656906)
 
-var updateUserIdentityInfo* = Call_UpdateUserIdentityInfo_21626434(
+var updateUserIdentityInfo* = Call_UpdateUserIdentityInfo_402656890(
     name: "updateUserIdentityInfo", meth: HttpMethod.HttpPost,
     host: "connect.amazonaws.com",
     route: "/users/{InstanceId}/{UserId}/identity-info",
-    validator: validate_UpdateUserIdentityInfo_21626435, base: "/",
-    makeUrl: url_UpdateUserIdentityInfo_21626436,
+    validator: validate_UpdateUserIdentityInfo_402656891, base: "/",
+    makeUrl: url_UpdateUserIdentityInfo_402656892,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateUserPhoneConfig_21626451 = ref object of OpenApiRestCall_21625435
-proc url_UpdateUserPhoneConfig_21626453(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode;
-                                       query: JsonNode): Uri =
+  Call_UpdateUserPhoneConfig_402656907 = ref object of OpenApiRestCall_402656044
+proc url_UpdateUserPhoneConfig_402656909(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3834,10 +4860,10 @@ proc url_UpdateUserPhoneConfig_21626453(protocol: Scheme; host: string; base: st
   assert "UserId" in path, "`UserId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/users/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "UserId"),
-               (kind: ConstantSegment, value: "/phone-config")]
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "UserId"),
+                 (kind: ConstantSegment, value: "/phone-config")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3846,78 +4872,86 @@ proc url_UpdateUserPhoneConfig_21626453(protocol: Scheme; host: string; base: st
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateUserPhoneConfig_21626452(path: JsonNode; query: JsonNode;
+proc validate_UpdateUserPhoneConfig_402656908(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Updates the phone configuration settings for the specified user.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: JString (required)
-  ##         : The identifier of the user account.
+                                 ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                ## UserId: JString (required)
+                                                                                                ##         
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## identifier 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## user 
+                                                                                                ## account.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626454 = path.getOrDefault("InstanceId")
-  valid_21626454 = validateParameter(valid_21626454, JString, required = true,
-                                   default = nil)
-  if valid_21626454 != nil:
-    section.add "InstanceId", valid_21626454
-  var valid_21626455 = path.getOrDefault("UserId")
-  valid_21626455 = validateParameter(valid_21626455, JString, required = true,
-                                   default = nil)
-  if valid_21626455 != nil:
-    section.add "UserId", valid_21626455
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656910 = path.getOrDefault("InstanceId")
+  valid_402656910 = validateParameter(valid_402656910, JString, required = true,
+                                      default = nil)
+  if valid_402656910 != nil:
+    section.add "InstanceId", valid_402656910
+  var valid_402656911 = path.getOrDefault("UserId")
+  valid_402656911 = validateParameter(valid_402656911, JString, required = true,
+                                      default = nil)
+  if valid_402656911 != nil:
+    section.add "UserId", valid_402656911
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626456 = header.getOrDefault("X-Amz-Date")
-  valid_21626456 = validateParameter(valid_21626456, JString, required = false,
-                                   default = nil)
-  if valid_21626456 != nil:
-    section.add "X-Amz-Date", valid_21626456
-  var valid_21626457 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626457 = validateParameter(valid_21626457, JString, required = false,
-                                   default = nil)
-  if valid_21626457 != nil:
-    section.add "X-Amz-Security-Token", valid_21626457
-  var valid_21626458 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626458 = validateParameter(valid_21626458, JString, required = false,
-                                   default = nil)
-  if valid_21626458 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626458
-  var valid_21626459 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626459 = validateParameter(valid_21626459, JString, required = false,
-                                   default = nil)
-  if valid_21626459 != nil:
-    section.add "X-Amz-Algorithm", valid_21626459
-  var valid_21626460 = header.getOrDefault("X-Amz-Signature")
-  valid_21626460 = validateParameter(valid_21626460, JString, required = false,
-                                   default = nil)
-  if valid_21626460 != nil:
-    section.add "X-Amz-Signature", valid_21626460
-  var valid_21626461 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626461 = validateParameter(valid_21626461, JString, required = false,
-                                   default = nil)
-  if valid_21626461 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626461
-  var valid_21626462 = header.getOrDefault("X-Amz-Credential")
-  valid_21626462 = validateParameter(valid_21626462, JString, required = false,
-                                   default = nil)
-  if valid_21626462 != nil:
-    section.add "X-Amz-Credential", valid_21626462
+  var valid_402656912 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656912 = validateParameter(valid_402656912, JString,
+                                      required = false, default = nil)
+  if valid_402656912 != nil:
+    section.add "X-Amz-Security-Token", valid_402656912
+  var valid_402656913 = header.getOrDefault("X-Amz-Signature")
+  valid_402656913 = validateParameter(valid_402656913, JString,
+                                      required = false, default = nil)
+  if valid_402656913 != nil:
+    section.add "X-Amz-Signature", valid_402656913
+  var valid_402656914 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656914 = validateParameter(valid_402656914, JString,
+                                      required = false, default = nil)
+  if valid_402656914 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656914
+  var valid_402656915 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656915 = validateParameter(valid_402656915, JString,
+                                      required = false, default = nil)
+  if valid_402656915 != nil:
+    section.add "X-Amz-Algorithm", valid_402656915
+  var valid_402656916 = header.getOrDefault("X-Amz-Date")
+  valid_402656916 = validateParameter(valid_402656916, JString,
+                                      required = false, default = nil)
+  if valid_402656916 != nil:
+    section.add "X-Amz-Date", valid_402656916
+  var valid_402656917 = header.getOrDefault("X-Amz-Credential")
+  valid_402656917 = validateParameter(valid_402656917, JString,
+                                      required = false, default = nil)
+  if valid_402656917 != nil:
+    section.add "X-Amz-Credential", valid_402656917
+  var valid_402656918 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656918 = validateParameter(valid_402656918, JString,
+                                      required = false, default = nil)
+  if valid_402656918 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656918
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3929,47 +4963,56 @@ proc validate_UpdateUserPhoneConfig_21626452(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626464: Call_UpdateUserPhoneConfig_21626451;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656920: Call_UpdateUserPhoneConfig_402656907;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Updates the phone configuration settings for the specified user.
-  ## 
-  let valid = call_21626464.validator(path, query, header, formData, body, _)
-  let scheme = call_21626464.pickScheme
+                                                                                         ## 
+  let valid = call_402656920.validator(path, query, header, formData, body, _)
+  let scheme = call_402656920.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626464.makeUrl(scheme.get, call_21626464.host, call_21626464.base,
-                               call_21626464.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626464, uri, valid, _)
+  let uri = call_402656920.makeUrl(scheme.get, call_402656920.host, call_402656920.base,
+                                   call_402656920.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656920, uri, valid, _)
 
-proc call*(call_21626465: Call_UpdateUserPhoneConfig_21626451; InstanceId: string;
-          body: JsonNode; UserId: string): Recallable =
+proc call*(call_402656921: Call_UpdateUserPhoneConfig_402656907; body: JsonNode;
+           InstanceId: string; UserId: string): Recallable =
   ## updateUserPhoneConfig
   ## Updates the phone configuration settings for the specified user.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
   ##   body: JObject (required)
-  ##   UserId: string (required)
-  ##         : The identifier of the user account.
-  var path_21626466 = newJObject()
-  var body_21626467 = newJObject()
-  add(path_21626466, "InstanceId", newJString(InstanceId))
+  ##   InstanceId: string (required)
+                               ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                              ## UserId: string (required)
+                                                                                              ##         
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## identifier 
+                                                                                              ## of 
+                                                                                              ## the 
+                                                                                              ## user 
+                                                                                              ## account.
+  var path_402656922 = newJObject()
+  var body_402656923 = newJObject()
   if body != nil:
-    body_21626467 = body
-  add(path_21626466, "UserId", newJString(UserId))
-  result = call_21626465.call(path_21626466, nil, nil, nil, body_21626467)
+    body_402656923 = body
+  add(path_402656922, "InstanceId", newJString(InstanceId))
+  add(path_402656922, "UserId", newJString(UserId))
+  result = call_402656921.call(path_402656922, nil, nil, nil, body_402656923)
 
-var updateUserPhoneConfig* = Call_UpdateUserPhoneConfig_21626451(
+var updateUserPhoneConfig* = Call_UpdateUserPhoneConfig_402656907(
     name: "updateUserPhoneConfig", meth: HttpMethod.HttpPost,
     host: "connect.amazonaws.com",
     route: "/users/{InstanceId}/{UserId}/phone-config",
-    validator: validate_UpdateUserPhoneConfig_21626452, base: "/",
-    makeUrl: url_UpdateUserPhoneConfig_21626453,
+    validator: validate_UpdateUserPhoneConfig_402656908, base: "/",
+    makeUrl: url_UpdateUserPhoneConfig_402656909,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateUserRoutingProfile_21626468 = ref object of OpenApiRestCall_21625435
-proc url_UpdateUserRoutingProfile_21626470(protocol: Scheme; host: string;
+  Call_UpdateUserRoutingProfile_402656924 = ref object of OpenApiRestCall_402656044
+proc url_UpdateUserRoutingProfile_402656926(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3979,10 +5022,10 @@ proc url_UpdateUserRoutingProfile_21626470(protocol: Scheme; host: string;
   assert "UserId" in path, "`UserId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/users/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "UserId"),
-               (kind: ConstantSegment, value: "/routing-profile")]
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "UserId"),
+                 (kind: ConstantSegment, value: "/routing-profile")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3991,78 +5034,86 @@ proc url_UpdateUserRoutingProfile_21626470(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateUserRoutingProfile_21626469(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_UpdateUserRoutingProfile_402656925(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## Assigns the specified routing profile to the specified user.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: JString (required)
-  ##         : The identifier of the user account.
+                                 ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                ## UserId: JString (required)
+                                                                                                ##         
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## identifier 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## user 
+                                                                                                ## account.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626471 = path.getOrDefault("InstanceId")
-  valid_21626471 = validateParameter(valid_21626471, JString, required = true,
-                                   default = nil)
-  if valid_21626471 != nil:
-    section.add "InstanceId", valid_21626471
-  var valid_21626472 = path.getOrDefault("UserId")
-  valid_21626472 = validateParameter(valid_21626472, JString, required = true,
-                                   default = nil)
-  if valid_21626472 != nil:
-    section.add "UserId", valid_21626472
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656927 = path.getOrDefault("InstanceId")
+  valid_402656927 = validateParameter(valid_402656927, JString, required = true,
+                                      default = nil)
+  if valid_402656927 != nil:
+    section.add "InstanceId", valid_402656927
+  var valid_402656928 = path.getOrDefault("UserId")
+  valid_402656928 = validateParameter(valid_402656928, JString, required = true,
+                                      default = nil)
+  if valid_402656928 != nil:
+    section.add "UserId", valid_402656928
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626473 = header.getOrDefault("X-Amz-Date")
-  valid_21626473 = validateParameter(valid_21626473, JString, required = false,
-                                   default = nil)
-  if valid_21626473 != nil:
-    section.add "X-Amz-Date", valid_21626473
-  var valid_21626474 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626474 = validateParameter(valid_21626474, JString, required = false,
-                                   default = nil)
-  if valid_21626474 != nil:
-    section.add "X-Amz-Security-Token", valid_21626474
-  var valid_21626475 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626475 = validateParameter(valid_21626475, JString, required = false,
-                                   default = nil)
-  if valid_21626475 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626475
-  var valid_21626476 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626476 = validateParameter(valid_21626476, JString, required = false,
-                                   default = nil)
-  if valid_21626476 != nil:
-    section.add "X-Amz-Algorithm", valid_21626476
-  var valid_21626477 = header.getOrDefault("X-Amz-Signature")
-  valid_21626477 = validateParameter(valid_21626477, JString, required = false,
-                                   default = nil)
-  if valid_21626477 != nil:
-    section.add "X-Amz-Signature", valid_21626477
-  var valid_21626478 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626478 = validateParameter(valid_21626478, JString, required = false,
-                                   default = nil)
-  if valid_21626478 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626478
-  var valid_21626479 = header.getOrDefault("X-Amz-Credential")
-  valid_21626479 = validateParameter(valid_21626479, JString, required = false,
-                                   default = nil)
-  if valid_21626479 != nil:
-    section.add "X-Amz-Credential", valid_21626479
+  var valid_402656929 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656929 = validateParameter(valid_402656929, JString,
+                                      required = false, default = nil)
+  if valid_402656929 != nil:
+    section.add "X-Amz-Security-Token", valid_402656929
+  var valid_402656930 = header.getOrDefault("X-Amz-Signature")
+  valid_402656930 = validateParameter(valid_402656930, JString,
+                                      required = false, default = nil)
+  if valid_402656930 != nil:
+    section.add "X-Amz-Signature", valid_402656930
+  var valid_402656931 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656931 = validateParameter(valid_402656931, JString,
+                                      required = false, default = nil)
+  if valid_402656931 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656931
+  var valid_402656932 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656932 = validateParameter(valid_402656932, JString,
+                                      required = false, default = nil)
+  if valid_402656932 != nil:
+    section.add "X-Amz-Algorithm", valid_402656932
+  var valid_402656933 = header.getOrDefault("X-Amz-Date")
+  valid_402656933 = validateParameter(valid_402656933, JString,
+                                      required = false, default = nil)
+  if valid_402656933 != nil:
+    section.add "X-Amz-Date", valid_402656933
+  var valid_402656934 = header.getOrDefault("X-Amz-Credential")
+  valid_402656934 = validateParameter(valid_402656934, JString,
+                                      required = false, default = nil)
+  if valid_402656934 != nil:
+    section.add "X-Amz-Credential", valid_402656934
+  var valid_402656935 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656935 = validateParameter(valid_402656935, JString,
+                                      required = false, default = nil)
+  if valid_402656935 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656935
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4074,47 +5125,56 @@ proc validate_UpdateUserRoutingProfile_21626469(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626481: Call_UpdateUserRoutingProfile_21626468;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656937: Call_UpdateUserRoutingProfile_402656924;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Assigns the specified routing profile to the specified user.
-  ## 
-  let valid = call_21626481.validator(path, query, header, formData, body, _)
-  let scheme = call_21626481.pickScheme
+                                                                                         ## 
+  let valid = call_402656937.validator(path, query, header, formData, body, _)
+  let scheme = call_402656937.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626481.makeUrl(scheme.get, call_21626481.host, call_21626481.base,
-                               call_21626481.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626481, uri, valid, _)
+  let uri = call_402656937.makeUrl(scheme.get, call_402656937.host, call_402656937.base,
+                                   call_402656937.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656937, uri, valid, _)
 
-proc call*(call_21626482: Call_UpdateUserRoutingProfile_21626468;
-          InstanceId: string; body: JsonNode; UserId: string): Recallable =
+proc call*(call_402656938: Call_UpdateUserRoutingProfile_402656924;
+           body: JsonNode; InstanceId: string; UserId: string): Recallable =
   ## updateUserRoutingProfile
   ## Assigns the specified routing profile to the specified user.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
   ##   body: JObject (required)
-  ##   UserId: string (required)
-  ##         : The identifier of the user account.
-  var path_21626483 = newJObject()
-  var body_21626484 = newJObject()
-  add(path_21626483, "InstanceId", newJString(InstanceId))
+  ##   InstanceId: string (required)
+                               ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                              ## UserId: string (required)
+                                                                                              ##         
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## identifier 
+                                                                                              ## of 
+                                                                                              ## the 
+                                                                                              ## user 
+                                                                                              ## account.
+  var path_402656939 = newJObject()
+  var body_402656940 = newJObject()
   if body != nil:
-    body_21626484 = body
-  add(path_21626483, "UserId", newJString(UserId))
-  result = call_21626482.call(path_21626483, nil, nil, nil, body_21626484)
+    body_402656940 = body
+  add(path_402656939, "InstanceId", newJString(InstanceId))
+  add(path_402656939, "UserId", newJString(UserId))
+  result = call_402656938.call(path_402656939, nil, nil, nil, body_402656940)
 
-var updateUserRoutingProfile* = Call_UpdateUserRoutingProfile_21626468(
+var updateUserRoutingProfile* = Call_UpdateUserRoutingProfile_402656924(
     name: "updateUserRoutingProfile", meth: HttpMethod.HttpPost,
     host: "connect.amazonaws.com",
     route: "/users/{InstanceId}/{UserId}/routing-profile",
-    validator: validate_UpdateUserRoutingProfile_21626469, base: "/",
-    makeUrl: url_UpdateUserRoutingProfile_21626470,
+    validator: validate_UpdateUserRoutingProfile_402656925, base: "/",
+    makeUrl: url_UpdateUserRoutingProfile_402656926,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateUserSecurityProfiles_21626485 = ref object of OpenApiRestCall_21625435
-proc url_UpdateUserSecurityProfiles_21626487(protocol: Scheme; host: string;
+  Call_UpdateUserSecurityProfiles_402656941 = ref object of OpenApiRestCall_402656044
+proc url_UpdateUserSecurityProfiles_402656943(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4124,10 +5184,10 @@ proc url_UpdateUserSecurityProfiles_21626487(protocol: Scheme; host: string;
   assert "UserId" in path, "`UserId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/users/"),
-               (kind: VariableSegment, value: "InstanceId"),
-               (kind: ConstantSegment, value: "/"),
-               (kind: VariableSegment, value: "UserId"),
-               (kind: ConstantSegment, value: "/security-profiles")]
+                 (kind: VariableSegment, value: "InstanceId"),
+                 (kind: ConstantSegment, value: "/"),
+                 (kind: VariableSegment, value: "UserId"),
+                 (kind: ConstantSegment, value: "/security-profiles")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -4136,78 +5196,86 @@ proc url_UpdateUserSecurityProfiles_21626487(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateUserSecurityProfiles_21626486(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_UpdateUserSecurityProfiles_402656942(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## Assigns the specified security profiles to the specified user.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   InstanceId: JString (required)
-  ##             : The identifier of the Amazon Connect instance.
-  ##   UserId: JString (required)
-  ##         : The identifier of the user account.
+                                 ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                                ## UserId: JString (required)
+                                                                                                ##         
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## identifier 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## user 
+                                                                                                ## account.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `InstanceId` field"
-  var valid_21626488 = path.getOrDefault("InstanceId")
-  valid_21626488 = validateParameter(valid_21626488, JString, required = true,
-                                   default = nil)
-  if valid_21626488 != nil:
-    section.add "InstanceId", valid_21626488
-  var valid_21626489 = path.getOrDefault("UserId")
-  valid_21626489 = validateParameter(valid_21626489, JString, required = true,
-                                   default = nil)
-  if valid_21626489 != nil:
-    section.add "UserId", valid_21626489
+         "path argument is necessary due to required `InstanceId` field"
+  var valid_402656944 = path.getOrDefault("InstanceId")
+  valid_402656944 = validateParameter(valid_402656944, JString, required = true,
+                                      default = nil)
+  if valid_402656944 != nil:
+    section.add "InstanceId", valid_402656944
+  var valid_402656945 = path.getOrDefault("UserId")
+  valid_402656945 = validateParameter(valid_402656945, JString, required = true,
+                                      default = nil)
+  if valid_402656945 != nil:
+    section.add "UserId", valid_402656945
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626490 = header.getOrDefault("X-Amz-Date")
-  valid_21626490 = validateParameter(valid_21626490, JString, required = false,
-                                   default = nil)
-  if valid_21626490 != nil:
-    section.add "X-Amz-Date", valid_21626490
-  var valid_21626491 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626491 = validateParameter(valid_21626491, JString, required = false,
-                                   default = nil)
-  if valid_21626491 != nil:
-    section.add "X-Amz-Security-Token", valid_21626491
-  var valid_21626492 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626492 = validateParameter(valid_21626492, JString, required = false,
-                                   default = nil)
-  if valid_21626492 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626492
-  var valid_21626493 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626493 = validateParameter(valid_21626493, JString, required = false,
-                                   default = nil)
-  if valid_21626493 != nil:
-    section.add "X-Amz-Algorithm", valid_21626493
-  var valid_21626494 = header.getOrDefault("X-Amz-Signature")
-  valid_21626494 = validateParameter(valid_21626494, JString, required = false,
-                                   default = nil)
-  if valid_21626494 != nil:
-    section.add "X-Amz-Signature", valid_21626494
-  var valid_21626495 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626495 = validateParameter(valid_21626495, JString, required = false,
-                                   default = nil)
-  if valid_21626495 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626495
-  var valid_21626496 = header.getOrDefault("X-Amz-Credential")
-  valid_21626496 = validateParameter(valid_21626496, JString, required = false,
-                                   default = nil)
-  if valid_21626496 != nil:
-    section.add "X-Amz-Credential", valid_21626496
+  var valid_402656946 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656946 = validateParameter(valid_402656946, JString,
+                                      required = false, default = nil)
+  if valid_402656946 != nil:
+    section.add "X-Amz-Security-Token", valid_402656946
+  var valid_402656947 = header.getOrDefault("X-Amz-Signature")
+  valid_402656947 = validateParameter(valid_402656947, JString,
+                                      required = false, default = nil)
+  if valid_402656947 != nil:
+    section.add "X-Amz-Signature", valid_402656947
+  var valid_402656948 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656948 = validateParameter(valid_402656948, JString,
+                                      required = false, default = nil)
+  if valid_402656948 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656948
+  var valid_402656949 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656949 = validateParameter(valid_402656949, JString,
+                                      required = false, default = nil)
+  if valid_402656949 != nil:
+    section.add "X-Amz-Algorithm", valid_402656949
+  var valid_402656950 = header.getOrDefault("X-Amz-Date")
+  valid_402656950 = validateParameter(valid_402656950, JString,
+                                      required = false, default = nil)
+  if valid_402656950 != nil:
+    section.add "X-Amz-Date", valid_402656950
+  var valid_402656951 = header.getOrDefault("X-Amz-Credential")
+  valid_402656951 = validateParameter(valid_402656951, JString,
+                                      required = false, default = nil)
+  if valid_402656951 != nil:
+    section.add "X-Amz-Credential", valid_402656951
+  var valid_402656952 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656952 = validateParameter(valid_402656952, JString,
+                                      required = false, default = nil)
+  if valid_402656952 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656952
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4219,43 +5287,52 @@ proc validate_UpdateUserSecurityProfiles_21626486(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626498: Call_UpdateUserSecurityProfiles_21626485;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656954: Call_UpdateUserSecurityProfiles_402656941;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Assigns the specified security profiles to the specified user.
-  ## 
-  let valid = call_21626498.validator(path, query, header, formData, body, _)
-  let scheme = call_21626498.pickScheme
+                                                                                         ## 
+  let valid = call_402656954.validator(path, query, header, formData, body, _)
+  let scheme = call_402656954.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626498.makeUrl(scheme.get, call_21626498.host, call_21626498.base,
-                               call_21626498.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626498, uri, valid, _)
+  let uri = call_402656954.makeUrl(scheme.get, call_402656954.host, call_402656954.base,
+                                   call_402656954.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656954, uri, valid, _)
 
-proc call*(call_21626499: Call_UpdateUserSecurityProfiles_21626485;
-          InstanceId: string; body: JsonNode; UserId: string): Recallable =
+proc call*(call_402656955: Call_UpdateUserSecurityProfiles_402656941;
+           body: JsonNode; InstanceId: string; UserId: string): Recallable =
   ## updateUserSecurityProfiles
   ## Assigns the specified security profiles to the specified user.
-  ##   InstanceId: string (required)
-  ##             : The identifier of the Amazon Connect instance.
   ##   body: JObject (required)
-  ##   UserId: string (required)
-  ##         : The identifier of the user account.
-  var path_21626500 = newJObject()
-  var body_21626501 = newJObject()
-  add(path_21626500, "InstanceId", newJString(InstanceId))
+  ##   InstanceId: string (required)
+                               ##             : The identifier of the Amazon Connect instance.
+  ##   
+                                                                                              ## UserId: string (required)
+                                                                                              ##         
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## identifier 
+                                                                                              ## of 
+                                                                                              ## the 
+                                                                                              ## user 
+                                                                                              ## account.
+  var path_402656956 = newJObject()
+  var body_402656957 = newJObject()
   if body != nil:
-    body_21626501 = body
-  add(path_21626500, "UserId", newJString(UserId))
-  result = call_21626499.call(path_21626500, nil, nil, nil, body_21626501)
+    body_402656957 = body
+  add(path_402656956, "InstanceId", newJString(InstanceId))
+  add(path_402656956, "UserId", newJString(UserId))
+  result = call_402656955.call(path_402656956, nil, nil, nil, body_402656957)
 
-var updateUserSecurityProfiles* = Call_UpdateUserSecurityProfiles_21626485(
+var updateUserSecurityProfiles* = Call_UpdateUserSecurityProfiles_402656941(
     name: "updateUserSecurityProfiles", meth: HttpMethod.HttpPost,
     host: "connect.amazonaws.com",
     route: "/users/{InstanceId}/{UserId}/security-profiles",
-    validator: validate_UpdateUserSecurityProfiles_21626486, base: "/",
-    makeUrl: url_UpdateUserSecurityProfiles_21626487,
+    validator: validate_UpdateUserSecurityProfiles_402656942, base: "/",
+    makeUrl: url_UpdateUserSecurityProfiles_402656943,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -4288,8 +5365,10 @@ sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 type
   XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+    SecurityToken = "X-Amz-Security-Token",
+    ContentSha256 = "X-Amz-Content-Sha256"
+proc atozSign(recall: var Recallable; query: JsonNode;
+              algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
@@ -4314,12 +5393,14 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers["X-Amz-Date"] = date
   recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    scope = credentialScope(region = region, service = awsServiceName, date = date)
-    request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
-                             normalize = normal, digest = algo)
+    scope = credentialScope(region = region, service = awsServiceName,
+                            date = date)
+    request = canonicalRequest(recall.meth, $url, query, recall.headers,
+                               recall.body, normalize = normal, digest = algo)
     sts = stringToSign(request.hash(algo), scope, date = date, digest = algo)
-    signature = calculateSignature(secret = secret, date = date, region = region,
-                                 service = awsServiceName, sts, digest = algo)
+    signature = calculateSignature(secret = secret, date = date,
+                                   region = region, service = awsServiceName,
+                                   sts, digest = algo)
   var auth = $algo & " "
   auth &= "Credential=" & access / scope & ", "
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "

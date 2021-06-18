@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
-  httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5,
+  base64, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Personalize Events
@@ -16,11 +16,11 @@ import
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/personalize-events/
 type
-  Scheme {.pure.} = enum
+  Scheme* {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
   ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
-                          header: JsonNode = nil; formData: JsonNode = nil;
-                          body: JsonNode = nil; _: string = ""): JsonNode
+                             header: JsonNode = nil; formData: JsonNode = nil;
+                             body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
@@ -28,17 +28,18 @@ type
     host*: string
     schemes*: set[Scheme]
     makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
-                  path: JsonNode; query: JsonNode): Uri
+                    path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_21625426 = ref object of OpenApiRestCall
+  OpenApiRestCall_402656038 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_21625426](t: T): T {.used.} =
-  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
-           schemes: t.schemes, validator: t.validator, url: t.url)
+proc clone[T: OpenApiRestCall_402656038](t: T): T {.used.} =
+  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base,
+             route: t.route, schemes: t.schemes, validator: t.validator,
+             url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_21625426): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_402656038): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -51,9 +52,9 @@ proc pickScheme(t: OpenApiRestCall_21625426): Option[Scheme] {.used.} =
     return some(scheme)
 
 proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
-                      default: JsonNode = nil): JsonNode =
+                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
-  ## a suitable default value when appropriate
+                                                            ## a suitable default value when appropriate
   if js == nil:
     if required:
       if default != nil:
@@ -79,7 +80,8 @@ proc queryString(query: JsonNode): string {.used.} =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.
+    used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -105,7 +107,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
   result = some(head & remainder.get)
 
 const
-  awsServers = {Scheme.Http: {"ap-northeast-1": "personalize-events.ap-northeast-1.amazonaws.com", "ap-southeast-1": "personalize-events.ap-southeast-1.amazonaws.com", "us-west-2": "personalize-events.us-west-2.amazonaws.com", "eu-west-2": "personalize-events.eu-west-2.amazonaws.com", "ap-northeast-3": "personalize-events.ap-northeast-3.amazonaws.com", "eu-central-1": "personalize-events.eu-central-1.amazonaws.com", "us-east-2": "personalize-events.us-east-2.amazonaws.com", "us-east-1": "personalize-events.us-east-1.amazonaws.com", "cn-northwest-1": "personalize-events.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "personalize-events.ap-south-1.amazonaws.com", "eu-north-1": "personalize-events.eu-north-1.amazonaws.com", "ap-northeast-2": "personalize-events.ap-northeast-2.amazonaws.com", "us-west-1": "personalize-events.us-west-1.amazonaws.com", "us-gov-east-1": "personalize-events.us-gov-east-1.amazonaws.com", "eu-west-3": "personalize-events.eu-west-3.amazonaws.com", "cn-north-1": "personalize-events.cn-north-1.amazonaws.com.cn", "sa-east-1": "personalize-events.sa-east-1.amazonaws.com", "eu-west-1": "personalize-events.eu-west-1.amazonaws.com", "us-gov-west-1": "personalize-events.us-gov-west-1.amazonaws.com", "ap-southeast-2": "personalize-events.ap-southeast-2.amazonaws.com", "ca-central-1": "personalize-events.ca-central-1.amazonaws.com"}.toTable, Scheme.Https: {
+  awsServers = {Scheme.Https: {"ap-northeast-1": "personalize-events.ap-northeast-1.amazonaws.com", "ap-southeast-1": "personalize-events.ap-southeast-1.amazonaws.com", "us-west-2": "personalize-events.us-west-2.amazonaws.com", "eu-west-2": "personalize-events.eu-west-2.amazonaws.com", "ap-northeast-3": "personalize-events.ap-northeast-3.amazonaws.com", "eu-central-1": "personalize-events.eu-central-1.amazonaws.com", "us-east-2": "personalize-events.us-east-2.amazonaws.com", "us-east-1": "personalize-events.us-east-1.amazonaws.com", "cn-northwest-1": "personalize-events.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "personalize-events.ap-south-1.amazonaws.com", "eu-north-1": "personalize-events.eu-north-1.amazonaws.com", "ap-northeast-2": "personalize-events.ap-northeast-2.amazonaws.com", "us-west-1": "personalize-events.us-west-1.amazonaws.com", "us-gov-east-1": "personalize-events.us-gov-east-1.amazonaws.com", "eu-west-3": "personalize-events.eu-west-3.amazonaws.com", "cn-north-1": "personalize-events.cn-north-1.amazonaws.com.cn", "sa-east-1": "personalize-events.sa-east-1.amazonaws.com", "eu-west-1": "personalize-events.eu-west-1.amazonaws.com", "us-gov-west-1": "personalize-events.us-gov-west-1.amazonaws.com", "ap-southeast-2": "personalize-events.ap-southeast-2.amazonaws.com", "ca-central-1": "personalize-events.ca-central-1.amazonaws.com"}.toTable, Scheme.Http: {
       "ap-northeast-1": "personalize-events.ap-northeast-1.amazonaws.com",
       "ap-southeast-1": "personalize-events.ap-southeast-1.amazonaws.com",
       "us-west-2": "personalize-events.us-west-2.amazonaws.com",
@@ -129,12 +131,12 @@ const
       "ca-central-1": "personalize-events.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "personalize-events"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
-    base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode;
+                body: string = ""): Recallable {.base.}
 type
-  Call_PutEvents_21625770 = ref object of OpenApiRestCall_21625426
-proc url_PutEvents_21625772(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PutEvents_402656288 = ref object of OpenApiRestCall_402656038
+proc url_PutEvents_402656290(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -143,11 +145,12 @@ proc url_PutEvents_21625772(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PutEvents_21625771(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+proc validate_PutEvents_402656289(path: JsonNode; query: JsonNode;
+                                  header: JsonNode; formData: JsonNode;
+                                  body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Records user interaction event data.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -155,49 +158,49 @@ proc validate_PutEvents_21625771(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21625873 = header.getOrDefault("X-Amz-Date")
-  valid_21625873 = validateParameter(valid_21625873, JString, required = false,
-                                   default = nil)
-  if valid_21625873 != nil:
-    section.add "X-Amz-Date", valid_21625873
-  var valid_21625874 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21625874 = validateParameter(valid_21625874, JString, required = false,
-                                   default = nil)
-  if valid_21625874 != nil:
-    section.add "X-Amz-Security-Token", valid_21625874
-  var valid_21625875 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21625875 = validateParameter(valid_21625875, JString, required = false,
-                                   default = nil)
-  if valid_21625875 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21625875
-  var valid_21625876 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21625876 = validateParameter(valid_21625876, JString, required = false,
-                                   default = nil)
-  if valid_21625876 != nil:
-    section.add "X-Amz-Algorithm", valid_21625876
-  var valid_21625877 = header.getOrDefault("X-Amz-Signature")
-  valid_21625877 = validateParameter(valid_21625877, JString, required = false,
-                                   default = nil)
-  if valid_21625877 != nil:
-    section.add "X-Amz-Signature", valid_21625877
-  var valid_21625878 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21625878 = validateParameter(valid_21625878, JString, required = false,
-                                   default = nil)
-  if valid_21625878 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21625878
-  var valid_21625879 = header.getOrDefault("X-Amz-Credential")
-  valid_21625879 = validateParameter(valid_21625879, JString, required = false,
-                                   default = nil)
-  if valid_21625879 != nil:
-    section.add "X-Amz-Credential", valid_21625879
+  var valid_402656372 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656372 = validateParameter(valid_402656372, JString,
+                                      required = false, default = nil)
+  if valid_402656372 != nil:
+    section.add "X-Amz-Security-Token", valid_402656372
+  var valid_402656373 = header.getOrDefault("X-Amz-Signature")
+  valid_402656373 = validateParameter(valid_402656373, JString,
+                                      required = false, default = nil)
+  if valid_402656373 != nil:
+    section.add "X-Amz-Signature", valid_402656373
+  var valid_402656374 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656374 = validateParameter(valid_402656374, JString,
+                                      required = false, default = nil)
+  if valid_402656374 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656374
+  var valid_402656375 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656375 = validateParameter(valid_402656375, JString,
+                                      required = false, default = nil)
+  if valid_402656375 != nil:
+    section.add "X-Amz-Algorithm", valid_402656375
+  var valid_402656376 = header.getOrDefault("X-Amz-Date")
+  valid_402656376 = validateParameter(valid_402656376, JString,
+                                      required = false, default = nil)
+  if valid_402656376 != nil:
+    section.add "X-Amz-Date", valid_402656376
+  var valid_402656377 = header.getOrDefault("X-Amz-Credential")
+  valid_402656377 = validateParameter(valid_402656377, JString,
+                                      required = false, default = nil)
+  if valid_402656377 != nil:
+    section.add "X-Amz-Credential", valid_402656377
+  var valid_402656378 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656378 = validateParameter(valid_402656378, JString,
+                                      required = false, default = nil)
+  if valid_402656378 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656378
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -209,36 +212,34 @@ proc validate_PutEvents_21625771(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_21625905: Call_PutEvents_21625770; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656393: Call_PutEvents_402656288; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Records user interaction event data.
-  ## 
-  let valid = call_21625905.validator(path, query, header, formData, body, _)
-  let scheme = call_21625905.pickScheme
+                                                                                         ## 
+  let valid = call_402656393.validator(path, query, header, formData, body, _)
+  let scheme = call_402656393.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21625905.makeUrl(scheme.get, call_21625905.host, call_21625905.base,
-                               call_21625905.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21625905, uri, valid, _)
+  let uri = call_402656393.makeUrl(scheme.get, call_402656393.host, call_402656393.base,
+                                   call_402656393.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656393, uri, valid, _)
 
-proc call*(call_21625968: Call_PutEvents_21625770; body: JsonNode): Recallable =
+proc call*(call_402656442: Call_PutEvents_402656288; body: JsonNode): Recallable =
   ## putEvents
   ## Records user interaction event data.
   ##   body: JObject (required)
-  var body_21625969 = newJObject()
+  var body_402656443 = newJObject()
   if body != nil:
-    body_21625969 = body
-  result = call_21625968.call(nil, nil, nil, nil, body_21625969)
+    body_402656443 = body
+  result = call_402656442.call(nil, nil, nil, nil, body_402656443)
 
-var putEvents* = Call_PutEvents_21625770(name: "putEvents",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "personalize-events.amazonaws.com",
-                                      route: "/events",
-                                      validator: validate_PutEvents_21625771,
-                                      base: "/", makeUrl: url_PutEvents_21625772,
-                                      schemes: {Scheme.Https, Scheme.Http})
+var putEvents* = Call_PutEvents_402656288(name: "putEvents",
+    meth: HttpMethod.HttpPost, host: "personalize-events.amazonaws.com",
+    route: "/events", validator: validate_PutEvents_402656289, base: "/",
+    makeUrl: url_PutEvents_402656290, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -270,8 +271,10 @@ sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 type
   XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+    SecurityToken = "X-Amz-Security-Token",
+    ContentSha256 = "X-Amz-Content-Sha256"
+proc atozSign(recall: var Recallable; query: JsonNode;
+              algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
@@ -296,12 +299,14 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers["X-Amz-Date"] = date
   recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    scope = credentialScope(region = region, service = awsServiceName, date = date)
-    request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
-                             normalize = normal, digest = algo)
+    scope = credentialScope(region = region, service = awsServiceName,
+                            date = date)
+    request = canonicalRequest(recall.meth, $url, query, recall.headers,
+                               recall.body, normalize = normal, digest = algo)
     sts = stringToSign(request.hash(algo), scope, date = date, digest = algo)
-    signature = calculateSignature(secret = secret, date = date, region = region,
-                                 service = awsServiceName, sts, digest = algo)
+    signature = calculateSignature(secret = secret, date = date,
+                                   region = region, service = awsServiceName,
+                                   sts, digest = algo)
   var auth = $algo & " "
   auth &= "Credential=" & access / scope & ", "
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "

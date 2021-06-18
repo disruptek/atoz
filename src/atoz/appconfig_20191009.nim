@@ -1,7 +1,7 @@
 
 import
-  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5, base64,
-  httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, md5,
+  base64, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon AppConfig
@@ -16,11 +16,11 @@ import
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/appconfig/
 type
-  Scheme {.pure.} = enum
+  Scheme* {.pure.} = enum
     Https = "https", Http = "http", Wss = "wss", Ws = "ws"
   ValidatorSignature = proc (path: JsonNode = nil; query: JsonNode = nil;
-                          header: JsonNode = nil; formData: JsonNode = nil;
-                          body: JsonNode = nil; _: string = ""): JsonNode
+                             header: JsonNode = nil; formData: JsonNode = nil;
+                             body: JsonNode = nil; _: string = ""): JsonNode
   OpenApiRestCall = ref object of RestCall
     validator*: ValidatorSignature
     route*: string
@@ -28,17 +28,18 @@ type
     host*: string
     schemes*: set[Scheme]
     makeUrl*: proc (protocol: Scheme; host: string; base: string; route: string;
-                  path: JsonNode; query: JsonNode): Uri
+                    path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_21625435 = ref object of OpenApiRestCall
+  OpenApiRestCall_402656038 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_21625435](t: T): T {.used.} =
-  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
-           schemes: t.schemes, validator: t.validator, url: t.url)
+proc clone[T: OpenApiRestCall_402656038](t: T): T {.used.} =
+  result = T(name: t.name, meth: t.meth, host: t.host, base: t.base,
+             route: t.route, schemes: t.schemes, validator: t.validator,
+             url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_402656038): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
@@ -51,9 +52,9 @@ proc pickScheme(t: OpenApiRestCall_21625435): Option[Scheme] {.used.} =
     return some(scheme)
 
 proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
-                      default: JsonNode = nil): JsonNode =
+                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
-  ## a suitable default value when appropriate
+                                                            ## a suitable default value when appropriate
   if js == nil:
     if required:
       if default != nil:
@@ -79,7 +80,8 @@ proc queryString(query: JsonNode): string {.used.} =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.
+    used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -105,17 +107,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
   result = some(head & remainder.get)
 
 const
-  awsServers = {Scheme.Http: {"ap-northeast-1": "appconfig.ap-northeast-1.amazonaws.com", "ap-southeast-1": "appconfig.ap-southeast-1.amazonaws.com",
-                           "us-west-2": "appconfig.us-west-2.amazonaws.com",
-                           "eu-west-2": "appconfig.eu-west-2.amazonaws.com", "ap-northeast-3": "appconfig.ap-northeast-3.amazonaws.com", "eu-central-1": "appconfig.eu-central-1.amazonaws.com",
-                           "us-east-2": "appconfig.us-east-2.amazonaws.com",
-                           "us-east-1": "appconfig.us-east-1.amazonaws.com", "cn-northwest-1": "appconfig.cn-northwest-1.amazonaws.com.cn",
-                           "ap-south-1": "appconfig.ap-south-1.amazonaws.com",
-                           "eu-north-1": "appconfig.eu-north-1.amazonaws.com", "ap-northeast-2": "appconfig.ap-northeast-2.amazonaws.com",
-                           "us-west-1": "appconfig.us-west-1.amazonaws.com", "us-gov-east-1": "appconfig.us-gov-east-1.amazonaws.com",
-                           "eu-west-3": "appconfig.eu-west-3.amazonaws.com", "cn-north-1": "appconfig.cn-north-1.amazonaws.com.cn",
-                           "sa-east-1": "appconfig.sa-east-1.amazonaws.com",
-                           "eu-west-1": "appconfig.eu-west-1.amazonaws.com", "us-gov-west-1": "appconfig.us-gov-west-1.amazonaws.com", "ap-southeast-2": "appconfig.ap-southeast-2.amazonaws.com", "ca-central-1": "appconfig.ca-central-1.amazonaws.com"}.toTable, Scheme.Https: {
+  awsServers = {Scheme.Https: {"ap-northeast-1": "appconfig.ap-northeast-1.amazonaws.com", "ap-southeast-1": "appconfig.ap-southeast-1.amazonaws.com", "us-west-2": "appconfig.us-west-2.amazonaws.com", "eu-west-2": "appconfig.eu-west-2.amazonaws.com", "ap-northeast-3": "appconfig.ap-northeast-3.amazonaws.com", "eu-central-1": "appconfig.eu-central-1.amazonaws.com", "us-east-2": "appconfig.us-east-2.amazonaws.com", "us-east-1": "appconfig.us-east-1.amazonaws.com", "cn-northwest-1": "appconfig.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "appconfig.ap-south-1.amazonaws.com", "eu-north-1": "appconfig.eu-north-1.amazonaws.com", "ap-northeast-2": "appconfig.ap-northeast-2.amazonaws.com", "us-west-1": "appconfig.us-west-1.amazonaws.com", "us-gov-east-1": "appconfig.us-gov-east-1.amazonaws.com", "eu-west-3": "appconfig.eu-west-3.amazonaws.com", "cn-north-1": "appconfig.cn-north-1.amazonaws.com.cn", "sa-east-1": "appconfig.sa-east-1.amazonaws.com", "eu-west-1": "appconfig.eu-west-1.amazonaws.com", "us-gov-west-1": "appconfig.us-gov-west-1.amazonaws.com", "ap-southeast-2": "appconfig.ap-southeast-2.amazonaws.com", "ca-central-1": "appconfig.ca-central-1.amazonaws.com"}.toTable, Scheme.Http: {
       "ap-northeast-1": "appconfig.ap-northeast-1.amazonaws.com",
       "ap-southeast-1": "appconfig.ap-southeast-1.amazonaws.com",
       "us-west-2": "appconfig.us-west-2.amazonaws.com",
@@ -139,12 +131,13 @@ const
       "ca-central-1": "appconfig.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "appconfig"
-method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode; body: string = ""): Recallable {.
-    base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode;
+                body: string = ""): Recallable {.base.}
 type
-  Call_CreateApplication_21626021 = ref object of OpenApiRestCall_21625435
-proc url_CreateApplication_21626023(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateApplication_402656473 = ref object of OpenApiRestCall_402656038
+proc url_CreateApplication_402656475(protocol: Scheme; host: string;
+                                     base: string; route: string;
+                                     path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -153,12 +146,11 @@ proc url_CreateApplication_21626023(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_CreateApplication_21626022(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode {.
+proc validate_CreateApplication_402656474(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## An application in AppConfig is a logical unit of code that provides capabilities for your customers. For example, an application can be a microservice that runs on Amazon EC2 instances, a mobile application installed by your users, a serverless application using Amazon API Gateway and AWS Lambda, or any system you run on behalf of others.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -166,49 +158,49 @@ proc validate_CreateApplication_21626022(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626024 = header.getOrDefault("X-Amz-Date")
-  valid_21626024 = validateParameter(valid_21626024, JString, required = false,
-                                   default = nil)
-  if valid_21626024 != nil:
-    section.add "X-Amz-Date", valid_21626024
-  var valid_21626025 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626025 = validateParameter(valid_21626025, JString, required = false,
-                                   default = nil)
-  if valid_21626025 != nil:
-    section.add "X-Amz-Security-Token", valid_21626025
-  var valid_21626026 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626026 = validateParameter(valid_21626026, JString, required = false,
-                                   default = nil)
-  if valid_21626026 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626026
-  var valid_21626027 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626027 = validateParameter(valid_21626027, JString, required = false,
-                                   default = nil)
-  if valid_21626027 != nil:
-    section.add "X-Amz-Algorithm", valid_21626027
-  var valid_21626028 = header.getOrDefault("X-Amz-Signature")
-  valid_21626028 = validateParameter(valid_21626028, JString, required = false,
-                                   default = nil)
-  if valid_21626028 != nil:
-    section.add "X-Amz-Signature", valid_21626028
-  var valid_21626029 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626029 = validateParameter(valid_21626029, JString, required = false,
-                                   default = nil)
-  if valid_21626029 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626029
-  var valid_21626030 = header.getOrDefault("X-Amz-Credential")
-  valid_21626030 = validateParameter(valid_21626030, JString, required = false,
-                                   default = nil)
-  if valid_21626030 != nil:
-    section.add "X-Amz-Credential", valid_21626030
+  var valid_402656476 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656476 = validateParameter(valid_402656476, JString,
+                                      required = false, default = nil)
+  if valid_402656476 != nil:
+    section.add "X-Amz-Security-Token", valid_402656476
+  var valid_402656477 = header.getOrDefault("X-Amz-Signature")
+  valid_402656477 = validateParameter(valid_402656477, JString,
+                                      required = false, default = nil)
+  if valid_402656477 != nil:
+    section.add "X-Amz-Signature", valid_402656477
+  var valid_402656478 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656478 = validateParameter(valid_402656478, JString,
+                                      required = false, default = nil)
+  if valid_402656478 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656478
+  var valid_402656479 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656479 = validateParameter(valid_402656479, JString,
+                                      required = false, default = nil)
+  if valid_402656479 != nil:
+    section.add "X-Amz-Algorithm", valid_402656479
+  var valid_402656480 = header.getOrDefault("X-Amz-Date")
+  valid_402656480 = validateParameter(valid_402656480, JString,
+                                      required = false, default = nil)
+  if valid_402656480 != nil:
+    section.add "X-Amz-Date", valid_402656480
+  var valid_402656481 = header.getOrDefault("X-Amz-Credential")
+  valid_402656481 = validateParameter(valid_402656481, JString,
+                                      required = false, default = nil)
+  if valid_402656481 != nil:
+    section.add "X-Amz-Credential", valid_402656481
+  var valid_402656482 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656482 = validateParameter(valid_402656482, JString,
+                                      required = false, default = nil)
+  if valid_402656482 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656482
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -220,38 +212,42 @@ proc validate_CreateApplication_21626022(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626032: Call_CreateApplication_21626021; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656484: Call_CreateApplication_402656473;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## An application in AppConfig is a logical unit of code that provides capabilities for your customers. For example, an application can be a microservice that runs on Amazon EC2 instances, a mobile application installed by your users, a serverless application using Amazon API Gateway and AWS Lambda, or any system you run on behalf of others.
-  ## 
-  let valid = call_21626032.validator(path, query, header, formData, body, _)
-  let scheme = call_21626032.pickScheme
+                                                                                         ## 
+  let valid = call_402656484.validator(path, query, header, formData, body, _)
+  let scheme = call_402656484.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626032.makeUrl(scheme.get, call_21626032.host, call_21626032.base,
-                               call_21626032.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626032, uri, valid, _)
+  let uri = call_402656484.makeUrl(scheme.get, call_402656484.host, call_402656484.base,
+                                   call_402656484.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656484, uri, valid, _)
 
-proc call*(call_21626033: Call_CreateApplication_21626021; body: JsonNode): Recallable =
+proc call*(call_402656485: Call_CreateApplication_402656473; body: JsonNode): Recallable =
   ## createApplication
   ## An application in AppConfig is a logical unit of code that provides capabilities for your customers. For example, an application can be a microservice that runs on Amazon EC2 instances, a mobile application installed by your users, a serverless application using Amazon API Gateway and AWS Lambda, or any system you run on behalf of others.
-  ##   body: JObject (required)
-  var body_21626034 = newJObject()
+  ##   
+                                                                                                                                                                                                                                                                                                                                                         ## body: JObject (required)
+  var body_402656486 = newJObject()
   if body != nil:
-    body_21626034 = body
-  result = call_21626033.call(nil, nil, nil, nil, body_21626034)
+    body_402656486 = body
+  result = call_402656485.call(nil, nil, nil, nil, body_402656486)
 
-var createApplication* = Call_CreateApplication_21626021(name: "createApplication",
-    meth: HttpMethod.HttpPost, host: "appconfig.amazonaws.com",
-    route: "/applications", validator: validate_CreateApplication_21626022,
-    base: "/", makeUrl: url_CreateApplication_21626023,
+var createApplication* = Call_CreateApplication_402656473(
+    name: "createApplication", meth: HttpMethod.HttpPost,
+    host: "appconfig.amazonaws.com", route: "/applications",
+    validator: validate_CreateApplication_402656474, base: "/",
+    makeUrl: url_CreateApplication_402656475,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListApplications_21625779 = ref object of OpenApiRestCall_21625435
-proc url_ListApplications_21625781(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListApplications_402656288 = ref object of OpenApiRestCall_402656038
+proc url_ListApplications_402656290(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -260,138 +256,192 @@ proc url_ListApplications_21625781(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListApplications_21625780(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ListApplications_402656289(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## List all applications in your AWS account.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   next_token: JString
-  ##             : A token to start the list. Use this token to get the next set of results.
   ##   max_results: JInt
-  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                ## MaxResults: JString
+                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                ## Pagination 
+                                                                                                                                                                                                                ## limit
+  ##   
+                                                                                                                                                                                                                        ## NextToken: JString
+                                                                                                                                                                                                                        ##            
+                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                        ## Pagination 
+                                                                                                                                                                                                                        ## token
+  ##   
+                                                                                                                                                                                                                                ## next_token: JString
+                                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                ## A 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## start 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## list. 
+                                                                                                                                                                                                                                ## Use 
+                                                                                                                                                                                                                                ## this 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## get 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## next 
+                                                                                                                                                                                                                                ## set 
+                                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                                ## results.
   section = newJObject()
-  var valid_21625882 = query.getOrDefault("NextToken")
-  valid_21625882 = validateParameter(valid_21625882, JString, required = false,
-                                   default = nil)
-  if valid_21625882 != nil:
-    section.add "NextToken", valid_21625882
-  var valid_21625883 = query.getOrDefault("next_token")
-  valid_21625883 = validateParameter(valid_21625883, JString, required = false,
-                                   default = nil)
-  if valid_21625883 != nil:
-    section.add "next_token", valid_21625883
-  var valid_21625884 = query.getOrDefault("max_results")
-  valid_21625884 = validateParameter(valid_21625884, JInt, required = false,
-                                   default = nil)
-  if valid_21625884 != nil:
-    section.add "max_results", valid_21625884
-  var valid_21625885 = query.getOrDefault("MaxResults")
-  valid_21625885 = validateParameter(valid_21625885, JString, required = false,
-                                   default = nil)
-  if valid_21625885 != nil:
-    section.add "MaxResults", valid_21625885
+  var valid_402656372 = query.getOrDefault("max_results")
+  valid_402656372 = validateParameter(valid_402656372, JInt, required = false,
+                                      default = nil)
+  if valid_402656372 != nil:
+    section.add "max_results", valid_402656372
+  var valid_402656373 = query.getOrDefault("MaxResults")
+  valid_402656373 = validateParameter(valid_402656373, JString,
+                                      required = false, default = nil)
+  if valid_402656373 != nil:
+    section.add "MaxResults", valid_402656373
+  var valid_402656374 = query.getOrDefault("NextToken")
+  valid_402656374 = validateParameter(valid_402656374, JString,
+                                      required = false, default = nil)
+  if valid_402656374 != nil:
+    section.add "NextToken", valid_402656374
+  var valid_402656375 = query.getOrDefault("next_token")
+  valid_402656375 = validateParameter(valid_402656375, JString,
+                                      required = false, default = nil)
+  if valid_402656375 != nil:
+    section.add "next_token", valid_402656375
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21625886 = header.getOrDefault("X-Amz-Date")
-  valid_21625886 = validateParameter(valid_21625886, JString, required = false,
-                                   default = nil)
-  if valid_21625886 != nil:
-    section.add "X-Amz-Date", valid_21625886
-  var valid_21625887 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21625887 = validateParameter(valid_21625887, JString, required = false,
-                                   default = nil)
-  if valid_21625887 != nil:
-    section.add "X-Amz-Security-Token", valid_21625887
-  var valid_21625888 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21625888 = validateParameter(valid_21625888, JString, required = false,
-                                   default = nil)
-  if valid_21625888 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21625888
-  var valid_21625889 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21625889 = validateParameter(valid_21625889, JString, required = false,
-                                   default = nil)
-  if valid_21625889 != nil:
-    section.add "X-Amz-Algorithm", valid_21625889
-  var valid_21625890 = header.getOrDefault("X-Amz-Signature")
-  valid_21625890 = validateParameter(valid_21625890, JString, required = false,
-                                   default = nil)
-  if valid_21625890 != nil:
-    section.add "X-Amz-Signature", valid_21625890
-  var valid_21625891 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21625891 = validateParameter(valid_21625891, JString, required = false,
-                                   default = nil)
-  if valid_21625891 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21625891
-  var valid_21625892 = header.getOrDefault("X-Amz-Credential")
-  valid_21625892 = validateParameter(valid_21625892, JString, required = false,
-                                   default = nil)
-  if valid_21625892 != nil:
-    section.add "X-Amz-Credential", valid_21625892
+  var valid_402656376 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656376 = validateParameter(valid_402656376, JString,
+                                      required = false, default = nil)
+  if valid_402656376 != nil:
+    section.add "X-Amz-Security-Token", valid_402656376
+  var valid_402656377 = header.getOrDefault("X-Amz-Signature")
+  valid_402656377 = validateParameter(valid_402656377, JString,
+                                      required = false, default = nil)
+  if valid_402656377 != nil:
+    section.add "X-Amz-Signature", valid_402656377
+  var valid_402656378 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656378 = validateParameter(valid_402656378, JString,
+                                      required = false, default = nil)
+  if valid_402656378 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656378
+  var valid_402656379 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656379 = validateParameter(valid_402656379, JString,
+                                      required = false, default = nil)
+  if valid_402656379 != nil:
+    section.add "X-Amz-Algorithm", valid_402656379
+  var valid_402656380 = header.getOrDefault("X-Amz-Date")
+  valid_402656380 = validateParameter(valid_402656380, JString,
+                                      required = false, default = nil)
+  if valid_402656380 != nil:
+    section.add "X-Amz-Date", valid_402656380
+  var valid_402656381 = header.getOrDefault("X-Amz-Credential")
+  valid_402656381 = validateParameter(valid_402656381, JString,
+                                      required = false, default = nil)
+  if valid_402656381 != nil:
+    section.add "X-Amz-Credential", valid_402656381
+  var valid_402656382 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656382 = validateParameter(valid_402656382, JString,
+                                      required = false, default = nil)
+  if valid_402656382 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656382
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21625917: Call_ListApplications_21625779; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656396: Call_ListApplications_402656288;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## List all applications in your AWS account.
-  ## 
-  let valid = call_21625917.validator(path, query, header, formData, body, _)
-  let scheme = call_21625917.pickScheme
+                                                                                         ## 
+  let valid = call_402656396.validator(path, query, header, formData, body, _)
+  let scheme = call_402656396.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21625917.makeUrl(scheme.get, call_21625917.host, call_21625917.base,
-                               call_21625917.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21625917, uri, valid, _)
+  let uri = call_402656396.makeUrl(scheme.get, call_402656396.host, call_402656396.base,
+                                   call_402656396.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656396, uri, valid, _)
 
-proc call*(call_21625980: Call_ListApplications_21625779; NextToken: string = "";
-          nextToken: string = ""; maxResults: int = 0; MaxResults: string = ""): Recallable =
+proc call*(call_402656445: Call_ListApplications_402656288; maxResults: int = 0;
+           MaxResults: string = ""; NextToken: string = "";
+           nextToken: string = ""): Recallable =
   ## listApplications
   ## List all applications in your AWS account.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   nextToken: string
-  ##            : A token to start the list. Use this token to get the next set of results.
   ##   maxResults: int
-  ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_21625982 = newJObject()
-  add(query_21625982, "NextToken", newJString(NextToken))
-  add(query_21625982, "next_token", newJString(nextToken))
-  add(query_21625982, "max_results", newJInt(maxResults))
-  add(query_21625982, "MaxResults", newJString(MaxResults))
-  result = call_21625980.call(nil, query_21625982, nil, nil, nil)
+                                               ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                            ## MaxResults: string
+                                                                                                                                                                                                                            ##             
+                                                                                                                                                                                                                            ## : 
+                                                                                                                                                                                                                            ## Pagination 
+                                                                                                                                                                                                                            ## limit
+  ##   
+                                                                                                                                                                                                                                    ## NextToken: string
+                                                                                                                                                                                                                                    ##            
+                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                    ## Pagination 
+                                                                                                                                                                                                                                    ## token
+  ##   
+                                                                                                                                                                                                                                            ## nextToken: string
+                                                                                                                                                                                                                                            ##            
+                                                                                                                                                                                                                                            ## : 
+                                                                                                                                                                                                                                            ## A 
+                                                                                                                                                                                                                                            ## token 
+                                                                                                                                                                                                                                            ## to 
+                                                                                                                                                                                                                                            ## start 
+                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                            ## list. 
+                                                                                                                                                                                                                                            ## Use 
+                                                                                                                                                                                                                                            ## this 
+                                                                                                                                                                                                                                            ## token 
+                                                                                                                                                                                                                                            ## to 
+                                                                                                                                                                                                                                            ## get 
+                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                            ## next 
+                                                                                                                                                                                                                                            ## set 
+                                                                                                                                                                                                                                            ## of 
+                                                                                                                                                                                                                                            ## results.
+  var query_402656446 = newJObject()
+  add(query_402656446, "max_results", newJInt(maxResults))
+  add(query_402656446, "MaxResults", newJString(MaxResults))
+  add(query_402656446, "NextToken", newJString(NextToken))
+  add(query_402656446, "next_token", newJString(nextToken))
+  result = call_402656445.call(nil, query_402656446, nil, nil, nil)
 
-var listApplications* = Call_ListApplications_21625779(name: "listApplications",
-    meth: HttpMethod.HttpGet, host: "appconfig.amazonaws.com",
-    route: "/applications", validator: validate_ListApplications_21625780,
-    base: "/", makeUrl: url_ListApplications_21625781,
+var listApplications* = Call_ListApplications_402656288(
+    name: "listApplications", meth: HttpMethod.HttpGet,
+    host: "appconfig.amazonaws.com", route: "/applications",
+    validator: validate_ListApplications_402656289, base: "/",
+    makeUrl: url_ListApplications_402656290,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateConfigurationProfile_21626067 = ref object of OpenApiRestCall_21625435
-proc url_CreateConfigurationProfile_21626069(protocol: Scheme; host: string;
+  Call_CreateConfigurationProfile_402656517 = ref object of OpenApiRestCall_402656038
+proc url_CreateConfigurationProfile_402656519(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -400,8 +450,8 @@ proc url_CreateConfigurationProfile_21626069(protocol: Scheme; host: string;
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/configurationprofiles")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/configurationprofiles")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -410,71 +460,71 @@ proc url_CreateConfigurationProfile_21626069(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_CreateConfigurationProfile_21626068(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_CreateConfigurationProfile_402656518(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## <p>Information that enables AppConfig to access the configuration source. Valid configuration sources include Systems Manager (SSM) documents and SSM Parameter Store parameters. A configuration profile includes the following information.</p> <ul> <li> <p>The Uri location of the configuration data.</p> </li> <li> <p>The AWS Identity and Access Management (IAM) role that provides access to the configuration data.</p> </li> <li> <p>A validator for the configuration data. Available validators include either a JSON Schema or an AWS Lambda function.</p> </li> </ul>
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
+                                 ##                : The application ID.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626070 = path.getOrDefault("ApplicationId")
-  valid_21626070 = validateParameter(valid_21626070, JString, required = true,
-                                   default = nil)
-  if valid_21626070 != nil:
-    section.add "ApplicationId", valid_21626070
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656520 = path.getOrDefault("ApplicationId")
+  valid_402656520 = validateParameter(valid_402656520, JString, required = true,
+                                      default = nil)
+  if valid_402656520 != nil:
+    section.add "ApplicationId", valid_402656520
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626071 = header.getOrDefault("X-Amz-Date")
-  valid_21626071 = validateParameter(valid_21626071, JString, required = false,
-                                   default = nil)
-  if valid_21626071 != nil:
-    section.add "X-Amz-Date", valid_21626071
-  var valid_21626072 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626072 = validateParameter(valid_21626072, JString, required = false,
-                                   default = nil)
-  if valid_21626072 != nil:
-    section.add "X-Amz-Security-Token", valid_21626072
-  var valid_21626073 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626073 = validateParameter(valid_21626073, JString, required = false,
-                                   default = nil)
-  if valid_21626073 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626073
-  var valid_21626074 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626074 = validateParameter(valid_21626074, JString, required = false,
-                                   default = nil)
-  if valid_21626074 != nil:
-    section.add "X-Amz-Algorithm", valid_21626074
-  var valid_21626075 = header.getOrDefault("X-Amz-Signature")
-  valid_21626075 = validateParameter(valid_21626075, JString, required = false,
-                                   default = nil)
-  if valid_21626075 != nil:
-    section.add "X-Amz-Signature", valid_21626075
-  var valid_21626076 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626076 = validateParameter(valid_21626076, JString, required = false,
-                                   default = nil)
-  if valid_21626076 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626076
-  var valid_21626077 = header.getOrDefault("X-Amz-Credential")
-  valid_21626077 = validateParameter(valid_21626077, JString, required = false,
-                                   default = nil)
-  if valid_21626077 != nil:
-    section.add "X-Amz-Credential", valid_21626077
+  var valid_402656521 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656521 = validateParameter(valid_402656521, JString,
+                                      required = false, default = nil)
+  if valid_402656521 != nil:
+    section.add "X-Amz-Security-Token", valid_402656521
+  var valid_402656522 = header.getOrDefault("X-Amz-Signature")
+  valid_402656522 = validateParameter(valid_402656522, JString,
+                                      required = false, default = nil)
+  if valid_402656522 != nil:
+    section.add "X-Amz-Signature", valid_402656522
+  var valid_402656523 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656523 = validateParameter(valid_402656523, JString,
+                                      required = false, default = nil)
+  if valid_402656523 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656523
+  var valid_402656524 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656524 = validateParameter(valid_402656524, JString,
+                                      required = false, default = nil)
+  if valid_402656524 != nil:
+    section.add "X-Amz-Algorithm", valid_402656524
+  var valid_402656525 = header.getOrDefault("X-Amz-Date")
+  valid_402656525 = validateParameter(valid_402656525, JString,
+                                      required = false, default = nil)
+  if valid_402656525 != nil:
+    section.add "X-Amz-Date", valid_402656525
+  var valid_402656526 = header.getOrDefault("X-Amz-Credential")
+  valid_402656526 = validateParameter(valid_402656526, JString,
+                                      required = false, default = nil)
+  if valid_402656526 != nil:
+    section.add "X-Amz-Credential", valid_402656526
+  var valid_402656527 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656527 = validateParameter(valid_402656527, JString,
+                                      required = false, default = nil)
+  if valid_402656527 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656527
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -486,44 +536,51 @@ proc validate_CreateConfigurationProfile_21626068(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626079: Call_CreateConfigurationProfile_21626067;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656529: Call_CreateConfigurationProfile_402656517;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## <p>Information that enables AppConfig to access the configuration source. Valid configuration sources include Systems Manager (SSM) documents and SSM Parameter Store parameters. A configuration profile includes the following information.</p> <ul> <li> <p>The Uri location of the configuration data.</p> </li> <li> <p>The AWS Identity and Access Management (IAM) role that provides access to the configuration data.</p> </li> <li> <p>A validator for the configuration data. Available validators include either a JSON Schema or an AWS Lambda function.</p> </li> </ul>
-  ## 
-  let valid = call_21626079.validator(path, query, header, formData, body, _)
-  let scheme = call_21626079.pickScheme
+                                                                                         ## 
+  let valid = call_402656529.validator(path, query, header, formData, body, _)
+  let scheme = call_402656529.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626079.makeUrl(scheme.get, call_21626079.host, call_21626079.base,
-                               call_21626079.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626079, uri, valid, _)
+  let uri = call_402656529.makeUrl(scheme.get, call_402656529.host, call_402656529.base,
+                                   call_402656529.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656529, uri, valid, _)
 
-proc call*(call_21626080: Call_CreateConfigurationProfile_21626067;
-          ApplicationId: string; body: JsonNode): Recallable =
+proc call*(call_402656530: Call_CreateConfigurationProfile_402656517;
+           ApplicationId: string; body: JsonNode): Recallable =
   ## createConfigurationProfile
   ## <p>Information that enables AppConfig to access the configuration source. Valid configuration sources include Systems Manager (SSM) documents and SSM Parameter Store parameters. A configuration profile includes the following information.</p> <ul> <li> <p>The Uri location of the configuration data.</p> </li> <li> <p>The AWS Identity and Access Management (IAM) role that provides access to the configuration data.</p> </li> <li> <p>A validator for the configuration data. Available validators include either a JSON Schema or an AWS Lambda function.</p> </li> </ul>
-  ##   ApplicationId: string (required)
-  ##                : The application ID.
-  ##   body: JObject (required)
-  var path_21626081 = newJObject()
-  var body_21626082 = newJObject()
-  add(path_21626081, "ApplicationId", newJString(ApplicationId))
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## ApplicationId: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ##                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## application 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## ID.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ## body: JObject (required)
+  var path_402656531 = newJObject()
+  var body_402656532 = newJObject()
+  add(path_402656531, "ApplicationId", newJString(ApplicationId))
   if body != nil:
-    body_21626082 = body
-  result = call_21626080.call(path_21626081, nil, nil, nil, body_21626082)
+    body_402656532 = body
+  result = call_402656530.call(path_402656531, nil, nil, nil, body_402656532)
 
-var createConfigurationProfile* = Call_CreateConfigurationProfile_21626067(
+var createConfigurationProfile* = Call_CreateConfigurationProfile_402656517(
     name: "createConfigurationProfile", meth: HttpMethod.HttpPost,
     host: "appconfig.amazonaws.com",
     route: "/applications/{ApplicationId}/configurationprofiles",
-    validator: validate_CreateConfigurationProfile_21626068, base: "/",
-    makeUrl: url_CreateConfigurationProfile_21626069,
+    validator: validate_CreateConfigurationProfile_402656518, base: "/",
+    makeUrl: url_CreateConfigurationProfile_402656519,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListConfigurationProfiles_21626035 = ref object of OpenApiRestCall_21625435
-proc url_ListConfigurationProfiles_21626037(protocol: Scheme; host: string;
+  Call_ListConfigurationProfiles_402656487 = ref object of OpenApiRestCall_402656038
+proc url_ListConfigurationProfiles_402656489(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -532,8 +589,8 @@ proc url_ListConfigurationProfiles_21626037(protocol: Scheme; host: string;
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/configurationprofiles")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/configurationprofiles")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -542,154 +599,212 @@ proc url_ListConfigurationProfiles_21626037(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListConfigurationProfiles_21626036(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_ListConfigurationProfiles_402656488(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## Lists the configuration profiles for an application.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
+                                 ##                : The application ID.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626051 = path.getOrDefault("ApplicationId")
-  valid_21626051 = validateParameter(valid_21626051, JString, required = true,
-                                   default = nil)
-  if valid_21626051 != nil:
-    section.add "ApplicationId", valid_21626051
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656501 = path.getOrDefault("ApplicationId")
+  valid_402656501 = validateParameter(valid_402656501, JString, required = true,
+                                      default = nil)
+  if valid_402656501 != nil:
+    section.add "ApplicationId", valid_402656501
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   next_token: JString
-  ##             : A token to start the list. Use this token to get the next set of results.
   ##   max_results: JInt
-  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                ## MaxResults: JString
+                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                ## Pagination 
+                                                                                                                                                                                                                ## limit
+  ##   
+                                                                                                                                                                                                                        ## NextToken: JString
+                                                                                                                                                                                                                        ##            
+                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                        ## Pagination 
+                                                                                                                                                                                                                        ## token
+  ##   
+                                                                                                                                                                                                                                ## next_token: JString
+                                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                ## A 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## start 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## list. 
+                                                                                                                                                                                                                                ## Use 
+                                                                                                                                                                                                                                ## this 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## get 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## next 
+                                                                                                                                                                                                                                ## set 
+                                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                                ## results.
   section = newJObject()
-  var valid_21626052 = query.getOrDefault("NextToken")
-  valid_21626052 = validateParameter(valid_21626052, JString, required = false,
-                                   default = nil)
-  if valid_21626052 != nil:
-    section.add "NextToken", valid_21626052
-  var valid_21626053 = query.getOrDefault("next_token")
-  valid_21626053 = validateParameter(valid_21626053, JString, required = false,
-                                   default = nil)
-  if valid_21626053 != nil:
-    section.add "next_token", valid_21626053
-  var valid_21626054 = query.getOrDefault("max_results")
-  valid_21626054 = validateParameter(valid_21626054, JInt, required = false,
-                                   default = nil)
-  if valid_21626054 != nil:
-    section.add "max_results", valid_21626054
-  var valid_21626055 = query.getOrDefault("MaxResults")
-  valid_21626055 = validateParameter(valid_21626055, JString, required = false,
-                                   default = nil)
-  if valid_21626055 != nil:
-    section.add "MaxResults", valid_21626055
+  var valid_402656502 = query.getOrDefault("max_results")
+  valid_402656502 = validateParameter(valid_402656502, JInt, required = false,
+                                      default = nil)
+  if valid_402656502 != nil:
+    section.add "max_results", valid_402656502
+  var valid_402656503 = query.getOrDefault("MaxResults")
+  valid_402656503 = validateParameter(valid_402656503, JString,
+                                      required = false, default = nil)
+  if valid_402656503 != nil:
+    section.add "MaxResults", valid_402656503
+  var valid_402656504 = query.getOrDefault("NextToken")
+  valid_402656504 = validateParameter(valid_402656504, JString,
+                                      required = false, default = nil)
+  if valid_402656504 != nil:
+    section.add "NextToken", valid_402656504
+  var valid_402656505 = query.getOrDefault("next_token")
+  valid_402656505 = validateParameter(valid_402656505, JString,
+                                      required = false, default = nil)
+  if valid_402656505 != nil:
+    section.add "next_token", valid_402656505
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626056 = header.getOrDefault("X-Amz-Date")
-  valid_21626056 = validateParameter(valid_21626056, JString, required = false,
-                                   default = nil)
-  if valid_21626056 != nil:
-    section.add "X-Amz-Date", valid_21626056
-  var valid_21626057 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626057 = validateParameter(valid_21626057, JString, required = false,
-                                   default = nil)
-  if valid_21626057 != nil:
-    section.add "X-Amz-Security-Token", valid_21626057
-  var valid_21626058 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626058 = validateParameter(valid_21626058, JString, required = false,
-                                   default = nil)
-  if valid_21626058 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626058
-  var valid_21626059 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626059 = validateParameter(valid_21626059, JString, required = false,
-                                   default = nil)
-  if valid_21626059 != nil:
-    section.add "X-Amz-Algorithm", valid_21626059
-  var valid_21626060 = header.getOrDefault("X-Amz-Signature")
-  valid_21626060 = validateParameter(valid_21626060, JString, required = false,
-                                   default = nil)
-  if valid_21626060 != nil:
-    section.add "X-Amz-Signature", valid_21626060
-  var valid_21626061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626061 = validateParameter(valid_21626061, JString, required = false,
-                                   default = nil)
-  if valid_21626061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626061
-  var valid_21626062 = header.getOrDefault("X-Amz-Credential")
-  valid_21626062 = validateParameter(valid_21626062, JString, required = false,
-                                   default = nil)
-  if valid_21626062 != nil:
-    section.add "X-Amz-Credential", valid_21626062
+  var valid_402656506 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656506 = validateParameter(valid_402656506, JString,
+                                      required = false, default = nil)
+  if valid_402656506 != nil:
+    section.add "X-Amz-Security-Token", valid_402656506
+  var valid_402656507 = header.getOrDefault("X-Amz-Signature")
+  valid_402656507 = validateParameter(valid_402656507, JString,
+                                      required = false, default = nil)
+  if valid_402656507 != nil:
+    section.add "X-Amz-Signature", valid_402656507
+  var valid_402656508 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656508 = validateParameter(valid_402656508, JString,
+                                      required = false, default = nil)
+  if valid_402656508 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656508
+  var valid_402656509 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656509 = validateParameter(valid_402656509, JString,
+                                      required = false, default = nil)
+  if valid_402656509 != nil:
+    section.add "X-Amz-Algorithm", valid_402656509
+  var valid_402656510 = header.getOrDefault("X-Amz-Date")
+  valid_402656510 = validateParameter(valid_402656510, JString,
+                                      required = false, default = nil)
+  if valid_402656510 != nil:
+    section.add "X-Amz-Date", valid_402656510
+  var valid_402656511 = header.getOrDefault("X-Amz-Credential")
+  valid_402656511 = validateParameter(valid_402656511, JString,
+                                      required = false, default = nil)
+  if valid_402656511 != nil:
+    section.add "X-Amz-Credential", valid_402656511
+  var valid_402656512 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656512 = validateParameter(valid_402656512, JString,
+                                      required = false, default = nil)
+  if valid_402656512 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656512
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626063: Call_ListConfigurationProfiles_21626035;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656513: Call_ListConfigurationProfiles_402656487;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Lists the configuration profiles for an application.
-  ## 
-  let valid = call_21626063.validator(path, query, header, formData, body, _)
-  let scheme = call_21626063.pickScheme
+                                                                                         ## 
+  let valid = call_402656513.validator(path, query, header, formData, body, _)
+  let scheme = call_402656513.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626063.makeUrl(scheme.get, call_21626063.host, call_21626063.base,
-                               call_21626063.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626063, uri, valid, _)
+  let uri = call_402656513.makeUrl(scheme.get, call_402656513.host, call_402656513.base,
+                                   call_402656513.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656513, uri, valid, _)
 
-proc call*(call_21626064: Call_ListConfigurationProfiles_21626035;
-          ApplicationId: string; NextToken: string = ""; nextToken: string = "";
-          maxResults: int = 0; MaxResults: string = ""): Recallable =
+proc call*(call_402656514: Call_ListConfigurationProfiles_402656487;
+           ApplicationId: string; maxResults: int = 0; MaxResults: string = "";
+           NextToken: string = ""; nextToken: string = ""): Recallable =
   ## listConfigurationProfiles
   ## Lists the configuration profiles for an application.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   nextToken: string
-  ##            : A token to start the list. Use this token to get the next set of results.
-  ##   ApplicationId: string (required)
-  ##                : The application ID.
   ##   maxResults: int
-  ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626065 = newJObject()
-  var query_21626066 = newJObject()
-  add(query_21626066, "NextToken", newJString(NextToken))
-  add(query_21626066, "next_token", newJString(nextToken))
-  add(path_21626065, "ApplicationId", newJString(ApplicationId))
-  add(query_21626066, "max_results", newJInt(maxResults))
-  add(query_21626066, "MaxResults", newJString(MaxResults))
-  result = call_21626064.call(path_21626065, query_21626066, nil, nil, nil)
+                                                         ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                                      ## ApplicationId: string (required)
+                                                                                                                                                                                                                                      ##                
+                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                      ## The 
+                                                                                                                                                                                                                                      ## application 
+                                                                                                                                                                                                                                      ## ID.
+  ##   
+                                                                                                                                                                                                                                            ## MaxResults: string
+                                                                                                                                                                                                                                            ##             
+                                                                                                                                                                                                                                            ## : 
+                                                                                                                                                                                                                                            ## Pagination 
+                                                                                                                                                                                                                                            ## limit
+  ##   
+                                                                                                                                                                                                                                                    ## NextToken: string
+                                                                                                                                                                                                                                                    ##            
+                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                    ## Pagination 
+                                                                                                                                                                                                                                                    ## token
+  ##   
+                                                                                                                                                                                                                                                            ## nextToken: string
+                                                                                                                                                                                                                                                            ##            
+                                                                                                                                                                                                                                                            ## : 
+                                                                                                                                                                                                                                                            ## A 
+                                                                                                                                                                                                                                                            ## token 
+                                                                                                                                                                                                                                                            ## to 
+                                                                                                                                                                                                                                                            ## start 
+                                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                                            ## list. 
+                                                                                                                                                                                                                                                            ## Use 
+                                                                                                                                                                                                                                                            ## this 
+                                                                                                                                                                                                                                                            ## token 
+                                                                                                                                                                                                                                                            ## to 
+                                                                                                                                                                                                                                                            ## get 
+                                                                                                                                                                                                                                                            ## the 
+                                                                                                                                                                                                                                                            ## next 
+                                                                                                                                                                                                                                                            ## set 
+                                                                                                                                                                                                                                                            ## of 
+                                                                                                                                                                                                                                                            ## results.
+  var path_402656515 = newJObject()
+  var query_402656516 = newJObject()
+  add(query_402656516, "max_results", newJInt(maxResults))
+  add(path_402656515, "ApplicationId", newJString(ApplicationId))
+  add(query_402656516, "MaxResults", newJString(MaxResults))
+  add(query_402656516, "NextToken", newJString(NextToken))
+  add(query_402656516, "next_token", newJString(nextToken))
+  result = call_402656514.call(path_402656515, query_402656516, nil, nil, nil)
 
-var listConfigurationProfiles* = Call_ListConfigurationProfiles_21626035(
+var listConfigurationProfiles* = Call_ListConfigurationProfiles_402656487(
     name: "listConfigurationProfiles", meth: HttpMethod.HttpGet,
     host: "appconfig.amazonaws.com",
     route: "/applications/{ApplicationId}/configurationprofiles",
-    validator: validate_ListConfigurationProfiles_21626036, base: "/",
-    makeUrl: url_ListConfigurationProfiles_21626037,
+    validator: validate_ListConfigurationProfiles_402656488, base: "/",
+    makeUrl: url_ListConfigurationProfiles_402656489,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDeploymentStrategy_21626100 = ref object of OpenApiRestCall_21625435
-proc url_CreateDeploymentStrategy_21626102(protocol: Scheme; host: string;
+  Call_CreateDeploymentStrategy_402656550 = ref object of OpenApiRestCall_402656038
+proc url_CreateDeploymentStrategy_402656552(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -699,11 +814,11 @@ proc url_CreateDeploymentStrategy_21626102(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CreateDeploymentStrategy_21626101(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_CreateDeploymentStrategy_402656551(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
@@ -711,49 +826,49 @@ proc validate_CreateDeploymentStrategy_21626101(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626103 = header.getOrDefault("X-Amz-Date")
-  valid_21626103 = validateParameter(valid_21626103, JString, required = false,
-                                   default = nil)
-  if valid_21626103 != nil:
-    section.add "X-Amz-Date", valid_21626103
-  var valid_21626104 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626104 = validateParameter(valid_21626104, JString, required = false,
-                                   default = nil)
-  if valid_21626104 != nil:
-    section.add "X-Amz-Security-Token", valid_21626104
-  var valid_21626105 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626105 = validateParameter(valid_21626105, JString, required = false,
-                                   default = nil)
-  if valid_21626105 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626105
-  var valid_21626106 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626106 = validateParameter(valid_21626106, JString, required = false,
-                                   default = nil)
-  if valid_21626106 != nil:
-    section.add "X-Amz-Algorithm", valid_21626106
-  var valid_21626107 = header.getOrDefault("X-Amz-Signature")
-  valid_21626107 = validateParameter(valid_21626107, JString, required = false,
-                                   default = nil)
-  if valid_21626107 != nil:
-    section.add "X-Amz-Signature", valid_21626107
-  var valid_21626108 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626108 = validateParameter(valid_21626108, JString, required = false,
-                                   default = nil)
-  if valid_21626108 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626108
-  var valid_21626109 = header.getOrDefault("X-Amz-Credential")
-  valid_21626109 = validateParameter(valid_21626109, JString, required = false,
-                                   default = nil)
-  if valid_21626109 != nil:
-    section.add "X-Amz-Credential", valid_21626109
+  var valid_402656553 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656553 = validateParameter(valid_402656553, JString,
+                                      required = false, default = nil)
+  if valid_402656553 != nil:
+    section.add "X-Amz-Security-Token", valid_402656553
+  var valid_402656554 = header.getOrDefault("X-Amz-Signature")
+  valid_402656554 = validateParameter(valid_402656554, JString,
+                                      required = false, default = nil)
+  if valid_402656554 != nil:
+    section.add "X-Amz-Signature", valid_402656554
+  var valid_402656555 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656555 = validateParameter(valid_402656555, JString,
+                                      required = false, default = nil)
+  if valid_402656555 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656555
+  var valid_402656556 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656556 = validateParameter(valid_402656556, JString,
+                                      required = false, default = nil)
+  if valid_402656556 != nil:
+    section.add "X-Amz-Algorithm", valid_402656556
+  var valid_402656557 = header.getOrDefault("X-Amz-Date")
+  valid_402656557 = validateParameter(valid_402656557, JString,
+                                      required = false, default = nil)
+  if valid_402656557 != nil:
+    section.add "X-Amz-Date", valid_402656557
+  var valid_402656558 = header.getOrDefault("X-Amz-Credential")
+  valid_402656558 = validateParameter(valid_402656558, JString,
+                                      required = false, default = nil)
+  if valid_402656558 != nil:
+    section.add "X-Amz-Credential", valid_402656558
+  var valid_402656559 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656559 = validateParameter(valid_402656559, JString,
+                                      required = false, default = nil)
+  if valid_402656559 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656559
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -765,38 +880,42 @@ proc validate_CreateDeploymentStrategy_21626101(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626111: Call_CreateDeploymentStrategy_21626100;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
-  ## A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
+proc call*(call_402656561: Call_CreateDeploymentStrategy_402656550;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## 
-  let valid = call_21626111.validator(path, query, header, formData, body, _)
-  let scheme = call_21626111.pickScheme
+                                                                                         ## A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
+                                                                                         ## 
+  let valid = call_402656561.validator(path, query, header, formData, body, _)
+  let scheme = call_402656561.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626111.makeUrl(scheme.get, call_21626111.host, call_21626111.base,
-                               call_21626111.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626111, uri, valid, _)
+  let uri = call_402656561.makeUrl(scheme.get, call_402656561.host, call_402656561.base,
+                                   call_402656561.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656561, uri, valid, _)
 
-proc call*(call_21626112: Call_CreateDeploymentStrategy_21626100; body: JsonNode): Recallable =
+proc call*(call_402656562: Call_CreateDeploymentStrategy_402656550;
+           body: JsonNode): Recallable =
   ## createDeploymentStrategy
   ## A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
-  ##   body: JObject (required)
-  var body_21626113 = newJObject()
+  ##   
+                                                                                                                                                                                                                                                                                                                         ## body: JObject (required)
+  var body_402656563 = newJObject()
   if body != nil:
-    body_21626113 = body
-  result = call_21626112.call(nil, nil, nil, nil, body_21626113)
+    body_402656563 = body
+  result = call_402656562.call(nil, nil, nil, nil, body_402656563)
 
-var createDeploymentStrategy* = Call_CreateDeploymentStrategy_21626100(
+var createDeploymentStrategy* = Call_CreateDeploymentStrategy_402656550(
     name: "createDeploymentStrategy", meth: HttpMethod.HttpPost,
     host: "appconfig.amazonaws.com", route: "/deploymentstrategies",
-    validator: validate_CreateDeploymentStrategy_21626101, base: "/",
-    makeUrl: url_CreateDeploymentStrategy_21626102,
+    validator: validate_CreateDeploymentStrategy_402656551, base: "/",
+    makeUrl: url_CreateDeploymentStrategy_402656552,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDeploymentStrategies_21626083 = ref object of OpenApiRestCall_21625435
-proc url_ListDeploymentStrategies_21626085(protocol: Scheme; host: string;
+  Call_ListDeploymentStrategies_402656533 = ref object of OpenApiRestCall_402656038
+proc url_ListDeploymentStrategies_402656535(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -806,140 +925,194 @@ proc url_ListDeploymentStrategies_21626085(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListDeploymentStrategies_21626084(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_ListDeploymentStrategies_402656534(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## List deployment strategies.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   next_token: JString
-  ##             : A token to start the list. Use this token to get the next set of results.
   ##   max_results: JInt
-  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                ## MaxResults: JString
+                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                ## Pagination 
+                                                                                                                                                                                                                ## limit
+  ##   
+                                                                                                                                                                                                                        ## NextToken: JString
+                                                                                                                                                                                                                        ##            
+                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                        ## Pagination 
+                                                                                                                                                                                                                        ## token
+  ##   
+                                                                                                                                                                                                                                ## next_token: JString
+                                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                ## A 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## start 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## list. 
+                                                                                                                                                                                                                                ## Use 
+                                                                                                                                                                                                                                ## this 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## get 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## next 
+                                                                                                                                                                                                                                ## set 
+                                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                                ## results.
   section = newJObject()
-  var valid_21626086 = query.getOrDefault("NextToken")
-  valid_21626086 = validateParameter(valid_21626086, JString, required = false,
-                                   default = nil)
-  if valid_21626086 != nil:
-    section.add "NextToken", valid_21626086
-  var valid_21626087 = query.getOrDefault("next_token")
-  valid_21626087 = validateParameter(valid_21626087, JString, required = false,
-                                   default = nil)
-  if valid_21626087 != nil:
-    section.add "next_token", valid_21626087
-  var valid_21626088 = query.getOrDefault("max_results")
-  valid_21626088 = validateParameter(valid_21626088, JInt, required = false,
-                                   default = nil)
-  if valid_21626088 != nil:
-    section.add "max_results", valid_21626088
-  var valid_21626089 = query.getOrDefault("MaxResults")
-  valid_21626089 = validateParameter(valid_21626089, JString, required = false,
-                                   default = nil)
-  if valid_21626089 != nil:
-    section.add "MaxResults", valid_21626089
+  var valid_402656536 = query.getOrDefault("max_results")
+  valid_402656536 = validateParameter(valid_402656536, JInt, required = false,
+                                      default = nil)
+  if valid_402656536 != nil:
+    section.add "max_results", valid_402656536
+  var valid_402656537 = query.getOrDefault("MaxResults")
+  valid_402656537 = validateParameter(valid_402656537, JString,
+                                      required = false, default = nil)
+  if valid_402656537 != nil:
+    section.add "MaxResults", valid_402656537
+  var valid_402656538 = query.getOrDefault("NextToken")
+  valid_402656538 = validateParameter(valid_402656538, JString,
+                                      required = false, default = nil)
+  if valid_402656538 != nil:
+    section.add "NextToken", valid_402656538
+  var valid_402656539 = query.getOrDefault("next_token")
+  valid_402656539 = validateParameter(valid_402656539, JString,
+                                      required = false, default = nil)
+  if valid_402656539 != nil:
+    section.add "next_token", valid_402656539
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626090 = header.getOrDefault("X-Amz-Date")
-  valid_21626090 = validateParameter(valid_21626090, JString, required = false,
-                                   default = nil)
-  if valid_21626090 != nil:
-    section.add "X-Amz-Date", valid_21626090
-  var valid_21626091 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626091 = validateParameter(valid_21626091, JString, required = false,
-                                   default = nil)
-  if valid_21626091 != nil:
-    section.add "X-Amz-Security-Token", valid_21626091
-  var valid_21626092 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626092 = validateParameter(valid_21626092, JString, required = false,
-                                   default = nil)
-  if valid_21626092 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626092
-  var valid_21626093 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626093 = validateParameter(valid_21626093, JString, required = false,
-                                   default = nil)
-  if valid_21626093 != nil:
-    section.add "X-Amz-Algorithm", valid_21626093
-  var valid_21626094 = header.getOrDefault("X-Amz-Signature")
-  valid_21626094 = validateParameter(valid_21626094, JString, required = false,
-                                   default = nil)
-  if valid_21626094 != nil:
-    section.add "X-Amz-Signature", valid_21626094
-  var valid_21626095 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626095 = validateParameter(valid_21626095, JString, required = false,
-                                   default = nil)
-  if valid_21626095 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626095
-  var valid_21626096 = header.getOrDefault("X-Amz-Credential")
-  valid_21626096 = validateParameter(valid_21626096, JString, required = false,
-                                   default = nil)
-  if valid_21626096 != nil:
-    section.add "X-Amz-Credential", valid_21626096
+  var valid_402656540 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656540 = validateParameter(valid_402656540, JString,
+                                      required = false, default = nil)
+  if valid_402656540 != nil:
+    section.add "X-Amz-Security-Token", valid_402656540
+  var valid_402656541 = header.getOrDefault("X-Amz-Signature")
+  valid_402656541 = validateParameter(valid_402656541, JString,
+                                      required = false, default = nil)
+  if valid_402656541 != nil:
+    section.add "X-Amz-Signature", valid_402656541
+  var valid_402656542 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656542 = validateParameter(valid_402656542, JString,
+                                      required = false, default = nil)
+  if valid_402656542 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656542
+  var valid_402656543 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656543 = validateParameter(valid_402656543, JString,
+                                      required = false, default = nil)
+  if valid_402656543 != nil:
+    section.add "X-Amz-Algorithm", valid_402656543
+  var valid_402656544 = header.getOrDefault("X-Amz-Date")
+  valid_402656544 = validateParameter(valid_402656544, JString,
+                                      required = false, default = nil)
+  if valid_402656544 != nil:
+    section.add "X-Amz-Date", valid_402656544
+  var valid_402656545 = header.getOrDefault("X-Amz-Credential")
+  valid_402656545 = validateParameter(valid_402656545, JString,
+                                      required = false, default = nil)
+  if valid_402656545 != nil:
+    section.add "X-Amz-Credential", valid_402656545
+  var valid_402656546 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656546 = validateParameter(valid_402656546, JString,
+                                      required = false, default = nil)
+  if valid_402656546 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656546
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626097: Call_ListDeploymentStrategies_21626083;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656547: Call_ListDeploymentStrategies_402656533;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## List deployment strategies.
-  ## 
-  let valid = call_21626097.validator(path, query, header, formData, body, _)
-  let scheme = call_21626097.pickScheme
+                                                                                         ## 
+  let valid = call_402656547.validator(path, query, header, formData, body, _)
+  let scheme = call_402656547.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626097.makeUrl(scheme.get, call_21626097.host, call_21626097.base,
-                               call_21626097.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626097, uri, valid, _)
+  let uri = call_402656547.makeUrl(scheme.get, call_402656547.host, call_402656547.base,
+                                   call_402656547.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656547, uri, valid, _)
 
-proc call*(call_21626098: Call_ListDeploymentStrategies_21626083;
-          NextToken: string = ""; nextToken: string = ""; maxResults: int = 0;
-          MaxResults: string = ""): Recallable =
+proc call*(call_402656548: Call_ListDeploymentStrategies_402656533;
+           maxResults: int = 0; MaxResults: string = ""; NextToken: string = "";
+           nextToken: string = ""): Recallable =
   ## listDeploymentStrategies
   ## List deployment strategies.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   nextToken: string
-  ##            : A token to start the list. Use this token to get the next set of results.
   ##   maxResults: int
-  ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_21626099 = newJObject()
-  add(query_21626099, "NextToken", newJString(NextToken))
-  add(query_21626099, "next_token", newJString(nextToken))
-  add(query_21626099, "max_results", newJInt(maxResults))
-  add(query_21626099, "MaxResults", newJString(MaxResults))
-  result = call_21626098.call(nil, query_21626099, nil, nil, nil)
+                                ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                             ## MaxResults: string
+                                                                                                                                                                                                             ##             
+                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                             ## Pagination 
+                                                                                                                                                                                                             ## limit
+  ##   
+                                                                                                                                                                                                                     ## NextToken: string
+                                                                                                                                                                                                                     ##            
+                                                                                                                                                                                                                     ## : 
+                                                                                                                                                                                                                     ## Pagination 
+                                                                                                                                                                                                                     ## token
+  ##   
+                                                                                                                                                                                                                             ## nextToken: string
+                                                                                                                                                                                                                             ##            
+                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                             ## A 
+                                                                                                                                                                                                                             ## token 
+                                                                                                                                                                                                                             ## to 
+                                                                                                                                                                                                                             ## start 
+                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                             ## list. 
+                                                                                                                                                                                                                             ## Use 
+                                                                                                                                                                                                                             ## this 
+                                                                                                                                                                                                                             ## token 
+                                                                                                                                                                                                                             ## to 
+                                                                                                                                                                                                                             ## get 
+                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                             ## next 
+                                                                                                                                                                                                                             ## set 
+                                                                                                                                                                                                                             ## of 
+                                                                                                                                                                                                                             ## results.
+  var query_402656549 = newJObject()
+  add(query_402656549, "max_results", newJInt(maxResults))
+  add(query_402656549, "MaxResults", newJString(MaxResults))
+  add(query_402656549, "NextToken", newJString(NextToken))
+  add(query_402656549, "next_token", newJString(nextToken))
+  result = call_402656548.call(nil, query_402656549, nil, nil, nil)
 
-var listDeploymentStrategies* = Call_ListDeploymentStrategies_21626083(
+var listDeploymentStrategies* = Call_ListDeploymentStrategies_402656533(
     name: "listDeploymentStrategies", meth: HttpMethod.HttpGet,
     host: "appconfig.amazonaws.com", route: "/deploymentstrategies",
-    validator: validate_ListDeploymentStrategies_21626084, base: "/",
-    makeUrl: url_ListDeploymentStrategies_21626085,
+    validator: validate_ListDeploymentStrategies_402656534, base: "/",
+    makeUrl: url_ListDeploymentStrategies_402656535,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateEnvironment_21626133 = ref object of OpenApiRestCall_21625435
-proc url_CreateEnvironment_21626135(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateEnvironment_402656583 = ref object of OpenApiRestCall_402656038
+proc url_CreateEnvironment_402656585(protocol: Scheme; host: string;
+                                     base: string; route: string;
+                                     path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -947,8 +1120,8 @@ proc url_CreateEnvironment_21626135(protocol: Scheme; host: string; base: string
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -957,72 +1130,71 @@ proc url_CreateEnvironment_21626135(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_CreateEnvironment_21626134(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode {.
+proc validate_CreateEnvironment_402656584(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## For each application, you define one or more environments. An environment is a logical deployment group of AppConfig targets, such as applications in a <code>Beta</code> or <code>Production</code> environment. You can also define environments for application subcomponents such as the <code>Web</code>, <code>Mobile</code> and <code>Back-end</code> components for your application. You can configure Amazon CloudWatch alarms for each environment. The system monitors alarms during a configuration deployment. If an alarm is triggered, the system rolls back the configuration.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
+                                 ##                : The application ID.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626136 = path.getOrDefault("ApplicationId")
-  valid_21626136 = validateParameter(valid_21626136, JString, required = true,
-                                   default = nil)
-  if valid_21626136 != nil:
-    section.add "ApplicationId", valid_21626136
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656586 = path.getOrDefault("ApplicationId")
+  valid_402656586 = validateParameter(valid_402656586, JString, required = true,
+                                      default = nil)
+  if valid_402656586 != nil:
+    section.add "ApplicationId", valid_402656586
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626137 = header.getOrDefault("X-Amz-Date")
-  valid_21626137 = validateParameter(valid_21626137, JString, required = false,
-                                   default = nil)
-  if valid_21626137 != nil:
-    section.add "X-Amz-Date", valid_21626137
-  var valid_21626138 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626138 = validateParameter(valid_21626138, JString, required = false,
-                                   default = nil)
-  if valid_21626138 != nil:
-    section.add "X-Amz-Security-Token", valid_21626138
-  var valid_21626139 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626139 = validateParameter(valid_21626139, JString, required = false,
-                                   default = nil)
-  if valid_21626139 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626139
-  var valid_21626140 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626140 = validateParameter(valid_21626140, JString, required = false,
-                                   default = nil)
-  if valid_21626140 != nil:
-    section.add "X-Amz-Algorithm", valid_21626140
-  var valid_21626141 = header.getOrDefault("X-Amz-Signature")
-  valid_21626141 = validateParameter(valid_21626141, JString, required = false,
-                                   default = nil)
-  if valid_21626141 != nil:
-    section.add "X-Amz-Signature", valid_21626141
-  var valid_21626142 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626142 = validateParameter(valid_21626142, JString, required = false,
-                                   default = nil)
-  if valid_21626142 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626142
-  var valid_21626143 = header.getOrDefault("X-Amz-Credential")
-  valid_21626143 = validateParameter(valid_21626143, JString, required = false,
-                                   default = nil)
-  if valid_21626143 != nil:
-    section.add "X-Amz-Credential", valid_21626143
+  var valid_402656587 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656587 = validateParameter(valid_402656587, JString,
+                                      required = false, default = nil)
+  if valid_402656587 != nil:
+    section.add "X-Amz-Security-Token", valid_402656587
+  var valid_402656588 = header.getOrDefault("X-Amz-Signature")
+  valid_402656588 = validateParameter(valid_402656588, JString,
+                                      required = false, default = nil)
+  if valid_402656588 != nil:
+    section.add "X-Amz-Signature", valid_402656588
+  var valid_402656589 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656589 = validateParameter(valid_402656589, JString,
+                                      required = false, default = nil)
+  if valid_402656589 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656589
+  var valid_402656590 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656590 = validateParameter(valid_402656590, JString,
+                                      required = false, default = nil)
+  if valid_402656590 != nil:
+    section.add "X-Amz-Algorithm", valid_402656590
+  var valid_402656591 = header.getOrDefault("X-Amz-Date")
+  valid_402656591 = validateParameter(valid_402656591, JString,
+                                      required = false, default = nil)
+  if valid_402656591 != nil:
+    section.add "X-Amz-Date", valid_402656591
+  var valid_402656592 = header.getOrDefault("X-Amz-Credential")
+  valid_402656592 = validateParameter(valid_402656592, JString,
+                                      required = false, default = nil)
+  if valid_402656592 != nil:
+    section.add "X-Amz-Credential", valid_402656592
+  var valid_402656593 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656593 = validateParameter(valid_402656593, JString,
+                                      required = false, default = nil)
+  if valid_402656593 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656593
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1034,42 +1206,276 @@ proc validate_CreateEnvironment_21626134(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626145: Call_CreateEnvironment_21626133; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656595: Call_CreateEnvironment_402656583;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## For each application, you define one or more environments. An environment is a logical deployment group of AppConfig targets, such as applications in a <code>Beta</code> or <code>Production</code> environment. You can also define environments for application subcomponents such as the <code>Web</code>, <code>Mobile</code> and <code>Back-end</code> components for your application. You can configure Amazon CloudWatch alarms for each environment. The system monitors alarms during a configuration deployment. If an alarm is triggered, the system rolls back the configuration.
-  ## 
-  let valid = call_21626145.validator(path, query, header, formData, body, _)
-  let scheme = call_21626145.pickScheme
+                                                                                         ## 
+  let valid = call_402656595.validator(path, query, header, formData, body, _)
+  let scheme = call_402656595.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626145.makeUrl(scheme.get, call_21626145.host, call_21626145.base,
-                               call_21626145.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626145, uri, valid, _)
+  let uri = call_402656595.makeUrl(scheme.get, call_402656595.host, call_402656595.base,
+                                   call_402656595.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656595, uri, valid, _)
 
-proc call*(call_21626146: Call_CreateEnvironment_21626133; ApplicationId: string;
-          body: JsonNode): Recallable =
+proc call*(call_402656596: Call_CreateEnvironment_402656583;
+           ApplicationId: string; body: JsonNode): Recallable =
   ## createEnvironment
   ## For each application, you define one or more environments. An environment is a logical deployment group of AppConfig targets, such as applications in a <code>Beta</code> or <code>Production</code> environment. You can also define environments for application subcomponents such as the <code>Web</code>, <code>Mobile</code> and <code>Back-end</code> components for your application. You can configure Amazon CloudWatch alarms for each environment. The system monitors alarms during a configuration deployment. If an alarm is triggered, the system rolls back the configuration.
-  ##   ApplicationId: string (required)
-  ##                : The application ID.
-  ##   body: JObject (required)
-  var path_21626147 = newJObject()
-  var body_21626148 = newJObject()
-  add(path_21626147, "ApplicationId", newJString(ApplicationId))
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## ApplicationId: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ##                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## application 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ## ID.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ## body: JObject (required)
+  var path_402656597 = newJObject()
+  var body_402656598 = newJObject()
+  add(path_402656597, "ApplicationId", newJString(ApplicationId))
   if body != nil:
-    body_21626148 = body
-  result = call_21626146.call(path_21626147, nil, nil, nil, body_21626148)
+    body_402656598 = body
+  result = call_402656596.call(path_402656597, nil, nil, nil, body_402656598)
 
-var createEnvironment* = Call_CreateEnvironment_21626133(name: "createEnvironment",
-    meth: HttpMethod.HttpPost, host: "appconfig.amazonaws.com",
+var createEnvironment* = Call_CreateEnvironment_402656583(
+    name: "createEnvironment", meth: HttpMethod.HttpPost,
+    host: "appconfig.amazonaws.com",
     route: "/applications/{ApplicationId}/environments",
-    validator: validate_CreateEnvironment_21626134, base: "/",
-    makeUrl: url_CreateEnvironment_21626135, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateEnvironment_402656584, base: "/",
+    makeUrl: url_CreateEnvironment_402656585,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListEnvironments_21626114 = ref object of OpenApiRestCall_21625435
-proc url_ListEnvironments_21626116(protocol: Scheme; host: string; base: string;
+  Call_ListEnvironments_402656564 = ref object of OpenApiRestCall_402656038
+proc url_ListEnvironments_402656566(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/applications/"),
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_ListEnvironments_402656565(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## List the environments for an application.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   ApplicationId: JString (required)
+                                 ##                : The application ID.
+  section = newJObject()
+  assert path != nil,
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656567 = path.getOrDefault("ApplicationId")
+  valid_402656567 = validateParameter(valid_402656567, JString, required = true,
+                                      default = nil)
+  if valid_402656567 != nil:
+    section.add "ApplicationId", valid_402656567
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   max_results: JInt
+                                  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                ## MaxResults: JString
+                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                ## Pagination 
+                                                                                                                                                                                                                ## limit
+  ##   
+                                                                                                                                                                                                                        ## NextToken: JString
+                                                                                                                                                                                                                        ##            
+                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                        ## Pagination 
+                                                                                                                                                                                                                        ## token
+  ##   
+                                                                                                                                                                                                                                ## next_token: JString
+                                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                ## A 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## start 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## list. 
+                                                                                                                                                                                                                                ## Use 
+                                                                                                                                                                                                                                ## this 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## get 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## next 
+                                                                                                                                                                                                                                ## set 
+                                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                                ## results.
+  section = newJObject()
+  var valid_402656568 = query.getOrDefault("max_results")
+  valid_402656568 = validateParameter(valid_402656568, JInt, required = false,
+                                      default = nil)
+  if valid_402656568 != nil:
+    section.add "max_results", valid_402656568
+  var valid_402656569 = query.getOrDefault("MaxResults")
+  valid_402656569 = validateParameter(valid_402656569, JString,
+                                      required = false, default = nil)
+  if valid_402656569 != nil:
+    section.add "MaxResults", valid_402656569
+  var valid_402656570 = query.getOrDefault("NextToken")
+  valid_402656570 = validateParameter(valid_402656570, JString,
+                                      required = false, default = nil)
+  if valid_402656570 != nil:
+    section.add "NextToken", valid_402656570
+  var valid_402656571 = query.getOrDefault("next_token")
+  valid_402656571 = validateParameter(valid_402656571, JString,
+                                      required = false, default = nil)
+  if valid_402656571 != nil:
+    section.add "next_token", valid_402656571
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656572 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656572 = validateParameter(valid_402656572, JString,
+                                      required = false, default = nil)
+  if valid_402656572 != nil:
+    section.add "X-Amz-Security-Token", valid_402656572
+  var valid_402656573 = header.getOrDefault("X-Amz-Signature")
+  valid_402656573 = validateParameter(valid_402656573, JString,
+                                      required = false, default = nil)
+  if valid_402656573 != nil:
+    section.add "X-Amz-Signature", valid_402656573
+  var valid_402656574 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656574 = validateParameter(valid_402656574, JString,
+                                      required = false, default = nil)
+  if valid_402656574 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656574
+  var valid_402656575 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656575 = validateParameter(valid_402656575, JString,
+                                      required = false, default = nil)
+  if valid_402656575 != nil:
+    section.add "X-Amz-Algorithm", valid_402656575
+  var valid_402656576 = header.getOrDefault("X-Amz-Date")
+  valid_402656576 = validateParameter(valid_402656576, JString,
+                                      required = false, default = nil)
+  if valid_402656576 != nil:
+    section.add "X-Amz-Date", valid_402656576
+  var valid_402656577 = header.getOrDefault("X-Amz-Credential")
+  valid_402656577 = validateParameter(valid_402656577, JString,
+                                      required = false, default = nil)
+  if valid_402656577 != nil:
+    section.add "X-Amz-Credential", valid_402656577
+  var valid_402656578 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656578 = validateParameter(valid_402656578, JString,
+                                      required = false, default = nil)
+  if valid_402656578 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656578
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656579: Call_ListEnvironments_402656564;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## List the environments for an application.
+                                                                                         ## 
+  let valid = call_402656579.validator(path, query, header, formData, body, _)
+  let scheme = call_402656579.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656579.makeUrl(scheme.get, call_402656579.host, call_402656579.base,
+                                   call_402656579.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656579, uri, valid, _)
+
+proc call*(call_402656580: Call_ListEnvironments_402656564;
+           ApplicationId: string; maxResults: int = 0; MaxResults: string = "";
+           NextToken: string = ""; nextToken: string = ""): Recallable =
+  ## listEnvironments
+  ## List the environments for an application.
+  ##   maxResults: int
+                                              ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                           ## ApplicationId: string (required)
+                                                                                                                                                                                                                           ##                
+                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                           ## The 
+                                                                                                                                                                                                                           ## application 
+                                                                                                                                                                                                                           ## ID.
+  ##   
+                                                                                                                                                                                                                                 ## MaxResults: string
+                                                                                                                                                                                                                                 ##             
+                                                                                                                                                                                                                                 ## : 
+                                                                                                                                                                                                                                 ## Pagination 
+                                                                                                                                                                                                                                 ## limit
+  ##   
+                                                                                                                                                                                                                                         ## NextToken: string
+                                                                                                                                                                                                                                         ##            
+                                                                                                                                                                                                                                         ## : 
+                                                                                                                                                                                                                                         ## Pagination 
+                                                                                                                                                                                                                                         ## token
+  ##   
+                                                                                                                                                                                                                                                 ## nextToken: string
+                                                                                                                                                                                                                                                 ##            
+                                                                                                                                                                                                                                                 ## : 
+                                                                                                                                                                                                                                                 ## A 
+                                                                                                                                                                                                                                                 ## token 
+                                                                                                                                                                                                                                                 ## to 
+                                                                                                                                                                                                                                                 ## start 
+                                                                                                                                                                                                                                                 ## the 
+                                                                                                                                                                                                                                                 ## list. 
+                                                                                                                                                                                                                                                 ## Use 
+                                                                                                                                                                                                                                                 ## this 
+                                                                                                                                                                                                                                                 ## token 
+                                                                                                                                                                                                                                                 ## to 
+                                                                                                                                                                                                                                                 ## get 
+                                                                                                                                                                                                                                                 ## the 
+                                                                                                                                                                                                                                                 ## next 
+                                                                                                                                                                                                                                                 ## set 
+                                                                                                                                                                                                                                                 ## of 
+                                                                                                                                                                                                                                                 ## results.
+  var path_402656581 = newJObject()
+  var query_402656582 = newJObject()
+  add(query_402656582, "max_results", newJInt(maxResults))
+  add(path_402656581, "ApplicationId", newJString(ApplicationId))
+  add(query_402656582, "MaxResults", newJString(MaxResults))
+  add(query_402656582, "NextToken", newJString(NextToken))
+  add(query_402656582, "next_token", newJString(nextToken))
+  result = call_402656580.call(path_402656581, query_402656582, nil, nil, nil)
+
+var listEnvironments* = Call_ListEnvironments_402656564(
+    name: "listEnvironments", meth: HttpMethod.HttpGet,
+    host: "appconfig.amazonaws.com",
+    route: "/applications/{ApplicationId}/environments",
+    validator: validate_ListEnvironments_402656565, base: "/",
+    makeUrl: url_ListEnvironments_402656566,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetApplication_402656599 = ref object of OpenApiRestCall_402656038
+proc url_GetApplication_402656601(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1078,8 +1484,7 @@ proc url_ListEnvironments_21626116(protocol: Scheme; host: string; base: string;
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments")]
+                 (kind: VariableSegment, value: "ApplicationId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1088,274 +1493,112 @@ proc url_ListEnvironments_21626116(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListEnvironments_21626115(path: JsonNode; query: JsonNode;
+proc validate_GetApplication_402656600(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
-  ## List the environments for an application.
-  ## 
+  ## Retrieve information about an application.
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
+                                 ##                : The ID of the application you want to get.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626117 = path.getOrDefault("ApplicationId")
-  valid_21626117 = validateParameter(valid_21626117, JString, required = true,
-                                   default = nil)
-  if valid_21626117 != nil:
-    section.add "ApplicationId", valid_21626117
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656602 = path.getOrDefault("ApplicationId")
+  valid_402656602 = validateParameter(valid_402656602, JString, required = true,
+                                      default = nil)
+  if valid_402656602 != nil:
+    section.add "ApplicationId", valid_402656602
   result.add "path", section
-  ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   next_token: JString
-  ##             : A token to start the list. Use this token to get the next set of results.
-  ##   max_results: JInt
-  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
   section = newJObject()
-  var valid_21626118 = query.getOrDefault("NextToken")
-  valid_21626118 = validateParameter(valid_21626118, JString, required = false,
-                                   default = nil)
-  if valid_21626118 != nil:
-    section.add "NextToken", valid_21626118
-  var valid_21626119 = query.getOrDefault("next_token")
-  valid_21626119 = validateParameter(valid_21626119, JString, required = false,
-                                   default = nil)
-  if valid_21626119 != nil:
-    section.add "next_token", valid_21626119
-  var valid_21626120 = query.getOrDefault("max_results")
-  valid_21626120 = validateParameter(valid_21626120, JInt, required = false,
-                                   default = nil)
-  if valid_21626120 != nil:
-    section.add "max_results", valid_21626120
-  var valid_21626121 = query.getOrDefault("MaxResults")
-  valid_21626121 = validateParameter(valid_21626121, JString, required = false,
-                                   default = nil)
-  if valid_21626121 != nil:
-    section.add "MaxResults", valid_21626121
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626122 = header.getOrDefault("X-Amz-Date")
-  valid_21626122 = validateParameter(valid_21626122, JString, required = false,
-                                   default = nil)
-  if valid_21626122 != nil:
-    section.add "X-Amz-Date", valid_21626122
-  var valid_21626123 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626123 = validateParameter(valid_21626123, JString, required = false,
-                                   default = nil)
-  if valid_21626123 != nil:
-    section.add "X-Amz-Security-Token", valid_21626123
-  var valid_21626124 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626124 = validateParameter(valid_21626124, JString, required = false,
-                                   default = nil)
-  if valid_21626124 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626124
-  var valid_21626125 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626125 = validateParameter(valid_21626125, JString, required = false,
-                                   default = nil)
-  if valid_21626125 != nil:
-    section.add "X-Amz-Algorithm", valid_21626125
-  var valid_21626126 = header.getOrDefault("X-Amz-Signature")
-  valid_21626126 = validateParameter(valid_21626126, JString, required = false,
-                                   default = nil)
-  if valid_21626126 != nil:
-    section.add "X-Amz-Signature", valid_21626126
-  var valid_21626127 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626127 = validateParameter(valid_21626127, JString, required = false,
-                                   default = nil)
-  if valid_21626127 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626127
-  var valid_21626128 = header.getOrDefault("X-Amz-Credential")
-  valid_21626128 = validateParameter(valid_21626128, JString, required = false,
-                                   default = nil)
-  if valid_21626128 != nil:
-    section.add "X-Amz-Credential", valid_21626128
+  var valid_402656603 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656603 = validateParameter(valid_402656603, JString,
+                                      required = false, default = nil)
+  if valid_402656603 != nil:
+    section.add "X-Amz-Security-Token", valid_402656603
+  var valid_402656604 = header.getOrDefault("X-Amz-Signature")
+  valid_402656604 = validateParameter(valid_402656604, JString,
+                                      required = false, default = nil)
+  if valid_402656604 != nil:
+    section.add "X-Amz-Signature", valid_402656604
+  var valid_402656605 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656605 = validateParameter(valid_402656605, JString,
+                                      required = false, default = nil)
+  if valid_402656605 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656605
+  var valid_402656606 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656606 = validateParameter(valid_402656606, JString,
+                                      required = false, default = nil)
+  if valid_402656606 != nil:
+    section.add "X-Amz-Algorithm", valid_402656606
+  var valid_402656607 = header.getOrDefault("X-Amz-Date")
+  valid_402656607 = validateParameter(valid_402656607, JString,
+                                      required = false, default = nil)
+  if valid_402656607 != nil:
+    section.add "X-Amz-Date", valid_402656607
+  var valid_402656608 = header.getOrDefault("X-Amz-Credential")
+  valid_402656608 = validateParameter(valid_402656608, JString,
+                                      required = false, default = nil)
+  if valid_402656608 != nil:
+    section.add "X-Amz-Credential", valid_402656608
+  var valid_402656609 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656609 = validateParameter(valid_402656609, JString,
+                                      required = false, default = nil)
+  if valid_402656609 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656609
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626129: Call_ListEnvironments_21626114; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## List the environments for an application.
-  ## 
-  let valid = call_21626129.validator(path, query, header, formData, body, _)
-  let scheme = call_21626129.pickScheme
+proc call*(call_402656610: Call_GetApplication_402656599; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Retrieve information about an application.
+                                                                                         ## 
+  let valid = call_402656610.validator(path, query, header, formData, body, _)
+  let scheme = call_402656610.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626129.makeUrl(scheme.get, call_21626129.host, call_21626129.base,
-                               call_21626129.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626129, uri, valid, _)
+  let uri = call_402656610.makeUrl(scheme.get, call_402656610.host, call_402656610.base,
+                                   call_402656610.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656610, uri, valid, _)
 
-proc call*(call_21626130: Call_ListEnvironments_21626114; ApplicationId: string;
-          NextToken: string = ""; nextToken: string = ""; maxResults: int = 0;
-          MaxResults: string = ""): Recallable =
-  ## listEnvironments
-  ## List the environments for an application.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   nextToken: string
-  ##            : A token to start the list. Use this token to get the next set of results.
-  ##   ApplicationId: string (required)
-  ##                : The application ID.
-  ##   maxResults: int
-  ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var path_21626131 = newJObject()
-  var query_21626132 = newJObject()
-  add(query_21626132, "NextToken", newJString(NextToken))
-  add(query_21626132, "next_token", newJString(nextToken))
-  add(path_21626131, "ApplicationId", newJString(ApplicationId))
-  add(query_21626132, "max_results", newJInt(maxResults))
-  add(query_21626132, "MaxResults", newJString(MaxResults))
-  result = call_21626130.call(path_21626131, query_21626132, nil, nil, nil)
-
-var listEnvironments* = Call_ListEnvironments_21626114(name: "listEnvironments",
-    meth: HttpMethod.HttpGet, host: "appconfig.amazonaws.com",
-    route: "/applications/{ApplicationId}/environments",
-    validator: validate_ListEnvironments_21626115, base: "/",
-    makeUrl: url_ListEnvironments_21626116, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_GetApplication_21626149 = ref object of OpenApiRestCall_21625435
-proc url_GetApplication_21626151(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_GetApplication_21626150(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## Retrieve information about an application.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   ApplicationId: JString (required)
-  ##                : The ID of the application you want to get.
-  section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626152 = path.getOrDefault("ApplicationId")
-  valid_21626152 = validateParameter(valid_21626152, JString, required = true,
-                                   default = nil)
-  if valid_21626152 != nil:
-    section.add "ApplicationId", valid_21626152
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626153 = header.getOrDefault("X-Amz-Date")
-  valid_21626153 = validateParameter(valid_21626153, JString, required = false,
-                                   default = nil)
-  if valid_21626153 != nil:
-    section.add "X-Amz-Date", valid_21626153
-  var valid_21626154 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626154 = validateParameter(valid_21626154, JString, required = false,
-                                   default = nil)
-  if valid_21626154 != nil:
-    section.add "X-Amz-Security-Token", valid_21626154
-  var valid_21626155 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626155 = validateParameter(valid_21626155, JString, required = false,
-                                   default = nil)
-  if valid_21626155 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626155
-  var valid_21626156 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626156 = validateParameter(valid_21626156, JString, required = false,
-                                   default = nil)
-  if valid_21626156 != nil:
-    section.add "X-Amz-Algorithm", valid_21626156
-  var valid_21626157 = header.getOrDefault("X-Amz-Signature")
-  valid_21626157 = validateParameter(valid_21626157, JString, required = false,
-                                   default = nil)
-  if valid_21626157 != nil:
-    section.add "X-Amz-Signature", valid_21626157
-  var valid_21626158 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626158 = validateParameter(valid_21626158, JString, required = false,
-                                   default = nil)
-  if valid_21626158 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626158
-  var valid_21626159 = header.getOrDefault("X-Amz-Credential")
-  valid_21626159 = validateParameter(valid_21626159, JString, required = false,
-                                   default = nil)
-  if valid_21626159 != nil:
-    section.add "X-Amz-Credential", valid_21626159
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626160: Call_GetApplication_21626149; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Retrieve information about an application.
-  ## 
-  let valid = call_21626160.validator(path, query, header, formData, body, _)
-  let scheme = call_21626160.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626160.makeUrl(scheme.get, call_21626160.host, call_21626160.base,
-                               call_21626160.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626160, uri, valid, _)
-
-proc call*(call_21626161: Call_GetApplication_21626149; ApplicationId: string): Recallable =
+proc call*(call_402656611: Call_GetApplication_402656599; ApplicationId: string): Recallable =
   ## getApplication
   ## Retrieve information about an application.
   ##   ApplicationId: string (required)
-  ##                : The ID of the application you want to get.
-  var path_21626162 = newJObject()
-  add(path_21626162, "ApplicationId", newJString(ApplicationId))
-  result = call_21626161.call(path_21626162, nil, nil, nil, nil)
+                                               ##                : The ID of the application you want to get.
+  var path_402656612 = newJObject()
+  add(path_402656612, "ApplicationId", newJString(ApplicationId))
+  result = call_402656611.call(path_402656612, nil, nil, nil, nil)
 
-var getApplication* = Call_GetApplication_21626149(name: "getApplication",
+var getApplication* = Call_GetApplication_402656599(name: "getApplication",
     meth: HttpMethod.HttpGet, host: "appconfig.amazonaws.com",
-    route: "/applications/{ApplicationId}", validator: validate_GetApplication_21626150,
-    base: "/", makeUrl: url_GetApplication_21626151,
+    route: "/applications/{ApplicationId}", validator: validate_GetApplication_402656600,
+    base: "/", makeUrl: url_GetApplication_402656601,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateApplication_21626177 = ref object of OpenApiRestCall_21625435
-proc url_UpdateApplication_21626179(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateApplication_402656627 = ref object of OpenApiRestCall_402656038
+proc url_UpdateApplication_402656629(protocol: Scheme; host: string;
+                                     base: string; route: string;
+                                     path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1363,7 +1606,7 @@ proc url_UpdateApplication_21626179(protocol: Scheme; host: string; base: string
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId")]
+                 (kind: VariableSegment, value: "ApplicationId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1372,72 +1615,71 @@ proc url_UpdateApplication_21626179(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateApplication_21626178(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode {.
+proc validate_UpdateApplication_402656628(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Updates an application.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
+                                 ##                : The application ID.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626180 = path.getOrDefault("ApplicationId")
-  valid_21626180 = validateParameter(valid_21626180, JString, required = true,
-                                   default = nil)
-  if valid_21626180 != nil:
-    section.add "ApplicationId", valid_21626180
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656630 = path.getOrDefault("ApplicationId")
+  valid_402656630 = validateParameter(valid_402656630, JString, required = true,
+                                      default = nil)
+  if valid_402656630 != nil:
+    section.add "ApplicationId", valid_402656630
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626181 = header.getOrDefault("X-Amz-Date")
-  valid_21626181 = validateParameter(valid_21626181, JString, required = false,
-                                   default = nil)
-  if valid_21626181 != nil:
-    section.add "X-Amz-Date", valid_21626181
-  var valid_21626182 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626182 = validateParameter(valid_21626182, JString, required = false,
-                                   default = nil)
-  if valid_21626182 != nil:
-    section.add "X-Amz-Security-Token", valid_21626182
-  var valid_21626183 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626183 = validateParameter(valid_21626183, JString, required = false,
-                                   default = nil)
-  if valid_21626183 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626183
-  var valid_21626184 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626184 = validateParameter(valid_21626184, JString, required = false,
-                                   default = nil)
-  if valid_21626184 != nil:
-    section.add "X-Amz-Algorithm", valid_21626184
-  var valid_21626185 = header.getOrDefault("X-Amz-Signature")
-  valid_21626185 = validateParameter(valid_21626185, JString, required = false,
-                                   default = nil)
-  if valid_21626185 != nil:
-    section.add "X-Amz-Signature", valid_21626185
-  var valid_21626186 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626186 = validateParameter(valid_21626186, JString, required = false,
-                                   default = nil)
-  if valid_21626186 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626186
-  var valid_21626187 = header.getOrDefault("X-Amz-Credential")
-  valid_21626187 = validateParameter(valid_21626187, JString, required = false,
-                                   default = nil)
-  if valid_21626187 != nil:
-    section.add "X-Amz-Credential", valid_21626187
+  var valid_402656631 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656631 = validateParameter(valid_402656631, JString,
+                                      required = false, default = nil)
+  if valid_402656631 != nil:
+    section.add "X-Amz-Security-Token", valid_402656631
+  var valid_402656632 = header.getOrDefault("X-Amz-Signature")
+  valid_402656632 = validateParameter(valid_402656632, JString,
+                                      required = false, default = nil)
+  if valid_402656632 != nil:
+    section.add "X-Amz-Signature", valid_402656632
+  var valid_402656633 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656633 = validateParameter(valid_402656633, JString,
+                                      required = false, default = nil)
+  if valid_402656633 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656633
+  var valid_402656634 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656634 = validateParameter(valid_402656634, JString,
+                                      required = false, default = nil)
+  if valid_402656634 != nil:
+    section.add "X-Amz-Algorithm", valid_402656634
+  var valid_402656635 = header.getOrDefault("X-Amz-Date")
+  valid_402656635 = validateParameter(valid_402656635, JString,
+                                      required = false, default = nil)
+  if valid_402656635 != nil:
+    section.add "X-Amz-Date", valid_402656635
+  var valid_402656636 = header.getOrDefault("X-Amz-Credential")
+  valid_402656636 = validateParameter(valid_402656636, JString,
+                                      required = false, default = nil)
+  if valid_402656636 != nil:
+    section.add "X-Amz-Credential", valid_402656636
+  var valid_402656637 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656637 = validateParameter(valid_402656637, JString,
+                                      required = false, default = nil)
+  if valid_402656637 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656637
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1449,43 +1691,46 @@ proc validate_UpdateApplication_21626178(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626189: Call_UpdateApplication_21626177; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656639: Call_UpdateApplication_402656627;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Updates an application.
-  ## 
-  let valid = call_21626189.validator(path, query, header, formData, body, _)
-  let scheme = call_21626189.pickScheme
+                                                                                         ## 
+  let valid = call_402656639.validator(path, query, header, formData, body, _)
+  let scheme = call_402656639.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626189.makeUrl(scheme.get, call_21626189.host, call_21626189.base,
-                               call_21626189.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626189, uri, valid, _)
+  let uri = call_402656639.makeUrl(scheme.get, call_402656639.host, call_402656639.base,
+                                   call_402656639.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656639, uri, valid, _)
 
-proc call*(call_21626190: Call_UpdateApplication_21626177; ApplicationId: string;
-          body: JsonNode): Recallable =
+proc call*(call_402656640: Call_UpdateApplication_402656627;
+           ApplicationId: string; body: JsonNode): Recallable =
   ## updateApplication
   ## Updates an application.
   ##   ApplicationId: string (required)
-  ##                : The application ID.
+                            ##                : The application ID.
   ##   body: JObject (required)
-  var path_21626191 = newJObject()
-  var body_21626192 = newJObject()
-  add(path_21626191, "ApplicationId", newJString(ApplicationId))
+  var path_402656641 = newJObject()
+  var body_402656642 = newJObject()
+  add(path_402656641, "ApplicationId", newJString(ApplicationId))
   if body != nil:
-    body_21626192 = body
-  result = call_21626190.call(path_21626191, nil, nil, nil, body_21626192)
+    body_402656642 = body
+  result = call_402656640.call(path_402656641, nil, nil, nil, body_402656642)
 
-var updateApplication* = Call_UpdateApplication_21626177(name: "updateApplication",
-    meth: HttpMethod.HttpPatch, host: "appconfig.amazonaws.com",
-    route: "/applications/{ApplicationId}", validator: validate_UpdateApplication_21626178,
-    base: "/", makeUrl: url_UpdateApplication_21626179,
+var updateApplication* = Call_UpdateApplication_402656627(
+    name: "updateApplication", meth: HttpMethod.HttpPatch,
+    host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}",
+    validator: validate_UpdateApplication_402656628, base: "/",
+    makeUrl: url_UpdateApplication_402656629,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteApplication_21626163 = ref object of OpenApiRestCall_21625435
-proc url_DeleteApplication_21626165(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteApplication_402656613 = ref object of OpenApiRestCall_402656038
+proc url_DeleteApplication_402656615(protocol: Scheme; host: string;
+                                     base: string; route: string;
+                                     path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1493,7 +1738,7 @@ proc url_DeleteApplication_21626165(protocol: Scheme; host: string; base: string
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId")]
+                 (kind: VariableSegment, value: "ApplicationId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1502,109 +1747,120 @@ proc url_DeleteApplication_21626165(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteApplication_21626164(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode {.
+proc validate_DeleteApplication_402656614(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Delete an application. Deleting an application does not delete a configuration from a host.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The ID of the application to delete.
+                                 ##                : The ID of the application to delete.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626166 = path.getOrDefault("ApplicationId")
-  valid_21626166 = validateParameter(valid_21626166, JString, required = true,
-                                   default = nil)
-  if valid_21626166 != nil:
-    section.add "ApplicationId", valid_21626166
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656616 = path.getOrDefault("ApplicationId")
+  valid_402656616 = validateParameter(valid_402656616, JString, required = true,
+                                      default = nil)
+  if valid_402656616 != nil:
+    section.add "ApplicationId", valid_402656616
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626167 = header.getOrDefault("X-Amz-Date")
-  valid_21626167 = validateParameter(valid_21626167, JString, required = false,
-                                   default = nil)
-  if valid_21626167 != nil:
-    section.add "X-Amz-Date", valid_21626167
-  var valid_21626168 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626168 = validateParameter(valid_21626168, JString, required = false,
-                                   default = nil)
-  if valid_21626168 != nil:
-    section.add "X-Amz-Security-Token", valid_21626168
-  var valid_21626169 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626169 = validateParameter(valid_21626169, JString, required = false,
-                                   default = nil)
-  if valid_21626169 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626169
-  var valid_21626170 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626170 = validateParameter(valid_21626170, JString, required = false,
-                                   default = nil)
-  if valid_21626170 != nil:
-    section.add "X-Amz-Algorithm", valid_21626170
-  var valid_21626171 = header.getOrDefault("X-Amz-Signature")
-  valid_21626171 = validateParameter(valid_21626171, JString, required = false,
-                                   default = nil)
-  if valid_21626171 != nil:
-    section.add "X-Amz-Signature", valid_21626171
-  var valid_21626172 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626172 = validateParameter(valid_21626172, JString, required = false,
-                                   default = nil)
-  if valid_21626172 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626172
-  var valid_21626173 = header.getOrDefault("X-Amz-Credential")
-  valid_21626173 = validateParameter(valid_21626173, JString, required = false,
-                                   default = nil)
-  if valid_21626173 != nil:
-    section.add "X-Amz-Credential", valid_21626173
+  var valid_402656617 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656617 = validateParameter(valid_402656617, JString,
+                                      required = false, default = nil)
+  if valid_402656617 != nil:
+    section.add "X-Amz-Security-Token", valid_402656617
+  var valid_402656618 = header.getOrDefault("X-Amz-Signature")
+  valid_402656618 = validateParameter(valid_402656618, JString,
+                                      required = false, default = nil)
+  if valid_402656618 != nil:
+    section.add "X-Amz-Signature", valid_402656618
+  var valid_402656619 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656619 = validateParameter(valid_402656619, JString,
+                                      required = false, default = nil)
+  if valid_402656619 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656619
+  var valid_402656620 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656620 = validateParameter(valid_402656620, JString,
+                                      required = false, default = nil)
+  if valid_402656620 != nil:
+    section.add "X-Amz-Algorithm", valid_402656620
+  var valid_402656621 = header.getOrDefault("X-Amz-Date")
+  valid_402656621 = validateParameter(valid_402656621, JString,
+                                      required = false, default = nil)
+  if valid_402656621 != nil:
+    section.add "X-Amz-Date", valid_402656621
+  var valid_402656622 = header.getOrDefault("X-Amz-Credential")
+  valid_402656622 = validateParameter(valid_402656622, JString,
+                                      required = false, default = nil)
+  if valid_402656622 != nil:
+    section.add "X-Amz-Credential", valid_402656622
+  var valid_402656623 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656623 = validateParameter(valid_402656623, JString,
+                                      required = false, default = nil)
+  if valid_402656623 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656623
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626174: Call_DeleteApplication_21626163; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656624: Call_DeleteApplication_402656613;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Delete an application. Deleting an application does not delete a configuration from a host.
-  ## 
-  let valid = call_21626174.validator(path, query, header, formData, body, _)
-  let scheme = call_21626174.pickScheme
+                                                                                         ## 
+  let valid = call_402656624.validator(path, query, header, formData, body, _)
+  let scheme = call_402656624.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626174.makeUrl(scheme.get, call_21626174.host, call_21626174.base,
-                               call_21626174.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626174, uri, valid, _)
+  let uri = call_402656624.makeUrl(scheme.get, call_402656624.host, call_402656624.base,
+                                   call_402656624.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656624, uri, valid, _)
 
-proc call*(call_21626175: Call_DeleteApplication_21626163; ApplicationId: string): Recallable =
+proc call*(call_402656625: Call_DeleteApplication_402656613;
+           ApplicationId: string): Recallable =
   ## deleteApplication
   ## Delete an application. Deleting an application does not delete a configuration from a host.
-  ##   ApplicationId: string (required)
-  ##                : The ID of the application to delete.
-  var path_21626176 = newJObject()
-  add(path_21626176, "ApplicationId", newJString(ApplicationId))
-  result = call_21626175.call(path_21626176, nil, nil, nil, nil)
+  ##   
+                                                                                                ## ApplicationId: string (required)
+                                                                                                ##                
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## ID 
+                                                                                                ## of 
+                                                                                                ## the 
+                                                                                                ## application 
+                                                                                                ## to 
+                                                                                                ## delete.
+  var path_402656626 = newJObject()
+  add(path_402656626, "ApplicationId", newJString(ApplicationId))
+  result = call_402656625.call(path_402656626, nil, nil, nil, nil)
 
-var deleteApplication* = Call_DeleteApplication_21626163(name: "deleteApplication",
-    meth: HttpMethod.HttpDelete, host: "appconfig.amazonaws.com",
-    route: "/applications/{ApplicationId}", validator: validate_DeleteApplication_21626164,
-    base: "/", makeUrl: url_DeleteApplication_21626165,
+var deleteApplication* = Call_DeleteApplication_402656613(
+    name: "deleteApplication", meth: HttpMethod.HttpDelete,
+    host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}",
+    validator: validate_DeleteApplication_402656614, base: "/",
+    makeUrl: url_DeleteApplication_402656615,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetConfigurationProfile_21626193 = ref object of OpenApiRestCall_21625435
-proc url_GetConfigurationProfile_21626195(protocol: Scheme; host: string;
+  Call_GetConfigurationProfile_402656643 = ref object of OpenApiRestCall_402656038
+proc url_GetConfigurationProfile_402656645(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1612,12 +1868,12 @@ proc url_GetConfigurationProfile_21626195(protocol: Scheme; host: string;
   assert path != nil, "path is required to populate template"
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   assert "ConfigurationProfileId" in path,
-        "`ConfigurationProfileId` is a required path parameter"
+         "`ConfigurationProfileId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/configurationprofiles/"),
-               (kind: VariableSegment, value: "ConfigurationProfileId")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/configurationprofiles/"),
+                 (kind: VariableSegment, value: "ConfigurationProfileId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1626,119 +1882,146 @@ proc url_GetConfigurationProfile_21626195(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetConfigurationProfile_21626194(path: JsonNode; query: JsonNode;
+proc validate_GetConfigurationProfile_402656644(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Retrieve information about a configuration profile.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   ConfigurationProfileId: JString (required)
-  ##                         : The ID of the configuration profile you want to get.
   ##   ApplicationId: JString (required)
-  ##                : The ID of the application that includes the configuration profile you want to get.
+                                 ##                : The ID of the application that includes the configuration profile you want to get.
+  ##   
+                                                                                                                                       ## ConfigurationProfileId: JString (required)
+                                                                                                                                       ##                         
+                                                                                                                                       ## : 
+                                                                                                                                       ## The 
+                                                                                                                                       ## ID 
+                                                                                                                                       ## of 
+                                                                                                                                       ## the 
+                                                                                                                                       ## configuration 
+                                                                                                                                       ## profile 
+                                                                                                                                       ## you 
+                                                                                                                                       ## want 
+                                                                                                                                       ## to 
+                                                                                                                                       ## get.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `ConfigurationProfileId` field"
-  var valid_21626196 = path.getOrDefault("ConfigurationProfileId")
-  valid_21626196 = validateParameter(valid_21626196, JString, required = true,
-                                   default = nil)
-  if valid_21626196 != nil:
-    section.add "ConfigurationProfileId", valid_21626196
-  var valid_21626197 = path.getOrDefault("ApplicationId")
-  valid_21626197 = validateParameter(valid_21626197, JString, required = true,
-                                   default = nil)
-  if valid_21626197 != nil:
-    section.add "ApplicationId", valid_21626197
+  assert path != nil,
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656646 = path.getOrDefault("ApplicationId")
+  valid_402656646 = validateParameter(valid_402656646, JString, required = true,
+                                      default = nil)
+  if valid_402656646 != nil:
+    section.add "ApplicationId", valid_402656646
+  var valid_402656647 = path.getOrDefault("ConfigurationProfileId")
+  valid_402656647 = validateParameter(valid_402656647, JString, required = true,
+                                      default = nil)
+  if valid_402656647 != nil:
+    section.add "ConfigurationProfileId", valid_402656647
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626198 = header.getOrDefault("X-Amz-Date")
-  valid_21626198 = validateParameter(valid_21626198, JString, required = false,
-                                   default = nil)
-  if valid_21626198 != nil:
-    section.add "X-Amz-Date", valid_21626198
-  var valid_21626199 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626199 = validateParameter(valid_21626199, JString, required = false,
-                                   default = nil)
-  if valid_21626199 != nil:
-    section.add "X-Amz-Security-Token", valid_21626199
-  var valid_21626200 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626200 = validateParameter(valid_21626200, JString, required = false,
-                                   default = nil)
-  if valid_21626200 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626200
-  var valid_21626201 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626201 = validateParameter(valid_21626201, JString, required = false,
-                                   default = nil)
-  if valid_21626201 != nil:
-    section.add "X-Amz-Algorithm", valid_21626201
-  var valid_21626202 = header.getOrDefault("X-Amz-Signature")
-  valid_21626202 = validateParameter(valid_21626202, JString, required = false,
-                                   default = nil)
-  if valid_21626202 != nil:
-    section.add "X-Amz-Signature", valid_21626202
-  var valid_21626203 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626203 = validateParameter(valid_21626203, JString, required = false,
-                                   default = nil)
-  if valid_21626203 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626203
-  var valid_21626204 = header.getOrDefault("X-Amz-Credential")
-  valid_21626204 = validateParameter(valid_21626204, JString, required = false,
-                                   default = nil)
-  if valid_21626204 != nil:
-    section.add "X-Amz-Credential", valid_21626204
+  var valid_402656648 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656648 = validateParameter(valid_402656648, JString,
+                                      required = false, default = nil)
+  if valid_402656648 != nil:
+    section.add "X-Amz-Security-Token", valid_402656648
+  var valid_402656649 = header.getOrDefault("X-Amz-Signature")
+  valid_402656649 = validateParameter(valid_402656649, JString,
+                                      required = false, default = nil)
+  if valid_402656649 != nil:
+    section.add "X-Amz-Signature", valid_402656649
+  var valid_402656650 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656650 = validateParameter(valid_402656650, JString,
+                                      required = false, default = nil)
+  if valid_402656650 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656650
+  var valid_402656651 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656651 = validateParameter(valid_402656651, JString,
+                                      required = false, default = nil)
+  if valid_402656651 != nil:
+    section.add "X-Amz-Algorithm", valid_402656651
+  var valid_402656652 = header.getOrDefault("X-Amz-Date")
+  valid_402656652 = validateParameter(valid_402656652, JString,
+                                      required = false, default = nil)
+  if valid_402656652 != nil:
+    section.add "X-Amz-Date", valid_402656652
+  var valid_402656653 = header.getOrDefault("X-Amz-Credential")
+  valid_402656653 = validateParameter(valid_402656653, JString,
+                                      required = false, default = nil)
+  if valid_402656653 != nil:
+    section.add "X-Amz-Credential", valid_402656653
+  var valid_402656654 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656654 = validateParameter(valid_402656654, JString,
+                                      required = false, default = nil)
+  if valid_402656654 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656654
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626205: Call_GetConfigurationProfile_21626193;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656655: Call_GetConfigurationProfile_402656643;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Retrieve information about a configuration profile.
-  ## 
-  let valid = call_21626205.validator(path, query, header, formData, body, _)
-  let scheme = call_21626205.pickScheme
+                                                                                         ## 
+  let valid = call_402656655.validator(path, query, header, formData, body, _)
+  let scheme = call_402656655.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626205.makeUrl(scheme.get, call_21626205.host, call_21626205.base,
-                               call_21626205.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626205, uri, valid, _)
+  let uri = call_402656655.makeUrl(scheme.get, call_402656655.host, call_402656655.base,
+                                   call_402656655.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656655, uri, valid, _)
 
-proc call*(call_21626206: Call_GetConfigurationProfile_21626193;
-          ConfigurationProfileId: string; ApplicationId: string): Recallable =
+proc call*(call_402656656: Call_GetConfigurationProfile_402656643;
+           ApplicationId: string; ConfigurationProfileId: string): Recallable =
   ## getConfigurationProfile
   ## Retrieve information about a configuration profile.
-  ##   ConfigurationProfileId: string (required)
-  ##                         : The ID of the configuration profile you want to get.
   ##   ApplicationId: string (required)
-  ##                : The ID of the application that includes the configuration profile you want to get.
-  var path_21626207 = newJObject()
-  add(path_21626207, "ConfigurationProfileId", newJString(ConfigurationProfileId))
-  add(path_21626207, "ApplicationId", newJString(ApplicationId))
-  result = call_21626206.call(path_21626207, nil, nil, nil, nil)
+                                                        ##                : The ID of the application that includes the configuration profile you want to get.
+  ##   
+                                                                                                                                                              ## ConfigurationProfileId: string (required)
+                                                                                                                                                              ##                         
+                                                                                                                                                              ## : 
+                                                                                                                                                              ## The 
+                                                                                                                                                              ## ID 
+                                                                                                                                                              ## of 
+                                                                                                                                                              ## the 
+                                                                                                                                                              ## configuration 
+                                                                                                                                                              ## profile 
+                                                                                                                                                              ## you 
+                                                                                                                                                              ## want 
+                                                                                                                                                              ## to 
+                                                                                                                                                              ## get.
+  var path_402656657 = newJObject()
+  add(path_402656657, "ApplicationId", newJString(ApplicationId))
+  add(path_402656657, "ConfigurationProfileId",
+      newJString(ConfigurationProfileId))
+  result = call_402656656.call(path_402656657, nil, nil, nil, nil)
 
-var getConfigurationProfile* = Call_GetConfigurationProfile_21626193(
+var getConfigurationProfile* = Call_GetConfigurationProfile_402656643(
     name: "getConfigurationProfile", meth: HttpMethod.HttpGet,
     host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}",
-    validator: validate_GetConfigurationProfile_21626194, base: "/",
-    makeUrl: url_GetConfigurationProfile_21626195,
+    validator: validate_GetConfigurationProfile_402656644, base: "/",
+    makeUrl: url_GetConfigurationProfile_402656645,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateConfigurationProfile_21626223 = ref object of OpenApiRestCall_21625435
-proc url_UpdateConfigurationProfile_21626225(protocol: Scheme; host: string;
+  Call_UpdateConfigurationProfile_402656673 = ref object of OpenApiRestCall_402656038
+proc url_UpdateConfigurationProfile_402656675(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1746,12 +2029,12 @@ proc url_UpdateConfigurationProfile_21626225(protocol: Scheme; host: string;
   assert path != nil, "path is required to populate template"
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   assert "ConfigurationProfileId" in path,
-        "`ConfigurationProfileId` is a required path parameter"
+         "`ConfigurationProfileId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/configurationprofiles/"),
-               (kind: VariableSegment, value: "ConfigurationProfileId")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/configurationprofiles/"),
+                 (kind: VariableSegment, value: "ConfigurationProfileId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1760,77 +2043,83 @@ proc url_UpdateConfigurationProfile_21626225(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateConfigurationProfile_21626224(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_UpdateConfigurationProfile_402656674(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## Updates a configuration profile.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   ConfigurationProfileId: JString (required)
-  ##                         : The ID of the configuration profile.
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
+                                 ##                : The application ID.
+  ##   
+                                                                        ## ConfigurationProfileId: JString (required)
+                                                                        ##                         
+                                                                        ## : 
+                                                                        ## The ID of the 
+                                                                        ## configuration 
+                                                                        ## profile.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `ConfigurationProfileId` field"
-  var valid_21626226 = path.getOrDefault("ConfigurationProfileId")
-  valid_21626226 = validateParameter(valid_21626226, JString, required = true,
-                                   default = nil)
-  if valid_21626226 != nil:
-    section.add "ConfigurationProfileId", valid_21626226
-  var valid_21626227 = path.getOrDefault("ApplicationId")
-  valid_21626227 = validateParameter(valid_21626227, JString, required = true,
-                                   default = nil)
-  if valid_21626227 != nil:
-    section.add "ApplicationId", valid_21626227
+  assert path != nil,
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656676 = path.getOrDefault("ApplicationId")
+  valid_402656676 = validateParameter(valid_402656676, JString, required = true,
+                                      default = nil)
+  if valid_402656676 != nil:
+    section.add "ApplicationId", valid_402656676
+  var valid_402656677 = path.getOrDefault("ConfigurationProfileId")
+  valid_402656677 = validateParameter(valid_402656677, JString, required = true,
+                                      default = nil)
+  if valid_402656677 != nil:
+    section.add "ConfigurationProfileId", valid_402656677
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626228 = header.getOrDefault("X-Amz-Date")
-  valid_21626228 = validateParameter(valid_21626228, JString, required = false,
-                                   default = nil)
-  if valid_21626228 != nil:
-    section.add "X-Amz-Date", valid_21626228
-  var valid_21626229 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626229 = validateParameter(valid_21626229, JString, required = false,
-                                   default = nil)
-  if valid_21626229 != nil:
-    section.add "X-Amz-Security-Token", valid_21626229
-  var valid_21626230 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626230 = validateParameter(valid_21626230, JString, required = false,
-                                   default = nil)
-  if valid_21626230 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626230
-  var valid_21626231 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626231 = validateParameter(valid_21626231, JString, required = false,
-                                   default = nil)
-  if valid_21626231 != nil:
-    section.add "X-Amz-Algorithm", valid_21626231
-  var valid_21626232 = header.getOrDefault("X-Amz-Signature")
-  valid_21626232 = validateParameter(valid_21626232, JString, required = false,
-                                   default = nil)
-  if valid_21626232 != nil:
-    section.add "X-Amz-Signature", valid_21626232
-  var valid_21626233 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626233 = validateParameter(valid_21626233, JString, required = false,
-                                   default = nil)
-  if valid_21626233 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626233
-  var valid_21626234 = header.getOrDefault("X-Amz-Credential")
-  valid_21626234 = validateParameter(valid_21626234, JString, required = false,
-                                   default = nil)
-  if valid_21626234 != nil:
-    section.add "X-Amz-Credential", valid_21626234
+  var valid_402656678 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656678 = validateParameter(valid_402656678, JString,
+                                      required = false, default = nil)
+  if valid_402656678 != nil:
+    section.add "X-Amz-Security-Token", valid_402656678
+  var valid_402656679 = header.getOrDefault("X-Amz-Signature")
+  valid_402656679 = validateParameter(valid_402656679, JString,
+                                      required = false, default = nil)
+  if valid_402656679 != nil:
+    section.add "X-Amz-Signature", valid_402656679
+  var valid_402656680 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656680 = validateParameter(valid_402656680, JString,
+                                      required = false, default = nil)
+  if valid_402656680 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656680
+  var valid_402656681 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656681 = validateParameter(valid_402656681, JString,
+                                      required = false, default = nil)
+  if valid_402656681 != nil:
+    section.add "X-Amz-Algorithm", valid_402656681
+  var valid_402656682 = header.getOrDefault("X-Amz-Date")
+  valid_402656682 = validateParameter(valid_402656682, JString,
+                                      required = false, default = nil)
+  if valid_402656682 != nil:
+    section.add "X-Amz-Date", valid_402656682
+  var valid_402656683 = header.getOrDefault("X-Amz-Credential")
+  valid_402656683 = validateParameter(valid_402656683, JString,
+                                      required = false, default = nil)
+  if valid_402656683 != nil:
+    section.add "X-Amz-Credential", valid_402656683
+  var valid_402656684 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656684 = validateParameter(valid_402656684, JString,
+                                      required = false, default = nil)
+  if valid_402656684 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656684
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1842,46 +2131,57 @@ proc validate_UpdateConfigurationProfile_21626224(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626236: Call_UpdateConfigurationProfile_21626223;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656686: Call_UpdateConfigurationProfile_402656673;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Updates a configuration profile.
-  ## 
-  let valid = call_21626236.validator(path, query, header, formData, body, _)
-  let scheme = call_21626236.pickScheme
+                                                                                         ## 
+  let valid = call_402656686.validator(path, query, header, formData, body, _)
+  let scheme = call_402656686.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626236.makeUrl(scheme.get, call_21626236.host, call_21626236.base,
-                               call_21626236.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626236, uri, valid, _)
+  let uri = call_402656686.makeUrl(scheme.get, call_402656686.host, call_402656686.base,
+                                   call_402656686.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656686, uri, valid, _)
 
-proc call*(call_21626237: Call_UpdateConfigurationProfile_21626223;
-          ConfigurationProfileId: string; ApplicationId: string; body: JsonNode): Recallable =
+proc call*(call_402656687: Call_UpdateConfigurationProfile_402656673;
+           ApplicationId: string; body: JsonNode; ConfigurationProfileId: string): Recallable =
   ## updateConfigurationProfile
   ## Updates a configuration profile.
-  ##   ConfigurationProfileId: string (required)
-  ##                         : The ID of the configuration profile.
   ##   ApplicationId: string (required)
-  ##                : The application ID.
-  ##   body: JObject (required)
-  var path_21626238 = newJObject()
-  var body_21626239 = newJObject()
-  add(path_21626238, "ConfigurationProfileId", newJString(ConfigurationProfileId))
-  add(path_21626238, "ApplicationId", newJString(ApplicationId))
+                                     ##                : The application ID.
+  ##   
+                                                                            ## body: JObject (required)
+  ##   
+                                                                                                       ## ConfigurationProfileId: string (required)
+                                                                                                       ##                         
+                                                                                                       ## : 
+                                                                                                       ## The 
+                                                                                                       ## ID 
+                                                                                                       ## of 
+                                                                                                       ## the 
+                                                                                                       ## configuration 
+                                                                                                       ## profile.
+  var path_402656688 = newJObject()
+  var body_402656689 = newJObject()
+  add(path_402656688, "ApplicationId", newJString(ApplicationId))
   if body != nil:
-    body_21626239 = body
-  result = call_21626237.call(path_21626238, nil, nil, nil, body_21626239)
+    body_402656689 = body
+  add(path_402656688, "ConfigurationProfileId",
+      newJString(ConfigurationProfileId))
+  result = call_402656687.call(path_402656688, nil, nil, nil, body_402656689)
 
-var updateConfigurationProfile* = Call_UpdateConfigurationProfile_21626223(
+var updateConfigurationProfile* = Call_UpdateConfigurationProfile_402656673(
     name: "updateConfigurationProfile", meth: HttpMethod.HttpPatch,
     host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}",
-    validator: validate_UpdateConfigurationProfile_21626224, base: "/",
-    makeUrl: url_UpdateConfigurationProfile_21626225,
+    validator: validate_UpdateConfigurationProfile_402656674, base: "/",
+    makeUrl: url_UpdateConfigurationProfile_402656675,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteConfigurationProfile_21626208 = ref object of OpenApiRestCall_21625435
-proc url_DeleteConfigurationProfile_21626210(protocol: Scheme; host: string;
+  Call_DeleteConfigurationProfile_402656658 = ref object of OpenApiRestCall_402656038
+proc url_DeleteConfigurationProfile_402656660(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1889,12 +2189,12 @@ proc url_DeleteConfigurationProfile_21626210(protocol: Scheme; host: string;
   assert path != nil, "path is required to populate template"
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   assert "ConfigurationProfileId" in path,
-        "`ConfigurationProfileId` is a required path parameter"
+         "`ConfigurationProfileId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/configurationprofiles/"),
-               (kind: VariableSegment, value: "ConfigurationProfileId")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/configurationprofiles/"),
+                 (kind: VariableSegment, value: "ConfigurationProfileId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -1903,129 +2203,170 @@ proc url_DeleteConfigurationProfile_21626210(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteConfigurationProfile_21626209(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_DeleteConfigurationProfile_402656659(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## Delete a configuration profile. Deleting a configuration profile does not delete a configuration from a host.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   ConfigurationProfileId: JString (required)
-  ##                         : The ID of the configuration profile you want to delete.
   ##   ApplicationId: JString (required)
-  ##                : The application ID that includes the configuration profile you want to delete.
+                                 ##                : The application ID that includes the configuration profile you want to delete.
+  ##   
+                                                                                                                                   ## ConfigurationProfileId: JString (required)
+                                                                                                                                   ##                         
+                                                                                                                                   ## : 
+                                                                                                                                   ## The 
+                                                                                                                                   ## ID 
+                                                                                                                                   ## of 
+                                                                                                                                   ## the 
+                                                                                                                                   ## configuration 
+                                                                                                                                   ## profile 
+                                                                                                                                   ## you 
+                                                                                                                                   ## want 
+                                                                                                                                   ## to 
+                                                                                                                                   ## delete.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `ConfigurationProfileId` field"
-  var valid_21626211 = path.getOrDefault("ConfigurationProfileId")
-  valid_21626211 = validateParameter(valid_21626211, JString, required = true,
-                                   default = nil)
-  if valid_21626211 != nil:
-    section.add "ConfigurationProfileId", valid_21626211
-  var valid_21626212 = path.getOrDefault("ApplicationId")
-  valid_21626212 = validateParameter(valid_21626212, JString, required = true,
-                                   default = nil)
-  if valid_21626212 != nil:
-    section.add "ApplicationId", valid_21626212
+  assert path != nil,
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656661 = path.getOrDefault("ApplicationId")
+  valid_402656661 = validateParameter(valid_402656661, JString, required = true,
+                                      default = nil)
+  if valid_402656661 != nil:
+    section.add "ApplicationId", valid_402656661
+  var valid_402656662 = path.getOrDefault("ConfigurationProfileId")
+  valid_402656662 = validateParameter(valid_402656662, JString, required = true,
+                                      default = nil)
+  if valid_402656662 != nil:
+    section.add "ConfigurationProfileId", valid_402656662
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626213 = header.getOrDefault("X-Amz-Date")
-  valid_21626213 = validateParameter(valid_21626213, JString, required = false,
-                                   default = nil)
-  if valid_21626213 != nil:
-    section.add "X-Amz-Date", valid_21626213
-  var valid_21626214 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626214 = validateParameter(valid_21626214, JString, required = false,
-                                   default = nil)
-  if valid_21626214 != nil:
-    section.add "X-Amz-Security-Token", valid_21626214
-  var valid_21626215 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626215 = validateParameter(valid_21626215, JString, required = false,
-                                   default = nil)
-  if valid_21626215 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626215
-  var valid_21626216 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626216 = validateParameter(valid_21626216, JString, required = false,
-                                   default = nil)
-  if valid_21626216 != nil:
-    section.add "X-Amz-Algorithm", valid_21626216
-  var valid_21626217 = header.getOrDefault("X-Amz-Signature")
-  valid_21626217 = validateParameter(valid_21626217, JString, required = false,
-                                   default = nil)
-  if valid_21626217 != nil:
-    section.add "X-Amz-Signature", valid_21626217
-  var valid_21626218 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626218 = validateParameter(valid_21626218, JString, required = false,
-                                   default = nil)
-  if valid_21626218 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626218
-  var valid_21626219 = header.getOrDefault("X-Amz-Credential")
-  valid_21626219 = validateParameter(valid_21626219, JString, required = false,
-                                   default = nil)
-  if valid_21626219 != nil:
-    section.add "X-Amz-Credential", valid_21626219
+  var valid_402656663 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656663 = validateParameter(valid_402656663, JString,
+                                      required = false, default = nil)
+  if valid_402656663 != nil:
+    section.add "X-Amz-Security-Token", valid_402656663
+  var valid_402656664 = header.getOrDefault("X-Amz-Signature")
+  valid_402656664 = validateParameter(valid_402656664, JString,
+                                      required = false, default = nil)
+  if valid_402656664 != nil:
+    section.add "X-Amz-Signature", valid_402656664
+  var valid_402656665 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656665 = validateParameter(valid_402656665, JString,
+                                      required = false, default = nil)
+  if valid_402656665 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656665
+  var valid_402656666 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656666 = validateParameter(valid_402656666, JString,
+                                      required = false, default = nil)
+  if valid_402656666 != nil:
+    section.add "X-Amz-Algorithm", valid_402656666
+  var valid_402656667 = header.getOrDefault("X-Amz-Date")
+  valid_402656667 = validateParameter(valid_402656667, JString,
+                                      required = false, default = nil)
+  if valid_402656667 != nil:
+    section.add "X-Amz-Date", valid_402656667
+  var valid_402656668 = header.getOrDefault("X-Amz-Credential")
+  valid_402656668 = validateParameter(valid_402656668, JString,
+                                      required = false, default = nil)
+  if valid_402656668 != nil:
+    section.add "X-Amz-Credential", valid_402656668
+  var valid_402656669 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656669 = validateParameter(valid_402656669, JString,
+                                      required = false, default = nil)
+  if valid_402656669 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656669
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626220: Call_DeleteConfigurationProfile_21626208;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656670: Call_DeleteConfigurationProfile_402656658;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Delete a configuration profile. Deleting a configuration profile does not delete a configuration from a host.
-  ## 
-  let valid = call_21626220.validator(path, query, header, formData, body, _)
-  let scheme = call_21626220.pickScheme
+                                                                                         ## 
+  let valid = call_402656670.validator(path, query, header, formData, body, _)
+  let scheme = call_402656670.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626220.makeUrl(scheme.get, call_21626220.host, call_21626220.base,
-                               call_21626220.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626220, uri, valid, _)
+  let uri = call_402656670.makeUrl(scheme.get, call_402656670.host, call_402656670.base,
+                                   call_402656670.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656670, uri, valid, _)
 
-proc call*(call_21626221: Call_DeleteConfigurationProfile_21626208;
-          ConfigurationProfileId: string; ApplicationId: string): Recallable =
+proc call*(call_402656671: Call_DeleteConfigurationProfile_402656658;
+           ApplicationId: string; ConfigurationProfileId: string): Recallable =
   ## deleteConfigurationProfile
   ## Delete a configuration profile. Deleting a configuration profile does not delete a configuration from a host.
-  ##   ConfigurationProfileId: string (required)
-  ##                         : The ID of the configuration profile you want to delete.
-  ##   ApplicationId: string (required)
-  ##                : The application ID that includes the configuration profile you want to delete.
-  var path_21626222 = newJObject()
-  add(path_21626222, "ConfigurationProfileId", newJString(ConfigurationProfileId))
-  add(path_21626222, "ApplicationId", newJString(ApplicationId))
-  result = call_21626221.call(path_21626222, nil, nil, nil, nil)
+  ##   
+                                                                                                                  ## ApplicationId: string (required)
+                                                                                                                  ##                
+                                                                                                                  ## : 
+                                                                                                                  ## The 
+                                                                                                                  ## application 
+                                                                                                                  ## ID 
+                                                                                                                  ## that 
+                                                                                                                  ## includes 
+                                                                                                                  ## the 
+                                                                                                                  ## configuration 
+                                                                                                                  ## profile 
+                                                                                                                  ## you 
+                                                                                                                  ## want 
+                                                                                                                  ## to 
+                                                                                                                  ## delete.
+  ##   
+                                                                                                                            ## ConfigurationProfileId: string (required)
+                                                                                                                            ##                         
+                                                                                                                            ## : 
+                                                                                                                            ## The 
+                                                                                                                            ## ID 
+                                                                                                                            ## of 
+                                                                                                                            ## the 
+                                                                                                                            ## configuration 
+                                                                                                                            ## profile 
+                                                                                                                            ## you 
+                                                                                                                            ## want 
+                                                                                                                            ## to 
+                                                                                                                            ## delete.
+  var path_402656672 = newJObject()
+  add(path_402656672, "ApplicationId", newJString(ApplicationId))
+  add(path_402656672, "ConfigurationProfileId",
+      newJString(ConfigurationProfileId))
+  result = call_402656671.call(path_402656672, nil, nil, nil, nil)
 
-var deleteConfigurationProfile* = Call_DeleteConfigurationProfile_21626208(
+var deleteConfigurationProfile* = Call_DeleteConfigurationProfile_402656658(
     name: "deleteConfigurationProfile", meth: HttpMethod.HttpDelete,
     host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}",
-    validator: validate_DeleteConfigurationProfile_21626209, base: "/",
-    makeUrl: url_DeleteConfigurationProfile_21626210,
+    validator: validate_DeleteConfigurationProfile_402656659, base: "/",
+    makeUrl: url_DeleteConfigurationProfile_402656660,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDeploymentStrategy_21626240 = ref object of OpenApiRestCall_21625435
-proc url_DeleteDeploymentStrategy_21626242(protocol: Scheme; host: string;
+  Call_DeleteDeploymentStrategy_402656690 = ref object of OpenApiRestCall_402656038
+proc url_DeleteDeploymentStrategy_402656692(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "DeploymentStrategyId" in path,
-        "`DeploymentStrategyId` is a required path parameter"
+         "`DeploymentStrategyId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/deployementstrategies/"),
-               (kind: VariableSegment, value: "DeploymentStrategyId")]
+                 (kind: VariableSegment, value: "DeploymentStrategyId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2034,111 +2375,124 @@ proc url_DeleteDeploymentStrategy_21626242(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteDeploymentStrategy_21626241(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
+proc validate_DeleteDeploymentStrategy_402656691(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
   ## Delete a deployment strategy. Deleting a deployment strategy does not delete a configuration from a host.
-  ## 
+                                            ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   DeploymentStrategyId: JString (required)
-  ##                       : The ID of the deployment strategy you want to delete.
+                                 ##                       : The ID of the deployment strategy you want to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `DeploymentStrategyId` field"
-  var valid_21626243 = path.getOrDefault("DeploymentStrategyId")
-  valid_21626243 = validateParameter(valid_21626243, JString, required = true,
-                                   default = nil)
-  if valid_21626243 != nil:
-    section.add "DeploymentStrategyId", valid_21626243
+  var valid_402656693 = path.getOrDefault("DeploymentStrategyId")
+  valid_402656693 = validateParameter(valid_402656693, JString, required = true,
+                                      default = nil)
+  if valid_402656693 != nil:
+    section.add "DeploymentStrategyId", valid_402656693
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626244 = header.getOrDefault("X-Amz-Date")
-  valid_21626244 = validateParameter(valid_21626244, JString, required = false,
-                                   default = nil)
-  if valid_21626244 != nil:
-    section.add "X-Amz-Date", valid_21626244
-  var valid_21626245 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626245 = validateParameter(valid_21626245, JString, required = false,
-                                   default = nil)
-  if valid_21626245 != nil:
-    section.add "X-Amz-Security-Token", valid_21626245
-  var valid_21626246 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626246 = validateParameter(valid_21626246, JString, required = false,
-                                   default = nil)
-  if valid_21626246 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626246
-  var valid_21626247 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626247 = validateParameter(valid_21626247, JString, required = false,
-                                   default = nil)
-  if valid_21626247 != nil:
-    section.add "X-Amz-Algorithm", valid_21626247
-  var valid_21626248 = header.getOrDefault("X-Amz-Signature")
-  valid_21626248 = validateParameter(valid_21626248, JString, required = false,
-                                   default = nil)
-  if valid_21626248 != nil:
-    section.add "X-Amz-Signature", valid_21626248
-  var valid_21626249 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626249 = validateParameter(valid_21626249, JString, required = false,
-                                   default = nil)
-  if valid_21626249 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626249
-  var valid_21626250 = header.getOrDefault("X-Amz-Credential")
-  valid_21626250 = validateParameter(valid_21626250, JString, required = false,
-                                   default = nil)
-  if valid_21626250 != nil:
-    section.add "X-Amz-Credential", valid_21626250
+  var valid_402656694 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656694 = validateParameter(valid_402656694, JString,
+                                      required = false, default = nil)
+  if valid_402656694 != nil:
+    section.add "X-Amz-Security-Token", valid_402656694
+  var valid_402656695 = header.getOrDefault("X-Amz-Signature")
+  valid_402656695 = validateParameter(valid_402656695, JString,
+                                      required = false, default = nil)
+  if valid_402656695 != nil:
+    section.add "X-Amz-Signature", valid_402656695
+  var valid_402656696 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656696 = validateParameter(valid_402656696, JString,
+                                      required = false, default = nil)
+  if valid_402656696 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656696
+  var valid_402656697 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656697 = validateParameter(valid_402656697, JString,
+                                      required = false, default = nil)
+  if valid_402656697 != nil:
+    section.add "X-Amz-Algorithm", valid_402656697
+  var valid_402656698 = header.getOrDefault("X-Amz-Date")
+  valid_402656698 = validateParameter(valid_402656698, JString,
+                                      required = false, default = nil)
+  if valid_402656698 != nil:
+    section.add "X-Amz-Date", valid_402656698
+  var valid_402656699 = header.getOrDefault("X-Amz-Credential")
+  valid_402656699 = validateParameter(valid_402656699, JString,
+                                      required = false, default = nil)
+  if valid_402656699 != nil:
+    section.add "X-Amz-Credential", valid_402656699
+  var valid_402656700 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656700 = validateParameter(valid_402656700, JString,
+                                      required = false, default = nil)
+  if valid_402656700 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656700
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626251: Call_DeleteDeploymentStrategy_21626240;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656701: Call_DeleteDeploymentStrategy_402656690;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Delete a deployment strategy. Deleting a deployment strategy does not delete a configuration from a host.
-  ## 
-  let valid = call_21626251.validator(path, query, header, formData, body, _)
-  let scheme = call_21626251.pickScheme
+                                                                                         ## 
+  let valid = call_402656701.validator(path, query, header, formData, body, _)
+  let scheme = call_402656701.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626251.makeUrl(scheme.get, call_21626251.host, call_21626251.base,
-                               call_21626251.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626251, uri, valid, _)
+  let uri = call_402656701.makeUrl(scheme.get, call_402656701.host, call_402656701.base,
+                                   call_402656701.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656701, uri, valid, _)
 
-proc call*(call_21626252: Call_DeleteDeploymentStrategy_21626240;
-          DeploymentStrategyId: string): Recallable =
+proc call*(call_402656702: Call_DeleteDeploymentStrategy_402656690;
+           DeploymentStrategyId: string): Recallable =
   ## deleteDeploymentStrategy
   ## Delete a deployment strategy. Deleting a deployment strategy does not delete a configuration from a host.
-  ##   DeploymentStrategyId: string (required)
-  ##                       : The ID of the deployment strategy you want to delete.
-  var path_21626253 = newJObject()
-  add(path_21626253, "DeploymentStrategyId", newJString(DeploymentStrategyId))
-  result = call_21626252.call(path_21626253, nil, nil, nil, nil)
+  ##   
+                                                                                                              ## DeploymentStrategyId: string (required)
+                                                                                                              ##                       
+                                                                                                              ## : 
+                                                                                                              ## The 
+                                                                                                              ## ID 
+                                                                                                              ## of 
+                                                                                                              ## the 
+                                                                                                              ## deployment 
+                                                                                                              ## strategy 
+                                                                                                              ## you 
+                                                                                                              ## want 
+                                                                                                              ## to 
+                                                                                                              ## delete.
+  var path_402656703 = newJObject()
+  add(path_402656703, "DeploymentStrategyId", newJString(DeploymentStrategyId))
+  result = call_402656702.call(path_402656703, nil, nil, nil, nil)
 
-var deleteDeploymentStrategy* = Call_DeleteDeploymentStrategy_21626240(
+var deleteDeploymentStrategy* = Call_DeleteDeploymentStrategy_402656690(
     name: "deleteDeploymentStrategy", meth: HttpMethod.HttpDelete,
     host: "appconfig.amazonaws.com",
     route: "/deployementstrategies/{DeploymentStrategyId}",
-    validator: validate_DeleteDeploymentStrategy_21626241, base: "/",
-    makeUrl: url_DeleteDeploymentStrategy_21626242,
+    validator: validate_DeleteDeploymentStrategy_402656691, base: "/",
+    makeUrl: url_DeleteDeploymentStrategy_402656692,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetEnvironment_21626254 = ref object of OpenApiRestCall_21625435
-proc url_GetEnvironment_21626256(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetEnvironment_402656704 = ref object of OpenApiRestCall_402656038
+proc url_GetEnvironment_402656706(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2147,9 +2501,9 @@ proc url_GetEnvironment_21626256(protocol: Scheme; host: string; base: string;
   assert "EnvironmentId" in path, "`EnvironmentId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments/"),
-               (kind: VariableSegment, value: "EnvironmentId")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments/"),
+                 (kind: VariableSegment, value: "EnvironmentId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2158,121 +2512,160 @@ proc url_GetEnvironment_21626256(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetEnvironment_21626255(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode {.
+proc validate_GetEnvironment_402656705(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Retrieve information about an environment. An environment is a logical deployment group of AppConfig applications, such as applications in a <code>Production</code> environment or in an <code>EU_Region</code> environment. Each configuration deployment targets an environment. You can enable one or more Amazon CloudWatch alarms for an environment. If an alarm is triggered during a deployment, AppConfig roles back the configuration.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The ID of the application that includes the environment you want to get.
-  ##   EnvironmentId: JString (required)
-  ##                : The ID of the environment you wnat to get.
+                                 ##                : The ID of the application that includes the environment you want to get.
+  ##   
+                                                                                                                             ## EnvironmentId: JString (required)
+                                                                                                                             ##                
+                                                                                                                             ## : 
+                                                                                                                             ## The 
+                                                                                                                             ## ID 
+                                                                                                                             ## of 
+                                                                                                                             ## the 
+                                                                                                                             ## environment 
+                                                                                                                             ## you 
+                                                                                                                             ## wnat 
+                                                                                                                             ## to 
+                                                                                                                             ## get.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626257 = path.getOrDefault("ApplicationId")
-  valid_21626257 = validateParameter(valid_21626257, JString, required = true,
-                                   default = nil)
-  if valid_21626257 != nil:
-    section.add "ApplicationId", valid_21626257
-  var valid_21626258 = path.getOrDefault("EnvironmentId")
-  valid_21626258 = validateParameter(valid_21626258, JString, required = true,
-                                   default = nil)
-  if valid_21626258 != nil:
-    section.add "EnvironmentId", valid_21626258
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656707 = path.getOrDefault("ApplicationId")
+  valid_402656707 = validateParameter(valid_402656707, JString, required = true,
+                                      default = nil)
+  if valid_402656707 != nil:
+    section.add "ApplicationId", valid_402656707
+  var valid_402656708 = path.getOrDefault("EnvironmentId")
+  valid_402656708 = validateParameter(valid_402656708, JString, required = true,
+                                      default = nil)
+  if valid_402656708 != nil:
+    section.add "EnvironmentId", valid_402656708
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626259 = header.getOrDefault("X-Amz-Date")
-  valid_21626259 = validateParameter(valid_21626259, JString, required = false,
-                                   default = nil)
-  if valid_21626259 != nil:
-    section.add "X-Amz-Date", valid_21626259
-  var valid_21626260 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626260 = validateParameter(valid_21626260, JString, required = false,
-                                   default = nil)
-  if valid_21626260 != nil:
-    section.add "X-Amz-Security-Token", valid_21626260
-  var valid_21626261 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626261 = validateParameter(valid_21626261, JString, required = false,
-                                   default = nil)
-  if valid_21626261 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626261
-  var valid_21626262 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626262 = validateParameter(valid_21626262, JString, required = false,
-                                   default = nil)
-  if valid_21626262 != nil:
-    section.add "X-Amz-Algorithm", valid_21626262
-  var valid_21626263 = header.getOrDefault("X-Amz-Signature")
-  valid_21626263 = validateParameter(valid_21626263, JString, required = false,
-                                   default = nil)
-  if valid_21626263 != nil:
-    section.add "X-Amz-Signature", valid_21626263
-  var valid_21626264 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626264 = validateParameter(valid_21626264, JString, required = false,
-                                   default = nil)
-  if valid_21626264 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626264
-  var valid_21626265 = header.getOrDefault("X-Amz-Credential")
-  valid_21626265 = validateParameter(valid_21626265, JString, required = false,
-                                   default = nil)
-  if valid_21626265 != nil:
-    section.add "X-Amz-Credential", valid_21626265
+  var valid_402656709 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656709 = validateParameter(valid_402656709, JString,
+                                      required = false, default = nil)
+  if valid_402656709 != nil:
+    section.add "X-Amz-Security-Token", valid_402656709
+  var valid_402656710 = header.getOrDefault("X-Amz-Signature")
+  valid_402656710 = validateParameter(valid_402656710, JString,
+                                      required = false, default = nil)
+  if valid_402656710 != nil:
+    section.add "X-Amz-Signature", valid_402656710
+  var valid_402656711 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656711 = validateParameter(valid_402656711, JString,
+                                      required = false, default = nil)
+  if valid_402656711 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656711
+  var valid_402656712 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656712 = validateParameter(valid_402656712, JString,
+                                      required = false, default = nil)
+  if valid_402656712 != nil:
+    section.add "X-Amz-Algorithm", valid_402656712
+  var valid_402656713 = header.getOrDefault("X-Amz-Date")
+  valid_402656713 = validateParameter(valid_402656713, JString,
+                                      required = false, default = nil)
+  if valid_402656713 != nil:
+    section.add "X-Amz-Date", valid_402656713
+  var valid_402656714 = header.getOrDefault("X-Amz-Credential")
+  valid_402656714 = validateParameter(valid_402656714, JString,
+                                      required = false, default = nil)
+  if valid_402656714 != nil:
+    section.add "X-Amz-Credential", valid_402656714
+  var valid_402656715 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656715 = validateParameter(valid_402656715, JString,
+                                      required = false, default = nil)
+  if valid_402656715 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656715
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626266: Call_GetEnvironment_21626254; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656716: Call_GetEnvironment_402656704; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Retrieve information about an environment. An environment is a logical deployment group of AppConfig applications, such as applications in a <code>Production</code> environment or in an <code>EU_Region</code> environment. Each configuration deployment targets an environment. You can enable one or more Amazon CloudWatch alarms for an environment. If an alarm is triggered during a deployment, AppConfig roles back the configuration.
-  ## 
-  let valid = call_21626266.validator(path, query, header, formData, body, _)
-  let scheme = call_21626266.pickScheme
+                                                                                         ## 
+  let valid = call_402656716.validator(path, query, header, formData, body, _)
+  let scheme = call_402656716.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626266.makeUrl(scheme.get, call_21626266.host, call_21626266.base,
-                               call_21626266.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626266, uri, valid, _)
+  let uri = call_402656716.makeUrl(scheme.get, call_402656716.host, call_402656716.base,
+                                   call_402656716.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656716, uri, valid, _)
 
-proc call*(call_21626267: Call_GetEnvironment_21626254; ApplicationId: string;
-          EnvironmentId: string): Recallable =
+proc call*(call_402656717: Call_GetEnvironment_402656704; ApplicationId: string;
+           EnvironmentId: string): Recallable =
   ## getEnvironment
   ## Retrieve information about an environment. An environment is a logical deployment group of AppConfig applications, such as applications in a <code>Production</code> environment or in an <code>EU_Region</code> environment. Each configuration deployment targets an environment. You can enable one or more Amazon CloudWatch alarms for an environment. If an alarm is triggered during a deployment, AppConfig roles back the configuration.
-  ##   ApplicationId: string (required)
-  ##                : The ID of the application that includes the environment you want to get.
-  ##   EnvironmentId: string (required)
-  ##                : The ID of the environment you wnat to get.
-  var path_21626268 = newJObject()
-  add(path_21626268, "ApplicationId", newJString(ApplicationId))
-  add(path_21626268, "EnvironmentId", newJString(EnvironmentId))
-  result = call_21626267.call(path_21626268, nil, nil, nil, nil)
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## ApplicationId: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ##                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## ID 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## application 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## that 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## includes 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## environment 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## you 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## want 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ## get.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## EnvironmentId: string (required)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ##                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## : 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## The 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## ID 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## of 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## the 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## environment 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## you 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## wnat 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## to 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             ## get.
+  var path_402656718 = newJObject()
+  add(path_402656718, "ApplicationId", newJString(ApplicationId))
+  add(path_402656718, "EnvironmentId", newJString(EnvironmentId))
+  result = call_402656717.call(path_402656718, nil, nil, nil, nil)
 
-var getEnvironment* = Call_GetEnvironment_21626254(name: "getEnvironment",
+var getEnvironment* = Call_GetEnvironment_402656704(name: "getEnvironment",
     meth: HttpMethod.HttpGet, host: "appconfig.amazonaws.com",
     route: "/applications/{ApplicationId}/environments/{EnvironmentId}",
-    validator: validate_GetEnvironment_21626255, base: "/",
-    makeUrl: url_GetEnvironment_21626256, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetEnvironment_402656705, base: "/",
+    makeUrl: url_GetEnvironment_402656706, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateEnvironment_21626284 = ref object of OpenApiRestCall_21625435
-proc url_UpdateEnvironment_21626286(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateEnvironment_402656734 = ref object of OpenApiRestCall_402656038
+proc url_UpdateEnvironment_402656736(protocol: Scheme; host: string;
+                                     base: string; route: string;
+                                     path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2281,9 +2674,9 @@ proc url_UpdateEnvironment_21626286(protocol: Scheme; host: string; base: string
   assert "EnvironmentId" in path, "`EnvironmentId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments/"),
-               (kind: VariableSegment, value: "EnvironmentId")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments/"),
+                 (kind: VariableSegment, value: "EnvironmentId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2292,79 +2685,83 @@ proc url_UpdateEnvironment_21626286(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateEnvironment_21626285(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode {.
+proc validate_UpdateEnvironment_402656735(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Updates an environment.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
-  ##   EnvironmentId: JString (required)
-  ##                : The environment ID.
+                                 ##                : The application ID.
+  ##   
+                                                                        ## EnvironmentId: JString (required)
+                                                                        ##                
+                                                                        ## : 
+                                                                        ## The 
+                                                                        ## environment 
+                                                                        ## ID.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626287 = path.getOrDefault("ApplicationId")
-  valid_21626287 = validateParameter(valid_21626287, JString, required = true,
-                                   default = nil)
-  if valid_21626287 != nil:
-    section.add "ApplicationId", valid_21626287
-  var valid_21626288 = path.getOrDefault("EnvironmentId")
-  valid_21626288 = validateParameter(valid_21626288, JString, required = true,
-                                   default = nil)
-  if valid_21626288 != nil:
-    section.add "EnvironmentId", valid_21626288
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656737 = path.getOrDefault("ApplicationId")
+  valid_402656737 = validateParameter(valid_402656737, JString, required = true,
+                                      default = nil)
+  if valid_402656737 != nil:
+    section.add "ApplicationId", valid_402656737
+  var valid_402656738 = path.getOrDefault("EnvironmentId")
+  valid_402656738 = validateParameter(valid_402656738, JString, required = true,
+                                      default = nil)
+  if valid_402656738 != nil:
+    section.add "EnvironmentId", valid_402656738
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626289 = header.getOrDefault("X-Amz-Date")
-  valid_21626289 = validateParameter(valid_21626289, JString, required = false,
-                                   default = nil)
-  if valid_21626289 != nil:
-    section.add "X-Amz-Date", valid_21626289
-  var valid_21626290 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626290 = validateParameter(valid_21626290, JString, required = false,
-                                   default = nil)
-  if valid_21626290 != nil:
-    section.add "X-Amz-Security-Token", valid_21626290
-  var valid_21626291 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626291 = validateParameter(valid_21626291, JString, required = false,
-                                   default = nil)
-  if valid_21626291 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626291
-  var valid_21626292 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626292 = validateParameter(valid_21626292, JString, required = false,
-                                   default = nil)
-  if valid_21626292 != nil:
-    section.add "X-Amz-Algorithm", valid_21626292
-  var valid_21626293 = header.getOrDefault("X-Amz-Signature")
-  valid_21626293 = validateParameter(valid_21626293, JString, required = false,
-                                   default = nil)
-  if valid_21626293 != nil:
-    section.add "X-Amz-Signature", valid_21626293
-  var valid_21626294 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626294 = validateParameter(valid_21626294, JString, required = false,
-                                   default = nil)
-  if valid_21626294 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626294
-  var valid_21626295 = header.getOrDefault("X-Amz-Credential")
-  valid_21626295 = validateParameter(valid_21626295, JString, required = false,
-                                   default = nil)
-  if valid_21626295 != nil:
-    section.add "X-Amz-Credential", valid_21626295
+  var valid_402656739 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656739 = validateParameter(valid_402656739, JString,
+                                      required = false, default = nil)
+  if valid_402656739 != nil:
+    section.add "X-Amz-Security-Token", valid_402656739
+  var valid_402656740 = header.getOrDefault("X-Amz-Signature")
+  valid_402656740 = validateParameter(valid_402656740, JString,
+                                      required = false, default = nil)
+  if valid_402656740 != nil:
+    section.add "X-Amz-Signature", valid_402656740
+  var valid_402656741 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656741 = validateParameter(valid_402656741, JString,
+                                      required = false, default = nil)
+  if valid_402656741 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656741
+  var valid_402656742 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656742 = validateParameter(valid_402656742, JString,
+                                      required = false, default = nil)
+  if valid_402656742 != nil:
+    section.add "X-Amz-Algorithm", valid_402656742
+  var valid_402656743 = header.getOrDefault("X-Amz-Date")
+  valid_402656743 = validateParameter(valid_402656743, JString,
+                                      required = false, default = nil)
+  if valid_402656743 != nil:
+    section.add "X-Amz-Date", valid_402656743
+  var valid_402656744 = header.getOrDefault("X-Amz-Credential")
+  valid_402656744 = validateParameter(valid_402656744, JString,
+                                      required = false, default = nil)
+  if valid_402656744 != nil:
+    section.add "X-Amz-Credential", valid_402656744
+  var valid_402656745 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656745 = validateParameter(valid_402656745, JString,
+                                      required = false, default = nil)
+  if valid_402656745 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656745
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2376,46 +2773,55 @@ proc validate_UpdateEnvironment_21626285(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626297: Call_UpdateEnvironment_21626284; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656747: Call_UpdateEnvironment_402656734;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Updates an environment.
-  ## 
-  let valid = call_21626297.validator(path, query, header, formData, body, _)
-  let scheme = call_21626297.pickScheme
+                                                                                         ## 
+  let valid = call_402656747.validator(path, query, header, formData, body, _)
+  let scheme = call_402656747.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626297.makeUrl(scheme.get, call_21626297.host, call_21626297.base,
-                               call_21626297.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626297, uri, valid, _)
+  let uri = call_402656747.makeUrl(scheme.get, call_402656747.host, call_402656747.base,
+                                   call_402656747.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656747, uri, valid, _)
 
-proc call*(call_21626298: Call_UpdateEnvironment_21626284; ApplicationId: string;
-          body: JsonNode; EnvironmentId: string): Recallable =
+proc call*(call_402656748: Call_UpdateEnvironment_402656734;
+           ApplicationId: string; EnvironmentId: string; body: JsonNode): Recallable =
   ## updateEnvironment
   ## Updates an environment.
   ##   ApplicationId: string (required)
-  ##                : The application ID.
-  ##   body: JObject (required)
-  ##   EnvironmentId: string (required)
-  ##                : The environment ID.
-  var path_21626299 = newJObject()
-  var body_21626300 = newJObject()
-  add(path_21626299, "ApplicationId", newJString(ApplicationId))
+                            ##                : The application ID.
+  ##   
+                                                                   ## EnvironmentId: string (required)
+                                                                   ##                
+                                                                   ## : 
+                                                                   ## The 
+                                                                   ## environment ID.
+  ##   
+                                                                                     ## body: JObject (required)
+  var path_402656749 = newJObject()
+  var body_402656750 = newJObject()
+  add(path_402656749, "ApplicationId", newJString(ApplicationId))
+  add(path_402656749, "EnvironmentId", newJString(EnvironmentId))
   if body != nil:
-    body_21626300 = body
-  add(path_21626299, "EnvironmentId", newJString(EnvironmentId))
-  result = call_21626298.call(path_21626299, nil, nil, nil, body_21626300)
+    body_402656750 = body
+  result = call_402656748.call(path_402656749, nil, nil, nil, body_402656750)
 
-var updateEnvironment* = Call_UpdateEnvironment_21626284(name: "updateEnvironment",
-    meth: HttpMethod.HttpPatch, host: "appconfig.amazonaws.com",
+var updateEnvironment* = Call_UpdateEnvironment_402656734(
+    name: "updateEnvironment", meth: HttpMethod.HttpPatch,
+    host: "appconfig.amazonaws.com",
     route: "/applications/{ApplicationId}/environments/{EnvironmentId}",
-    validator: validate_UpdateEnvironment_21626285, base: "/",
-    makeUrl: url_UpdateEnvironment_21626286, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateEnvironment_402656735, base: "/",
+    makeUrl: url_UpdateEnvironment_402656736,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteEnvironment_21626269 = ref object of OpenApiRestCall_21625435
-proc url_DeleteEnvironment_21626271(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteEnvironment_402656719 = ref object of OpenApiRestCall_402656038
+proc url_DeleteEnvironment_402656721(protocol: Scheme; host: string;
+                                     base: string; route: string;
+                                     path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2424,9 +2830,9 @@ proc url_DeleteEnvironment_21626271(protocol: Scheme; host: string; base: string
   assert "EnvironmentId" in path, "`EnvironmentId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments/"),
-               (kind: VariableSegment, value: "EnvironmentId")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments/"),
+                 (kind: VariableSegment, value: "EnvironmentId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2435,121 +2841,159 @@ proc url_DeleteEnvironment_21626271(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteEnvironment_21626270(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode; _: string = ""): JsonNode {.
+proc validate_DeleteEnvironment_402656720(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Delete an environment. Deleting an environment does not delete a configuration from a host.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID that includes the environment you want to delete.
-  ##   EnvironmentId: JString (required)
-  ##                : The ID of the environment you want to delete.
+                                 ##                : The application ID that includes the environment you want to delete.
+  ##   
+                                                                                                                         ## EnvironmentId: JString (required)
+                                                                                                                         ##                
+                                                                                                                         ## : 
+                                                                                                                         ## The 
+                                                                                                                         ## ID 
+                                                                                                                         ## of 
+                                                                                                                         ## the 
+                                                                                                                         ## environment 
+                                                                                                                         ## you 
+                                                                                                                         ## want 
+                                                                                                                         ## to 
+                                                                                                                         ## delete.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626272 = path.getOrDefault("ApplicationId")
-  valid_21626272 = validateParameter(valid_21626272, JString, required = true,
-                                   default = nil)
-  if valid_21626272 != nil:
-    section.add "ApplicationId", valid_21626272
-  var valid_21626273 = path.getOrDefault("EnvironmentId")
-  valid_21626273 = validateParameter(valid_21626273, JString, required = true,
-                                   default = nil)
-  if valid_21626273 != nil:
-    section.add "EnvironmentId", valid_21626273
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656722 = path.getOrDefault("ApplicationId")
+  valid_402656722 = validateParameter(valid_402656722, JString, required = true,
+                                      default = nil)
+  if valid_402656722 != nil:
+    section.add "ApplicationId", valid_402656722
+  var valid_402656723 = path.getOrDefault("EnvironmentId")
+  valid_402656723 = validateParameter(valid_402656723, JString, required = true,
+                                      default = nil)
+  if valid_402656723 != nil:
+    section.add "EnvironmentId", valid_402656723
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626274 = header.getOrDefault("X-Amz-Date")
-  valid_21626274 = validateParameter(valid_21626274, JString, required = false,
-                                   default = nil)
-  if valid_21626274 != nil:
-    section.add "X-Amz-Date", valid_21626274
-  var valid_21626275 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626275 = validateParameter(valid_21626275, JString, required = false,
-                                   default = nil)
-  if valid_21626275 != nil:
-    section.add "X-Amz-Security-Token", valid_21626275
-  var valid_21626276 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626276 = validateParameter(valid_21626276, JString, required = false,
-                                   default = nil)
-  if valid_21626276 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626276
-  var valid_21626277 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626277 = validateParameter(valid_21626277, JString, required = false,
-                                   default = nil)
-  if valid_21626277 != nil:
-    section.add "X-Amz-Algorithm", valid_21626277
-  var valid_21626278 = header.getOrDefault("X-Amz-Signature")
-  valid_21626278 = validateParameter(valid_21626278, JString, required = false,
-                                   default = nil)
-  if valid_21626278 != nil:
-    section.add "X-Amz-Signature", valid_21626278
-  var valid_21626279 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626279 = validateParameter(valid_21626279, JString, required = false,
-                                   default = nil)
-  if valid_21626279 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626279
-  var valid_21626280 = header.getOrDefault("X-Amz-Credential")
-  valid_21626280 = validateParameter(valid_21626280, JString, required = false,
-                                   default = nil)
-  if valid_21626280 != nil:
-    section.add "X-Amz-Credential", valid_21626280
+  var valid_402656724 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656724 = validateParameter(valid_402656724, JString,
+                                      required = false, default = nil)
+  if valid_402656724 != nil:
+    section.add "X-Amz-Security-Token", valid_402656724
+  var valid_402656725 = header.getOrDefault("X-Amz-Signature")
+  valid_402656725 = validateParameter(valid_402656725, JString,
+                                      required = false, default = nil)
+  if valid_402656725 != nil:
+    section.add "X-Amz-Signature", valid_402656725
+  var valid_402656726 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656726 = validateParameter(valid_402656726, JString,
+                                      required = false, default = nil)
+  if valid_402656726 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656726
+  var valid_402656727 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656727 = validateParameter(valid_402656727, JString,
+                                      required = false, default = nil)
+  if valid_402656727 != nil:
+    section.add "X-Amz-Algorithm", valid_402656727
+  var valid_402656728 = header.getOrDefault("X-Amz-Date")
+  valid_402656728 = validateParameter(valid_402656728, JString,
+                                      required = false, default = nil)
+  if valid_402656728 != nil:
+    section.add "X-Amz-Date", valid_402656728
+  var valid_402656729 = header.getOrDefault("X-Amz-Credential")
+  valid_402656729 = validateParameter(valid_402656729, JString,
+                                      required = false, default = nil)
+  if valid_402656729 != nil:
+    section.add "X-Amz-Credential", valid_402656729
+  var valid_402656730 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656730 = validateParameter(valid_402656730, JString,
+                                      required = false, default = nil)
+  if valid_402656730 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656730
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626281: Call_DeleteEnvironment_21626269; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656731: Call_DeleteEnvironment_402656719;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Delete an environment. Deleting an environment does not delete a configuration from a host.
-  ## 
-  let valid = call_21626281.validator(path, query, header, formData, body, _)
-  let scheme = call_21626281.pickScheme
+                                                                                         ## 
+  let valid = call_402656731.validator(path, query, header, formData, body, _)
+  let scheme = call_402656731.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626281.makeUrl(scheme.get, call_21626281.host, call_21626281.base,
-                               call_21626281.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626281, uri, valid, _)
+  let uri = call_402656731.makeUrl(scheme.get, call_402656731.host, call_402656731.base,
+                                   call_402656731.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656731, uri, valid, _)
 
-proc call*(call_21626282: Call_DeleteEnvironment_21626269; ApplicationId: string;
-          EnvironmentId: string): Recallable =
+proc call*(call_402656732: Call_DeleteEnvironment_402656719;
+           ApplicationId: string; EnvironmentId: string): Recallable =
   ## deleteEnvironment
   ## Delete an environment. Deleting an environment does not delete a configuration from a host.
-  ##   ApplicationId: string (required)
-  ##                : The application ID that includes the environment you want to delete.
-  ##   EnvironmentId: string (required)
-  ##                : The ID of the environment you want to delete.
-  var path_21626283 = newJObject()
-  add(path_21626283, "ApplicationId", newJString(ApplicationId))
-  add(path_21626283, "EnvironmentId", newJString(EnvironmentId))
-  result = call_21626282.call(path_21626283, nil, nil, nil, nil)
+  ##   
+                                                                                                ## ApplicationId: string (required)
+                                                                                                ##                
+                                                                                                ## : 
+                                                                                                ## The 
+                                                                                                ## application 
+                                                                                                ## ID 
+                                                                                                ## that 
+                                                                                                ## includes 
+                                                                                                ## the 
+                                                                                                ## environment 
+                                                                                                ## you 
+                                                                                                ## want 
+                                                                                                ## to 
+                                                                                                ## delete.
+  ##   
+                                                                                                          ## EnvironmentId: string (required)
+                                                                                                          ##                
+                                                                                                          ## : 
+                                                                                                          ## The 
+                                                                                                          ## ID 
+                                                                                                          ## of 
+                                                                                                          ## the 
+                                                                                                          ## environment 
+                                                                                                          ## you 
+                                                                                                          ## want 
+                                                                                                          ## to 
+                                                                                                          ## delete.
+  var path_402656733 = newJObject()
+  add(path_402656733, "ApplicationId", newJString(ApplicationId))
+  add(path_402656733, "EnvironmentId", newJString(EnvironmentId))
+  result = call_402656732.call(path_402656733, nil, nil, nil, nil)
 
-var deleteEnvironment* = Call_DeleteEnvironment_21626269(name: "deleteEnvironment",
-    meth: HttpMethod.HttpDelete, host: "appconfig.amazonaws.com",
+var deleteEnvironment* = Call_DeleteEnvironment_402656719(
+    name: "deleteEnvironment", meth: HttpMethod.HttpDelete,
+    host: "appconfig.amazonaws.com",
     route: "/applications/{ApplicationId}/environments/{EnvironmentId}",
-    validator: validate_DeleteEnvironment_21626270, base: "/",
-    makeUrl: url_DeleteEnvironment_21626271, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteEnvironment_402656720, base: "/",
+    makeUrl: url_DeleteEnvironment_402656721,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetConfiguration_21626301 = ref object of OpenApiRestCall_21625435
-proc url_GetConfiguration_21626303(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetConfiguration_402656751 = ref object of OpenApiRestCall_402656038
+proc url_GetConfiguration_402656753(protocol: Scheme; host: string;
+                                    base: string; route: string; path: JsonNode;
+                                    query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2559,12 +3003,12 @@ proc url_GetConfiguration_21626303(protocol: Scheme; host: string; base: string;
   assert "Configuration" in path, "`Configuration` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "Application"),
-               (kind: ConstantSegment, value: "/environments/"),
-               (kind: VariableSegment, value: "Environment"),
-               (kind: ConstantSegment, value: "/configurations/"),
-               (kind: VariableSegment, value: "Configuration"),
-               (kind: ConstantSegment, value: "#client_id")]
+                 (kind: VariableSegment, value: "Application"),
+                 (kind: ConstantSegment, value: "/environments/"),
+                 (kind: VariableSegment, value: "Environment"),
+                 (kind: ConstantSegment, value: "/configurations/"),
+                 (kind: VariableSegment, value: "Configuration"),
+                 (kind: ConstantSegment, value: "#client_id")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2573,156 +3017,250 @@ proc url_GetConfiguration_21626303(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetConfiguration_21626302(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode; _: string = ""): JsonNode {.
+proc validate_GetConfiguration_402656752(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Retrieve information about a configuration.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   Configuration: JString (required)
-  ##                : The configuration to get.
-  ##   Application: JString (required)
-  ##              : The application to get.
   ##   Environment: JString (required)
-  ##              : The environment to get.
+                                 ##              : The environment to get.
+  ##   
+                                                                          ## Configuration: JString (required)
+                                                                          ##                
+                                                                          ## : 
+                                                                          ## The 
+                                                                          ## configuration 
+                                                                          ## to 
+                                                                          ## get.
+  ##   
+                                                                                 ## Application: JString (required)
+                                                                                 ##              
+                                                                                 ## : 
+                                                                                 ## The 
+                                                                                 ## application 
+                                                                                 ## to 
+                                                                                 ## get.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `Configuration` field"
-  var valid_21626304 = path.getOrDefault("Configuration")
-  valid_21626304 = validateParameter(valid_21626304, JString, required = true,
-                                   default = nil)
-  if valid_21626304 != nil:
-    section.add "Configuration", valid_21626304
-  var valid_21626305 = path.getOrDefault("Application")
-  valid_21626305 = validateParameter(valid_21626305, JString, required = true,
-                                   default = nil)
-  if valid_21626305 != nil:
-    section.add "Application", valid_21626305
-  var valid_21626306 = path.getOrDefault("Environment")
-  valid_21626306 = validateParameter(valid_21626306, JString, required = true,
-                                   default = nil)
-  if valid_21626306 != nil:
-    section.add "Environment", valid_21626306
+         "path argument is necessary due to required `Environment` field"
+  var valid_402656754 = path.getOrDefault("Environment")
+  valid_402656754 = validateParameter(valid_402656754, JString, required = true,
+                                      default = nil)
+  if valid_402656754 != nil:
+    section.add "Environment", valid_402656754
+  var valid_402656755 = path.getOrDefault("Configuration")
+  valid_402656755 = validateParameter(valid_402656755, JString, required = true,
+                                      default = nil)
+  if valid_402656755 != nil:
+    section.add "Configuration", valid_402656755
+  var valid_402656756 = path.getOrDefault("Application")
+  valid_402656756 = validateParameter(valid_402656756, JString, required = true,
+                                      default = nil)
+  if valid_402656756 != nil:
+    section.add "Application", valid_402656756
   result.add "path", section
   ## parameters in `query` object:
-  ##   client_id: JString (required)
-  ##            : A unique ID to identify the client for the configuration. This ID enables AppConfig to deploy the configuration in intervals, as defined in the deployment strategy.
   ##   client_configuration_version: JString
-  ##                               : The configuration version returned in the most recent GetConfiguration response.
+                                  ##                               : The configuration version returned in the most recent GetConfiguration response.
+  ##   
+                                                                                                                                                     ## client_id: JString (required)
+                                                                                                                                                     ##            
+                                                                                                                                                     ## : 
+                                                                                                                                                     ## A 
+                                                                                                                                                     ## unique 
+                                                                                                                                                     ## ID 
+                                                                                                                                                     ## to 
+                                                                                                                                                     ## identify 
+                                                                                                                                                     ## the 
+                                                                                                                                                     ## client 
+                                                                                                                                                     ## for 
+                                                                                                                                                     ## the 
+                                                                                                                                                     ## configuration. 
+                                                                                                                                                     ## This 
+                                                                                                                                                     ## ID 
+                                                                                                                                                     ## enables 
+                                                                                                                                                     ## AppConfig 
+                                                                                                                                                     ## to 
+                                                                                                                                                     ## deploy 
+                                                                                                                                                     ## the 
+                                                                                                                                                     ## configuration 
+                                                                                                                                                     ## in 
+                                                                                                                                                     ## intervals, 
+                                                                                                                                                     ## as 
+                                                                                                                                                     ## defined 
+                                                                                                                                                     ## in 
+                                                                                                                                                     ## the 
+                                                                                                                                                     ## deployment 
+                                                                                                                                                     ## strategy.
   section = newJObject()
+  var valid_402656757 = query.getOrDefault("client_configuration_version")
+  valid_402656757 = validateParameter(valid_402656757, JString,
+                                      required = false, default = nil)
+  if valid_402656757 != nil:
+    section.add "client_configuration_version", valid_402656757
   assert query != nil,
-        "query argument is necessary due to required `client_id` field"
-  var valid_21626307 = query.getOrDefault("client_id")
-  valid_21626307 = validateParameter(valid_21626307, JString, required = true,
-                                   default = nil)
-  if valid_21626307 != nil:
-    section.add "client_id", valid_21626307
-  var valid_21626308 = query.getOrDefault("client_configuration_version")
-  valid_21626308 = validateParameter(valid_21626308, JString, required = false,
-                                   default = nil)
-  if valid_21626308 != nil:
-    section.add "client_configuration_version", valid_21626308
+         "query argument is necessary due to required `client_id` field"
+  var valid_402656758 = query.getOrDefault("client_id")
+  valid_402656758 = validateParameter(valid_402656758, JString, required = true,
+                                      default = nil)
+  if valid_402656758 != nil:
+    section.add "client_id", valid_402656758
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626309 = header.getOrDefault("X-Amz-Date")
-  valid_21626309 = validateParameter(valid_21626309, JString, required = false,
-                                   default = nil)
-  if valid_21626309 != nil:
-    section.add "X-Amz-Date", valid_21626309
-  var valid_21626310 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626310 = validateParameter(valid_21626310, JString, required = false,
-                                   default = nil)
-  if valid_21626310 != nil:
-    section.add "X-Amz-Security-Token", valid_21626310
-  var valid_21626311 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626311 = validateParameter(valid_21626311, JString, required = false,
-                                   default = nil)
-  if valid_21626311 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626311
-  var valid_21626312 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626312 = validateParameter(valid_21626312, JString, required = false,
-                                   default = nil)
-  if valid_21626312 != nil:
-    section.add "X-Amz-Algorithm", valid_21626312
-  var valid_21626313 = header.getOrDefault("X-Amz-Signature")
-  valid_21626313 = validateParameter(valid_21626313, JString, required = false,
-                                   default = nil)
-  if valid_21626313 != nil:
-    section.add "X-Amz-Signature", valid_21626313
-  var valid_21626314 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626314 = validateParameter(valid_21626314, JString, required = false,
-                                   default = nil)
-  if valid_21626314 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626314
-  var valid_21626315 = header.getOrDefault("X-Amz-Credential")
-  valid_21626315 = validateParameter(valid_21626315, JString, required = false,
-                                   default = nil)
-  if valid_21626315 != nil:
-    section.add "X-Amz-Credential", valid_21626315
+  var valid_402656759 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656759 = validateParameter(valid_402656759, JString,
+                                      required = false, default = nil)
+  if valid_402656759 != nil:
+    section.add "X-Amz-Security-Token", valid_402656759
+  var valid_402656760 = header.getOrDefault("X-Amz-Signature")
+  valid_402656760 = validateParameter(valid_402656760, JString,
+                                      required = false, default = nil)
+  if valid_402656760 != nil:
+    section.add "X-Amz-Signature", valid_402656760
+  var valid_402656761 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656761 = validateParameter(valid_402656761, JString,
+                                      required = false, default = nil)
+  if valid_402656761 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656761
+  var valid_402656762 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656762 = validateParameter(valid_402656762, JString,
+                                      required = false, default = nil)
+  if valid_402656762 != nil:
+    section.add "X-Amz-Algorithm", valid_402656762
+  var valid_402656763 = header.getOrDefault("X-Amz-Date")
+  valid_402656763 = validateParameter(valid_402656763, JString,
+                                      required = false, default = nil)
+  if valid_402656763 != nil:
+    section.add "X-Amz-Date", valid_402656763
+  var valid_402656764 = header.getOrDefault("X-Amz-Credential")
+  valid_402656764 = validateParameter(valid_402656764, JString,
+                                      required = false, default = nil)
+  if valid_402656764 != nil:
+    section.add "X-Amz-Credential", valid_402656764
+  var valid_402656765 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656765 = validateParameter(valid_402656765, JString,
+                                      required = false, default = nil)
+  if valid_402656765 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656765
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626316: Call_GetConfiguration_21626301; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656766: Call_GetConfiguration_402656751;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Retrieve information about a configuration.
-  ## 
-  let valid = call_21626316.validator(path, query, header, formData, body, _)
-  let scheme = call_21626316.pickScheme
+                                                                                         ## 
+  let valid = call_402656766.validator(path, query, header, formData, body, _)
+  let scheme = call_402656766.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626316.makeUrl(scheme.get, call_21626316.host, call_21626316.base,
-                               call_21626316.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626316, uri, valid, _)
+  let uri = call_402656766.makeUrl(scheme.get, call_402656766.host, call_402656766.base,
+                                   call_402656766.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656766, uri, valid, _)
 
-proc call*(call_21626317: Call_GetConfiguration_21626301; clientId: string;
-          Configuration: string; Application: string; Environment: string;
-          clientConfigurationVersion: string = ""): Recallable =
+proc call*(call_402656767: Call_GetConfiguration_402656751; Environment: string;
+           Configuration: string; Application: string; clientId: string;
+           clientConfigurationVersion: string = ""): Recallable =
   ## getConfiguration
   ## Retrieve information about a configuration.
-  ##   clientId: string (required)
-  ##           : A unique ID to identify the client for the configuration. This ID enables AppConfig to deploy the configuration in intervals, as defined in the deployment strategy.
-  ##   Configuration: string (required)
-  ##                : The configuration to get.
-  ##   Application: string (required)
-  ##              : The application to get.
   ##   Environment: string (required)
-  ##              : The environment to get.
-  ##   clientConfigurationVersion: string
-  ##                             : The configuration version returned in the most recent GetConfiguration response.
-  var path_21626318 = newJObject()
-  var query_21626319 = newJObject()
-  add(query_21626319, "client_id", newJString(clientId))
-  add(path_21626318, "Configuration", newJString(Configuration))
-  add(path_21626318, "Application", newJString(Application))
-  add(path_21626318, "Environment", newJString(Environment))
-  add(query_21626319, "client_configuration_version",
+                                                ##              : The environment to get.
+  ##   
+                                                                                         ## clientConfigurationVersion: string
+                                                                                         ##                             
+                                                                                         ## : 
+                                                                                         ## The 
+                                                                                         ## configuration 
+                                                                                         ## version 
+                                                                                         ## returned 
+                                                                                         ## in 
+                                                                                         ## the 
+                                                                                         ## most 
+                                                                                         ## recent 
+                                                                                         ## GetConfiguration 
+                                                                                         ## response.
+  ##   
+                                                                                                     ## Configuration: string (required)
+                                                                                                     ##                
+                                                                                                     ## : 
+                                                                                                     ## The 
+                                                                                                     ## configuration 
+                                                                                                     ## to 
+                                                                                                     ## get.
+  ##   
+                                                                                                            ## Application: string (required)
+                                                                                                            ##              
+                                                                                                            ## : 
+                                                                                                            ## The 
+                                                                                                            ## application 
+                                                                                                            ## to 
+                                                                                                            ## get.
+  ##   
+                                                                                                                   ## clientId: string (required)
+                                                                                                                   ##           
+                                                                                                                   ## : 
+                                                                                                                   ## A 
+                                                                                                                   ## unique 
+                                                                                                                   ## ID 
+                                                                                                                   ## to 
+                                                                                                                   ## identify 
+                                                                                                                   ## the 
+                                                                                                                   ## client 
+                                                                                                                   ## for 
+                                                                                                                   ## the 
+                                                                                                                   ## configuration. 
+                                                                                                                   ## This 
+                                                                                                                   ## ID 
+                                                                                                                   ## enables 
+                                                                                                                   ## AppConfig 
+                                                                                                                   ## to 
+                                                                                                                   ## deploy 
+                                                                                                                   ## the 
+                                                                                                                   ## configuration 
+                                                                                                                   ## in 
+                                                                                                                   ## intervals, 
+                                                                                                                   ## as 
+                                                                                                                   ## defined 
+                                                                                                                   ## in 
+                                                                                                                   ## the 
+                                                                                                                   ## deployment 
+                                                                                                                   ## strategy.
+  var path_402656768 = newJObject()
+  var query_402656769 = newJObject()
+  add(path_402656768, "Environment", newJString(Environment))
+  add(query_402656769, "client_configuration_version",
       newJString(clientConfigurationVersion))
-  result = call_21626317.call(path_21626318, query_21626319, nil, nil, nil)
+  add(path_402656768, "Configuration", newJString(Configuration))
+  add(path_402656768, "Application", newJString(Application))
+  add(query_402656769, "client_id", newJString(clientId))
+  result = call_402656767.call(path_402656768, query_402656769, nil, nil, nil)
 
-var getConfiguration* = Call_GetConfiguration_21626301(name: "getConfiguration",
-    meth: HttpMethod.HttpGet, host: "appconfig.amazonaws.com", route: "/applications/{Application}/environments/{Environment}/configurations/{Configuration}#client_id",
-    validator: validate_GetConfiguration_21626302, base: "/",
-    makeUrl: url_GetConfiguration_21626303, schemes: {Scheme.Https, Scheme.Http})
+var getConfiguration* = Call_GetConfiguration_402656751(
+    name: "getConfiguration", meth: HttpMethod.HttpGet,
+    host: "appconfig.amazonaws.com", route: "/applications/{Application}/environments/{Environment}/configurations/{Configuration}#client_id",
+    validator: validate_GetConfiguration_402656752, base: "/",
+    makeUrl: url_GetConfiguration_402656753,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeployment_21626320 = ref object of OpenApiRestCall_21625435
-proc url_GetDeployment_21626322(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetDeployment_402656770 = ref object of OpenApiRestCall_402656038
+proc url_GetDeployment_402656772(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2730,14 +3268,14 @@ proc url_GetDeployment_21626322(protocol: Scheme; host: string; base: string;
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   assert "EnvironmentId" in path, "`EnvironmentId` is a required path parameter"
   assert "DeploymentNumber" in path,
-        "`DeploymentNumber` is a required path parameter"
+         "`DeploymentNumber` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments/"),
-               (kind: VariableSegment, value: "EnvironmentId"),
-               (kind: ConstantSegment, value: "/deployments/"),
-               (kind: VariableSegment, value: "DeploymentNumber")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments/"),
+                 (kind: VariableSegment, value: "EnvironmentId"),
+                 (kind: ConstantSegment, value: "/deployments/"),
+                 (kind: VariableSegment, value: "DeploymentNumber")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2746,129 +3284,191 @@ proc url_GetDeployment_21626322(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetDeployment_21626321(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
+proc validate_GetDeployment_402656771(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
   ## Retrieve information about a configuration deployment.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   DeploymentNumber: JInt (required)
-  ##                   : The sequence number of the deployment.
-  ##   ApplicationId: JString (required)
-  ##                : The ID of the application that includes the deployment you want to get. 
-  ##   EnvironmentId: JString (required)
-  ##                : The ID of the environment that includes the deployment you want to get. 
+                                 ##                   : The sequence number of the deployment.
+  ##   
+                                                                                              ## ApplicationId: JString (required)
+                                                                                              ##                
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## ID 
+                                                                                              ## of 
+                                                                                              ## the 
+                                                                                              ## application 
+                                                                                              ## that 
+                                                                                              ## includes 
+                                                                                              ## the 
+                                                                                              ## deployment 
+                                                                                              ## you 
+                                                                                              ## want 
+                                                                                              ## to 
+                                                                                              ## get. 
+  ##   
+                                                                                                      ## EnvironmentId: JString (required)
+                                                                                                      ##                
+                                                                                                      ## : 
+                                                                                                      ## The 
+                                                                                                      ## ID 
+                                                                                                      ## of 
+                                                                                                      ## the 
+                                                                                                      ## environment 
+                                                                                                      ## that 
+                                                                                                      ## includes 
+                                                                                                      ## the 
+                                                                                                      ## deployment 
+                                                                                                      ## you 
+                                                                                                      ## want 
+                                                                                                      ## to 
+                                                                                                      ## get. 
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `DeploymentNumber` field"
-  var valid_21626323 = path.getOrDefault("DeploymentNumber")
-  valid_21626323 = validateParameter(valid_21626323, JInt, required = true,
-                                   default = nil)
-  if valid_21626323 != nil:
-    section.add "DeploymentNumber", valid_21626323
-  var valid_21626324 = path.getOrDefault("ApplicationId")
-  valid_21626324 = validateParameter(valid_21626324, JString, required = true,
-                                   default = nil)
-  if valid_21626324 != nil:
-    section.add "ApplicationId", valid_21626324
-  var valid_21626325 = path.getOrDefault("EnvironmentId")
-  valid_21626325 = validateParameter(valid_21626325, JString, required = true,
-                                   default = nil)
-  if valid_21626325 != nil:
-    section.add "EnvironmentId", valid_21626325
+         "path argument is necessary due to required `DeploymentNumber` field"
+  var valid_402656773 = path.getOrDefault("DeploymentNumber")
+  valid_402656773 = validateParameter(valid_402656773, JInt, required = true,
+                                      default = nil)
+  if valid_402656773 != nil:
+    section.add "DeploymentNumber", valid_402656773
+  var valid_402656774 = path.getOrDefault("ApplicationId")
+  valid_402656774 = validateParameter(valid_402656774, JString, required = true,
+                                      default = nil)
+  if valid_402656774 != nil:
+    section.add "ApplicationId", valid_402656774
+  var valid_402656775 = path.getOrDefault("EnvironmentId")
+  valid_402656775 = validateParameter(valid_402656775, JString, required = true,
+                                      default = nil)
+  if valid_402656775 != nil:
+    section.add "EnvironmentId", valid_402656775
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626326 = header.getOrDefault("X-Amz-Date")
-  valid_21626326 = validateParameter(valid_21626326, JString, required = false,
-                                   default = nil)
-  if valid_21626326 != nil:
-    section.add "X-Amz-Date", valid_21626326
-  var valid_21626327 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626327 = validateParameter(valid_21626327, JString, required = false,
-                                   default = nil)
-  if valid_21626327 != nil:
-    section.add "X-Amz-Security-Token", valid_21626327
-  var valid_21626328 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626328 = validateParameter(valid_21626328, JString, required = false,
-                                   default = nil)
-  if valid_21626328 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626328
-  var valid_21626329 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626329 = validateParameter(valid_21626329, JString, required = false,
-                                   default = nil)
-  if valid_21626329 != nil:
-    section.add "X-Amz-Algorithm", valid_21626329
-  var valid_21626330 = header.getOrDefault("X-Amz-Signature")
-  valid_21626330 = validateParameter(valid_21626330, JString, required = false,
-                                   default = nil)
-  if valid_21626330 != nil:
-    section.add "X-Amz-Signature", valid_21626330
-  var valid_21626331 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626331 = validateParameter(valid_21626331, JString, required = false,
-                                   default = nil)
-  if valid_21626331 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626331
-  var valid_21626332 = header.getOrDefault("X-Amz-Credential")
-  valid_21626332 = validateParameter(valid_21626332, JString, required = false,
-                                   default = nil)
-  if valid_21626332 != nil:
-    section.add "X-Amz-Credential", valid_21626332
+  var valid_402656776 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656776 = validateParameter(valid_402656776, JString,
+                                      required = false, default = nil)
+  if valid_402656776 != nil:
+    section.add "X-Amz-Security-Token", valid_402656776
+  var valid_402656777 = header.getOrDefault("X-Amz-Signature")
+  valid_402656777 = validateParameter(valid_402656777, JString,
+                                      required = false, default = nil)
+  if valid_402656777 != nil:
+    section.add "X-Amz-Signature", valid_402656777
+  var valid_402656778 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656778 = validateParameter(valid_402656778, JString,
+                                      required = false, default = nil)
+  if valid_402656778 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656778
+  var valid_402656779 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656779 = validateParameter(valid_402656779, JString,
+                                      required = false, default = nil)
+  if valid_402656779 != nil:
+    section.add "X-Amz-Algorithm", valid_402656779
+  var valid_402656780 = header.getOrDefault("X-Amz-Date")
+  valid_402656780 = validateParameter(valid_402656780, JString,
+                                      required = false, default = nil)
+  if valid_402656780 != nil:
+    section.add "X-Amz-Date", valid_402656780
+  var valid_402656781 = header.getOrDefault("X-Amz-Credential")
+  valid_402656781 = validateParameter(valid_402656781, JString,
+                                      required = false, default = nil)
+  if valid_402656781 != nil:
+    section.add "X-Amz-Credential", valid_402656781
+  var valid_402656782 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656782 = validateParameter(valid_402656782, JString,
+                                      required = false, default = nil)
+  if valid_402656782 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656782
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626333: Call_GetDeployment_21626320; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656783: Call_GetDeployment_402656770; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Retrieve information about a configuration deployment.
-  ## 
-  let valid = call_21626333.validator(path, query, header, formData, body, _)
-  let scheme = call_21626333.pickScheme
+                                                                                         ## 
+  let valid = call_402656783.validator(path, query, header, formData, body, _)
+  let scheme = call_402656783.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626333.makeUrl(scheme.get, call_21626333.host, call_21626333.base,
-                               call_21626333.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626333, uri, valid, _)
+  let uri = call_402656783.makeUrl(scheme.get, call_402656783.host, call_402656783.base,
+                                   call_402656783.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656783, uri, valid, _)
 
-proc call*(call_21626334: Call_GetDeployment_21626320; DeploymentNumber: int;
-          ApplicationId: string; EnvironmentId: string): Recallable =
+proc call*(call_402656784: Call_GetDeployment_402656770; DeploymentNumber: int;
+           ApplicationId: string; EnvironmentId: string): Recallable =
   ## getDeployment
   ## Retrieve information about a configuration deployment.
   ##   DeploymentNumber: int (required)
-  ##                   : The sequence number of the deployment.
-  ##   ApplicationId: string (required)
-  ##                : The ID of the application that includes the deployment you want to get. 
-  ##   EnvironmentId: string (required)
-  ##                : The ID of the environment that includes the deployment you want to get. 
-  var path_21626335 = newJObject()
-  add(path_21626335, "DeploymentNumber", newJInt(DeploymentNumber))
-  add(path_21626335, "ApplicationId", newJString(ApplicationId))
-  add(path_21626335, "EnvironmentId", newJString(EnvironmentId))
-  result = call_21626334.call(path_21626335, nil, nil, nil, nil)
+                                                           ##                   : The sequence number of the deployment.
+  ##   
+                                                                                                                        ## ApplicationId: string (required)
+                                                                                                                        ##                
+                                                                                                                        ## : 
+                                                                                                                        ## The 
+                                                                                                                        ## ID 
+                                                                                                                        ## of 
+                                                                                                                        ## the 
+                                                                                                                        ## application 
+                                                                                                                        ## that 
+                                                                                                                        ## includes 
+                                                                                                                        ## the 
+                                                                                                                        ## deployment 
+                                                                                                                        ## you 
+                                                                                                                        ## want 
+                                                                                                                        ## to 
+                                                                                                                        ## get. 
+  ##   
+                                                                                                                                ## EnvironmentId: string (required)
+                                                                                                                                ##                
+                                                                                                                                ## : 
+                                                                                                                                ## The 
+                                                                                                                                ## ID 
+                                                                                                                                ## of 
+                                                                                                                                ## the 
+                                                                                                                                ## environment 
+                                                                                                                                ## that 
+                                                                                                                                ## includes 
+                                                                                                                                ## the 
+                                                                                                                                ## deployment 
+                                                                                                                                ## you 
+                                                                                                                                ## want 
+                                                                                                                                ## to 
+                                                                                                                                ## get. 
+  var path_402656785 = newJObject()
+  add(path_402656785, "DeploymentNumber", newJInt(DeploymentNumber))
+  add(path_402656785, "ApplicationId", newJString(ApplicationId))
+  add(path_402656785, "EnvironmentId", newJString(EnvironmentId))
+  result = call_402656784.call(path_402656785, nil, nil, nil, nil)
 
-var getDeployment* = Call_GetDeployment_21626320(name: "getDeployment",
+var getDeployment* = Call_GetDeployment_402656770(name: "getDeployment",
     meth: HttpMethod.HttpGet, host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}/environments/{EnvironmentId}/deployments/{DeploymentNumber}",
-    validator: validate_GetDeployment_21626321, base: "/",
-    makeUrl: url_GetDeployment_21626322, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDeployment_402656771, base: "/",
+    makeUrl: url_GetDeployment_402656772, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopDeployment_21626336 = ref object of OpenApiRestCall_21625435
-proc url_StopDeployment_21626338(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopDeployment_402656786 = ref object of OpenApiRestCall_402656038
+proc url_StopDeployment_402656788(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2876,14 +3476,14 @@ proc url_StopDeployment_21626338(protocol: Scheme; host: string; base: string;
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   assert "EnvironmentId" in path, "`EnvironmentId` is a required path parameter"
   assert "DeploymentNumber" in path,
-        "`DeploymentNumber` is a required path parameter"
+         "`DeploymentNumber` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments/"),
-               (kind: VariableSegment, value: "EnvironmentId"),
-               (kind: ConstantSegment, value: "/deployments/"),
-               (kind: VariableSegment, value: "DeploymentNumber")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments/"),
+                 (kind: VariableSegment, value: "EnvironmentId"),
+                 (kind: ConstantSegment, value: "/deployments/"),
+                 (kind: VariableSegment, value: "DeploymentNumber")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -2892,262 +3492,168 @@ proc url_StopDeployment_21626338(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_StopDeployment_21626337(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode; _: string = ""): JsonNode {.
+proc validate_StopDeployment_402656787(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Stops a deployment. This API action works only on deployments that have a status of <code>DEPLOYING</code>. This action moves the deployment to a status of <code>ROLLED_BACK</code>.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   DeploymentNumber: JInt (required)
-  ##                   : The sequence number of the deployment.
-  ##   ApplicationId: JString (required)
-  ##                : The application ID.
-  ##   EnvironmentId: JString (required)
-  ##                : The environment ID.
+                                 ##                   : The sequence number of the deployment.
+  ##   
+                                                                                              ## ApplicationId: JString (required)
+                                                                                              ##                
+                                                                                              ## : 
+                                                                                              ## The 
+                                                                                              ## application 
+                                                                                              ## ID.
+  ##   
+                                                                                                    ## EnvironmentId: JString (required)
+                                                                                                    ##                
+                                                                                                    ## : 
+                                                                                                    ## The 
+                                                                                                    ## environment 
+                                                                                                    ## ID.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `DeploymentNumber` field"
-  var valid_21626339 = path.getOrDefault("DeploymentNumber")
-  valid_21626339 = validateParameter(valid_21626339, JInt, required = true,
-                                   default = nil)
-  if valid_21626339 != nil:
-    section.add "DeploymentNumber", valid_21626339
-  var valid_21626340 = path.getOrDefault("ApplicationId")
-  valid_21626340 = validateParameter(valid_21626340, JString, required = true,
-                                   default = nil)
-  if valid_21626340 != nil:
-    section.add "ApplicationId", valid_21626340
-  var valid_21626341 = path.getOrDefault("EnvironmentId")
-  valid_21626341 = validateParameter(valid_21626341, JString, required = true,
-                                   default = nil)
-  if valid_21626341 != nil:
-    section.add "EnvironmentId", valid_21626341
+         "path argument is necessary due to required `DeploymentNumber` field"
+  var valid_402656789 = path.getOrDefault("DeploymentNumber")
+  valid_402656789 = validateParameter(valid_402656789, JInt, required = true,
+                                      default = nil)
+  if valid_402656789 != nil:
+    section.add "DeploymentNumber", valid_402656789
+  var valid_402656790 = path.getOrDefault("ApplicationId")
+  valid_402656790 = validateParameter(valid_402656790, JString, required = true,
+                                      default = nil)
+  if valid_402656790 != nil:
+    section.add "ApplicationId", valid_402656790
+  var valid_402656791 = path.getOrDefault("EnvironmentId")
+  valid_402656791 = validateParameter(valid_402656791, JString, required = true,
+                                      default = nil)
+  if valid_402656791 != nil:
+    section.add "EnvironmentId", valid_402656791
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626342 = header.getOrDefault("X-Amz-Date")
-  valid_21626342 = validateParameter(valid_21626342, JString, required = false,
-                                   default = nil)
-  if valid_21626342 != nil:
-    section.add "X-Amz-Date", valid_21626342
-  var valid_21626343 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626343 = validateParameter(valid_21626343, JString, required = false,
-                                   default = nil)
-  if valid_21626343 != nil:
-    section.add "X-Amz-Security-Token", valid_21626343
-  var valid_21626344 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626344 = validateParameter(valid_21626344, JString, required = false,
-                                   default = nil)
-  if valid_21626344 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626344
-  var valid_21626345 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626345 = validateParameter(valid_21626345, JString, required = false,
-                                   default = nil)
-  if valid_21626345 != nil:
-    section.add "X-Amz-Algorithm", valid_21626345
-  var valid_21626346 = header.getOrDefault("X-Amz-Signature")
-  valid_21626346 = validateParameter(valid_21626346, JString, required = false,
-                                   default = nil)
-  if valid_21626346 != nil:
-    section.add "X-Amz-Signature", valid_21626346
-  var valid_21626347 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626347 = validateParameter(valid_21626347, JString, required = false,
-                                   default = nil)
-  if valid_21626347 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626347
-  var valid_21626348 = header.getOrDefault("X-Amz-Credential")
-  valid_21626348 = validateParameter(valid_21626348, JString, required = false,
-                                   default = nil)
-  if valid_21626348 != nil:
-    section.add "X-Amz-Credential", valid_21626348
+  var valid_402656792 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656792 = validateParameter(valid_402656792, JString,
+                                      required = false, default = nil)
+  if valid_402656792 != nil:
+    section.add "X-Amz-Security-Token", valid_402656792
+  var valid_402656793 = header.getOrDefault("X-Amz-Signature")
+  valid_402656793 = validateParameter(valid_402656793, JString,
+                                      required = false, default = nil)
+  if valid_402656793 != nil:
+    section.add "X-Amz-Signature", valid_402656793
+  var valid_402656794 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656794 = validateParameter(valid_402656794, JString,
+                                      required = false, default = nil)
+  if valid_402656794 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656794
+  var valid_402656795 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656795 = validateParameter(valid_402656795, JString,
+                                      required = false, default = nil)
+  if valid_402656795 != nil:
+    section.add "X-Amz-Algorithm", valid_402656795
+  var valid_402656796 = header.getOrDefault("X-Amz-Date")
+  valid_402656796 = validateParameter(valid_402656796, JString,
+                                      required = false, default = nil)
+  if valid_402656796 != nil:
+    section.add "X-Amz-Date", valid_402656796
+  var valid_402656797 = header.getOrDefault("X-Amz-Credential")
+  valid_402656797 = validateParameter(valid_402656797, JString,
+                                      required = false, default = nil)
+  if valid_402656797 != nil:
+    section.add "X-Amz-Credential", valid_402656797
+  var valid_402656798 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656798 = validateParameter(valid_402656798, JString,
+                                      required = false, default = nil)
+  if valid_402656798 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656798
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626349: Call_StopDeployment_21626336; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656799: Call_StopDeployment_402656786; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Stops a deployment. This API action works only on deployments that have a status of <code>DEPLOYING</code>. This action moves the deployment to a status of <code>ROLLED_BACK</code>.
-  ## 
-  let valid = call_21626349.validator(path, query, header, formData, body, _)
-  let scheme = call_21626349.pickScheme
+                                                                                         ## 
+  let valid = call_402656799.validator(path, query, header, formData, body, _)
+  let scheme = call_402656799.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626349.makeUrl(scheme.get, call_21626349.host, call_21626349.base,
-                               call_21626349.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626349, uri, valid, _)
+  let uri = call_402656799.makeUrl(scheme.get, call_402656799.host, call_402656799.base,
+                                   call_402656799.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656799, uri, valid, _)
 
-proc call*(call_21626350: Call_StopDeployment_21626336; DeploymentNumber: int;
-          ApplicationId: string; EnvironmentId: string): Recallable =
+proc call*(call_402656800: Call_StopDeployment_402656786; DeploymentNumber: int;
+           ApplicationId: string; EnvironmentId: string): Recallable =
   ## stopDeployment
   ## Stops a deployment. This API action works only on deployments that have a status of <code>DEPLOYING</code>. This action moves the deployment to a status of <code>ROLLED_BACK</code>.
-  ##   DeploymentNumber: int (required)
-  ##                   : The sequence number of the deployment.
-  ##   ApplicationId: string (required)
-  ##                : The application ID.
-  ##   EnvironmentId: string (required)
-  ##                : The environment ID.
-  var path_21626351 = newJObject()
-  add(path_21626351, "DeploymentNumber", newJInt(DeploymentNumber))
-  add(path_21626351, "ApplicationId", newJString(ApplicationId))
-  add(path_21626351, "EnvironmentId", newJString(EnvironmentId))
-  result = call_21626350.call(path_21626351, nil, nil, nil, nil)
+  ##   
+                                                                                                                                                                                          ## DeploymentNumber: int (required)
+                                                                                                                                                                                          ##                   
+                                                                                                                                                                                          ## : 
+                                                                                                                                                                                          ## The 
+                                                                                                                                                                                          ## sequence 
+                                                                                                                                                                                          ## number 
+                                                                                                                                                                                          ## of 
+                                                                                                                                                                                          ## the 
+                                                                                                                                                                                          ## deployment.
+  ##   
+                                                                                                                                                                                                        ## ApplicationId: string (required)
+                                                                                                                                                                                                        ##                
+                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                        ## The 
+                                                                                                                                                                                                        ## application 
+                                                                                                                                                                                                        ## ID.
+  ##   
+                                                                                                                                                                                                              ## EnvironmentId: string (required)
+                                                                                                                                                                                                              ##                
+                                                                                                                                                                                                              ## : 
+                                                                                                                                                                                                              ## The 
+                                                                                                                                                                                                              ## environment 
+                                                                                                                                                                                                              ## ID.
+  var path_402656801 = newJObject()
+  add(path_402656801, "DeploymentNumber", newJInt(DeploymentNumber))
+  add(path_402656801, "ApplicationId", newJString(ApplicationId))
+  add(path_402656801, "EnvironmentId", newJString(EnvironmentId))
+  result = call_402656800.call(path_402656801, nil, nil, nil, nil)
 
-var stopDeployment* = Call_StopDeployment_21626336(name: "stopDeployment",
+var stopDeployment* = Call_StopDeployment_402656786(name: "stopDeployment",
     meth: HttpMethod.HttpDelete, host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}/environments/{EnvironmentId}/deployments/{DeploymentNumber}",
-    validator: validate_StopDeployment_21626337, base: "/",
-    makeUrl: url_StopDeployment_21626338, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StopDeployment_402656787, base: "/",
+    makeUrl: url_StopDeployment_402656788, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeploymentStrategy_21626352 = ref object of OpenApiRestCall_21625435
-proc url_GetDeploymentStrategy_21626354(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode;
-                                       query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "DeploymentStrategyId" in path,
-        "`DeploymentStrategyId` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/deploymentstrategies/"),
-               (kind: VariableSegment, value: "DeploymentStrategyId")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_GetDeploymentStrategy_21626353(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## Retrieve information about a deployment strategy. A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   DeploymentStrategyId: JString (required)
-  ##                       : The ID of the deployment strategy to get.
-  section = newJObject()
-  assert path != nil, "path argument is necessary due to required `DeploymentStrategyId` field"
-  var valid_21626355 = path.getOrDefault("DeploymentStrategyId")
-  valid_21626355 = validateParameter(valid_21626355, JString, required = true,
-                                   default = nil)
-  if valid_21626355 != nil:
-    section.add "DeploymentStrategyId", valid_21626355
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626356 = header.getOrDefault("X-Amz-Date")
-  valid_21626356 = validateParameter(valid_21626356, JString, required = false,
-                                   default = nil)
-  if valid_21626356 != nil:
-    section.add "X-Amz-Date", valid_21626356
-  var valid_21626357 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626357 = validateParameter(valid_21626357, JString, required = false,
-                                   default = nil)
-  if valid_21626357 != nil:
-    section.add "X-Amz-Security-Token", valid_21626357
-  var valid_21626358 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626358 = validateParameter(valid_21626358, JString, required = false,
-                                   default = nil)
-  if valid_21626358 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626358
-  var valid_21626359 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626359 = validateParameter(valid_21626359, JString, required = false,
-                                   default = nil)
-  if valid_21626359 != nil:
-    section.add "X-Amz-Algorithm", valid_21626359
-  var valid_21626360 = header.getOrDefault("X-Amz-Signature")
-  valid_21626360 = validateParameter(valid_21626360, JString, required = false,
-                                   default = nil)
-  if valid_21626360 != nil:
-    section.add "X-Amz-Signature", valid_21626360
-  var valid_21626361 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626361 = validateParameter(valid_21626361, JString, required = false,
-                                   default = nil)
-  if valid_21626361 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626361
-  var valid_21626362 = header.getOrDefault("X-Amz-Credential")
-  valid_21626362 = validateParameter(valid_21626362, JString, required = false,
-                                   default = nil)
-  if valid_21626362 != nil:
-    section.add "X-Amz-Credential", valid_21626362
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626363: Call_GetDeploymentStrategy_21626352;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
-  ## Retrieve information about a deployment strategy. A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
-  ## 
-  let valid = call_21626363.validator(path, query, header, formData, body, _)
-  let scheme = call_21626363.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626363.makeUrl(scheme.get, call_21626363.host, call_21626363.base,
-                               call_21626363.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626363, uri, valid, _)
-
-proc call*(call_21626364: Call_GetDeploymentStrategy_21626352;
-          DeploymentStrategyId: string): Recallable =
-  ## getDeploymentStrategy
-  ## Retrieve information about a deployment strategy. A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
-  ##   DeploymentStrategyId: string (required)
-  ##                       : The ID of the deployment strategy to get.
-  var path_21626365 = newJObject()
-  add(path_21626365, "DeploymentStrategyId", newJString(DeploymentStrategyId))
-  result = call_21626364.call(path_21626365, nil, nil, nil, nil)
-
-var getDeploymentStrategy* = Call_GetDeploymentStrategy_21626352(
-    name: "getDeploymentStrategy", meth: HttpMethod.HttpGet,
-    host: "appconfig.amazonaws.com",
-    route: "/deploymentstrategies/{DeploymentStrategyId}",
-    validator: validate_GetDeploymentStrategy_21626353, base: "/",
-    makeUrl: url_GetDeploymentStrategy_21626354,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_UpdateDeploymentStrategy_21626366 = ref object of OpenApiRestCall_21625435
-proc url_UpdateDeploymentStrategy_21626368(protocol: Scheme; host: string;
+  Call_GetDeploymentStrategy_402656802 = ref object of OpenApiRestCall_402656038
+proc url_GetDeploymentStrategy_402656804(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "DeploymentStrategyId" in path,
-        "`DeploymentStrategyId` is a required path parameter"
+         "`DeploymentStrategyId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/deploymentstrategies/"),
-               (kind: VariableSegment, value: "DeploymentStrategyId")]
+                 (kind: VariableSegment, value: "DeploymentStrategyId")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3156,70 +3662,203 @@ proc url_UpdateDeploymentStrategy_21626368(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateDeploymentStrategy_21626367(path: JsonNode; query: JsonNode;
+proc validate_GetDeploymentStrategy_402656803(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
-  ## Updates a deployment strategy.
-  ## 
+  ## Retrieve information about a deployment strategy. A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   DeploymentStrategyId: JString (required)
-  ##                       : The deployment strategy ID.
+                                 ##                       : The ID of the deployment strategy to get.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `DeploymentStrategyId` field"
-  var valid_21626369 = path.getOrDefault("DeploymentStrategyId")
-  valid_21626369 = validateParameter(valid_21626369, JString, required = true,
-                                   default = nil)
-  if valid_21626369 != nil:
-    section.add "DeploymentStrategyId", valid_21626369
+  var valid_402656805 = path.getOrDefault("DeploymentStrategyId")
+  valid_402656805 = validateParameter(valid_402656805, JString, required = true,
+                                      default = nil)
+  if valid_402656805 != nil:
+    section.add "DeploymentStrategyId", valid_402656805
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626370 = header.getOrDefault("X-Amz-Date")
-  valid_21626370 = validateParameter(valid_21626370, JString, required = false,
-                                   default = nil)
-  if valid_21626370 != nil:
-    section.add "X-Amz-Date", valid_21626370
-  var valid_21626371 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626371 = validateParameter(valid_21626371, JString, required = false,
-                                   default = nil)
-  if valid_21626371 != nil:
-    section.add "X-Amz-Security-Token", valid_21626371
-  var valid_21626372 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626372 = validateParameter(valid_21626372, JString, required = false,
-                                   default = nil)
-  if valid_21626372 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626372
-  var valid_21626373 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626373 = validateParameter(valid_21626373, JString, required = false,
-                                   default = nil)
-  if valid_21626373 != nil:
-    section.add "X-Amz-Algorithm", valid_21626373
-  var valid_21626374 = header.getOrDefault("X-Amz-Signature")
-  valid_21626374 = validateParameter(valid_21626374, JString, required = false,
-                                   default = nil)
-  if valid_21626374 != nil:
-    section.add "X-Amz-Signature", valid_21626374
-  var valid_21626375 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626375 = validateParameter(valid_21626375, JString, required = false,
-                                   default = nil)
-  if valid_21626375 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626375
-  var valid_21626376 = header.getOrDefault("X-Amz-Credential")
-  valid_21626376 = validateParameter(valid_21626376, JString, required = false,
-                                   default = nil)
-  if valid_21626376 != nil:
-    section.add "X-Amz-Credential", valid_21626376
+  var valid_402656806 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656806 = validateParameter(valid_402656806, JString,
+                                      required = false, default = nil)
+  if valid_402656806 != nil:
+    section.add "X-Amz-Security-Token", valid_402656806
+  var valid_402656807 = header.getOrDefault("X-Amz-Signature")
+  valid_402656807 = validateParameter(valid_402656807, JString,
+                                      required = false, default = nil)
+  if valid_402656807 != nil:
+    section.add "X-Amz-Signature", valid_402656807
+  var valid_402656808 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656808 = validateParameter(valid_402656808, JString,
+                                      required = false, default = nil)
+  if valid_402656808 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656808
+  var valid_402656809 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656809 = validateParameter(valid_402656809, JString,
+                                      required = false, default = nil)
+  if valid_402656809 != nil:
+    section.add "X-Amz-Algorithm", valid_402656809
+  var valid_402656810 = header.getOrDefault("X-Amz-Date")
+  valid_402656810 = validateParameter(valid_402656810, JString,
+                                      required = false, default = nil)
+  if valid_402656810 != nil:
+    section.add "X-Amz-Date", valid_402656810
+  var valid_402656811 = header.getOrDefault("X-Amz-Credential")
+  valid_402656811 = validateParameter(valid_402656811, JString,
+                                      required = false, default = nil)
+  if valid_402656811 != nil:
+    section.add "X-Amz-Credential", valid_402656811
+  var valid_402656812 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656812 = validateParameter(valid_402656812, JString,
+                                      required = false, default = nil)
+  if valid_402656812 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656812
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656813: Call_GetDeploymentStrategy_402656802;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Retrieve information about a deployment strategy. A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
+                                                                                         ## 
+  let valid = call_402656813.validator(path, query, header, formData, body, _)
+  let scheme = call_402656813.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656813.makeUrl(scheme.get, call_402656813.host, call_402656813.base,
+                                   call_402656813.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656813, uri, valid, _)
+
+proc call*(call_402656814: Call_GetDeploymentStrategy_402656802;
+           DeploymentStrategyId: string): Recallable =
+  ## getDeploymentStrategy
+  ## Retrieve information about a deployment strategy. A deployment strategy defines important criteria for rolling out your configuration to the designated targets. A deployment strategy includes: the overall duration required, a percentage of targets to receive the deployment during each interval, an algorithm that defines how percentage grows, and bake time.
+  ##   
+                                                                                                                                                                                                                                                                                                                                                                           ## DeploymentStrategyId: string (required)
+                                                                                                                                                                                                                                                                                                                                                                           ##                       
+                                                                                                                                                                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                                                                                                                                                                           ## The 
+                                                                                                                                                                                                                                                                                                                                                                           ## ID 
+                                                                                                                                                                                                                                                                                                                                                                           ## of 
+                                                                                                                                                                                                                                                                                                                                                                           ## the 
+                                                                                                                                                                                                                                                                                                                                                                           ## deployment 
+                                                                                                                                                                                                                                                                                                                                                                           ## strategy 
+                                                                                                                                                                                                                                                                                                                                                                           ## to 
+                                                                                                                                                                                                                                                                                                                                                                           ## get.
+  var path_402656815 = newJObject()
+  add(path_402656815, "DeploymentStrategyId", newJString(DeploymentStrategyId))
+  result = call_402656814.call(path_402656815, nil, nil, nil, nil)
+
+var getDeploymentStrategy* = Call_GetDeploymentStrategy_402656802(
+    name: "getDeploymentStrategy", meth: HttpMethod.HttpGet,
+    host: "appconfig.amazonaws.com",
+    route: "/deploymentstrategies/{DeploymentStrategyId}",
+    validator: validate_GetDeploymentStrategy_402656803, base: "/",
+    makeUrl: url_GetDeploymentStrategy_402656804,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateDeploymentStrategy_402656816 = ref object of OpenApiRestCall_402656038
+proc url_UpdateDeploymentStrategy_402656818(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "DeploymentStrategyId" in path,
+         "`DeploymentStrategyId` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/deploymentstrategies/"),
+                 (kind: VariableSegment, value: "DeploymentStrategyId")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_UpdateDeploymentStrategy_402656817(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode;
+    _: string = ""): JsonNode {.nosinks.} =
+  ## Updates a deployment strategy.
+                                            ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   DeploymentStrategyId: JString (required)
+                                 ##                       : The deployment strategy ID.
+  section = newJObject()
+  assert path != nil, "path argument is necessary due to required `DeploymentStrategyId` field"
+  var valid_402656819 = path.getOrDefault("DeploymentStrategyId")
+  valid_402656819 = validateParameter(valid_402656819, JString, required = true,
+                                      default = nil)
+  if valid_402656819 != nil:
+    section.add "DeploymentStrategyId", valid_402656819
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656820 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656820 = validateParameter(valid_402656820, JString,
+                                      required = false, default = nil)
+  if valid_402656820 != nil:
+    section.add "X-Amz-Security-Token", valid_402656820
+  var valid_402656821 = header.getOrDefault("X-Amz-Signature")
+  valid_402656821 = validateParameter(valid_402656821, JString,
+                                      required = false, default = nil)
+  if valid_402656821 != nil:
+    section.add "X-Amz-Signature", valid_402656821
+  var valid_402656822 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656822 = validateParameter(valid_402656822, JString,
+                                      required = false, default = nil)
+  if valid_402656822 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656822
+  var valid_402656823 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656823 = validateParameter(valid_402656823, JString,
+                                      required = false, default = nil)
+  if valid_402656823 != nil:
+    section.add "X-Amz-Algorithm", valid_402656823
+  var valid_402656824 = header.getOrDefault("X-Amz-Date")
+  valid_402656824 = validateParameter(valid_402656824, JString,
+                                      required = false, default = nil)
+  if valid_402656824 != nil:
+    section.add "X-Amz-Date", valid_402656824
+  var valid_402656825 = header.getOrDefault("X-Amz-Credential")
+  valid_402656825 = validateParameter(valid_402656825, JString,
+                                      required = false, default = nil)
+  if valid_402656825 != nil:
+    section.add "X-Amz-Credential", valid_402656825
+  var valid_402656826 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656826 = validateParameter(valid_402656826, JString,
+                                      required = false, default = nil)
+  if valid_402656826 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656826
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3231,45 +3870,47 @@ proc validate_UpdateDeploymentStrategy_21626367(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626378: Call_UpdateDeploymentStrategy_21626366;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656828: Call_UpdateDeploymentStrategy_402656816;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Updates a deployment strategy.
-  ## 
-  let valid = call_21626378.validator(path, query, header, formData, body, _)
-  let scheme = call_21626378.pickScheme
+                                                                                         ## 
+  let valid = call_402656828.validator(path, query, header, formData, body, _)
+  let scheme = call_402656828.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626378.makeUrl(scheme.get, call_21626378.host, call_21626378.base,
-                               call_21626378.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626378, uri, valid, _)
+  let uri = call_402656828.makeUrl(scheme.get, call_402656828.host, call_402656828.base,
+                                   call_402656828.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656828, uri, valid, _)
 
-proc call*(call_21626379: Call_UpdateDeploymentStrategy_21626366;
-          DeploymentStrategyId: string; body: JsonNode): Recallable =
+proc call*(call_402656829: Call_UpdateDeploymentStrategy_402656816;
+           body: JsonNode; DeploymentStrategyId: string): Recallable =
   ## updateDeploymentStrategy
   ## Updates a deployment strategy.
-  ##   DeploymentStrategyId: string (required)
-  ##                       : The deployment strategy ID.
   ##   body: JObject (required)
-  var path_21626380 = newJObject()
-  var body_21626381 = newJObject()
-  add(path_21626380, "DeploymentStrategyId", newJString(DeploymentStrategyId))
+  ##   DeploymentStrategyId: string (required)
+                               ##                       : The deployment strategy ID.
+  var path_402656830 = newJObject()
+  var body_402656831 = newJObject()
   if body != nil:
-    body_21626381 = body
-  result = call_21626379.call(path_21626380, nil, nil, nil, body_21626381)
+    body_402656831 = body
+  add(path_402656830, "DeploymentStrategyId", newJString(DeploymentStrategyId))
+  result = call_402656829.call(path_402656830, nil, nil, nil, body_402656831)
 
-var updateDeploymentStrategy* = Call_UpdateDeploymentStrategy_21626366(
+var updateDeploymentStrategy* = Call_UpdateDeploymentStrategy_402656816(
     name: "updateDeploymentStrategy", meth: HttpMethod.HttpPatch,
     host: "appconfig.amazonaws.com",
     route: "/deploymentstrategies/{DeploymentStrategyId}",
-    validator: validate_UpdateDeploymentStrategy_21626367, base: "/",
-    makeUrl: url_UpdateDeploymentStrategy_21626368,
+    validator: validate_UpdateDeploymentStrategy_402656817, base: "/",
+    makeUrl: url_UpdateDeploymentStrategy_402656818,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartDeployment_21626402 = ref object of OpenApiRestCall_21625435
-proc url_StartDeployment_21626404(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StartDeployment_402656852 = ref object of OpenApiRestCall_402656038
+proc url_StartDeployment_402656854(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode;
+                                   query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3278,10 +3919,10 @@ proc url_StartDeployment_21626404(protocol: Scheme; host: string; base: string;
   assert "EnvironmentId" in path, "`EnvironmentId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments/"),
-               (kind: VariableSegment, value: "EnvironmentId"),
-               (kind: ConstantSegment, value: "/deployments")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments/"),
+                 (kind: VariableSegment, value: "EnvironmentId"),
+                 (kind: ConstantSegment, value: "/deployments")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3290,79 +3931,84 @@ proc url_StartDeployment_21626404(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_StartDeployment_21626403(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode; _: string = ""): JsonNode {.
+proc validate_StartDeployment_402656853(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Starts a deployment.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
-  ##   EnvironmentId: JString (required)
-  ##                : The environment ID.
+                                 ##                : The application ID.
+  ##   
+                                                                        ## EnvironmentId: JString (required)
+                                                                        ##                
+                                                                        ## : 
+                                                                        ## The 
+                                                                        ## environment 
+                                                                        ## ID.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626405 = path.getOrDefault("ApplicationId")
-  valid_21626405 = validateParameter(valid_21626405, JString, required = true,
-                                   default = nil)
-  if valid_21626405 != nil:
-    section.add "ApplicationId", valid_21626405
-  var valid_21626406 = path.getOrDefault("EnvironmentId")
-  valid_21626406 = validateParameter(valid_21626406, JString, required = true,
-                                   default = nil)
-  if valid_21626406 != nil:
-    section.add "EnvironmentId", valid_21626406
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656855 = path.getOrDefault("ApplicationId")
+  valid_402656855 = validateParameter(valid_402656855, JString, required = true,
+                                      default = nil)
+  if valid_402656855 != nil:
+    section.add "ApplicationId", valid_402656855
+  var valid_402656856 = path.getOrDefault("EnvironmentId")
+  valid_402656856 = validateParameter(valid_402656856, JString, required = true,
+                                      default = nil)
+  if valid_402656856 != nil:
+    section.add "EnvironmentId", valid_402656856
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626407 = header.getOrDefault("X-Amz-Date")
-  valid_21626407 = validateParameter(valid_21626407, JString, required = false,
-                                   default = nil)
-  if valid_21626407 != nil:
-    section.add "X-Amz-Date", valid_21626407
-  var valid_21626408 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626408 = validateParameter(valid_21626408, JString, required = false,
-                                   default = nil)
-  if valid_21626408 != nil:
-    section.add "X-Amz-Security-Token", valid_21626408
-  var valid_21626409 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626409 = validateParameter(valid_21626409, JString, required = false,
-                                   default = nil)
-  if valid_21626409 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626409
-  var valid_21626410 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626410 = validateParameter(valid_21626410, JString, required = false,
-                                   default = nil)
-  if valid_21626410 != nil:
-    section.add "X-Amz-Algorithm", valid_21626410
-  var valid_21626411 = header.getOrDefault("X-Amz-Signature")
-  valid_21626411 = validateParameter(valid_21626411, JString, required = false,
-                                   default = nil)
-  if valid_21626411 != nil:
-    section.add "X-Amz-Signature", valid_21626411
-  var valid_21626412 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626412 = validateParameter(valid_21626412, JString, required = false,
-                                   default = nil)
-  if valid_21626412 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626412
-  var valid_21626413 = header.getOrDefault("X-Amz-Credential")
-  valid_21626413 = validateParameter(valid_21626413, JString, required = false,
-                                   default = nil)
-  if valid_21626413 != nil:
-    section.add "X-Amz-Credential", valid_21626413
+  var valid_402656857 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656857 = validateParameter(valid_402656857, JString,
+                                      required = false, default = nil)
+  if valid_402656857 != nil:
+    section.add "X-Amz-Security-Token", valid_402656857
+  var valid_402656858 = header.getOrDefault("X-Amz-Signature")
+  valid_402656858 = validateParameter(valid_402656858, JString,
+                                      required = false, default = nil)
+  if valid_402656858 != nil:
+    section.add "X-Amz-Signature", valid_402656858
+  var valid_402656859 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656859 = validateParameter(valid_402656859, JString,
+                                      required = false, default = nil)
+  if valid_402656859 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656859
+  var valid_402656860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656860 = validateParameter(valid_402656860, JString,
+                                      required = false, default = nil)
+  if valid_402656860 != nil:
+    section.add "X-Amz-Algorithm", valid_402656860
+  var valid_402656861 = header.getOrDefault("X-Amz-Date")
+  valid_402656861 = validateParameter(valid_402656861, JString,
+                                      required = false, default = nil)
+  if valid_402656861 != nil:
+    section.add "X-Amz-Date", valid_402656861
+  var valid_402656862 = header.getOrDefault("X-Amz-Credential")
+  valid_402656862 = validateParameter(valid_402656862, JString,
+                                      required = false, default = nil)
+  if valid_402656862 != nil:
+    section.add "X-Amz-Credential", valid_402656862
+  var valid_402656863 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656863 = validateParameter(valid_402656863, JString,
+                                      required = false, default = nil)
+  if valid_402656863 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656863
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3374,45 +4020,48 @@ proc validate_StartDeployment_21626403(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626415: Call_StartDeployment_21626402; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656865: Call_StartDeployment_402656852; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Starts a deployment.
-  ## 
-  let valid = call_21626415.validator(path, query, header, formData, body, _)
-  let scheme = call_21626415.pickScheme
+                                                                                         ## 
+  let valid = call_402656865.validator(path, query, header, formData, body, _)
+  let scheme = call_402656865.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626415.makeUrl(scheme.get, call_21626415.host, call_21626415.base,
-                               call_21626415.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626415, uri, valid, _)
+  let uri = call_402656865.makeUrl(scheme.get, call_402656865.host, call_402656865.base,
+                                   call_402656865.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656865, uri, valid, _)
 
-proc call*(call_21626416: Call_StartDeployment_21626402; ApplicationId: string;
-          body: JsonNode; EnvironmentId: string): Recallable =
+proc call*(call_402656866: Call_StartDeployment_402656852;
+           ApplicationId: string; EnvironmentId: string; body: JsonNode): Recallable =
   ## startDeployment
   ## Starts a deployment.
   ##   ApplicationId: string (required)
-  ##                : The application ID.
-  ##   body: JObject (required)
+                         ##                : The application ID.
   ##   EnvironmentId: string (required)
-  ##                : The environment ID.
-  var path_21626417 = newJObject()
-  var body_21626418 = newJObject()
-  add(path_21626417, "ApplicationId", newJString(ApplicationId))
+                                                                ##                : The environment ID.
+  ##   
+                                                                                                       ## body: JObject (required)
+  var path_402656867 = newJObject()
+  var body_402656868 = newJObject()
+  add(path_402656867, "ApplicationId", newJString(ApplicationId))
+  add(path_402656867, "EnvironmentId", newJString(EnvironmentId))
   if body != nil:
-    body_21626418 = body
-  add(path_21626417, "EnvironmentId", newJString(EnvironmentId))
-  result = call_21626416.call(path_21626417, nil, nil, nil, body_21626418)
+    body_402656868 = body
+  result = call_402656866.call(path_402656867, nil, nil, nil, body_402656868)
 
-var startDeployment* = Call_StartDeployment_21626402(name: "startDeployment",
+var startDeployment* = Call_StartDeployment_402656852(name: "startDeployment",
     meth: HttpMethod.HttpPost, host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}/environments/{EnvironmentId}/deployments",
-    validator: validate_StartDeployment_21626403, base: "/",
-    makeUrl: url_StartDeployment_21626404, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartDeployment_402656853, base: "/",
+    makeUrl: url_StartDeployment_402656854, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDeployments_21626382 = ref object of OpenApiRestCall_21625435
-proc url_ListDeployments_21626384(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListDeployments_402656832 = ref object of OpenApiRestCall_402656038
+proc url_ListDeployments_402656834(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode;
+                                   query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3421,10 +4070,10 @@ proc url_ListDeployments_21626384(protocol: Scheme; host: string; base: string;
   assert "EnvironmentId" in path, "`EnvironmentId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/environments/"),
-               (kind: VariableSegment, value: "EnvironmentId"),
-               (kind: ConstantSegment, value: "/deployments")]
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/environments/"),
+                 (kind: VariableSegment, value: "EnvironmentId"),
+                 (kind: ConstantSegment, value: "/deployments")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3433,411 +4082,231 @@ proc url_ListDeployments_21626384(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListDeployments_21626383(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode; _: string = ""): JsonNode {.
+proc validate_ListDeployments_402656833(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Lists the deployments for an environment.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
-  ##   EnvironmentId: JString (required)
-  ##                : The environment ID.
+                                 ##                : The application ID.
+  ##   
+                                                                        ## EnvironmentId: JString (required)
+                                                                        ##                
+                                                                        ## : 
+                                                                        ## The 
+                                                                        ## environment 
+                                                                        ## ID.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ApplicationId` field"
-  var valid_21626385 = path.getOrDefault("ApplicationId")
-  valid_21626385 = validateParameter(valid_21626385, JString, required = true,
-                                   default = nil)
-  if valid_21626385 != nil:
-    section.add "ApplicationId", valid_21626385
-  var valid_21626386 = path.getOrDefault("EnvironmentId")
-  valid_21626386 = validateParameter(valid_21626386, JString, required = true,
-                                   default = nil)
-  if valid_21626386 != nil:
-    section.add "EnvironmentId", valid_21626386
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656835 = path.getOrDefault("ApplicationId")
+  valid_402656835 = validateParameter(valid_402656835, JString, required = true,
+                                      default = nil)
+  if valid_402656835 != nil:
+    section.add "ApplicationId", valid_402656835
+  var valid_402656836 = path.getOrDefault("EnvironmentId")
+  valid_402656836 = validateParameter(valid_402656836, JString, required = true,
+                                      default = nil)
+  if valid_402656836 != nil:
+    section.add "EnvironmentId", valid_402656836
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   next_token: JString
-  ##             : A token to start the list. Use this token to get the next set of results.
   ##   max_results: JInt
-  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: JString
-  ##             : Pagination limit
+                                  ##              : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                ## MaxResults: JString
+                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                ## Pagination 
+                                                                                                                                                                                                                ## limit
+  ##   
+                                                                                                                                                                                                                        ## NextToken: JString
+                                                                                                                                                                                                                        ##            
+                                                                                                                                                                                                                        ## : 
+                                                                                                                                                                                                                        ## Pagination 
+                                                                                                                                                                                                                        ## token
+  ##   
+                                                                                                                                                                                                                                ## next_token: JString
+                                                                                                                                                                                                                                ##             
+                                                                                                                                                                                                                                ## : 
+                                                                                                                                                                                                                                ## A 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## start 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## list. 
+                                                                                                                                                                                                                                ## Use 
+                                                                                                                                                                                                                                ## this 
+                                                                                                                                                                                                                                ## token 
+                                                                                                                                                                                                                                ## to 
+                                                                                                                                                                                                                                ## get 
+                                                                                                                                                                                                                                ## the 
+                                                                                                                                                                                                                                ## next 
+                                                                                                                                                                                                                                ## set 
+                                                                                                                                                                                                                                ## of 
+                                                                                                                                                                                                                                ## results.
   section = newJObject()
-  var valid_21626387 = query.getOrDefault("NextToken")
-  valid_21626387 = validateParameter(valid_21626387, JString, required = false,
-                                   default = nil)
-  if valid_21626387 != nil:
-    section.add "NextToken", valid_21626387
-  var valid_21626388 = query.getOrDefault("next_token")
-  valid_21626388 = validateParameter(valid_21626388, JString, required = false,
-                                   default = nil)
-  if valid_21626388 != nil:
-    section.add "next_token", valid_21626388
-  var valid_21626389 = query.getOrDefault("max_results")
-  valid_21626389 = validateParameter(valid_21626389, JInt, required = false,
-                                   default = nil)
-  if valid_21626389 != nil:
-    section.add "max_results", valid_21626389
-  var valid_21626390 = query.getOrDefault("MaxResults")
-  valid_21626390 = validateParameter(valid_21626390, JString, required = false,
-                                   default = nil)
-  if valid_21626390 != nil:
-    section.add "MaxResults", valid_21626390
+  var valid_402656837 = query.getOrDefault("max_results")
+  valid_402656837 = validateParameter(valid_402656837, JInt, required = false,
+                                      default = nil)
+  if valid_402656837 != nil:
+    section.add "max_results", valid_402656837
+  var valid_402656838 = query.getOrDefault("MaxResults")
+  valid_402656838 = validateParameter(valid_402656838, JString,
+                                      required = false, default = nil)
+  if valid_402656838 != nil:
+    section.add "MaxResults", valid_402656838
+  var valid_402656839 = query.getOrDefault("NextToken")
+  valid_402656839 = validateParameter(valid_402656839, JString,
+                                      required = false, default = nil)
+  if valid_402656839 != nil:
+    section.add "NextToken", valid_402656839
+  var valid_402656840 = query.getOrDefault("next_token")
+  valid_402656840 = validateParameter(valid_402656840, JString,
+                                      required = false, default = nil)
+  if valid_402656840 != nil:
+    section.add "next_token", valid_402656840
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626391 = header.getOrDefault("X-Amz-Date")
-  valid_21626391 = validateParameter(valid_21626391, JString, required = false,
-                                   default = nil)
-  if valid_21626391 != nil:
-    section.add "X-Amz-Date", valid_21626391
-  var valid_21626392 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626392 = validateParameter(valid_21626392, JString, required = false,
-                                   default = nil)
-  if valid_21626392 != nil:
-    section.add "X-Amz-Security-Token", valid_21626392
-  var valid_21626393 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626393 = validateParameter(valid_21626393, JString, required = false,
-                                   default = nil)
-  if valid_21626393 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626393
-  var valid_21626394 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626394 = validateParameter(valid_21626394, JString, required = false,
-                                   default = nil)
-  if valid_21626394 != nil:
-    section.add "X-Amz-Algorithm", valid_21626394
-  var valid_21626395 = header.getOrDefault("X-Amz-Signature")
-  valid_21626395 = validateParameter(valid_21626395, JString, required = false,
-                                   default = nil)
-  if valid_21626395 != nil:
-    section.add "X-Amz-Signature", valid_21626395
-  var valid_21626396 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626396 = validateParameter(valid_21626396, JString, required = false,
-                                   default = nil)
-  if valid_21626396 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626396
-  var valid_21626397 = header.getOrDefault("X-Amz-Credential")
-  valid_21626397 = validateParameter(valid_21626397, JString, required = false,
-                                   default = nil)
-  if valid_21626397 != nil:
-    section.add "X-Amz-Credential", valid_21626397
+  var valid_402656841 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656841 = validateParameter(valid_402656841, JString,
+                                      required = false, default = nil)
+  if valid_402656841 != nil:
+    section.add "X-Amz-Security-Token", valid_402656841
+  var valid_402656842 = header.getOrDefault("X-Amz-Signature")
+  valid_402656842 = validateParameter(valid_402656842, JString,
+                                      required = false, default = nil)
+  if valid_402656842 != nil:
+    section.add "X-Amz-Signature", valid_402656842
+  var valid_402656843 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656843 = validateParameter(valid_402656843, JString,
+                                      required = false, default = nil)
+  if valid_402656843 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656843
+  var valid_402656844 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656844 = validateParameter(valid_402656844, JString,
+                                      required = false, default = nil)
+  if valid_402656844 != nil:
+    section.add "X-Amz-Algorithm", valid_402656844
+  var valid_402656845 = header.getOrDefault("X-Amz-Date")
+  valid_402656845 = validateParameter(valid_402656845, JString,
+                                      required = false, default = nil)
+  if valid_402656845 != nil:
+    section.add "X-Amz-Date", valid_402656845
+  var valid_402656846 = header.getOrDefault("X-Amz-Credential")
+  valid_402656846 = validateParameter(valid_402656846, JString,
+                                      required = false, default = nil)
+  if valid_402656846 != nil:
+    section.add "X-Amz-Credential", valid_402656846
+  var valid_402656847 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656847 = validateParameter(valid_402656847, JString,
+                                      required = false, default = nil)
+  if valid_402656847 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656847
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626398: Call_ListDeployments_21626382; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656848: Call_ListDeployments_402656832; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Lists the deployments for an environment.
-  ## 
-  let valid = call_21626398.validator(path, query, header, formData, body, _)
-  let scheme = call_21626398.pickScheme
+                                                                                         ## 
+  let valid = call_402656848.validator(path, query, header, formData, body, _)
+  let scheme = call_402656848.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626398.makeUrl(scheme.get, call_21626398.host, call_21626398.base,
-                               call_21626398.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626398, uri, valid, _)
+  let uri = call_402656848.makeUrl(scheme.get, call_402656848.host, call_402656848.base,
+                                   call_402656848.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656848, uri, valid, _)
 
-proc call*(call_21626399: Call_ListDeployments_21626382; ApplicationId: string;
-          EnvironmentId: string; NextToken: string = ""; nextToken: string = "";
-          maxResults: int = 0; MaxResults: string = ""): Recallable =
+proc call*(call_402656849: Call_ListDeployments_402656832;
+           ApplicationId: string; EnvironmentId: string; maxResults: int = 0;
+           MaxResults: string = ""; NextToken: string = "";
+           nextToken: string = ""): Recallable =
   ## listDeployments
   ## Lists the deployments for an environment.
-  ##   NextToken: string
-  ##            : Pagination token
-  ##   nextToken: string
-  ##            : A token to start the list. Use this token to get the next set of results.
-  ##   ApplicationId: string (required)
-  ##                : The application ID.
   ##   maxResults: int
-  ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
-  ##   MaxResults: string
-  ##             : Pagination limit
-  ##   EnvironmentId: string (required)
-  ##                : The environment ID.
-  var path_21626400 = newJObject()
-  var query_21626401 = newJObject()
-  add(query_21626401, "NextToken", newJString(NextToken))
-  add(query_21626401, "next_token", newJString(nextToken))
-  add(path_21626400, "ApplicationId", newJString(ApplicationId))
-  add(query_21626401, "max_results", newJInt(maxResults))
-  add(query_21626401, "MaxResults", newJString(MaxResults))
-  add(path_21626400, "EnvironmentId", newJString(EnvironmentId))
-  result = call_21626399.call(path_21626400, query_21626401, nil, nil, nil)
+                                              ##             : The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
+  ##   
+                                                                                                                                                                                                                           ## ApplicationId: string (required)
+                                                                                                                                                                                                                           ##                
+                                                                                                                                                                                                                           ## : 
+                                                                                                                                                                                                                           ## The 
+                                                                                                                                                                                                                           ## application 
+                                                                                                                                                                                                                           ## ID.
+  ##   
+                                                                                                                                                                                                                                 ## EnvironmentId: string (required)
+                                                                                                                                                                                                                                 ##                
+                                                                                                                                                                                                                                 ## : 
+                                                                                                                                                                                                                                 ## The 
+                                                                                                                                                                                                                                 ## environment 
+                                                                                                                                                                                                                                 ## ID.
+  ##   
+                                                                                                                                                                                                                                       ## MaxResults: string
+                                                                                                                                                                                                                                       ##             
+                                                                                                                                                                                                                                       ## : 
+                                                                                                                                                                                                                                       ## Pagination 
+                                                                                                                                                                                                                                       ## limit
+  ##   
+                                                                                                                                                                                                                                               ## NextToken: string
+                                                                                                                                                                                                                                               ##            
+                                                                                                                                                                                                                                               ## : 
+                                                                                                                                                                                                                                               ## Pagination 
+                                                                                                                                                                                                                                               ## token
+  ##   
+                                                                                                                                                                                                                                                       ## nextToken: string
+                                                                                                                                                                                                                                                       ##            
+                                                                                                                                                                                                                                                       ## : 
+                                                                                                                                                                                                                                                       ## A 
+                                                                                                                                                                                                                                                       ## token 
+                                                                                                                                                                                                                                                       ## to 
+                                                                                                                                                                                                                                                       ## start 
+                                                                                                                                                                                                                                                       ## the 
+                                                                                                                                                                                                                                                       ## list. 
+                                                                                                                                                                                                                                                       ## Use 
+                                                                                                                                                                                                                                                       ## this 
+                                                                                                                                                                                                                                                       ## token 
+                                                                                                                                                                                                                                                       ## to 
+                                                                                                                                                                                                                                                       ## get 
+                                                                                                                                                                                                                                                       ## the 
+                                                                                                                                                                                                                                                       ## next 
+                                                                                                                                                                                                                                                       ## set 
+                                                                                                                                                                                                                                                       ## of 
+                                                                                                                                                                                                                                                       ## results.
+  var path_402656850 = newJObject()
+  var query_402656851 = newJObject()
+  add(query_402656851, "max_results", newJInt(maxResults))
+  add(path_402656850, "ApplicationId", newJString(ApplicationId))
+  add(path_402656850, "EnvironmentId", newJString(EnvironmentId))
+  add(query_402656851, "MaxResults", newJString(MaxResults))
+  add(query_402656851, "NextToken", newJString(NextToken))
+  add(query_402656851, "next_token", newJString(nextToken))
+  result = call_402656849.call(path_402656850, query_402656851, nil, nil, nil)
 
-var listDeployments* = Call_ListDeployments_21626382(name: "listDeployments",
+var listDeployments* = Call_ListDeployments_402656832(name: "listDeployments",
     meth: HttpMethod.HttpGet, host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}/environments/{EnvironmentId}/deployments",
-    validator: validate_ListDeployments_21626383, base: "/",
-    makeUrl: url_ListDeployments_21626384, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListDeployments_402656833, base: "/",
+    makeUrl: url_ListDeployments_402656834, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_21626433 = ref object of OpenApiRestCall_21625435
-proc url_TagResource_21626435(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "ResourceArn" in path, "`ResourceArn` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/tags/"),
-               (kind: VariableSegment, value: "ResourceArn")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_TagResource_21626434(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## Metadata to assign to an AppConfig resource. Tags help organize and categorize your AppConfig resources. Each tag consists of a key and an optional value, both of which you define. You can specify a maximum of 50 tags for a resource.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   ResourceArn: JString (required)
-  ##              : The ARN of the resource for which to retrieve tags.
-  section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `ResourceArn` field"
-  var valid_21626436 = path.getOrDefault("ResourceArn")
-  valid_21626436 = validateParameter(valid_21626436, JString, required = true,
-                                   default = nil)
-  if valid_21626436 != nil:
-    section.add "ResourceArn", valid_21626436
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626437 = header.getOrDefault("X-Amz-Date")
-  valid_21626437 = validateParameter(valid_21626437, JString, required = false,
-                                   default = nil)
-  if valid_21626437 != nil:
-    section.add "X-Amz-Date", valid_21626437
-  var valid_21626438 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626438 = validateParameter(valid_21626438, JString, required = false,
-                                   default = nil)
-  if valid_21626438 != nil:
-    section.add "X-Amz-Security-Token", valid_21626438
-  var valid_21626439 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626439 = validateParameter(valid_21626439, JString, required = false,
-                                   default = nil)
-  if valid_21626439 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626439
-  var valid_21626440 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626440 = validateParameter(valid_21626440, JString, required = false,
-                                   default = nil)
-  if valid_21626440 != nil:
-    section.add "X-Amz-Algorithm", valid_21626440
-  var valid_21626441 = header.getOrDefault("X-Amz-Signature")
-  valid_21626441 = validateParameter(valid_21626441, JString, required = false,
-                                   default = nil)
-  if valid_21626441 != nil:
-    section.add "X-Amz-Signature", valid_21626441
-  var valid_21626442 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626442 = validateParameter(valid_21626442, JString, required = false,
-                                   default = nil)
-  if valid_21626442 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626442
-  var valid_21626443 = header.getOrDefault("X-Amz-Credential")
-  valid_21626443 = validateParameter(valid_21626443, JString, required = false,
-                                   default = nil)
-  if valid_21626443 != nil:
-    section.add "X-Amz-Credential", valid_21626443
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  if `==`(_, ""): assert body != nil, "body argument is necessary"
-  if `==`(_, ""):
-    section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626445: Call_TagResource_21626433; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Metadata to assign to an AppConfig resource. Tags help organize and categorize your AppConfig resources. Each tag consists of a key and an optional value, both of which you define. You can specify a maximum of 50 tags for a resource.
-  ## 
-  let valid = call_21626445.validator(path, query, header, formData, body, _)
-  let scheme = call_21626445.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626445.makeUrl(scheme.get, call_21626445.host, call_21626445.base,
-                               call_21626445.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626445, uri, valid, _)
-
-proc call*(call_21626446: Call_TagResource_21626433; ResourceArn: string;
-          body: JsonNode): Recallable =
-  ## tagResource
-  ## Metadata to assign to an AppConfig resource. Tags help organize and categorize your AppConfig resources. Each tag consists of a key and an optional value, both of which you define. You can specify a maximum of 50 tags for a resource.
-  ##   ResourceArn: string (required)
-  ##              : The ARN of the resource for which to retrieve tags.
-  ##   body: JObject (required)
-  var path_21626447 = newJObject()
-  var body_21626448 = newJObject()
-  add(path_21626447, "ResourceArn", newJString(ResourceArn))
-  if body != nil:
-    body_21626448 = body
-  result = call_21626446.call(path_21626447, nil, nil, nil, body_21626448)
-
-var tagResource* = Call_TagResource_21626433(name: "tagResource",
-    meth: HttpMethod.HttpPost, host: "appconfig.amazonaws.com",
-    route: "/tags/{ResourceArn}", validator: validate_TagResource_21626434,
-    base: "/", makeUrl: url_TagResource_21626435,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListTagsForResource_21626419 = ref object of OpenApiRestCall_21625435
-proc url_ListTagsForResource_21626421(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  assert path != nil, "path is required to populate template"
-  assert "ResourceArn" in path, "`ResourceArn` is a required path parameter"
-  const
-    segments = @[(kind: ConstantSegment, value: "/tags/"),
-               (kind: VariableSegment, value: "ResourceArn")]
-  var hydrated = hydratePath(path, segments)
-  if hydrated.isNone:
-    raise newException(ValueError, "unable to fully hydrate path")
-  if base == "/" and hydrated.get.startsWith "/":
-    result.path = hydrated.get
-  else:
-    result.path = base & hydrated.get
-
-proc validate_ListTagsForResource_21626420(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
-    nosinks.} =
-  ## Retrieves the list of key-value tags assigned to the resource.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  ## parameters in `path` object:
-  ##   ResourceArn: JString (required)
-  ##              : The resource ARN.
-  section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `ResourceArn` field"
-  var valid_21626422 = path.getOrDefault("ResourceArn")
-  valid_21626422 = validateParameter(valid_21626422, JString, required = true,
-                                   default = nil)
-  if valid_21626422 != nil:
-    section.add "ResourceArn", valid_21626422
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_21626423 = header.getOrDefault("X-Amz-Date")
-  valid_21626423 = validateParameter(valid_21626423, JString, required = false,
-                                   default = nil)
-  if valid_21626423 != nil:
-    section.add "X-Amz-Date", valid_21626423
-  var valid_21626424 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626424 = validateParameter(valid_21626424, JString, required = false,
-                                   default = nil)
-  if valid_21626424 != nil:
-    section.add "X-Amz-Security-Token", valid_21626424
-  var valid_21626425 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626425 = validateParameter(valid_21626425, JString, required = false,
-                                   default = nil)
-  if valid_21626425 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626425
-  var valid_21626426 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626426 = validateParameter(valid_21626426, JString, required = false,
-                                   default = nil)
-  if valid_21626426 != nil:
-    section.add "X-Amz-Algorithm", valid_21626426
-  var valid_21626427 = header.getOrDefault("X-Amz-Signature")
-  valid_21626427 = validateParameter(valid_21626427, JString, required = false,
-                                   default = nil)
-  if valid_21626427 != nil:
-    section.add "X-Amz-Signature", valid_21626427
-  var valid_21626428 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626428 = validateParameter(valid_21626428, JString, required = false,
-                                   default = nil)
-  if valid_21626428 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626428
-  var valid_21626429 = header.getOrDefault("X-Amz-Credential")
-  valid_21626429 = validateParameter(valid_21626429, JString, required = false,
-                                   default = nil)
-  if valid_21626429 != nil:
-    section.add "X-Amz-Credential", valid_21626429
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_21626430: Call_ListTagsForResource_21626419; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Retrieves the list of key-value tags assigned to the resource.
-  ## 
-  let valid = call_21626430.validator(path, query, header, formData, body, _)
-  let scheme = call_21626430.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626430.makeUrl(scheme.get, call_21626430.host, call_21626430.base,
-                               call_21626430.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626430, uri, valid, _)
-
-proc call*(call_21626431: Call_ListTagsForResource_21626419; ResourceArn: string): Recallable =
-  ## listTagsForResource
-  ## Retrieves the list of key-value tags assigned to the resource.
-  ##   ResourceArn: string (required)
-  ##              : The resource ARN.
-  var path_21626432 = newJObject()
-  add(path_21626432, "ResourceArn", newJString(ResourceArn))
-  result = call_21626431.call(path_21626432, nil, nil, nil, nil)
-
-var listTagsForResource* = Call_ListTagsForResource_21626419(
-    name: "listTagsForResource", meth: HttpMethod.HttpGet,
-    host: "appconfig.amazonaws.com", route: "/tags/{ResourceArn}",
-    validator: validate_ListTagsForResource_21626420, base: "/",
-    makeUrl: url_ListTagsForResource_21626421,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_UntagResource_21626449 = ref object of OpenApiRestCall_21625435
-proc url_UntagResource_21626451(protocol: Scheme; host: string; base: string;
+  Call_TagResource_402656883 = ref object of OpenApiRestCall_402656038
+proc url_TagResource_402656885(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3846,8 +4315,7 @@ proc url_UntagResource_21626451(protocol: Scheme; host: string; base: string;
   assert "ResourceArn" in path, "`ResourceArn` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/tags/"),
-               (kind: VariableSegment, value: "ResourceArn"),
-               (kind: ConstantSegment, value: "#tagKeys")]
+                 (kind: VariableSegment, value: "ResourceArn")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -3856,137 +4324,419 @@ proc url_UntagResource_21626451(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UntagResource_21626450(path: JsonNode; query: JsonNode;
+proc validate_TagResource_402656884(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
-                                    body: JsonNode; _: string = ""): JsonNode {.nosinks.} =
-  ## Deletes a tag key and value from an AppConfig resource.
-  ## 
+                                    body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Metadata to assign to an AppConfig resource. Tags help organize and categorize your AppConfig resources. Each tag consists of a key and an optional value, both of which you define. You can specify a maximum of 50 tags for a resource.
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ResourceArn: JString (required)
-  ##              : The ARN of the resource for which to remove tags.
+                                 ##              : The ARN of the resource for which to retrieve tags.
   section = newJObject()
   assert path != nil,
-        "path argument is necessary due to required `ResourceArn` field"
-  var valid_21626452 = path.getOrDefault("ResourceArn")
-  valid_21626452 = validateParameter(valid_21626452, JString, required = true,
-                                   default = nil)
-  if valid_21626452 != nil:
-    section.add "ResourceArn", valid_21626452
+         "path argument is necessary due to required `ResourceArn` field"
+  var valid_402656886 = path.getOrDefault("ResourceArn")
+  valid_402656886 = validateParameter(valid_402656886, JString, required = true,
+                                      default = nil)
+  if valid_402656886 != nil:
+    section.add "ResourceArn", valid_402656886
   result.add "path", section
-  ## parameters in `query` object:
-  ##   tagKeys: JArray (required)
-  ##          : The tag keys to delete.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `tagKeys` field"
-  var valid_21626453 = query.getOrDefault("tagKeys")
-  valid_21626453 = validateParameter(valid_21626453, JArray, required = true,
-                                   default = nil)
-  if valid_21626453 != nil:
-    section.add "tagKeys", valid_21626453
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626454 = header.getOrDefault("X-Amz-Date")
-  valid_21626454 = validateParameter(valid_21626454, JString, required = false,
-                                   default = nil)
-  if valid_21626454 != nil:
-    section.add "X-Amz-Date", valid_21626454
-  var valid_21626455 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626455 = validateParameter(valid_21626455, JString, required = false,
-                                   default = nil)
-  if valid_21626455 != nil:
-    section.add "X-Amz-Security-Token", valid_21626455
-  var valid_21626456 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626456 = validateParameter(valid_21626456, JString, required = false,
-                                   default = nil)
-  if valid_21626456 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626456
-  var valid_21626457 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626457 = validateParameter(valid_21626457, JString, required = false,
-                                   default = nil)
-  if valid_21626457 != nil:
-    section.add "X-Amz-Algorithm", valid_21626457
-  var valid_21626458 = header.getOrDefault("X-Amz-Signature")
-  valid_21626458 = validateParameter(valid_21626458, JString, required = false,
-                                   default = nil)
-  if valid_21626458 != nil:
-    section.add "X-Amz-Signature", valid_21626458
-  var valid_21626459 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626459 = validateParameter(valid_21626459, JString, required = false,
-                                   default = nil)
-  if valid_21626459 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626459
-  var valid_21626460 = header.getOrDefault("X-Amz-Credential")
-  valid_21626460 = validateParameter(valid_21626460, JString, required = false,
-                                   default = nil)
-  if valid_21626460 != nil:
-    section.add "X-Amz-Credential", valid_21626460
+  var valid_402656887 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656887 = validateParameter(valid_402656887, JString,
+                                      required = false, default = nil)
+  if valid_402656887 != nil:
+    section.add "X-Amz-Security-Token", valid_402656887
+  var valid_402656888 = header.getOrDefault("X-Amz-Signature")
+  valid_402656888 = validateParameter(valid_402656888, JString,
+                                      required = false, default = nil)
+  if valid_402656888 != nil:
+    section.add "X-Amz-Signature", valid_402656888
+  var valid_402656889 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656889 = validateParameter(valid_402656889, JString,
+                                      required = false, default = nil)
+  if valid_402656889 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656889
+  var valid_402656890 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656890 = validateParameter(valid_402656890, JString,
+                                      required = false, default = nil)
+  if valid_402656890 != nil:
+    section.add "X-Amz-Algorithm", valid_402656890
+  var valid_402656891 = header.getOrDefault("X-Amz-Date")
+  valid_402656891 = validateParameter(valid_402656891, JString,
+                                      required = false, default = nil)
+  if valid_402656891 != nil:
+    section.add "X-Amz-Date", valid_402656891
+  var valid_402656892 = header.getOrDefault("X-Amz-Credential")
+  valid_402656892 = validateParameter(valid_402656892, JString,
+                                      required = false, default = nil)
+  if valid_402656892 != nil:
+    section.add "X-Amz-Credential", valid_402656892
+  var valid_402656893 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656893 = validateParameter(valid_402656893, JString,
+                                      required = false, default = nil)
+  if valid_402656893 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656893
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  if `==`(_, ""): assert body != nil, "body argument is necessary"
+  if `==`(_, ""):
+    section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656895: Call_TagResource_402656883; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Metadata to assign to an AppConfig resource. Tags help organize and categorize your AppConfig resources. Each tag consists of a key and an optional value, both of which you define. You can specify a maximum of 50 tags for a resource.
+                                                                                         ## 
+  let valid = call_402656895.validator(path, query, header, formData, body, _)
+  let scheme = call_402656895.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656895.makeUrl(scheme.get, call_402656895.host, call_402656895.base,
+                                   call_402656895.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656895, uri, valid, _)
+
+proc call*(call_402656896: Call_TagResource_402656883; body: JsonNode;
+           ResourceArn: string): Recallable =
+  ## tagResource
+  ## Metadata to assign to an AppConfig resource. Tags help organize and categorize your AppConfig resources. Each tag consists of a key and an optional value, both of which you define. You can specify a maximum of 50 tags for a resource.
+  ##   
+                                                                                                                                                                                                                                              ## body: JObject (required)
+  ##   
+                                                                                                                                                                                                                                                                         ## ResourceArn: string (required)
+                                                                                                                                                                                                                                                                         ##              
+                                                                                                                                                                                                                                                                         ## : 
+                                                                                                                                                                                                                                                                         ## The 
+                                                                                                                                                                                                                                                                         ## ARN 
+                                                                                                                                                                                                                                                                         ## of 
+                                                                                                                                                                                                                                                                         ## the 
+                                                                                                                                                                                                                                                                         ## resource 
+                                                                                                                                                                                                                                                                         ## for 
+                                                                                                                                                                                                                                                                         ## which 
+                                                                                                                                                                                                                                                                         ## to 
+                                                                                                                                                                                                                                                                         ## retrieve 
+                                                                                                                                                                                                                                                                         ## tags.
+  var path_402656897 = newJObject()
+  var body_402656898 = newJObject()
+  if body != nil:
+    body_402656898 = body
+  add(path_402656897, "ResourceArn", newJString(ResourceArn))
+  result = call_402656896.call(path_402656897, nil, nil, nil, body_402656898)
+
+var tagResource* = Call_TagResource_402656883(name: "tagResource",
+    meth: HttpMethod.HttpPost, host: "appconfig.amazonaws.com",
+    route: "/tags/{ResourceArn}", validator: validate_TagResource_402656884,
+    base: "/", makeUrl: url_TagResource_402656885,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListTagsForResource_402656869 = ref object of OpenApiRestCall_402656038
+proc url_ListTagsForResource_402656871(protocol: Scheme; host: string;
+                                       base: string; route: string;
+                                       path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "ResourceArn" in path, "`ResourceArn` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/tags/"),
+                 (kind: VariableSegment, value: "ResourceArn")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_ListTagsForResource_402656870(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Retrieves the list of key-value tags assigned to the resource.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   ResourceArn: JString (required)
+                                 ##              : The resource ARN.
+  section = newJObject()
+  assert path != nil,
+         "path argument is necessary due to required `ResourceArn` field"
+  var valid_402656872 = path.getOrDefault("ResourceArn")
+  valid_402656872 = validateParameter(valid_402656872, JString, required = true,
+                                      default = nil)
+  if valid_402656872 != nil:
+    section.add "ResourceArn", valid_402656872
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656873 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656873 = validateParameter(valid_402656873, JString,
+                                      required = false, default = nil)
+  if valid_402656873 != nil:
+    section.add "X-Amz-Security-Token", valid_402656873
+  var valid_402656874 = header.getOrDefault("X-Amz-Signature")
+  valid_402656874 = validateParameter(valid_402656874, JString,
+                                      required = false, default = nil)
+  if valid_402656874 != nil:
+    section.add "X-Amz-Signature", valid_402656874
+  var valid_402656875 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656875 = validateParameter(valid_402656875, JString,
+                                      required = false, default = nil)
+  if valid_402656875 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656875
+  var valid_402656876 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656876 = validateParameter(valid_402656876, JString,
+                                      required = false, default = nil)
+  if valid_402656876 != nil:
+    section.add "X-Amz-Algorithm", valid_402656876
+  var valid_402656877 = header.getOrDefault("X-Amz-Date")
+  valid_402656877 = validateParameter(valid_402656877, JString,
+                                      required = false, default = nil)
+  if valid_402656877 != nil:
+    section.add "X-Amz-Date", valid_402656877
+  var valid_402656878 = header.getOrDefault("X-Amz-Credential")
+  valid_402656878 = validateParameter(valid_402656878, JString,
+                                      required = false, default = nil)
+  if valid_402656878 != nil:
+    section.add "X-Amz-Credential", valid_402656878
+  var valid_402656879 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656879 = validateParameter(valid_402656879, JString,
+                                      required = false, default = nil)
+  if valid_402656879 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656879
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626461: Call_UntagResource_21626449; path: JsonNode = nil;
-          query: JsonNode = nil; header: JsonNode = nil; formData: JsonNode = nil;
-          body: JsonNode = nil; _: string = ""): Recallable =
-  ## Deletes a tag key and value from an AppConfig resource.
-  ## 
-  let valid = call_21626461.validator(path, query, header, formData, body, _)
-  let scheme = call_21626461.pickScheme
+proc call*(call_402656880: Call_ListTagsForResource_402656869;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Retrieves the list of key-value tags assigned to the resource.
+                                                                                         ## 
+  let valid = call_402656880.validator(path, query, header, formData, body, _)
+  let scheme = call_402656880.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626461.makeUrl(scheme.get, call_21626461.host, call_21626461.base,
-                               call_21626461.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626461, uri, valid, _)
+  let uri = call_402656880.makeUrl(scheme.get, call_402656880.host, call_402656880.base,
+                                   call_402656880.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656880, uri, valid, _)
 
-proc call*(call_21626462: Call_UntagResource_21626449; tagKeys: JsonNode;
-          ResourceArn: string): Recallable =
+proc call*(call_402656881: Call_ListTagsForResource_402656869;
+           ResourceArn: string): Recallable =
+  ## listTagsForResource
+  ## Retrieves the list of key-value tags assigned to the resource.
+  ##   ResourceArn: string (required)
+                                                                   ##              : The resource ARN.
+  var path_402656882 = newJObject()
+  add(path_402656882, "ResourceArn", newJString(ResourceArn))
+  result = call_402656881.call(path_402656882, nil, nil, nil, nil)
+
+var listTagsForResource* = Call_ListTagsForResource_402656869(
+    name: "listTagsForResource", meth: HttpMethod.HttpGet,
+    host: "appconfig.amazonaws.com", route: "/tags/{ResourceArn}",
+    validator: validate_ListTagsForResource_402656870, base: "/",
+    makeUrl: url_ListTagsForResource_402656871,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UntagResource_402656899 = ref object of OpenApiRestCall_402656038
+proc url_UntagResource_402656901(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "ResourceArn" in path, "`ResourceArn` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/tags/"),
+                 (kind: VariableSegment, value: "ResourceArn"),
+                 (kind: ConstantSegment, value: "#tagKeys")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base == "/" and hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_UntagResource_402656900(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode; _: string = ""): JsonNode {.
+    nosinks.} =
+  ## Deletes a tag key and value from an AppConfig resource.
+                ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   ResourceArn: JString (required)
+                                 ##              : The ARN of the resource for which to remove tags.
+  section = newJObject()
+  assert path != nil,
+         "path argument is necessary due to required `ResourceArn` field"
+  var valid_402656902 = path.getOrDefault("ResourceArn")
+  valid_402656902 = validateParameter(valid_402656902, JString, required = true,
+                                      default = nil)
+  if valid_402656902 != nil:
+    section.add "ResourceArn", valid_402656902
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   tagKeys: JArray (required)
+                                  ##          : The tag keys to delete.
+  section = newJObject()
+  assert query != nil,
+         "query argument is necessary due to required `tagKeys` field"
+  var valid_402656903 = query.getOrDefault("tagKeys")
+  valid_402656903 = validateParameter(valid_402656903, JArray, required = true,
+                                      default = nil)
+  if valid_402656903 != nil:
+    section.add "tagKeys", valid_402656903
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_402656904 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656904 = validateParameter(valid_402656904, JString,
+                                      required = false, default = nil)
+  if valid_402656904 != nil:
+    section.add "X-Amz-Security-Token", valid_402656904
+  var valid_402656905 = header.getOrDefault("X-Amz-Signature")
+  valid_402656905 = validateParameter(valid_402656905, JString,
+                                      required = false, default = nil)
+  if valid_402656905 != nil:
+    section.add "X-Amz-Signature", valid_402656905
+  var valid_402656906 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656906 = validateParameter(valid_402656906, JString,
+                                      required = false, default = nil)
+  if valid_402656906 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656906
+  var valid_402656907 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656907 = validateParameter(valid_402656907, JString,
+                                      required = false, default = nil)
+  if valid_402656907 != nil:
+    section.add "X-Amz-Algorithm", valid_402656907
+  var valid_402656908 = header.getOrDefault("X-Amz-Date")
+  valid_402656908 = validateParameter(valid_402656908, JString,
+                                      required = false, default = nil)
+  if valid_402656908 != nil:
+    section.add "X-Amz-Date", valid_402656908
+  var valid_402656909 = header.getOrDefault("X-Amz-Credential")
+  valid_402656909 = validateParameter(valid_402656909, JString,
+                                      required = false, default = nil)
+  if valid_402656909 != nil:
+    section.add "X-Amz-Credential", valid_402656909
+  var valid_402656910 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656910 = validateParameter(valid_402656910, JString,
+                                      required = false, default = nil)
+  if valid_402656910 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656910
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_402656911: Call_UntagResource_402656899; path: JsonNode = nil;
+           query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+  ## Deletes a tag key and value from an AppConfig resource.
+                                                                                         ## 
+  let valid = call_402656911.validator(path, query, header, formData, body, _)
+  let scheme = call_402656911.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let uri = call_402656911.makeUrl(scheme.get, call_402656911.host, call_402656911.base,
+                                   call_402656911.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656911, uri, valid, _)
+
+proc call*(call_402656912: Call_UntagResource_402656899; tagKeys: JsonNode;
+           ResourceArn: string): Recallable =
   ## untagResource
   ## Deletes a tag key and value from an AppConfig resource.
   ##   tagKeys: JArray (required)
-  ##          : The tag keys to delete.
-  ##   ResourceArn: string (required)
-  ##              : The ARN of the resource for which to remove tags.
-  var path_21626463 = newJObject()
-  var query_21626464 = newJObject()
+                                                            ##          : The tag keys to delete.
+  ##   
+                                                                                                 ## ResourceArn: string (required)
+                                                                                                 ##              
+                                                                                                 ## : 
+                                                                                                 ## The 
+                                                                                                 ## ARN 
+                                                                                                 ## of 
+                                                                                                 ## the 
+                                                                                                 ## resource 
+                                                                                                 ## for 
+                                                                                                 ## which 
+                                                                                                 ## to 
+                                                                                                 ## remove 
+                                                                                                 ## tags.
+  var path_402656913 = newJObject()
+  var query_402656914 = newJObject()
   if tagKeys != nil:
-    query_21626464.add "tagKeys", tagKeys
-  add(path_21626463, "ResourceArn", newJString(ResourceArn))
-  result = call_21626462.call(path_21626463, query_21626464, nil, nil, nil)
+    query_402656914.add "tagKeys", tagKeys
+  add(path_402656913, "ResourceArn", newJString(ResourceArn))
+  result = call_402656912.call(path_402656913, query_402656914, nil, nil, nil)
 
-var untagResource* = Call_UntagResource_21626449(name: "untagResource",
+var untagResource* = Call_UntagResource_402656899(name: "untagResource",
     meth: HttpMethod.HttpDelete, host: "appconfig.amazonaws.com",
-    route: "/tags/{ResourceArn}#tagKeys", validator: validate_UntagResource_21626450,
-    base: "/", makeUrl: url_UntagResource_21626451,
+    route: "/tags/{ResourceArn}#tagKeys", validator: validate_UntagResource_402656900,
+    base: "/", makeUrl: url_UntagResource_402656901,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ValidateConfiguration_21626465 = ref object of OpenApiRestCall_21625435
-proc url_ValidateConfiguration_21626467(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode;
-                                       query: JsonNode): Uri =
+  Call_ValidateConfiguration_402656915 = ref object of OpenApiRestCall_402656038
+proc url_ValidateConfiguration_402656917(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ApplicationId" in path, "`ApplicationId` is a required path parameter"
   assert "ConfigurationProfileId" in path,
-        "`ConfigurationProfileId` is a required path parameter"
+         "`ConfigurationProfileId` is a required path parameter"
   const
     segments = @[(kind: ConstantSegment, value: "/applications/"),
-               (kind: VariableSegment, value: "ApplicationId"),
-               (kind: ConstantSegment, value: "/configurationprofiles/"),
-               (kind: VariableSegment, value: "ConfigurationProfileId"), (
+                 (kind: VariableSegment, value: "ApplicationId"),
+                 (kind: ConstantSegment, value: "/configurationprofiles/"),
+                 (kind: VariableSegment, value: "ConfigurationProfileId"), (
         kind: ConstantSegment, value: "/validators#configuration_version")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
@@ -3996,129 +4746,158 @@ proc url_ValidateConfiguration_21626467(protocol: Scheme; host: string; base: st
   else:
     result.path = base & hydrated.get
 
-proc validate_ValidateConfiguration_21626466(path: JsonNode; query: JsonNode;
+proc validate_ValidateConfiguration_402656916(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode; _: string = ""): JsonNode {.
     nosinks.} =
   ## Uses the validators in a configuration profile to validate a configuration.
-  ## 
+                ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   ConfigurationProfileId: JString (required)
-  ##                         : The configuration profile ID.
   ##   ApplicationId: JString (required)
-  ##                : The application ID.
+                                 ##                : The application ID.
+  ##   
+                                                                        ## ConfigurationProfileId: JString (required)
+                                                                        ##                         
+                                                                        ## : 
+                                                                        ## The 
+                                                                        ## configuration 
+                                                                        ## profile 
+                                                                        ## ID.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `ConfigurationProfileId` field"
-  var valid_21626468 = path.getOrDefault("ConfigurationProfileId")
-  valid_21626468 = validateParameter(valid_21626468, JString, required = true,
-                                   default = nil)
-  if valid_21626468 != nil:
-    section.add "ConfigurationProfileId", valid_21626468
-  var valid_21626469 = path.getOrDefault("ApplicationId")
-  valid_21626469 = validateParameter(valid_21626469, JString, required = true,
-                                   default = nil)
-  if valid_21626469 != nil:
-    section.add "ApplicationId", valid_21626469
+  assert path != nil,
+         "path argument is necessary due to required `ApplicationId` field"
+  var valid_402656918 = path.getOrDefault("ApplicationId")
+  valid_402656918 = validateParameter(valid_402656918, JString, required = true,
+                                      default = nil)
+  if valid_402656918 != nil:
+    section.add "ApplicationId", valid_402656918
+  var valid_402656919 = path.getOrDefault("ConfigurationProfileId")
+  valid_402656919 = validateParameter(valid_402656919, JString, required = true,
+                                      default = nil)
+  if valid_402656919 != nil:
+    section.add "ConfigurationProfileId", valid_402656919
   result.add "path", section
   ## parameters in `query` object:
   ##   configuration_version: JString (required)
-  ##                        : The version of the configuration to validate.
+                                  ##                        : The version of the configuration to validate.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `configuration_version` field"
-  var valid_21626470 = query.getOrDefault("configuration_version")
-  valid_21626470 = validateParameter(valid_21626470, JString, required = true,
-                                   default = nil)
-  if valid_21626470 != nil:
-    section.add "configuration_version", valid_21626470
+  var valid_402656920 = query.getOrDefault("configuration_version")
+  valid_402656920 = validateParameter(valid_402656920, JString, required = true,
+                                      default = nil)
+  if valid_402656920 != nil:
+    section.add "configuration_version", valid_402656920
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_21626471 = header.getOrDefault("X-Amz-Date")
-  valid_21626471 = validateParameter(valid_21626471, JString, required = false,
-                                   default = nil)
-  if valid_21626471 != nil:
-    section.add "X-Amz-Date", valid_21626471
-  var valid_21626472 = header.getOrDefault("X-Amz-Security-Token")
-  valid_21626472 = validateParameter(valid_21626472, JString, required = false,
-                                   default = nil)
-  if valid_21626472 != nil:
-    section.add "X-Amz-Security-Token", valid_21626472
-  var valid_21626473 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_21626473 = validateParameter(valid_21626473, JString, required = false,
-                                   default = nil)
-  if valid_21626473 != nil:
-    section.add "X-Amz-Content-Sha256", valid_21626473
-  var valid_21626474 = header.getOrDefault("X-Amz-Algorithm")
-  valid_21626474 = validateParameter(valid_21626474, JString, required = false,
-                                   default = nil)
-  if valid_21626474 != nil:
-    section.add "X-Amz-Algorithm", valid_21626474
-  var valid_21626475 = header.getOrDefault("X-Amz-Signature")
-  valid_21626475 = validateParameter(valid_21626475, JString, required = false,
-                                   default = nil)
-  if valid_21626475 != nil:
-    section.add "X-Amz-Signature", valid_21626475
-  var valid_21626476 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_21626476 = validateParameter(valid_21626476, JString, required = false,
-                                   default = nil)
-  if valid_21626476 != nil:
-    section.add "X-Amz-SignedHeaders", valid_21626476
-  var valid_21626477 = header.getOrDefault("X-Amz-Credential")
-  valid_21626477 = validateParameter(valid_21626477, JString, required = false,
-                                   default = nil)
-  if valid_21626477 != nil:
-    section.add "X-Amz-Credential", valid_21626477
+  var valid_402656921 = header.getOrDefault("X-Amz-Security-Token")
+  valid_402656921 = validateParameter(valid_402656921, JString,
+                                      required = false, default = nil)
+  if valid_402656921 != nil:
+    section.add "X-Amz-Security-Token", valid_402656921
+  var valid_402656922 = header.getOrDefault("X-Amz-Signature")
+  valid_402656922 = validateParameter(valid_402656922, JString,
+                                      required = false, default = nil)
+  if valid_402656922 != nil:
+    section.add "X-Amz-Signature", valid_402656922
+  var valid_402656923 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_402656923 = validateParameter(valid_402656923, JString,
+                                      required = false, default = nil)
+  if valid_402656923 != nil:
+    section.add "X-Amz-Content-Sha256", valid_402656923
+  var valid_402656924 = header.getOrDefault("X-Amz-Algorithm")
+  valid_402656924 = validateParameter(valid_402656924, JString,
+                                      required = false, default = nil)
+  if valid_402656924 != nil:
+    section.add "X-Amz-Algorithm", valid_402656924
+  var valid_402656925 = header.getOrDefault("X-Amz-Date")
+  valid_402656925 = validateParameter(valid_402656925, JString,
+                                      required = false, default = nil)
+  if valid_402656925 != nil:
+    section.add "X-Amz-Date", valid_402656925
+  var valid_402656926 = header.getOrDefault("X-Amz-Credential")
+  valid_402656926 = validateParameter(valid_402656926, JString,
+                                      required = false, default = nil)
+  if valid_402656926 != nil:
+    section.add "X-Amz-Credential", valid_402656926
+  var valid_402656927 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_402656927 = validateParameter(valid_402656927, JString,
+                                      required = false, default = nil)
+  if valid_402656927 != nil:
+    section.add "X-Amz-SignedHeaders", valid_402656927
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_21626478: Call_ValidateConfiguration_21626465;
-          path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
-          formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
+proc call*(call_402656928: Call_ValidateConfiguration_402656915;
+           path: JsonNode = nil; query: JsonNode = nil; header: JsonNode = nil;
+           formData: JsonNode = nil; body: JsonNode = nil; _: string = ""): Recallable =
   ## Uses the validators in a configuration profile to validate a configuration.
-  ## 
-  let valid = call_21626478.validator(path, query, header, formData, body, _)
-  let scheme = call_21626478.pickScheme
+                                                                                         ## 
+  let valid = call_402656928.validator(path, query, header, formData, body, _)
+  let scheme = call_402656928.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let uri = call_21626478.makeUrl(scheme.get, call_21626478.host, call_21626478.base,
-                               call_21626478.route, valid.getOrDefault("path"),
-                               valid.getOrDefault("query"))
-  result = atozHook(call_21626478, uri, valid, _)
+  let uri = call_402656928.makeUrl(scheme.get, call_402656928.host, call_402656928.base,
+                                   call_402656928.route,
+                                   valid.getOrDefault("path"),
+                                   valid.getOrDefault("query"))
+  result = atozHook(call_402656928, uri, valid, _)
 
-proc call*(call_21626479: Call_ValidateConfiguration_21626465;
-          ConfigurationProfileId: string; configurationVersion: string;
-          ApplicationId: string): Recallable =
+proc call*(call_402656929: Call_ValidateConfiguration_402656915;
+           configurationVersion: string; ApplicationId: string;
+           ConfigurationProfileId: string): Recallable =
   ## validateConfiguration
   ## Uses the validators in a configuration profile to validate a configuration.
-  ##   ConfigurationProfileId: string (required)
-  ##                         : The configuration profile ID.
-  ##   configurationVersion: string (required)
-  ##                       : The version of the configuration to validate.
-  ##   ApplicationId: string (required)
-  ##                : The application ID.
-  var path_21626480 = newJObject()
-  var query_21626481 = newJObject()
-  add(path_21626480, "ConfigurationProfileId", newJString(ConfigurationProfileId))
-  add(query_21626481, "configuration_version", newJString(configurationVersion))
-  add(path_21626480, "ApplicationId", newJString(ApplicationId))
-  result = call_21626479.call(path_21626480, query_21626481, nil, nil, nil)
+  ##   
+                                                                                ## configurationVersion: string (required)
+                                                                                ##                       
+                                                                                ## : 
+                                                                                ## The 
+                                                                                ## version 
+                                                                                ## of 
+                                                                                ## the 
+                                                                                ## configuration 
+                                                                                ## to 
+                                                                                ## validate.
+  ##   
+                                                                                            ## ApplicationId: string (required)
+                                                                                            ##                
+                                                                                            ## : 
+                                                                                            ## The 
+                                                                                            ## application 
+                                                                                            ## ID.
+  ##   
+                                                                                                  ## ConfigurationProfileId: string (required)
+                                                                                                  ##                         
+                                                                                                  ## : 
+                                                                                                  ## The 
+                                                                                                  ## configuration 
+                                                                                                  ## profile 
+                                                                                                  ## ID.
+  var path_402656930 = newJObject()
+  var query_402656931 = newJObject()
+  add(query_402656931, "configuration_version", newJString(configurationVersion))
+  add(path_402656930, "ApplicationId", newJString(ApplicationId))
+  add(path_402656930, "ConfigurationProfileId",
+      newJString(ConfigurationProfileId))
+  result = call_402656929.call(path_402656930, query_402656931, nil, nil, nil)
 
-var validateConfiguration* = Call_ValidateConfiguration_21626465(
+var validateConfiguration* = Call_ValidateConfiguration_402656915(
     name: "validateConfiguration", meth: HttpMethod.HttpPost,
     host: "appconfig.amazonaws.com", route: "/applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}/validators#configuration_version",
-    validator: validate_ValidateConfiguration_21626466, base: "/",
-    makeUrl: url_ValidateConfiguration_21626467,
+    validator: validate_ValidateConfiguration_402656916, base: "/",
+    makeUrl: url_ValidateConfiguration_402656917,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -4151,8 +4930,10 @@ sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 type
   XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
-proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+    SecurityToken = "X-Amz-Security-Token",
+    ContentSha256 = "X-Amz-Content-Sha256"
+proc atozSign(recall: var Recallable; query: JsonNode;
+              algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
@@ -4177,12 +4958,14 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers["X-Amz-Date"] = date
   recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    scope = credentialScope(region = region, service = awsServiceName, date = date)
-    request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
-                             normalize = normal, digest = algo)
+    scope = credentialScope(region = region, service = awsServiceName,
+                            date = date)
+    request = canonicalRequest(recall.meth, $url, query, recall.headers,
+                               recall.body, normalize = normal, digest = algo)
     sts = stringToSign(request.hash(algo), scope, date = date, digest = algo)
-    signature = calculateSignature(secret = secret, date = date, region = region,
-                                 service = awsServiceName, sts, digest = algo)
+    signature = calculateSignature(secret = secret, date = date,
+                                   region = region, service = awsServiceName,
+                                   sts, digest = algo)
   var auth = $algo & " "
   auth &= "Credential=" & access / scope & ", "
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "
