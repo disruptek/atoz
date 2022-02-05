@@ -20,7 +20,7 @@ putEnv "OPENAPIOUT", output
 echo api, " release ", serial
 
 var
-  cmd = "nim c --maxLoopIterationsVM:100000000 --define:ssl"
+  cmd = "nim c --define:openapiOmitAllDocs --maxLoopIterationsVM:100000000 --define:ssl"
 
 cmd = fmt"""{cmd} -d:OPENAPIIN="{input}" -d:OPENAPIOUT="{output}" --nimcache="{cache}""""
 exec fmt"""{cmd} -f "{source}""""

@@ -1,0 +1,62 @@
+#!/bin/fish
+
+set --local jobs 12
+
+# source files
+set --local input ~/git/atoz/json
+
+# output directory for nim
+set --local output ~/git/atoz/src/atoz
+
+# temp file to hold our parallel jobs
+set --local pfile (mktemp)
+
+# make sure our output dir works
+mkdir --parents "$output"
+
+# the list of input files
+set --local inputs (find $input -name \*.json -print)
+
+set --local sfile (mktemp)
+
+for n in $inputs
+	# full-path
+	set --local fp (realpath "$n")
+	# serial number (a date)
+	set --local ser (basename $n)
+	# directory named after the api
+	set --local api (basename (dirname "$n"))
+	set --local target (basename (dirname "$n"))
+	set --local target (string replace "-" "_" "$target")
+	set --local target (string replace "." "_" "$target")
+	# just the date cleaned up, eg. 20200202
+	set --local justser (echo "$ser" | cut -f 1 -d\.)
+	# output nim file
+	set --local target (string join "_" "$output/$target" "$justser.nim")
+
+	set --local intime (stat --format="%Y" "$fp")
+	set --local outtime 0
+	if test -f "$target"
+		set outtime (stat --format="%Y" "$target")
+	end
+	echo "$api" >> $sfile
+	if test $intime -gt $outtime
+		if test $jobs -ne 1
+			echo "./build.nims atoz.nim '$fp' '$output/$ser' '$api' '$ser'" >> $pfile
+		else
+			if ! ./build.nims atoz.nim $fp $output/$ser $api $ser
+				break
+			end
+		end
+	end
+end
+
+if test $jobs -ne 1
+	parallel -j $jobs < $pfile
+end
+
+set --local uniques (sort < $sfile | uniq | wc -l | xargs echo)
+echo $uniques services
+
+if test -f $pfile; rm $pfile; end
+if test -f $sfile; rm $sfile; end
