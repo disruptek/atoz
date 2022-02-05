@@ -1,4 +1,4 @@
-version = "2626.3.0"
+version = "2626.4.0"
 author = "disruptek"
 description = "Amazon Web Services (AWS) APIs"
 license = "MIT"
