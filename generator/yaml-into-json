@@ -1,0 +1,28 @@
+#!/bin/fish
+
+set --local jobs 20
+set --local input ~/git/openapi-directory/APIs/amazonaws.com/
+set --local output ~/git/atoz/json/
+set --local pfile (mktemp)
+
+pushd $input
+
+set --local inputs (find . -name swagger.yaml -print)
+for n in $inputs
+	set --local jsonout (dirname "$n" | cut -f 2- -d/)
+	set --local ser (dirname $jsonout)
+	set --local ver (basename $jsonout)
+	set ser (string replace --all '/' '_' "$ser")
+	set ser (string replace --all '-' '_' "$ser")
+	set ser (string replace --all '.' '_' "$ser")
+	set ver (string replace --all '-' '' "$ver")
+	echo "./prep-one '$input/$n' '$output/$ser/$ver.json' '$ser' '$ver'" >> $pfile
+end
+
+popd
+
+parallel -j $jobs < $pfile
+
+if test -f $pfile
+	rm $pfile
+end

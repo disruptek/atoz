@@ -1,0 +1,23 @@
+#!/bin/fish
+set --local temp (mktemp)
+set --local input $argv[1]
+set --local target $argv[2]
+set --local ser $argv[3]
+set --local ver $argv[4]
+mkdir --parents (dirname "$target")
+
+echo $ser $ver
+yq . "$input" > "$temp"
+if ! test -f "$target"
+	mv "$temp" "$target"
+else
+	set --local old (md5sum "$target" | cut -f1 -d\ )
+	set --local new (md5sum "$temp" | cut -f1 -d\ )
+	if test "$old" != "$new"
+		mv "$temp" "$target"
+	end
+end
+
+if test -f "$temp"
+  rm $temp
+end
