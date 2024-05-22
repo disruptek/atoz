@@ -7,7 +7,7 @@ set --local pfile (mktemp)
 
 pushd $input
 
-set --local inputs (find . -name swagger.yaml -print)
+set --local inputs (find . -name openapi.yaml -print)
 for n in $inputs
 	set --local jsonout (dirname "$n" | cut -f 2- -d/)
 	set --local ser (dirname $jsonout)
