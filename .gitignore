@@ -1,0 +1,7 @@
+json/
+deps/
+docs/
+apis
+nim.cfg
+*.exe
+nimcache/

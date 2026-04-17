@@ -3,7 +3,7 @@ Amazon Web Services (AWS) APIs in Nim
 
 ## Supported APIs
 
-[Sadly, only the 220 most popular AWS APIs are supported at this time.](https://github.com/disruptek/atoz/tree/master/src/atoz) :cry:
+[369 AWS APIs are supported.](https://github.com/disruptek/atoz/tree/master/src/atoz)
 
 ## Example
 
@@ -40,14 +40,25 @@ if response.code.is2xx:
   echo waitfor response.body
 ```
 
+## Building
+
+Requires [Elle](https://github.com/disruptek/elle) and a checkout of the
+[openapi-directory](https://github.com/APIs-guru/openapi-directory).
+
+```bash
+cd generator
+elle build.lisp            # yaml→json, then json→nim
+elle build.lisp yaml       # yaml→json only
+elle build.lisp nim        # json→nim only
+elle build.lisp nim sqs    # single service
+```
+
 ## Details
 
-This project is based almost entirely upon the following:
+This project is based upon:
 
 - OpenAPI Code Generator https://github.com/disruptek/openapi
 - Amazon Web Services Signature Version 4 https://github.com/disruptek/sigv4
-
-Patches welcome!
 
 ## License
 
